@@ -1,5 +1,115 @@
 ﻿@import "../node_modules/bootstrap/scss/bootstrap";
 
+/* Styles généraux */
 body {
 
+}
+
+h2 {
+    margin-top: 20px;
+}
+
+.section-header .section-title {
+    font-size: 40px;
+}
+
+.section-header .line {
+    width: 150px;
+    background: #ddd;
+    height: 3px;
+    margin: auto;
+}
+
+.section-header .line span {
+    display: block;
+    width: 100px;
+    height: 4px;
+    background-color: #2184BE;
+    margin: auto;
+    position: relative;
+    bottom: 0.5px;
+}
+
+.section-header p {
+    width: 50%;
+    color: #888;
+    margin: 20px auto;
+    line-height: 1.5;
+}
+
+@media (max-width:575px) {
+    .section-header p {
+        width: 85%;
+    }
+}
+
+/* Section Fonctionnalité */
+.content label {
+    font-weight: bold;
+}
+
+.content-row {
+    margin-right: 0px;
+    margin-left: 0px;
+}
+
+/* Footer */
+footer {
+    color: #fff;
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+}
+
+footer p {
+    margin-bottom: .25rem;
+}
+
+.test {
+    margin-bottom: 500px;
+}
+
+.btn-custom {
+    color: #FFFFFF;
+    background-color: #2184BE;
+    border-color: #2184BE;
+}
+
+.btn-custom:hover,
+.btn-custom:focus,
+.btn-custom:active,
+.btn-custom.active,
+.open .dropdown-toggle.btn-custom {
+    color: #FFFFFF;
+    background-color: #1972A6;
+    border-color: #2184BE;
+}
+
+.btn-custom:active,
+.btn-custom.active,
+.open .dropdown-toggle.btn-custom {
+    background-image: none;
+}
+
+.btn-custom.disabled,
+.btn-custom[disabled],
+fieldset[disabled] .btn-custom,
+.btn-custom.disabled:hover,
+.btn-custom[disabled]:hover,
+fieldset[disabled] .btn-custom:hover,
+.btn-custom.disabled:focus,
+.btn-custom[disabled]:focus,
+fieldset[disabled] .btn-custom:focus,
+.btn-custom.disabled:active,
+.btn-custom[disabled]:active,
+fieldset[disabled] .btn-custom:active,
+.btn-custom.disabled.active,
+.btn-custom[disabled].active,
+fieldset[disabled] .btn-custom.active {
+    background-color: #2184BE;
+    border-color: #2184BE;
+}
+
+.btn-custom .badge {
+    color: #2184BE;
+    background-color: #FFFFFF;
 }

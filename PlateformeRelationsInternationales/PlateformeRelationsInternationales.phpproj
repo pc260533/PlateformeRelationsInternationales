@@ -43,12 +43,17 @@
     <Folder Include="ts\modelePlateforme\" />
     <Folder Include="ts\vuesPlateforme\" />
     <Folder Include="ts\vuesPlateforme\composants\" />
+    <Folder Include="ts\vuesPlateforme\templates\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="images\favicon.png" />
+    <Content Include="images\logo.png" />
     <Content Include="package.json" />
     <Content Include="scss\style.scss" />
     <Content Include="tsconfig.json" />
     <Content Include="ts\application.ts" />
+    <Content Include="ts\controleurPlateforme.ts" />
+    <Content Include="ts\ivuePlateforme.ts" />
     <Content Include="ts\main.ts" />
     <Content Include="ts\modelePlateforme\aideFinanciere.ts" />
     <Content Include="ts\modelePlateforme\contact.ts" />
@@ -58,9 +63,12 @@
     <Content Include="ts\modelePlateforme\plateforme.ts" />
     <Content Include="ts\modelePlateforme\sousspecialite.ts" />
     <Content Include="ts\modelePlateforme\specialite.ts" />
+    <Content Include="ts\router.ts" />
     <Content Include="ts\shims-vue.d.ts" />
-    <Content Include="ts\vuesPlateforme\App.vue" />
-    <Content Include="ts\vuesPlateforme\composants\Home.vue" />
+    <Content Include="ts\applicationVue.ts" />
+    <Content Include="ts\vuesPlateforme\templates\applicationVue.html" />
+    <Content Include="ts\vuesPlateforme\templates\vuePartenaires.html" />
+    <Content Include="ts\vuesPlateforme\vuePartenaires.ts" />
     <Content Include="Web.config" />
     <Content Include="webpack.config.js" />
   </ItemGroup>

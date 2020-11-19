@@ -3,6 +3,10 @@
 export class Plateforme {
     private listePartenairesPlateforme: Partenaire[];
 
+    public get ListePartenairesPlateforme(): Partenaire[] {
+        return this.listePartenairesPlateforme;
+    }
+
     public constructor() {
         this.listePartenairesPlateforme = [];
     }
