@@ -3,6 +3,7 @@ import { AideFinanciere } from "./aideFinanciere";
 import { Contact } from "./contact";
 import { Specialite } from "./specialite";
 import { Mobilite } from "./mobilite";
+import { SousSpecialite } from "./sousspecialite";
 
 export class Plateforme {
     private listeSpecialitesPlateforme: Specialite[];
@@ -45,6 +46,18 @@ export class Plateforme {
             if (specialite.IdentifiantSpecialite == identifiantSpecialite) {
                 res = specialite;
             }
+        });
+        return res;
+    }
+
+    public getSousSpecialiteAvecIdentifiant(identifiantSousSpecialite: number): SousSpecialite {
+        var res: SousSpecialite = null;
+        this.listeSpecialitesPlateforme.forEach((specialite: Specialite) => {
+            specialite.ListeSousSpecialites.forEach((sousSpecialite: SousSpecialite) => {
+                if (sousSpecialite.IdentifiantSousSpecialite == identifiantSousSpecialite) {
+                    res = sousSpecialite;
+                }
+            });
         });
         return res;
     }

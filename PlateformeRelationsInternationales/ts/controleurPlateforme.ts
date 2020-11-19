@@ -48,15 +48,15 @@ export class ControleurPlateforme {
         });
     }
 
-    protected notifieAjoutSpecialiteDansPartenaire(specialite: Specialite, partenaire: Partenaire): void {
+    protected notifieAjoutSousSpecialiteDansPartenaire(sousSpecialite: SousSpecialite, partenaire: Partenaire): void {
         this.listeVuesPlateforme.forEach((ivuePlateforme: IVuePlateforme) => {
-            ivuePlateforme.ajoutSpecialiteDansPartenaire(specialite, partenaire);
+            ivuePlateforme.ajoutSousSpecialiteDansPartenaire(sousSpecialite, partenaire);
         });
     }
 
-    protected notifieSuppressionSpecialiteDansPartenaire(specialite: Specialite, partenaire: Partenaire): void {
+    protected notifieSuppressionSpecialiteDansPartenaire(sousSpecialite: SousSpecialite, partenaire: Partenaire): void {
         this.listeVuesPlateforme.forEach((ivuePlateforme: IVuePlateforme) => {
-            ivuePlateforme.suppressionSpecialiteDansPartenaire(specialite, partenaire);
+            ivuePlateforme.suppressionSousSpecialiteDansPartenaire(sousSpecialite, partenaire);
         });
     }
 
@@ -253,9 +253,10 @@ export class ControleurPlateforme {
                     localisationPartenaire.IdentifiantLocalisation = partenaire.localisationPartenaire.identifiantLocalisation;
                     localisationPartenaire.LatitudeLocalisation = partenaire.localisationPartenaire.latitudeLocalisation;
                     localisationPartenaire.LongitudeLocalisation = partenaire.localisationPartenaire.longitudeLocalisation;
+                    partenaireObjet.LocalisationPartenaire = localisationPartenaire;
 
-                    partenaire.listeSpecialitesPartenaire.forEach((specialite: any) => {
-                        partenaireObjet.ajouterSpecialite(that.modelePlateforme.getSpecialiteAvecIdentifiant(specialite.identifiantSpecialite));
+                    partenaire.listeSousSpecialitesPartenaire.forEach((sousSpecialite: any) => {
+                        partenaireObjet.ajouterSousSpecialite(that.modelePlateforme.getSousSpecialiteAvecIdentifiant(sousSpecialite.identifiantSousSpecialite));
                     });
                     partenaire.listeMobilitesPartenaire.forEach((mobilite: any) => {
                         partenaireObjet.ajouterMobilite(that.modelePlateforme.getMobiliteAvecIdentifiant(mobilite.identifiantMobilite));
@@ -282,15 +283,15 @@ export class ControleurPlateforme {
         });
     }
 
-    public ajouterSpecialiteDansPartenaire(specialite: Specialite, partenaire: Partenaire): void {
+    public ajouterSousSpecialiteDansPartenaire(sousSpecialite: SousSpecialite, partenaire: Partenaire): void {
         var that = this;
         $.ajax({
             url: "api/specialitePartenaire",
             method: "post",
-            data: { specialite: specialite.getObjetSerializableId(), partenaire: partenaire.getObjetSerializableId() },
+            data: { sousspecialite: sousSpecialite.getObjetSerializableId(), partenaire: partenaire.getObjetSerializableId() },
             success: function (resultat) {
-                partenaire.ajouterSpecialite(specialite);
-                that.notifieAjoutSpecialiteDansPartenaire(specialite, partenaire);
+                partenaire.ajouterSousSpecialite(sousSpecialite);
+                that.notifieAjoutSousSpecialiteDansPartenaire(sousSpecialite, partenaire);
             },
             error: function (erreur) {
                 console.log(erreur);

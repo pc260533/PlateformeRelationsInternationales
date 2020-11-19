@@ -119,15 +119,15 @@ class InstalleurBaseDeDonnees {
 	}
 
 	/**
-	 * Créer la table Correspondance_Partenaire_Specialite dans la base.
+	 * Créer la table Correspondance_Partenaire_SousSpecialite dans la base.
 	 */
-	private function creerTableCorrespondancePartenaireSpecialite(): void {
-		$requete = "CREATE TABLE IF NOT EXISTS PLATEFORME.CORRESPONDANCE_PARTENAIRE_SPECIALITE (" .
+	private function creerTableCorrespondancePartenaireSousSpecialite(): void {
+		$requete = "CREATE TABLE IF NOT EXISTS PLATEFORME.CORRESPONDANCE_PARTENAIRE_SOUSSPECIALITE (" .
 				   "identifiantPartenaire INT," .
-				   "identifiantSpecialite INT," .
-				   "PRIMARY KEY(identifiantPartenaire, identifiantSpecialite)," .
+				   "identifiantSousSpecialite INT," .
+				   "PRIMARY KEY(identifiantPartenaire, identifiantSousSpecialite)," .
 				   "FOREIGN KEY (identifiantPartenaire) REFERENCES PARTENAIRE(identifiantPartenaire) ON DELETE CASCADE," .
-				   "FOREIGN KEY (identifiantSpecialite) REFERENCES SPECIALITE(identifiantSpecialite) ON DELETE CASCADE);";
+				   "FOREIGN KEY (identifiantSousSpecialite) REFERENCES SOUSSPECIALITE(identifiantSousSpecialite) ON DELETE CASCADE);";
         $this->pdo->exec($requete);
 	}
 
@@ -204,7 +204,7 @@ class InstalleurBaseDeDonnees {
 			$this->creerTableSpecialite();
 			$this->creerTableSousSpecialite();
 			$this->creerTablePartenaire();
-			$this->creerTableCorrespondancePartenaireSpecialite();
+			$this->creerTableCorrespondancePartenaireSousSpecialite();
 			$this->creerTableCorrespondancePartenaireMobilite();
 			$this->creerTableCorrespondancePartenaireContact();
 			$this->creerTableCorrespondancePartenaireAideFinanciere();

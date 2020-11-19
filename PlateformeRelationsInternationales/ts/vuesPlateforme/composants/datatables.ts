@@ -1,7 +1,6 @@
 ﻿import { ProprietesDatatables } from "./proprietesDatatables";
 import { ProprietesDatatablesBouton } from "./proprietesDatatablesBouton";
 
-import { Component, Prop, Vue } from "vue-property-decorator";
 import "datatables.net";
 import "datatables.net-bs4";
 import "datatables.net-bs4/css/dataTables.bootstrap4.css";
@@ -12,11 +11,13 @@ import "datatables.net-select-bs4/css/select.bootstrap4.css";
 import "datatables.net-responsive-bs4";
 import "datatables.net-responsive-bs4/css/responsive.bootstrap4.css";
 
+import { Component, Prop, Vue } from "vue-property-decorator";
 
 @Component({
     template: require("../templates/datatables.html")
 })
 export default class Datatables<TypeLigne extends object> extends Vue {
+    @Prop() private idDatatables!: string;
     @Prop() private proprietesDatatables!: ProprietesDatatables;
     private datatables: DataTables.Api;
 
@@ -82,6 +83,14 @@ export default class Datatables<TypeLigne extends object> extends Vue {
     public modifierLigneSelectionneeDansDatatables(ligne: TypeLigne): void {
         this.datatables.row(".selected").data(ligne).draw();
         
+    }
+
+    public ajusterLesColonnes(): void {
+        this.datatables.columns.adjust();
+    }
+
+    public viderDatatables(): void {
+        this.datatables.clear().draw();
     }
 
 }

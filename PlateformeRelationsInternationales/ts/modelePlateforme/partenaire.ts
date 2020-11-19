@@ -1,4 +1,4 @@
-﻿import { Specialite } from "./specialite";
+﻿import { SousSpecialite } from "./sousspecialite";
 import { Localisation } from "./localisation";
 import { Mobilite } from "./mobilite";
 import { Contact } from "./contact";
@@ -10,7 +10,7 @@ export class Partenaire implements ISerializable {
     private nomPartenaire: string;
     private domaineDeCompetencePartenaire: string;
     private localisationPartenaire: Localisation;
-    private listeSpecialitesPartenaire: Specialite[];
+    private listeSousSpecialitesPartenaire: SousSpecialite[];
     private listeMobilitesPartenaires: Mobilite[];
     private listeContactsPartenaires: Contact[];
     private listeAidesFinancieresPartenaires: AideFinanciere[];
@@ -49,8 +49,8 @@ export class Partenaire implements ISerializable {
         this.localisationPartenaire = localisationPartenaire;
     }
 
-    public get ListeSpecialitesPartenaire(): Specialite[] {
-        return this.listeSpecialitesPartenaire;
+    public get ListeSousSpecialitesPartenaire(): SousSpecialite[] {
+        return this.listeSousSpecialitesPartenaire;
     }
 
     public get ListeMobilitesPartenaires(): Mobilite[] {
@@ -58,11 +58,19 @@ export class Partenaire implements ISerializable {
     }
 
     public get ListeContactsPartenaires(): Contact[] {
-        return this.listeContactsPartenaires;
+        return this.ListeContactsPartenaires;
+    }
+
+    public set ListeContactsPartenaires(listeContactsPartenaires: Contact[]) {
+        this.listeContactsPartenaires = listeContactsPartenaires;
     }
 
     public get ListeAidesFinancieresPartenaires(): AideFinanciere[] {
         return this.listeAidesFinancieresPartenaires;
+    }
+
+    public set ListeAidesFinancieresPartenaires(listeAidesFinancieresPartenaires: AideFinanciere[]) {
+        this.listeAidesFinancieresPartenaires = listeAidesFinancieresPartenaires;
     }
 
     public get InformationLogementPartenaire(): string {
@@ -86,7 +94,7 @@ export class Partenaire implements ISerializable {
         this.nomPartenaire = "";
         this.domaineDeCompetencePartenaire = "";
         this.localisationPartenaire = null;
-        this.listeSpecialitesPartenaire = [];
+        this.listeSousSpecialitesPartenaire = [];
         this.listeMobilitesPartenaires = [];
         this.listeContactsPartenaires = [];
         this.listeAidesFinancieresPartenaires = [];
@@ -94,14 +102,14 @@ export class Partenaire implements ISerializable {
         this.informationCoutPartenaire = "";
     }
 
-    public ajouterSpecialite(specialite: Specialite): void {
-        this.listeSpecialitesPartenaire.push(specialite);
+    public ajouterSousSpecialite(sousSpecialite: SousSpecialite): void {
+        this.listeSousSpecialitesPartenaire.push(sousSpecialite);
     }
 
-    public supprimerSpecialite(specialite: Specialite): void {
-        var indexSpecialite = this.listeSpecialitesPartenaire.indexOf(specialite);
-        if (!(indexSpecialite === undefined) && !(indexSpecialite === null)) {
-            this.listeSpecialitesPartenaire.splice(indexSpecialite, 1);
+    public supprimerSousSpecialite(sousSpecialite: SousSpecialite): void {
+        var indexSousSpecialite = this.listeSousSpecialitesPartenaire.indexOf(sousSpecialite);
+        if (!(indexSousSpecialite === undefined) && !(indexSousSpecialite === null)) {
+            this.listeSousSpecialitesPartenaire.splice(indexSousSpecialite, 1);
         }
     }
 

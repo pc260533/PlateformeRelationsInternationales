@@ -94,18 +94,18 @@ class StockageBaseDeDonnees {
 		}
 	}
 
-	private function chargerSpecialitesDansPartenaire(Partenaire $partenaire): void {
-		$requete = "SELECT IDENTIFIANTSPECIALITE ".
-				   "FROM CORRESPONDANCE_PARTENAIRE_SPECIALITE ".
+	private function chargerSousSpecialitesDansPartenaire(Partenaire $partenaire): void {
+		$requete = "SELECT IDENTIFIANTSOUSSPECIALITE ".
+				   "FROM CORRESPONDANCE_PARTENAIRE_SOUSSPECIALITE ".
 				   "WHERE IDENTIFIANTPARTENAIRE = :identifiantpartenaire;";
 		$statement = $this->pdo->prepare($requete);
 		$statement->bindValue(":identifiantpartenaire", $partenaire->getIdentifiantPartenaire(), PDO::PARAM_INT);
 		$statement->execute();
 		$donnees = $statement->fetchAll();
 		foreach ($donnees as $ligne) {
-			$specialite = new Specialite();
-			$specialite->setIdentifiantSpecialite($ligne["IDENTIFIANTSPECIALITE"]);
-			$partenaire->ajouterSpecialite($specialite);
+			$sousSpecialite = new SousSpecialite();
+			$sousSpecialite->setIdentifiantSousSpecialite($ligne["IDENTIFIANTSOUSSPECIALITE"]);
+			$partenaire->ajouterSousSpecialite($sousSpecialite);
 		}
 	}
 
@@ -228,13 +228,13 @@ class StockageBaseDeDonnees {
 		}
 	}
 
-	public function ajouterCorrespondancePartenaireSpecialite(Partenaire $partenaire, Specialite $specialite) {
+	public function ajouterCorrespondancePartenaireSousSpecialite(Partenaire $partenaire, SousSpecialite $sousSpecialite) {
 		try {
 			$this->pdo->beginTransaction();
-			$requete = "INSERT INTO CORRESPONDANCE_PARTENAIRE_SPECIALITE(IDENTIFIANTPARTENAIRE, IDENTIFIANTSPECIALITE) VALUES (:identifiantpartenaire, :identifiantspecialite);";
+			$requete = "INSERT INTO CORRESPONDANCE_PARTENAIRE_SOUSSPECIALITE(IDENTIFIANTPARTENAIRE, IDENTIFIANTSOUSSPECIALITE) VALUES (:identifiantpartenaire, :identifiantsousspecialite);";
 			$statement = $this->pdo->prepare($requete);
 			$statement->bindValue(":identifiantpartenaire", $partenaire->getIdentifiantPartenaire(), PDO::PARAM_INT);
-			$statement->bindValue(":identifiantspecialite", $specialite->getIdentifiantSpecialite(), PDO::PARAM_INT);
+			$statement->bindValue(":identifiantsousspecialite", $sousSpecialite->getIdentifiantSousSpecialite(), PDO::PARAM_INT);
 			$statement->execute();
 			$this->pdo->commit();
 		}
@@ -244,14 +244,14 @@ class StockageBaseDeDonnees {
 		}
 	}
 
-	public function supprimerSpecialiteDansPartenaire(Partenaire $partenaire, Specialite $specialite) {
+	public function supprimerSousSpecialiteDansPartenaire(Partenaire $partenaire, SousSpecialite $sousSpecialite) {
 		try {
 			$this->pdo->beginTransaction();
-			$requete = "DELETE FROM CORRESPONDANCE_PARTENAIRE_SPECIALITE " .
-					   "WHERE IDENTIFIANTPARTENAIRE = :identifiantpartenaire AND IDENTIFIANTSPECIALITE = :identifiantspecialite;";
+			$requete = "DELETE FROM CORRESPONDANCE_PARTENAIRE_SOUSSPECIALITE " .
+					   "WHERE IDENTIFIANTPARTENAIRE = :identifiantpartenaire AND IDENTIFIANTSOUSSPECIALITE = :identifiantsousspecialite;";
 			$statement = $this->pdo->prepare($requete);
 			$statement->bindValue(":identifiantpartenaire", $partenaire->getIdentifiantPartenaire(), PDO::PARAM_INT);
-			$statement->bindValue(":identifiantspecialite", $specialite->getIdentifiantSpecialite(), PDO::PARAM_INT);
+			$statement->bindValue(":identifiantsousspecialite", $sousSpecialite->getIdentifiantSousSpecialite(), PDO::PARAM_INT);
 			$statement->execute();
 			$this->pdo->commit();
 		}
@@ -459,7 +459,7 @@ class StockageBaseDeDonnees {
 				$partenaire->setLocalisationPartenaire($localisation);
 
 				$this->chargerLocalisationPartenaire($localisation);
-				$this->chargerSpecialitesDansPartenaire($partenaire);
+				$this->chargerSousSpecialitesDansPartenaire($partenaire);
 				$this->chargerMobilitesDansPartenaire($partenaire);
 				$this->chargerAidesFinancieresDansPartenaire($partenaire);
 				$this->chargerContactsDansPartenaire($partenaire);

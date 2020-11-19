@@ -1,5 +1,5 @@
 ﻿import { Partenaire } from "./modelePlateforme/partenaire";
-import { Specialite } from "./modelePlateforme/specialite";
+import { SousSpecialite } from "./modelePlateforme/sousspecialite";
 import { Mobilite } from "./modelePlateforme/mobilite";
 import { AideFinanciere } from "./modelePlateforme/aideFinanciere";
 import { Contact } from "./modelePlateforme/contact";
@@ -12,9 +12,9 @@ export interface IVuePlateforme {
 
     modificationPartenaire(partenaire: Partenaire): void;
 
-    ajoutSpecialiteDansPartenaire(specialite: Specialite, partenaire: Partenaire): void;
+    ajoutSousSpecialiteDansPartenaire(sousSpecialite: SousSpecialite, partenaire: Partenaire): void;
 
-    suppressionSpecialiteDansPartenaire(specialite: Specialite, partenaire: Partenaire): void;
+    suppressionSousSpecialiteDansPartenaire(sousSpecialite: SousSpecialite, partenaire: Partenaire): void;
 
     ajoutMobiliteDansPartenaire(mobilite: Mobilite, partenaire: Partenaire): void;
 

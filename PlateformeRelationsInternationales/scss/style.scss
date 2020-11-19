@@ -1,5 +1,9 @@
 ﻿@import "../node_modules/bootstrap/scss/bootstrap";
 
+.modal {
+    overflow-y: scroll;
+}
+
 /* Styles généraux */
 body {
 

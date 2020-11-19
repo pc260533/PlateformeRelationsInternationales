@@ -13,7 +13,7 @@ class Partenaire implements ISerializable {
     private $nomPartenaire;
     private $domaineDeCompetencePartenaire;
     private $localisationPartenaire;
-    private $listeSpecialitesPartenaire;
+    private $listeSousSpecialitesPartenaire;
     private $listeMobilitesPartenaire;
     private $listeContactsPartenaire;
     private $listeAidesFinancieresPartenaire;
@@ -52,12 +52,12 @@ class Partenaire implements ISerializable {
         $this->localisationPartenaire = $localisationPartenaire;
     }
 
-	public function getListeSpecialitesPartenaire(): array {
-		return $this->listeSpecialitesPartenaire;
+	public function getListeSousSpecialitesPartenaire(): array {
+		return $this->listeSousSpecialitesPartenaire;
 	}
 
-	public function setListeSpecialitesPartenaire(array $listeSpecialitesPartenaire): void {
-        $this->listeSpecialitesPartenaire = $listeSpecialitesPartenaire;
+	public function setListeSousSpecialitesPartenaire(array $listeSousSpecialitesPartenaire): void {
+        $this->listeSousSpecialitesPartenaire = $listeSousSpecialitesPartenaire;
     }
 
 	public function getListeMobilitesPartenaire(): array {
@@ -100,9 +100,9 @@ class Partenaire implements ISerializable {
         $this->informationCoutPartenaire = $informationCoutPartenaire;
     }
 
-	private function getListeSpecialitesSerializable() : array {
+	private function getlisteSousSpecialitesSerializable() : array {
 		$res = array();
-		foreach ($this->listeSpecialitesPartenaire as $specialite) {
+		foreach ($this->listeSousSpecialitesPartenaire as $specialite) {
 			$res[] = $specialite->getObjetSerializable();
 		}
 		return $res;
@@ -137,7 +137,7 @@ class Partenaire implements ISerializable {
 		$this->nomPartenaire = "";
 		$this->domaineDeCompetencePartenaire = "";
 		$this->localisationPartenaire = null;
-		$this->listeSpecialitesPartenaire = array();
+		$this->listeSousSpecialitesPartenaire = array();
 		$this->listeMobilitesPartenaire = array();
 		$this->listeContactsPartenaire = array();
 		$this->listeAidesFinancieresPartenaire = array();
@@ -145,13 +145,13 @@ class Partenaire implements ISerializable {
 		$this->informationCoutPartenaire = "";
 	}
 
-	public function ajouterSpecialite(Specialite $specialite) {
-		$this->listeSpecialitesPartenaire[] = $specialite;
+	public function ajouterSousSpecialite(SousSpecialite $sousSpecialite) {
+		$this->listeSousSpecialitesPartenaire[] = $sousSpecialite;
 	}
 
-	public function supprimerSpecialite(Specialite $specialite) {
-		if (($key = array_search($specialite, $this->listeSpecialitesPartenaire)) !== false) {
-			unset($this->listeSpecialitesPartenaire[$key]);
+	public function supprimerSousSpecialite(SousSpecialite $sousSpecialite) {
+		if (($key = array_search($sousSpecialite, $this->listeSousSpecialitesPartenaire)) !== false) {
+			unset($this->listeSousSpecialitesPartenaire[$key]);
 		}
 	}
 
@@ -197,7 +197,7 @@ class Partenaire implements ISerializable {
             "nomPartenaire" => $this->getNomPartenaire(),
             "domaineDeCompetencePartenaire" => $this->getDomaineDeCompetencePartenaire(),
             "localisationPartenaire" => $this->getLocalisationPartenaire()->getObjetSerializable(),
-            "listeSpecialitesPartenaire" => $this->getListeSpecialitesSerializable(),
+            "listeSousSpecialitesPartenaire" => $this->getListeSousSpecialitesSerializable(),
             "listeMobilitesPartenaire" => $this->getListeMobilitesSerializable(),
             "listeContactsPartenaire" => $this->getListeContactsSerializable(),
             "listeAidesFinancieresPartenaire" => $this->getListeAidesFinancieresSerializable(),

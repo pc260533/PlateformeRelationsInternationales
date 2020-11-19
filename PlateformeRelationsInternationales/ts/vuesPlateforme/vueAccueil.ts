@@ -2,7 +2,7 @@
 import { Plateforme } from "../modelePlateforme/plateforme";
 import { ControleurPlateforme } from "../controleurPlateforme";
 import { Partenaire } from "../modelePlateforme/partenaire";
-import { Specialite } from "../modelePlateforme/specialite";
+import { SousSpecialite } from "../modelePlateforme/sousspecialite";
 import { Mobilite } from "../modelePlateforme/mobilite";
 import { AideFinanciere } from "../modelePlateforme/aideFinanciere";
 import { Contact } from "../modelePlateforme/contact";
@@ -42,11 +42,11 @@ export default class VueAccueil extends Vue implements IVuePlateforme {
 
     }
 
-    public ajoutSpecialiteDansPartenaire(specialite: Specialite, partenaire: Partenaire): void {
+    public ajoutSousSpecialiteDansPartenaire(sousSpecialite: SousSpecialite, partenaire: Partenaire): void {
 
     }
 
-    public suppressionSpecialiteDansPartenaire(specialite: Specialite, partenaire: Partenaire): void {
+    public suppressionSousSpecialiteDansPartenaire(sousSpecialite: SousSpecialite, partenaire: Partenaire): void {
 
     }
 

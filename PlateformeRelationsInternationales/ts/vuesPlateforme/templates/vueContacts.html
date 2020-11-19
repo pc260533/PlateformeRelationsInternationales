@@ -1,8 +1,10 @@
 ﻿<!-- Contacts -->
 <section class="section contacts mt-5">
     <div class="container">
-        <Datatables ref="datatablesContact" v-bind:proprietesDatatables="proprietesDatatablesContact"></Datatables>
-        <ModalSpecifique ref="modalEditeContact">
+
+        <Datatables ref="datatablesContact" v-bind:proprietesDatatables="proprietesDatatablesContact" idDatatables="datatablesContact"></Datatables>
+
+        <ModalSpecifique ref="modalEditeContact" idModal="modalEditeContact" tailleModal="modal-lg">
             <h5 slot="modalHeader" class="modal-tilte">
                 <span id="inputTitreContact"></span>
             </h5>
@@ -33,7 +35,9 @@
             <button slot="modalFooter" type="button" id="boutonEditeContact" class="btn btn-success">Sauvegarder</button>
             <button slot="modalFooter" type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
         </ModalSpecifique>
+
         <SpinnerSpecifique ref="spinner"></SpinnerSpecifique>
+
     </div>
 </section>
 <!-- /Contacts -->

@@ -4,6 +4,8 @@
     template: require("../templates/modalSpecifique.html")
 })
 export default class ModalSpecifique extends Vue {
+    @Prop() private idModal!: string;
+    @Prop() private tailleModal!: string;
 
     mounted() {
 
@@ -15,6 +17,12 @@ export default class ModalSpecifique extends Vue {
 
     public cacherModal(): void {
         ($(this.$el) as any).modal("hide");
+    }
+
+    public onMontrerModal(callbackMontrerModal: () => void): void {
+        $(this.$el).on("shown.bs.modal", () => {
+            callbackMontrerModal();
+        });
     }
 
     public onCacherModal(callbackCacherModal: () => void): void {
