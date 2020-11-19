@@ -1,5 +1,6 @@
 ﻿{
   "compilerOptions": {
+    "experimentalDecorators": true,
     "strict": false, // Includes: alwaysStrict, noImplicitAny, noImplicitThis, strictNullChecks
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,

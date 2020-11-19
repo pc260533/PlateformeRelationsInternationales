@@ -27,10 +27,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="index.php" />
+    <Compile Include="php\templates\templatePageApplication.php" />
+    <Compile Include="php\pages\Page.php" />
+    <Compile Include="php\pages\PageApplication.php" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="images\" />
     <Folder Include="php\modele\" />
+    <Folder Include="php\templates\" />
     <Folder Include="php\pages\" />
     <Folder Include="scss\" />
     <Folder Include="php\" />
@@ -38,6 +42,7 @@
     <Folder Include="ts\" />
     <Folder Include="ts\modelePlateforme\" />
     <Folder Include="ts\vuesPlateforme\" />
+    <Folder Include="ts\vuesPlateforme\composants\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="package.json" />
@@ -45,6 +50,17 @@
     <Content Include="tsconfig.json" />
     <Content Include="ts\application.ts" />
     <Content Include="ts\main.ts" />
+    <Content Include="ts\modelePlateforme\aideFinanciere.ts" />
+    <Content Include="ts\modelePlateforme\contact.ts" />
+    <Content Include="ts\modelePlateforme\localisation.ts" />
+    <Content Include="ts\modelePlateforme\mobilite.ts" />
+    <Content Include="ts\modelePlateforme\partenaire.ts" />
+    <Content Include="ts\modelePlateforme\plateforme.ts" />
+    <Content Include="ts\modelePlateforme\sousspecialite.ts" />
+    <Content Include="ts\modelePlateforme\specialite.ts" />
+    <Content Include="ts\shims-vue.d.ts" />
+    <Content Include="ts\vuesPlateforme\App.vue" />
+    <Content Include="ts\vuesPlateforme\composants\Home.vue" />
     <Content Include="Web.config" />
     <Content Include="webpack.config.js" />
   </ItemGroup>

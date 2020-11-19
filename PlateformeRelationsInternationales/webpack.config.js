@@ -1,6 +1,7 @@
 ﻿const path = require("path");
 const webpack = require("webpack");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const VueLoaderPlugin = require("vue-loader/lib/plugin");
 
 module.exports = {
     entry: "./ts/main.ts",
@@ -23,15 +24,22 @@ module.exports = {
         rules: [
             {
                 test: /\.ts$/,
-                use: ["awesome-typescript-loader"]
+                use: [
+                    {
+                        loader: "ts-loader",
+                        options: {
+                            appendTsSuffixTo: [/\.vue$/]
+                        }
+                    }
+                ]
             },
             {
                 test: /\.css$/,
-                use: ["style-loader", "css-loader"]
+                use: ["vue-style-loader", "css-loader"]
             },
             {
                 test: /\.s[ac]ss$/,
-                use: ["style-loader", "css-loader", "sass-loader"]
+                use: ["vue-style-loader", "css-loader", "sass-loader"]
             },
             {
                 test: /\.(png|svg|jpg|gif)$/,
@@ -47,6 +55,10 @@ module.exports = {
             {
                 test: /\.html$/,
                 use: ["html-loader"]
+            },
+            {
+                test: /\.vue$/,
+                use: ["vue-loader"]
             }
         ]
     },
@@ -58,6 +70,7 @@ module.exports = {
             "window.jQuery": "jquery"
         }),
         new CleanWebpackPlugin(),
+        new VueLoaderPlugin()
     ])
 
 };
