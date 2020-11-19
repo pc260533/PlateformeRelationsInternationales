@@ -1,1 +1,33 @@
-﻿<h1>Erreur</h1>
+﻿<div class="container notfound">
+    <div class="notfound-statusCode text-center">
+        <h1>{{ erreurSerializable.StatusErreur }}</h1>
+    </div>
+    <div class="row">
+        <h2>Erreur</h2>
+    </div>
+    <div class="row">
+        <p>Une erreur s'est produite.</p>
+    </div>
+    <div class="row">
+        <a href="accueil" class="btn btn-primary btn-custom" role="button" aria-disabled="true">Retour à l'accueil</a>
+    </div>
+    <div class="row" id="details">
+        <h2>Détails</h2>
+    </div>
+    <div class="row">
+        <ul class="pre-scrollable-horizontal">
+            <li>Status Code : {{ erreurSerializable.StatusErreur }}</li>
+            <li>Exception Message : {{ erreurSerializable.MessageErreur }}</li>
+            <li>Requested URI : {{ erreurSerializable.StatusErreur }}</li>
+            <li>Exception Message : {{ erreurSerializable.MessageErreur }}</li>
+            <li>
+                Exception Message Développeur :
+                <div class="card text-white bg-danger p-2">{{ erreurSerializable.DeveloppeurMessageErreur }}</div>
+            </li>
+            <li>
+                Exception Trace :<br />
+                <pre class=""><code>{{ erreurSerializable.StackTraceErreur }}</code></pre>
+            </li>
+        </ul>
+    </div>
+</div>

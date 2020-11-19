@@ -19,6 +19,7 @@ class Partenaire implements ISerializable {
     private $listeAidesFinancieresPartenaire;
     private $informationLogementPartenaire;
     private $informationCoutPartenaire;
+    private $listeImagesPartenaire;
 
 	public function getIdentifiantPartenaire(): int {
 		return $this->identifiantPartenaire;
@@ -100,6 +101,14 @@ class Partenaire implements ISerializable {
         $this->informationCoutPartenaire = $informationCoutPartenaire;
     }
 
+	public function getListeImagesPartenaire(): array {
+		return $this->listeImagesPartenaire;
+	}
+
+	public function setListeImagesPartenaire(array $listeImagesPartenaire): void {
+        $this->listeImagesPartenaire = $listeImagesPartenaire;
+    }
+
 	private function getlisteSousSpecialitesSerializable() : array {
 		$res = array();
 		foreach ($this->listeSousSpecialitesPartenaire as $specialite) {
@@ -132,6 +141,14 @@ class Partenaire implements ISerializable {
 		return $res;
 	}
 
+	private function getListeImagesPartenaireSerializable() : array {
+		$res = array();
+		foreach ($this->listeImagesPartenaire as $imagePartenaire) {
+			$res[] = $imagePartenaire->getObjetSerializable();
+		}
+		return $res;
+	}
+
 	public function __construct() {
 		$this->identifiantPartenaire = 0;
 		$this->nomPartenaire = "";
@@ -143,6 +160,7 @@ class Partenaire implements ISerializable {
 		$this->listeAidesFinancieresPartenaire = array();
 		$this->informationLogementPartenaire = "";
 		$this->informationCoutPartenaire = "";
+		$this->listeImagesPartenaire = array();
 	}
 
 	public function ajouterSousSpecialite(SousSpecialite $sousSpecialite) {
@@ -185,6 +203,16 @@ class Partenaire implements ISerializable {
 		}
 	}
 
+	public function ajouterImagePartenaire(ImagePartenaire $imagePartenaire) {
+		$this->listeImagesPartenaire[] = $imagePartenaire;
+	}
+
+	public function supprimerImagePartenaire(ImagePartenaire $imagePartenaire) {
+		if (($key = array_search($imagePartenaire, $this->listeImagesPartenaire)) !== false) {
+			unset($this->listeImagesPartenaire[$key]);
+		}
+	}
+
 	#region ISerializable Members
 
 	/**
@@ -202,7 +230,8 @@ class Partenaire implements ISerializable {
             "listeContactsPartenaire" => $this->getListeContactsSerializable(),
             "listeAidesFinancieresPartenaire" => $this->getListeAidesFinancieresSerializable(),
             "informationLogementPartenaire" => $this->getInformationLogementPartenaire(),
-            "informationCoutPartenaire" => $this->getInformationCoutPartenaire()
+            "informationCoutPartenaire" => $this->getInformationCoutPartenaire(),
+            "listeImagesPartenaire" => $this->getListeImagesPartenaireSerializable()
         );
 	}
 

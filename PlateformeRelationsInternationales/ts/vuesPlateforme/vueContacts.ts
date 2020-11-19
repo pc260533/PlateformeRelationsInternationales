@@ -16,6 +16,8 @@ import ModalSpecifique from "./composants/modalSpecifique";
 import SpinnerSpecifique from "./composants/spinnerSpecifique";
 import ModalErreur from "./composants/modalErreur";
 
+import "../../scss/vues/vueContacts.scss";
+
 import { Component, Prop, Vue, Ref } from "vue-property-decorator";
 
 @Component({

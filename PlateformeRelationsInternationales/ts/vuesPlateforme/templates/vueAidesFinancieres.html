@@ -2,6 +2,14 @@
 <section class="section aidesfinancieres mt-5">
     <div class="container">
 
+        <div class="sectionHeader text-center">
+            <h2 class="sectionTitre">Gérer les aides financières</h2>
+            <div class="line"><span></span></div>
+            <p>
+                Ajouter, modifier, supprimer les aides financières.
+            </p>
+        </div>
+
         <ModalErreur ref="modalErreur"></ModalErreur>
 
         <Datatables ref="datatablesAidesFinancieres" v-bind:proprietesDatatables="proprietesDatatablesAidesFinancieres" idDatatables="datatablesAidesFinancieres"></Datatables>
@@ -22,7 +30,7 @@
                 </div>
             </form>
 
-            <button slot="modalFooter" type="button" id="boutonEditeAideFinanciere" class="btn btn-success">Sauvegarder</button>
+            <button slot="modalFooter" type="button" id="boutonEditeAideFinanciere" class="btn btn-custom">Sauvegarder</button>
             <button slot="modalFooter" type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
         </ModalSpecifique>
 

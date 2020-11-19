@@ -7,8 +7,10 @@ require_once("php/pages/PageApplication.php");
 $pageApplication = new PageApplication();
 $pageApplication->chargerTemplatePage();*/
 
+use DI\ContainerBuilder;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\UploadedFileInterface;
 use Slim\Factory\AppFactory;
 
 use Psr\Http\Message\ServerRequestInterface;
@@ -26,6 +28,7 @@ require __DIR__ . "./php/modele/Partenaire.php";
 require __DIR__ . "./php/modele/Plateforme.php";
 require __DIR__ . "./php/modele/SousSpecialite.php";
 require __DIR__ . "./php/modele/Specialite.php";
+require __DIR__ . "./php/modele/ImagePartenaire.php";
 
 require __DIR__ . "./php/stockage/InstalleurBaseDeDonnees.php";
 require __DIR__ . "./php/stockage/StockageBaseDeDonnees.php";
@@ -52,6 +55,13 @@ function getInstalleurBaseDeDonnees(): InstalleurBaseDeDonnees {
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
+$containerBuilder = new ContainerBuilder();
+$container = $containerBuilder->build();
+
+//$container->set("uploadDirectory", __DIR__ . "\\uploads");
+$container->set("dossierRacine", __DIR__);
+
+AppFactory::setContainer($container);
 $app = AppFactory::create();
 
 $app->addBodyParsingMiddleware();
@@ -106,7 +116,8 @@ $app->get("/api/partenaires", function (Request $request, Response $response, $a
 });
 
 $app->post("/api/partenaires", function (Request $request, Response $response, $args) {
-	$partenaireArray = $request->getParsedBody();
+	$bodyArray = $request->getParsedBody();
+	$partenaireArray = json_decode($bodyArray["partenaire"], true);
 	$partenaire = new Partenaire();
 	$partenaire->setNomPartenaire($partenaireArray["nomPartenaire"]);
 	$partenaire->setDomaineDeCompetence($partenaireArray["domaineDeCompetencePartenaire"]);
@@ -144,7 +155,35 @@ $app->post("/api/partenaires", function (Request $request, Response $response, $
 	}
 	$partenaire->setInformationLogementPartenaire($partenaireArray["informationLogementPartenaire"]);
 	$partenaire->setInformationCoutPartenaire($partenaireArray["informationCoutPartenaire"]);
+
 	getStockageBaseDeDonnee()->ajouterPartenaire($partenaire);
+
+	$dossierRacine = $this->get("dossierRacine");
+
+	$nomDossierPartenaire = "partenaire" . $partenaire->getIdentifiantPartenaire();
+	$cheminDossierPartenaire = $dossierRacine . DIRECTORY_SEPARATOR . "uploads" . DIRECTORY_SEPARATOR . $nomDossierPartenaire;
+
+	if (!is_dir($cheminDossierPartenaire)) {
+		mkdir($cheminDossierPartenaire);
+	}
+
+
+	$uploadedFiles = $request->getUploadedFiles();
+	foreach ($uploadedFiles as $uploadedFile) {
+		$nomFichier = $uploadedFile->getClientFilename();
+
+		/*$cheminDossierImagesPartenaireServeur = "uploads" . DIRECTORY_SEPARATOR . $nomDossierPartenaire;
+		$cheminImagePartenaireServeur = $cheminDossierImagesPartenaireServeur . DIRECTORY_SEPARATOR . $nomFichier;
+		$cheminDossierImagesPartenaireServeurComplet = $directory . DIRECTORY_SEPARATOR . $cheminDossierImagesPartenaireServeur;
+		$cheminImagePartenaireServeurComplet = $cheminDossierImagesPartenaireServeurComplet . DIRECTORY_SEPARATOR . $nomFichier;*/
+
+		$uploadedFile->moveTo($cheminDossierPartenaire . DIRECTORY_SEPARATOR . $nomFichier);
+		$imagePartenaire = new ImagePartenaire();
+		$imagePartenaire->setCheminImagePartenaireServeur("uploads/" . $nomDossierPartenaire . "/". $nomFichier);
+		$partenaire->ajouterImagePartenaire($imagePartenaire);
+	}
+
+	getStockageBaseDeDonnee()->ajouterListeImagesPartenaire($partenaire);
 
 	$json = json_encode($partenaire->getObjetSerializable());
 
@@ -187,6 +226,15 @@ $app->delete("/api/partenaires", function (Request $request, Response $response,
 			$partenaire->ajouterContact($contact);
 		}
 	}
+	if (isset($partenaireArray["listeImagesPartenaire"])) {
+		foreach ($partenaireArray["listeImagesPartenaire"] as $imagePartenaireArray) {
+			$imagePartenaire = new ImagePartenaire();
+			$imagePartenaire->setIdentifiantImagePartenaire($imagePartenaireArray["identifiantImagePartenaire"]);
+			$imagePartenaire->setCheminImagePartenaireServeur($imagePartenaireArray["cheminImagePartenaireServeur"]);
+			$partenaire->ajouterImagePartenaire($imagePartenaire);
+			unlink($imagePartenaire->getCheminImagePartenaireServeur());
+		}
+	}
 	getStockageBaseDeDonnee()->supprimerPartenaire($partenaire);
 
 	$json = json_encode($partenaire->getObjetSerializable());
@@ -195,8 +243,10 @@ $app->delete("/api/partenaires", function (Request $request, Response $response,
 	return $response->withHeader("Content-Type", "application/json");
 });
 
-$app->put("/api/partenaires", function (Request $request, Response $response, $args) {
-	$partenaireArray = $request->getParsedBody();
+//put : /api/partenaires
+$app->post("/api/putpartenaires", function (Request $request, Response $response, $args) {
+	$bodyArray = $request->getParsedBody();
+	$partenaireArray = json_decode($bodyArray["partenaire"], true);
 	$partenaire = new Partenaire();
 	$partenaire->setIdentifiantPartenaire($partenaireArray["identifiantPartenaire"]);
 	$partenaire->setNomPartenaire($partenaireArray["nomPartenaire"]);
@@ -236,6 +286,43 @@ $app->put("/api/partenaires", function (Request $request, Response $response, $a
 			$partenaire->ajouterContact($contact);
 		}
 	}
+
+	if (isset($partenaireArray["listeImagesPartenaire"])) {
+		foreach ($partenaireArray["listeImagesPartenaire"] as $imagePartenaireASupprimer) {
+			$imagePartenaire = new ImagePartenaire();
+			$imagePartenaire->setIdentifiantImagePartenaire($imagePartenaireASupprimer["identifiantImagePartenaire"]);
+			$imagePartenaire->setCheminImagePartenaireServeur($imagePartenaireASupprimer["cheminImagePartenaireServeur"]);
+			// on supprime l'image dans les uploads.
+			unlink($imagePartenaire->getCheminImagePartenaireServeur());
+			$partenaire->ajouterImagePartenaire($imagePartenaire);
+		}
+	}
+	/*$directory = $this->get("dossierUploads");
+	$uploadedFiles = $request->getUploadedFiles();
+	foreach ($uploadedFiles as $uploadedFile) {
+		$nomFichier = $uploadedFile->getClientFilename();
+		$uploadedFile->moveTo($directory . DIRECTORY_SEPARATOR . $nomFichier);
+		$imagePartenaire = new ImagePartenaire();
+		$imagePartenaire->setCheminImagePartenaireServeur("uploads/" . $nomFichier);
+		$partenaire->ajouterImagePartenaire($imagePartenaire);
+	}*/
+
+	$dossierRacine = $this->get("dossierRacine");
+
+	$nomDossierPartenaire = "partenaire" . $partenaire->getIdentifiantPartenaire();
+	$cheminDossierPartenaire = $dossierRacine . DIRECTORY_SEPARATOR . "uploads" . DIRECTORY_SEPARATOR . $nomDossierPartenaire;
+
+	$uploadedFiles = $request->getUploadedFiles();
+	foreach ($uploadedFiles as $uploadedFile) {
+		$nomFichier = $uploadedFile->getClientFilename();
+
+		$uploadedFile->moveTo($cheminDossierPartenaire . DIRECTORY_SEPARATOR . $nomFichier);
+		$imagePartenaire = new ImagePartenaire();
+		$imagePartenaire->setCheminImagePartenaireServeur("uploads/" . $nomDossierPartenaire . "/". $nomFichier);
+		$partenaire->ajouterImagePartenaire($imagePartenaire);
+	}
+
+
 	getStockageBaseDeDonnee()->modifierPartenaire($partenaire);
 
 	$json = json_encode($partenaire->getObjetSerializable());
@@ -338,24 +425,36 @@ $app->put("/api/contacts", function (Request $request, Response $response, $args
 	return $response->withHeader("Content-Type", "application/json");
 });
 
-/*$app->get("/erreur", function (Request $request, Response $response, $args) {
-	$templatePageApplication = "./php/templates/templatePageApplication.php";
-	if (file_exists($templatePageApplication)) {
-		$response->getBody()->write(file_get_contents($templatePageApplication));
+$app->get("/erreur", function (Request $request, Response $response, $args) {
+	session_start();
+	if (isset($_SESSION["exception"])) {
+		$exception = $_SESSION["exception"];
+		session_destroy();
+
+		$templatePageApplication = "./php/templates/templatePageApplication.php";
+		if (file_exists($templatePageApplication)) {
+			$response->getBody()->write(file_get_contents($templatePageApplication));
+			$response->getBody()->write('<div id="donneeJsonException" class="donneeCachees">' . json_encode($exception) . '</div>');
+		}
+		else {
+			throw new \Slim\Exception\HttpInternalServerErrorException ($request, "La page contenant l'application est introuvable");
+		}
 	}
 	else {
-		throw new \Slim\Exception\HttpInternalServerErrorException ($request, "La page contenant l'application est introuvable");
+		return $response->withStatus(302)->withHeader("Location", "/accueil");
 	}
 	return $response;
-});*/
+});
 
 $app->get("/[{path:.*}]", function (Request $request, Response $response, $args) {
-	/*$erreur = false;
+	$erreur = false;
 	try {
 		$installeurBaseDeDonnee = new InstalleurBaseDeDonnees("mysql:host=localhost", "root", "");
 		$installeurBaseDeDonnee->initialiserBaseDeDonnees();
 	}
 	catch (ExceptionBaseDeDonneesPlateforme $exception) {
+		session_start();
+		$_SESSION["exception"] = $exception->toArray();
 		$erreur = true;
 	}
 
@@ -371,9 +470,9 @@ $app->get("/[{path:.*}]", function (Request $request, Response $response, $args)
 	}
 	else {
 		return $response->withStatus(302)->withHeader("Location", "/erreur");
-	}*/
+	}
 
-	try {
+	/*try {
 		$installeurBaseDeDonnee = new InstalleurBaseDeDonnees("mysql:host=localhost", "root", "");
 		$installeurBaseDeDonnee->initialiserBaseDeDonnees();
 	}
@@ -388,7 +487,7 @@ $app->get("/[{path:.*}]", function (Request $request, Response $response, $args)
 		throw new \Slim\Exception\HttpInternalServerErrorException ($request, "La page contenant l'application est introuvable");
 	}
 	return $response;
-
+	*/
 });
 
 $app->run();

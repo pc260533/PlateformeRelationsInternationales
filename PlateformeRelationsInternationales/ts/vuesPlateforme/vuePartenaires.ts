@@ -23,7 +23,10 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
 import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
 
+import "../../scss/vues/vuePartenaires.scss";
+
 import { Component, Prop, Vue, Ref } from "vue-property-decorator";
+import { ImagePartenaire } from "../modelePlateforme/imagePartenaire";
 
 @Component({
     template: require("./templates/vuePartenaires.html"),
@@ -58,6 +61,10 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
     }
 
     public ajoutPartenaire(partenaire: Partenaire): void {
+        /*if (partenaire.ListeImagesPartenaire.length > 0) {
+            $("#testImage").attr("src", partenaire.ListeImagesPartenaire[0].CheminImagePartenaireServeur);
+        }*/
+        
         var latitudeLocalisation = partenaire.LocalisationPartenaire.LatitudeLocalisation;
         var longitudeLocalisation = partenaire.LocalisationPartenaire.LongitudeLocalisation;
         if ((latitudeLocalisation != "") && (longitudeLocalisation != "")) {
@@ -140,6 +147,8 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
             $("#listeMobilitesPartenaire").empty();
             $("#selectListeAidesFinancieresPartenaire").empty();
             $("#selectListeContactsPartenaire").empty();
+            $("#listeImagesPartenaireServeur").empty();
+            $("#inputListeImagesPartenaires").removeClass("is-invalid");
             this.geocoderLocalisation.clear();
         });
 
@@ -163,6 +172,10 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
             specialiteSelectionnee.ListeSousSpecialites.forEach((sousSpecialite: SousSpecialite) => {
                 this.ajouterSousSpecialiteDansListe(sousSpecialite, false);
             });
+        });
+
+        $("#inputListeImagesPartenaires").click(function () {
+            $("#inputListeImagesPartenaires").removeClass("is-invalid");
         });
 
         this.modalEditeAidesFinancieresPartenaire.onMontrerModal(() => {
@@ -301,6 +314,32 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
         $("#selectListeContactsPartenaire option[value='" + contact.IdentifiantContact + "']").remove(); 
     }
 
+    private ajouterImagePartenaireDansListe(imagePartenaire: ImagePartenaire): void {
+        var li = $("<li>", {
+            value: imagePartenaire.IdentifiantImagePartenaire,
+            "class": "list-group-item"
+        });
+        var span = $("<span>", {
+            "class": "name",
+            text: imagePartenaire.CheminImagePartenaireServeur
+        });
+        var buttonSupprimer = $("<button>", {
+            type: "button",
+            "class": "btn btn-secondary float-right",
+            text: "Supprimer"
+        });
+        var imgPartenaire = $("<img>", {
+            src: imagePartenaire.CheminImagePartenaireServeur,
+        });
+        buttonSupprimer.on("click", () => {
+            li.remove();
+        });
+        li.append(span);
+        li.append(buttonSupprimer);
+        li.append(imgPartenaire.height(50));
+        $("#listeImagesPartenaireServeur").append(li);
+    }
+
     private getListeSousSpecialitesSelectionnees(): SousSpecialite[] {
         var listeSousSpecialitesSelectionnees: SousSpecialite[] = [];
         $("#listeSousSpecialitesPartenaire li").each((index: number, element: HTMLElement) => {
@@ -374,6 +413,12 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
             }
         });
 
+        $.each(($("#inputListeImagesPartenaires")[0] as HTMLInputElement).files, (indexFile: number, file: File) => {
+            var imagePartenaire = new ImagePartenaire();
+            imagePartenaire.FileImagePartenaireLocal = file;
+            partenaire.ajouterImagePartenaire(imagePartenaire);
+        });
+
         partenaire.ListeAidesFinancieresPartenaires = this.getListeAidesFinancieresSelectionnees();
         partenaire.ListeContactsPartenaires = this.getListeContactsSelectionnees();
         return partenaire;
@@ -441,6 +486,8 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
     }
 
     private onAjouterPartenaireClick(): void {
+        $("#formGroupListeImagesPartenaireServeur").hide();
+
         $("#inputTitrePartenaire").text("Ajout Partenaire");
         $("#selectListeSpecialitesPartenaire").prop("disabled", false);
         this.plateforme.ListeSpecialitesPlateforme.forEach((specialite: Specialite) => {
@@ -470,6 +517,8 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
     }
 
     private onModifierPartenaireClick(): void {
+        $("#formGroupListeImagesPartenaireServeur").show();
+
         var listePartenairesSelectionnes: Partenaire[] = this.datatablesPartenaires.getListeLignesSelectionnees();
         if (listePartenairesSelectionnes.length > 0) {
             var premierPartenaireSelectionne = listePartenairesSelectionnes[0];
@@ -505,6 +554,8 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
                 }
             }
 
+            //quand on modifie affiché dans une select la liste des fichiers qui a déjà été uplad avec un bouton supprimer après le li
+
             this.plateforme.ListeMobilitesPlateforme.forEach((mobilite: Mobilite) => {
                 var mobiliteEstSelectionnee: boolean = false;
                 if (premierPartenaireSelectionne.ListeMobilitesPartenaires.includes(mobilite)) {
@@ -520,11 +571,52 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
                 this.ajouterContactDansSelect(contact);
             });
 
+            premierPartenaireSelectionne.ListeImagesPartenaire.forEach((imagePartenaire: ImagePartenaire) => {
+                this.ajouterImagePartenaireDansListe(imagePartenaire);
+            });
+
             this.modalEditePartenaire.montrerModal();
             $("#boutonEditePartenaire").off();
             $("#boutonEditePartenaire").on("click", () => {
-                this.controleurPlateforme.modifierPartenaire(premierPartenaireSelectionne, this.creerPartenaire());
-                this.modalEditePartenaire.cacherModal();
+                // On vérifie que les nouvelles immages sélectionnées à ajouter ne sont pas déjà présent sur le serveur et si celles-ci ne vont pas être supprimées.
+                try {
+                    $.each(($("#inputListeImagesPartenaires")[0] as HTMLInputElement).files, (indexFile: number, file: File) => {
+                        var nomImagePartenaireSelectionnee = file.name;
+                        $("#listeImagesPartenaireServeur li").each((index: number, element: HTMLElement) => {
+                            var nomImagePartenaire = $(element).find("span").text().split("/").pop();
+                            if (nomImagePartenaire == nomImagePartenaireSelectionnee) {
+                                throw new Error();
+                            }
+                        });
+                    });
+
+                    var nouveauPartenaire = this.creerPartenaire();
+
+                    /*$("#listeImagesPartenaireServeur li").each((index: number, element: HTMLElement) => {
+                        var nomImagePartenaire = $(element).text().split("/").pop();
+                        console.log(nouveauPartenaire);
+                        if (nouveauPartenaire.getImagePartenaireAvecNomImage(nomImagePartenaire) != null) {
+                            $("#inputListeImagesPartenaires").addClass("is-invalid");
+                            return;
+                        }
+                    });*/
+
+                    // tout ce qui est dans la liste des images du nouveau partenaire et qui a un fichier à null est supprimé sinon ajouté.
+                    premierPartenaireSelectionne.ListeImagesPartenaire.forEach((imagePartenaire: ImagePartenaire) => {
+                        if ($("#listeImagesPartenaireServeur li[value=" + imagePartenaire.IdentifiantImagePartenaire + "]").length == 0) {
+                            nouveauPartenaire.ajouterImagePartenaire(imagePartenaire);
+                        }
+                    });
+
+                    this.controleurPlateforme.modifierPartenaire(premierPartenaireSelectionne, nouveauPartenaire);
+                    this.modalEditePartenaire.cacherModal();
+                }
+                catch {
+                    $("#inputListeImagesPartenaires").addClass("is-invalid");
+                    $("body").animate({
+                        scrollTop: $($(".is-invalid")[0]).focus().offset().top - 25
+                    }, 1000);
+                }
             });
         }
     }

@@ -9,6 +9,8 @@ import Router from "vue-router";
 import { Plateforme } from "./modelePlateforme/plateforme";
 import { ControleurPlateforme } from "./controleurPlateforme";
 import VueErreur from "./vuesPlateforme/vueErreur";
+import { ErreurPageInexistante } from "./erreur/erreurPageInexistante";
+import { ErreurSerializable } from "./erreur/erreurSerializable";
 
 Vue.use(Router);
 
@@ -80,25 +82,27 @@ export default new Router({
                 title: "Plateforme Relations Internationales - A Propos"
             }
         },
-        /*{
+        {
             path: "/erreur",
             name: "erreur",
             component: VueErreur,
             props: {
                 plateforme: plateforme,
-                controleurPlateforme: controleurPlateforme
+                controleurPlateforme: controleurPlateforme,
+                erreurSerializable: new ErreurSerializable()
             },
             meta: {
                 title: "Plateforme Relations Internationales - Erreur"
             }
-        },*/
+        },
         {
             path: "*",
             name: "tout",
-            component: VueAccueil,
+            component: VueErreur,
             props: {
                 plateforme: plateforme,
-                controleurPlateforme: controleurPlateforme
+                controleurPlateforme: controleurPlateforme,
+                erreurSerializable: new ErreurPageInexistante()
             },
             meta: {
                 title: "Plateforme Relations Internationales - Accueil"

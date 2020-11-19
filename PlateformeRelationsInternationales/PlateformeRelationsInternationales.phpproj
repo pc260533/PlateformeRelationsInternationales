@@ -31,6 +31,7 @@
     <Compile Include="php\exception\ExceptionSerializable.php" />
     <Compile Include="php\modele\AideFinanciere.php" />
     <Compile Include="php\modele\Contact.php" />
+    <Compile Include="php\modele\ImagePartenaire.php" />
     <Compile Include="php\modele\ISerializable.php" />
     <Compile Include="php\modele\Localisation.php" />
     <Compile Include="php\modele\Mobilite.php" />
@@ -40,6 +41,7 @@
     <Compile Include="php\modele\Specialite.php" />
     <Compile Include="php\stockage\InstalleurBaseDeDonnees.php" />
     <Compile Include="php\stockage\StockageBaseDeDonnees.php" />
+    <Compile Include="php\stockage\StockageFichiers.php" />
     <Compile Include="php\templates\templatePageApplication.php" />
     <Compile Include="php\pages\Page.php" />
     <Compile Include="php\pages\PageApplication.php" />
@@ -67,11 +69,11 @@
   <ItemGroup>
     <Content Include=".env" />
     <Content Include=".htaccess" />
+    <Content Include="images\accueil\aidesfinancieres.png" />
+    <Content Include="images\accueil\apropos.png" />
     <Content Include="images\accueil\background.jpg" />
-    <Content Include="images\accueil\categories.png" />
-    <Content Include="images\accueil\clients.png" />
-    <Content Include="images\accueil\marques.png" />
-    <Content Include="images\accueil\produits.png" />
+    <Content Include="images\accueil\contacts.png" />
+    <Content Include="images\accueil\partenaires.png" />
     <Content Include="images\apropos\apropos.png" />
     <Content Include="images\erreur\text.png" />
     <Content Include="images\favicon.png" />
@@ -84,15 +86,16 @@
     <Content Include="scss\vues\vueContacts.scss" />
     <Content Include="scss\vues\vueErreur.scss" />
     <Content Include="scss\vues\vuePartenaires.scss" />
-    <Content Include="scss\vues\vuePlateforme.scss" />
     <Content Include="tsconfig.json" />
     <Content Include="ts\application.ts" />
     <Content Include="ts\controleurPlateforme.ts" />
+    <Content Include="ts\erreur\erreurPageInexistante.ts" />
     <Content Include="ts\erreur\erreurSerializable.ts" />
     <Content Include="ts\ivuePlateforme.ts" />
     <Content Include="ts\main.ts" />
     <Content Include="ts\modelePlateforme\aideFinanciere.ts" />
     <Content Include="ts\modelePlateforme\contact.ts" />
+    <Content Include="ts\modelePlateforme\imagePartenaire.ts" />
     <Content Include="ts\modelePlateforme\iserializable.ts" />
     <Content Include="ts\modelePlateforme\localisation.ts" />
     <Content Include="ts\modelePlateforme\mobilite.ts" />

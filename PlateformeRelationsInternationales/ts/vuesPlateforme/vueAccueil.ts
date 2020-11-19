@@ -8,15 +8,15 @@ import { AideFinanciere } from "../modelePlateforme/aideFinanciere";
 import { Contact } from "../modelePlateforme/contact";
 import { ErreurSerializable } from "../erreur/erreurSerializable";
 
-import imageCategories from "../../images/accueil/categories.png";
-import imageClients from "../../images/accueil/clients.png";
-import imageMarques from "../../images/accueil/marques.png";
-import imageProduits from "../../images/accueil/produits.png";
+import imagePartenaires from "../../images/accueil/partenaires.png";
+import imagesAidesFinancieres from "../../images/accueil/aidesfinancieres.png";
+import imageContacts from "../../images/accueil/contacts.png";
+import imageAPropos from "../../images/accueil/apropos.png";
 
 import CarouselSpecifique from "./composants/carouselSpecifique";
 import ModalErreur from "./composants/modalErreur";
 
-//import "../../scss/vues/vueAccueil.scss";
+import "../../scss/vues/vueAccueil.scss";
 
 import { Component, Prop, Vue, Ref } from "vue-property-decorator";
 
@@ -75,10 +75,10 @@ export default class VueAccueil extends Vue implements IVuePlateforme {
     }
 
     private afficherImages(): void {
-        $("#imageCategories").attr("src", imageCategories);
-        $("#imageClients").attr("src", imageClients);
-        $("#imageMarques").attr("src", imageMarques);
-        $("#imageProduits").attr("src", imageProduits);
+        $("#imagePartenaires").attr("src", imagePartenaires);
+        $("#imageAidesFinancieres").attr("src", imagesAidesFinancieres);
+        $("#imageContacts").attr("src", imageContacts);
+        $("#imageAPropos").attr("src", imageAPropos);
     }
 
     private afficherCarousel(): void {
@@ -97,7 +97,7 @@ export default class VueAccueil extends Vue implements IVuePlateforme {
     }
 
     mounted() {
-        import(/* webpackChunkName: "accueilscss" */"../../scss/vues/vueAccueil.scss");
+        //import(/* webpackChunkName: "accueilscss" */"../../scss/vues/vueAccueil.scss");
         this.afficherImages();
         this.afficherCarousel();
     }

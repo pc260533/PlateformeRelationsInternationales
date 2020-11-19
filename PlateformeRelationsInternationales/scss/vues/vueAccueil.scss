@@ -1,22 +1,71 @@
 ﻿/* Page d'Accueil */
 /* Présentation des fonctionnalités */
-
-.carousel-control-next,
-.carousel-control-prev/*,
-.carousel-indicators*/ {
-    filter: invert(100%);
-}
-
 body {
-    background: #f7f7f7;
+    //background: #f7f7f7;
 }
 
-.fonctionnalites {
-    background: #f7f7f7;
+/* Accueil Image */
+/*.sections {
+    padding: 20px 0;
+}*/
+
+.accueilImage {
+    height: 650px;
+    background-image: url(../../images/accueil/background.jpg);
+    background-size: cover;
+    background-position: center;
+    position: relative;
 }
 
+.accueilImageOverlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.25);
+}
+
+/*.accueilImage .accueilImageContenu {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}*/
+
+.accueilImage .accueilImageTitre {
+    color: #fff;
+    font-size: 40px;
+    margin-bottom: 30px;
+}
+
+.accueilImage .accueilImageDescription {
+    color: #fff;
+    font-size: 18px;
+}
+
+@media (max-width:575px) {
+    .accueilImage .accueilImageTitre {
+        font-size: 22px;
+    }
+}
+/* Accueil Image */
+
+/* Caroussel */
 .carousel-inner .carousel-item img {
     max-height: 400px;
+}
+
+.carousel-control-next,
+.carousel-control-prev /*,
+.carousel-indicators*/ {
+    //filter: invert(100%);
+}
+/* Caroussel */
+
+/* Fonctionnalités */
+.fonctionnalites {
+    background: #f7f7f7;
 }
 
 .fonctionnalites a:link,
@@ -28,18 +77,18 @@ body {
     background-color: #fff;
 }
 
-.fonctionnalites .fonct {
+.fonctionnalites .fonctionnalite {
     background: #fff;
     padding: 20px;
     text-align: center;
     margin-bottom: 20px;
 }
 
-.fonctionnalites .fonct .testss {
+.fonctionnalites .fonctionnalite .testss {
     text-align: center;
 }
 
-.fonctionnalites .fonct .icon {
+.fonctionnalites .fonctionnalite .iconeFonctionnalite {
     margin: auto;
     background-color: #2184BE;
     width: 60px;
@@ -50,14 +99,15 @@ body {
     border-radius: 50%;
 }
 
-.fonctionnalites .fonct-title {
+.fonctionnalites .fonctionnaliteTitre {
     font-weight: bold;
     font-size: 25px;
     margin-bottom: 20px;
 }
 
-.fonctionnalites .fonct-desc {
+.fonctionnalites .fonctionnaliteDescription {
     font-size: 16px;
     color: #888;
     margin-bottom: 20px;
 }
+/* Fonctionnalités */

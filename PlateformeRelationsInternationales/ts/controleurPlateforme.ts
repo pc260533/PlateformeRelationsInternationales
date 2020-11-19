@@ -8,6 +8,7 @@ import { AideFinanciere } from "./modelePlateforme/aideFinanciere";
 import { Contact } from "./modelePlateforme/contact";
 import { Localisation } from "./modelePlateforme/localisation";
 import { ErreurSerializable } from "./erreur/erreurSerializable";
+import { ImagePartenaire } from "./modelePlateforme/imagePartenaire";
 
 export class ControleurPlateforme {
     private listeVuesPlateforme: IVuePlateforme[];
@@ -160,7 +161,40 @@ export class ControleurPlateforme {
 
     public ajouterPartenaire(partenaire: Partenaire): void  {
         var that = this;
+        var formData = new FormData();
+        partenaire.ListeImagesPartenaire.forEach((imagePartenaire: ImagePartenaire, indexImagePartenaire: number) => {
+            formData.append("imagePartenaire" + indexImagePartenaire, imagePartenaire.FileImagePartenaireLocal);
+        });
+        formData.append("partenaire", JSON.stringify(partenaire.getObjetSerializable()));
+
         $.ajax({
+            url: "api/partenaires",
+            method: "post",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (resultat) {
+                partenaire.IdentifiantPartenaire = resultat.identifiantPartenaire;
+                partenaire.LocalisationPartenaire.IdentifiantLocalisation = resultat.localisationPartenaire.identifiantLocalisation;
+                // On remplace les objets partenaires qui peuvent contenir des liens vers des fichiers locaux par des références au serveur.
+                partenaire.ListeImagesPartenaire = [];
+                resultat.listeImagesPartenaire.forEach((imagePartenaire: any) => {
+                    var imagePartenaireObjet = new ImagePartenaire();
+                    imagePartenaireObjet.IdentifiantImagePartenaire = imagePartenaire.identifiantImagePartenaire;
+                    imagePartenaireObjet.CheminImagePartenaireServeur = imagePartenaire.cheminImagePartenaireServeur;
+                    partenaire.ajouterImagePartenaire(imagePartenaireObjet);
+                });
+                console.log(partenaire);
+                that.modelePlateforme.ajouterPartenaire(partenaire);
+                that.notifieAjoutPartenaire(partenaire);
+            },
+            error: function (erreur) {
+                //console.log(erreur);
+                that.notifieErreur(that.creerErreurSerializable(erreur.responseJSON));
+            }
+        });
+
+        /*$.ajax({
             url: "api/partenaires",
             method: "post",
             data: partenaire.getObjetSerializable(),
@@ -174,7 +208,7 @@ export class ControleurPlateforme {
                 //console.log(erreur);
                 that.notifieErreur(that.creerErreurSerializable(erreur.responseJSON));
             }
-        });
+        });*/
     }
 
     public supprimerPartenaire(partenaire: Partenaire): void {
@@ -198,7 +232,62 @@ export class ControleurPlateforme {
     public modifierPartenaire(ancienPartenaire: Partenaire, nouveauPartenaire: Partenaire): void {
         nouveauPartenaire.IdentifiantPartenaire = ancienPartenaire.IdentifiantPartenaire;
         nouveauPartenaire.LocalisationPartenaire.IdentifiantLocalisation = ancienPartenaire.LocalisationPartenaire.IdentifiantLocalisation;
+
+        var formData = new FormData();
+        var listeImagesPartenaireAAjouter: ImagePartenaire[] = [];
+        nouveauPartenaire.ListeImagesPartenaire.forEach((imagePartenaire: ImagePartenaire, indexImagePartenaire: number) => {
+            if (imagePartenaire.FileImagePartenaireLocal != null) {
+                formData.append("imagePartenaire" + indexImagePartenaire, imagePartenaire.FileImagePartenaireLocal);
+                listeImagesPartenaireAAjouter.push(imagePartenaire);
+            }
+        });
+        listeImagesPartenaireAAjouter.forEach((imagePartenaire: ImagePartenaire) => {
+            nouveauPartenaire.supprimerImagePartenaire(imagePartenaire);
+        });
+        formData.append("partenaire", JSON.stringify(nouveauPartenaire.getObjetSerializable()));
+
         var that = this;
+        $.ajax({
+            url: "api/putpartenaires",
+            method: "post",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (resultat) {
+                ancienPartenaire.NomPartenaire = nouveauPartenaire.NomPartenaire;
+                ancienPartenaire.DomaineDeCompetencePartenaire = nouveauPartenaire.DomaineDeCompetencePartenaire;
+                ancienPartenaire.LocalisationPartenaire.LatitudeLocalisation = nouveauPartenaire.LocalisationPartenaire.LatitudeLocalisation;
+                ancienPartenaire.LocalisationPartenaire.LongitudeLocalisation = nouveauPartenaire.LocalisationPartenaire.LongitudeLocalisation;
+                ancienPartenaire.ListeSousSpecialitesPartenaire = nouveauPartenaire.ListeSousSpecialitesPartenaire;
+                ancienPartenaire.ListeMobilitesPartenaires = nouveauPartenaire.ListeMobilitesPartenaires;
+                ancienPartenaire.ListeAidesFinancieresPartenaires = nouveauPartenaire.ListeAidesFinancieresPartenaires;
+                ancienPartenaire.ListeContactsPartenaires = nouveauPartenaire.ListeContactsPartenaires;
+                ancienPartenaire.InformationLogementPartenaire = nouveauPartenaire.InformationLogementPartenaire;
+                ancienPartenaire.InformationCoutPartenaire = nouveauPartenaire.InformationCoutPartenaire;
+
+                //On supprime les images qui ont été supprimés.
+                nouveauPartenaire.ListeImagesPartenaire.forEach((imagePartenaire: ImagePartenaire) => {
+                    ancienPartenaire.supprimerImagePartenaire(imagePartenaire);
+                });
+                console.log(ancienPartenaire.ListeImagesPartenaire);
+                console.log(nouveauPartenaire.ListeImagesPartenaire);
+                // On ajoute les images qui ont été ajoutés sans le lien vers le fichier local qui est maintenant inutile.
+                resultat.listeImagesPartenaire.forEach((imagePartenaire: any) => {
+                    var imagePartenaireObjet = new ImagePartenaire();
+                    imagePartenaireObjet.IdentifiantImagePartenaire = imagePartenaire.identifiantImagePartenaire;
+                    imagePartenaireObjet.CheminImagePartenaireServeur = imagePartenaire.cheminImagePartenaireServeur;
+                    ancienPartenaire.ajouterImagePartenaire(imagePartenaireObjet);
+                });
+
+                that.notifieModificationPartenaire(ancienPartenaire);
+            },
+            error: function (erreur) {
+                //console.log(erreur);
+                that.notifieErreur(that.creerErreurSerializable(erreur.responseJSON));
+            }
+        });
+
+        /*var that = this;
         $.ajax({
             url: "api/partenaires",
             method: "put",
@@ -218,7 +307,7 @@ export class ControleurPlateforme {
                 //console.log(erreur);
                 that.notifieErreur(that.creerErreurSerializable(erreur.responseJSON));
             }
-        });
+        });*/
     }
 
     public chargerListePartenaires(): JQueryPromise<any> {
@@ -257,6 +346,12 @@ export class ControleurPlateforme {
                     });
                     partenaire.listeContactsPartenaire.forEach((contact: any) => {
                         partenaireObjet.ajouterContact(that.modelePlateforme.getContactAvecIdentifiant(contact.identifiantContact));
+                    });
+                    partenaire.listeImagesPartenaire.forEach((imagePartenaire: any) => {
+                        var imagePartenaireObjet = new ImagePartenaire();
+                        imagePartenaireObjet.IdentifiantImagePartenaire = imagePartenaire.identifiantImagePartenaire;
+                        imagePartenaireObjet.CheminImagePartenaireServeur = imagePartenaire.cheminImagePartenaireServeur;
+                        partenaireObjet.ajouterImagePartenaire(imagePartenaireObjet);
                     });
 
                     partenaireObjet.InformationLogementPartenaire = partenaire.informationLogementPartenaire;

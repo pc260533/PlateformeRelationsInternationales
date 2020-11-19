@@ -2,6 +2,14 @@
 <section class="section contacts mt-5">
     <div class="container">
 
+        <div class="sectionHeader text-center">
+            <h2 class="sectionTitre">Gérer les contacts</h2>
+            <div class="line"><span></span></div>
+            <p>
+                Ajouter, modifier, supprimer les contacts.
+            </p>
+        </div>
+
         <ModalErreur ref="modalErreur"></ModalErreur>
 
         <Datatables ref="datatablesContact" v-bind:proprietesDatatables="proprietesDatatablesContact" idDatatables="datatablesContact"></Datatables>
@@ -34,7 +42,7 @@
                 </div>
             </form>
 
-            <button slot="modalFooter" type="button" id="boutonEditeContact" class="btn btn-success">Sauvegarder</button>
+            <button slot="modalFooter" type="button" id="boutonEditeContact" class="btn btn-custom">Sauvegarder</button>
             <button slot="modalFooter" type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
         </ModalSpecifique>
 

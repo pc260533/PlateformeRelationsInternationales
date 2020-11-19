@@ -9,3 +9,21 @@ body {
 #modalErreur {
     z-index: 2000;
 }
+
+/* Mapboxgl et Geocoder */
+#geocoderLocalisation {
+    width: 100%;
+}
+
+.mapboxgl-ctrl-geocoder {
+    min-width: 100%;
+}
+
+#geocoderLocalisation input {
+    outline: none;
+}
+
+#mapListePartenaires {
+    height: 500px;
+}
+/* Mapboxgl et Geocoder */

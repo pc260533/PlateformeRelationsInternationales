@@ -11,6 +11,7 @@ import { ErreurSerializable } from "../erreur/erreurSerializable";
 import ModalErreur from "./composants/modalErreur";
 
 import imageAPropos from "../../images/apropos/apropos.png";
+
 import "../../scss/vues/vueAPropos.scss";
 
 import { Component, Prop, Vue, Ref } from "vue-property-decorator";

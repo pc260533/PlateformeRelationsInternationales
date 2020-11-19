@@ -59,7 +59,7 @@ abstract class ExceptionSerializable extends Exception {
 	public function getDeveloppeurMessage(): string {
 		$res = "";
 		if ($this->getPrevious()) {
-			$res = $this->getPrevious()->getMessage();
+			$res = utf8_encode($this->getPrevious()->getMessage());
 		}
 		return $res;
 	}

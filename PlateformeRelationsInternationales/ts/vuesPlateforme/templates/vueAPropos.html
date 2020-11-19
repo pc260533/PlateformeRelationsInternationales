@@ -3,6 +3,14 @@
 <section class="sections apropos mt-5">
     <div class="container">
 
+        <div class="sectionHeader text-center">
+            <h2 class="sectionTitre">A Propos</h2>
+            <div class="line"><span></span></div>
+            <p>
+                Informations concernant Plateformes Relations Internationales.
+            </p>
+        </div>
+
         <ModalErreur ref="modalErreur"></ModalErreur>
 
         <div class="row">
@@ -39,10 +47,10 @@
                     </p>
                     <ul class="informationsAProposUl">
                         <li v-for="auteurApplication in listeAuteursApplication" class="informationsAProposLi">
-                             <a :href="auteurApplication.lienAuteur" target="_blank">{{ auteurApplication.nomAuteur }}</a>
+                            <a :href="auteurApplication.lienAuteur" target="_blank">{{ auteurApplication.nomAuteur }}</a>
                         </li>
                     </ul>
-                    <a href="" target="_blank" class="btn btn-primary btn-custom informationsAProposBouton" role="button" aria-disabled="true">Plus d'informations</a>
+                    <a href="https://esirem.u-bourgogne.fr/" target="_blank" class="btn btn-primary btn-custom informationsAProposBouton" role="button" aria-disabled="true">Plus d'informations</a>
                 </div>
             </div>
             <div class="col-md-6">

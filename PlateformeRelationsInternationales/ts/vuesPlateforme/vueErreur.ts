@@ -8,6 +8,8 @@ import { AideFinanciere } from "../modelePlateforme/aideFinanciere";
 import { Contact } from "../modelePlateforme/contact";
 import { ErreurSerializable } from "../erreur/erreurSerializable";
 
+import "../../scss/vues/vueErreur.scss";
+
 import { Component, Prop, Vue } from "vue-property-decorator";
 
 @Component({
@@ -16,6 +18,7 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 export default class VueErreur extends Vue implements IVuePlateforme {
     @Prop() private plateforme!: Plateforme;
     @Prop() private controleurPlateforme!: ControleurPlateforme;
+    @Prop() private erreurSerializable!: ErreurSerializable;
 
     public afficheErreur(erreur: ErreurSerializable): void {
 
@@ -60,6 +63,15 @@ export default class VueErreur extends Vue implements IVuePlateforme {
     public constructor() {
         super();
         this.controleurPlateforme.inscrire(this);
+        var jsonErreur = $("#donneeJsonException").text();
+        if (jsonErreur != "") {
+            var jsonErreurObjet = JSON.parse(jsonErreur);
+            this.erreurSerializable.MessageErreur = jsonErreurObjet.messageErreur;
+            this.erreurSerializable.TitreErreur = jsonErreurObjet.titreErreur;
+            this.erreurSerializable.StatusErreur = jsonErreurObjet.statusErreur;
+            this.erreurSerializable.DeveloppeurMessageErreur = jsonErreurObjet.developpeurMessageErreur;
+            this.erreurSerializable.StackTraceErreur = jsonErreurObjet.stackTraceErreur;
+        }
     }
 
     mounted() {

@@ -236,12 +236,62 @@ class StockageBaseDeDonnees {
 		$statement->bindValue(":identifiantaidefinanciere", $aideFinanciere->getIdentifiantAideFinanciere(), PDO::PARAM_INT);
 		$statement->execute();
 	}
+
 	private function supprimerToutesAidesFinancieresDansPartenaire(Partenaire $partenaire) {
 		$requete = "DELETE FROM CORRESPONDANCE_PARTENAIRE_AIDEFINANCIERE " .
 				   "WHERE IDENTIFIANTPARTENAIRE = :identifiantpartenaire;";
 		$statement = $this->pdo->prepare($requete);
 		$statement->bindValue(":identifiantpartenaire", $partenaire->getIdentifiantPartenaire(), PDO::PARAM_INT);
 		$statement->execute();
+	}
+
+	private function ajouterImagePartenaire(ImagePartenaire $imagePartenaire) {
+		$requete = "INSERT INTO IMAGEPARTENAIRE(CHEMINIMAGEPARTENAIRESERVEUR) VALUES (:cheminimagepartenaireserveur);";
+		$statement = $this->pdo->prepare($requete);
+		$statement->bindValue(":cheminimagepartenaireserveur", $imagePartenaire->getCheminImagePartenaireServeur(), PDO::PARAM_STR);
+		$statement->execute();
+		$imagePartenaire->setIdentifiantImagePartenaire(intval($this->pdo->lastInsertId()));
+	}
+
+	private function supprimerImagePartenaire(ImagePartenaire $imagePartenaire) {
+		$requete = "DELETE FROM IMAGEPARTENAIRE " .
+				   "WHERE IDENTIFIANTIMAGEPARTENAIRE = :identifiantimagepartenaire";
+		$statement = $this->pdo->prepare($requete);
+		$statement->bindValue(":identifiantimagepartenaire", $imagePartenaire->getIdentifiantImagePartenaire(), PDO::PARAM_INT);
+		$statement->execute();
+	}
+
+	private function ajouterImagePartenaireDansPartenaire(Partenaire $partenaire, ImagePartenaire $imagePartenaire) {
+		$requete = "INSERT INTO CORRESPONDANCE_PARTENAIRE_IMAGEPARTENAIRE(IDENTIFIANTPARTENAIRE, IDENTIFIANTIMAGEPARTENAIRE) VALUES (:identifiantpartenaire, :identifiantimagepartenaire);";
+		$statement = $this->pdo->prepare($requete);
+		$statement->bindValue(":identifiantpartenaire", $partenaire->getIdentifiantPartenaire(), PDO::PARAM_INT);
+		$statement->bindValue(":identifiantimagepartenaire", $imagePartenaire->getIdentifiantImagePartenaire(), PDO::PARAM_INT);
+		$statement->execute();
+	}
+
+	private function supprimerImagePartenaireDansPartenaire(Partenaire $partenaire, ImagePartenaire $imagePartenaire) {
+		$requete = "DELETE FROM CORRESPONDANCE_PARTENAIRE_IMAGEPARTENAIRE " .
+				   "WHERE IDENTIFIANTIMAGEPARTENAIRE = :identifiantpartenaire AND IDENTIFIANTIMAGEPARTENAIRE = :identifiantimagepartenaire;";
+		$statement = $this->pdo->prepare($requete);
+		$statement->bindValue(":identifiantpartenaire", $partenaire->getIdentifiantPartenaire(), PDO::PARAM_INT);
+		$statement->bindValue(":identifiantimagepartenaire", $imagePartenaire->getIdentifiantImagePartenaire(), PDO::PARAM_INT);
+		$statement->execute();
+	}
+
+	private function chargerImagesPartenaireDansPartenaire(Partenaire $partenaire): void {
+		$requete = "SELECT CORRESPONDANCE_PARTENAIRE_IMAGEPARTENAIRE.IDENTIFIANTIMAGEPARTENAIRE, IMAGEPARTENAIRE.CHEMINIMAGEPARTENAIRESERVEUR ".
+				   "FROM CORRESPONDANCE_PARTENAIRE_IMAGEPARTENAIRE INNER JOIN IMAGEPARTENAIRE ON (CORRESPONDANCE_PARTENAIRE_IMAGEPARTENAIRE.IDENTIFIANTIMAGEPARTENAIRE = IMAGEPARTENAIRE.IDENTIFIANTIMAGEPARTENAIRE)".
+				   "WHERE IDENTIFIANTPARTENAIRE = :identifiantpartenaire;";
+		$statement = $this->pdo->prepare($requete);
+		$statement->bindValue(":identifiantpartenaire", $partenaire->getIdentifiantPartenaire(), PDO::PARAM_INT);
+		$statement->execute();
+		$donnees = $statement->fetchAll();
+		foreach ($donnees as $ligne) {
+			$imagePartenaire = new ImagePartenaire();
+			$imagePartenaire->setIdentifiantImagePartenaire($ligne["IDENTIFIANTIMAGEPARTENAIRE"]);
+			$imagePartenaire->setCheminImagePartenaireServeur($ligne["CHEMINIMAGEPARTENAIRESERVEUR"]);
+			$partenaire->ajouterImagePartenaire($imagePartenaire);
+		}
 	}
 
 	public function __construct(string $dataSourceName, string $username, string $password) {
@@ -347,9 +397,28 @@ class StockageBaseDeDonnees {
 			foreach ($partenaire->getListeContactsPartenaire() as $contact) {
 				$this->ajouterContactDansPartenaire($partenaire, $contact);
 			}
+			/*foreach ($partenaire->getListeImagesPartenaire() as $imagePartenaire) {
+				$this->ajouterImagePartenaire($imagePartenaire);
+				$this->ajouterImagePartenaireDansPartenaire($partenaire, $imagePartenaire);
+			}*/
 
 			$this->pdo->commit();
 
+		}
+		catch (PDOException $exception) {
+			$this->pdo->rollBack();
+			throw new ExceptionBaseDeDonneesPlateforme($exception);
+		}
+	}
+
+	public function ajouterListeImagesPartenaire(Partenaire $partenaire): void {
+		try {
+			$this->pdo->beginTransaction();
+			foreach ($partenaire->getListeImagesPartenaire() as $imagePartenaire) {
+				$this->ajouterImagePartenaire($imagePartenaire);
+				$this->ajouterImagePartenaireDansPartenaire($partenaire, $imagePartenaire);
+			}
+			$this->pdo->commit();
 		}
 		catch (PDOException $exception) {
 			$this->pdo->rollBack();
@@ -367,6 +436,10 @@ class StockageBaseDeDonnees {
 			$statement->execute();
 
 			$this->supprimerLocalisation($partenaire->getLocalisationPartenaire());
+
+			foreach ($partenaire->getListeImagesPartenaire() as $imagePartenaire) {
+				$this->supprimerImagePartenaire($imagePartenaire);
+			}
 
 			$this->pdo->commit();
 		}
@@ -409,6 +482,21 @@ class StockageBaseDeDonnees {
 				$this->ajouterContactDansPartenaire($partenaire, $contact);
 			}
 
+			$listeImagesPartenairesASupprimer = array();
+			foreach ($partenaire->getListeImagesPartenaire() as $imagePartenaire) {
+				if ($imagePartenaire->getIdentifiantImagePartenaire() == 0) {
+					$this->ajouterImagePartenaire($imagePartenaire);
+					$this->ajouterImagePartenaireDansPartenaire($partenaire, $imagePartenaire);
+				}
+				else {
+					$this->supprimerImagePartenaire($imagePartenaire);
+					$listeImagesPartenairesASupprimer[] = $imagePartenaire;
+				}
+			}
+			foreach ($listeImagesPartenairesASupprimer as $imagePartenaire) {
+				$partenaire->supprimerImagePartenaire($imagePartenaire);
+			}
+
 			$this->pdo->commit();
 		}
 		catch (PDOException $exception) {
@@ -441,6 +529,7 @@ class StockageBaseDeDonnees {
 				$this->chargerMobilitesDansPartenaire($partenaire);
 				$this->chargerAidesFinancieresDansPartenaire($partenaire);
 				$this->chargerContactsDansPartenaire($partenaire);
+				$this->chargerImagesPartenaireDansPartenaire($partenaire);
 
 				$listePartenaires[] = $partenaire->getObjetSerializable();
 			}

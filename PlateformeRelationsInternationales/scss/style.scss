@@ -1,57 +1,39 @@
 ﻿@import "../node_modules/bootstrap/scss/bootstrap";
 
-#geocoderLocalisation {
-    width: 100%;
-}
-
-.mapboxgl-ctrl-geocoder {
-    min-width: 100%;
-}
-
-#geocoderLocalisation input {
-    outline: none;
-}
-
-#mapListePartenaires {
-    height: 500px;
-}
-
-.modal {
-    overflow-y: scroll;
-}
-
 /* Styles généraux */
 body {
-
+    background: #f7f7f7;
 }
 
 h2 {
     margin-top: 20px;
 }
 
+/* Navbar */
 .nav-link {
     display: inline;
 }
-
 
 @media (max-width: 991.98px) {
     .nav-link {
         display: block;
     }
 }
+/* Navbar */
 
-.section-header .section-title {
+/* Section */
+.sectionHeader .sectionTitre {
     font-size: 40px;
 }
 
-.section-header .line {
+.sectionHeader .line {
     width: 150px;
     background: #ddd;
     height: 3px;
     margin: auto;
 }
 
-.section-header .line span {
+.sectionHeader .line span {
     display: block;
     width: 100px;
     height: 4px;
@@ -61,7 +43,7 @@ h2 {
     bottom: 0.5px;
 }
 
-.section-header p {
+.sectionHeader p {
     width: 50%;
     color: #888;
     margin: 20px auto;
@@ -69,36 +51,50 @@ h2 {
 }
 
 @media (max-width:575px) {
-    .section-header p {
+    .sectionHeader p {
         width: 85%;
     }
 }
-
-/* Section Fonctionnalité */
-.content label {
-    font-weight: bold;
-}
-
-.content-row {
-    margin-right: 0px;
-    margin-left: 0px;
-}
+/* Section */
 
 /* Footer */
 footer {
     color: #fff;
     padding-top: 3rem;
-    padding-bottom: 3rem;
 }
 
 footer p {
     margin-bottom: .25rem;
 }
 
+footer .footer-copyright {
+    background: #1e1f22;
+    color: #fff;
+}
+
+footer a, footer a:visited {
+    color: #888;
+}
+
+footer a:hover, footer a:active {
+    text-decoration: none !important;
+    color: #fff;
+}
+/* Footer */
+
 .test {
     margin-bottom: 500px;
 }
 
+.modal {
+    overflow-y: scroll;
+}
+
+.donneeCachees {
+    display: none;
+}
+
+/* Custom Button Bootstrap */
 .btn-custom {
     color: #FFFFFF;
     background-color: #2184BE;
@@ -144,3 +140,4 @@ fieldset[disabled] .btn-custom.active {
     color: #2184BE;
     background-color: #FFFFFF;
 }
+/* Button Custom Bootstrap */

@@ -4,6 +4,7 @@ import { Mobilite } from "./mobilite";
 import { Contact } from "./contact";
 import { AideFinanciere } from "./aideFinanciere";
 import { ISerializable } from "./ISerializable";
+import { ImagePartenaire } from "./imagePartenaire";
 
 export class Partenaire implements ISerializable {
     private identifiantPartenaire: number;
@@ -16,6 +17,7 @@ export class Partenaire implements ISerializable {
     private listeAidesFinancieresPartenaires: AideFinanciere[];
     private informationLogementPartenaire: string;
     private informationCoutPartenaire: string;
+    private listeImagesPartenaire: ImagePartenaire[];
 
     public get IdentifiantPartenaire(): number {
         return this.identifiantPartenaire;
@@ -97,6 +99,14 @@ export class Partenaire implements ISerializable {
         this.informationCoutPartenaire = informationCoutPartenaire;
     }
 
+    public get ListeImagesPartenaire(): ImagePartenaire[] {
+        return this.listeImagesPartenaire;
+    }
+
+    public set ListeImagesPartenaire(listeImagesPartenaire: ImagePartenaire[]) {
+        this.listeImagesPartenaire = listeImagesPartenaire;
+    }
+
     public getListeSousSpecialitesPartenaireId(): any[] {
         var listeSousSpecialitesPartenaireId: any[] = [];
         this.listeSousSpecialitesPartenaire.forEach((sousSpecialite: SousSpecialite) => {
@@ -129,6 +139,24 @@ export class Partenaire implements ISerializable {
         return listeContactsPartenaireId;
     }
 
+    public getListeImagesPartenaire(): any[] {
+        var listeImagesPartenaire: any[] = [];
+        this.listeImagesPartenaire.forEach((imagePartenaire: ImagePartenaire) => {
+            listeImagesPartenaire.push(imagePartenaire.getObjetSerializable());
+        });
+        return listeImagesPartenaire;
+    }
+
+    public getImagePartenaireAvecNomImage(nomImagePartenaire: string): ImagePartenaire {
+        var res: ImagePartenaire = null;
+        this.listeImagesPartenaire.forEach((imagePartenaire: ImagePartenaire) => {
+            if (imagePartenaire.CheminImagePartenaireServeur.split("/").pop() == nomImagePartenaire) {
+                res = imagePartenaire;
+            }
+        });
+        return res;
+    }
+
     public constructor() {
         this.identifiantPartenaire = 0;
         this.nomPartenaire = "";
@@ -140,6 +168,7 @@ export class Partenaire implements ISerializable {
         this.listeAidesFinancieresPartenaires = [];
         this.informationLogementPartenaire = "";
         this.informationCoutPartenaire = "";
+        this.listeImagesPartenaire = [];
     }
 
     public ajouterSousSpecialite(sousSpecialite: SousSpecialite): void {
@@ -186,6 +215,17 @@ export class Partenaire implements ISerializable {
         }
     }
 
+    public ajouterImagePartenaire(imagePartenaire: ImagePartenaire): void {
+        this.listeImagesPartenaire.push(imagePartenaire);
+    }
+
+    public supprimerImagePartenaire(imagePartenaire: ImagePartenaire): void {
+        var indexImagePartenaire = this.listeImagesPartenaire.indexOf(imagePartenaire);
+        if (!(indexImagePartenaire === undefined) && !(indexImagePartenaire === null)) {
+            this.listeImagesPartenaire.splice(indexImagePartenaire, 1);
+        }
+    }
+
     public getObjetSerializable(): any {
         var partenaire = {
             identifiantPartenaire: this.IdentifiantPartenaire,
@@ -197,7 +237,8 @@ export class Partenaire implements ISerializable {
             listeAidesFinancieresPartenaire: this.getListeAidesFinancieresPartenaireId(),
             listeContactsPartenaire: this.getListeContactsPartenaireId(),
             informationLogementPartenaire: this.InformationLogementPartenaire,
-            informationCoutPartenaire: this.InformationCoutPartenaire
+            informationCoutPartenaire: this.InformationCoutPartenaire,
+            listeImagesPartenaire: this.getListeImagesPartenaire()
         }
         return partenaire;
     }

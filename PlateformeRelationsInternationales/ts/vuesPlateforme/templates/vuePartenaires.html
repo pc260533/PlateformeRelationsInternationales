@@ -2,6 +2,14 @@
 
 <section class="section partenaires mt-5">
 
+    <div class="sectionHeader text-center">
+        <h2 class="sectionTitre">Gérer les partenaires</h2>
+        <div class="line"><span></span></div>
+        <p>
+            Ajouter, modifier, supprimer les partenaires.
+        </p>
+    </div>
+
     <ModalErreur ref="modalErreur"></ModalErreur>
 
     <div class="container mb-5">
@@ -9,10 +17,10 @@
     </div>
 
     <div class="container">
-
+        <img id="testImage" alt="">
         <Datatables ref="datatablesPartenaires" v-bind:proprietesDatatables="proprietesDatatablesPartenaires" idDatatables="datatablesPartenaires"></Datatables>
 
-        <ModalSpecifique ref="modalEditePartenaire" idModal="modalEditeContactsPartenaire" tailleModal="modal-xl">
+        <ModalSpecifique ref="modalEditePartenaire" idModal="modalEditePartenaire" tailleModal="modal-xl">
             <h5 slot="modalHeader" class="modal-tilte">
                 <span id="inputTitrePartenaire"></span>
             </h5>
@@ -45,12 +53,23 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <label for="inputListeImagesPartenaires">Ajouter des fichiers aux partenaires:</label>
+                    <input type="file" class="form-control-file" id="inputListeImagesPartenaires" multiple>
+                    <div class="invalid-feedback">
+                        Un des fichiers sélectionnés existe déjà.
+                    </div>
+                </div>
+                <div class="form-group" id="formGroupListeImagesPartenaireServeur">
+                    <label for="listeImagesPartenaireServeur">Liste Images Partenaire sur le serveur:</label>
+                    <ul class="list-group" id="listeImagesPartenaireServeur"></ul>
+                </div>
+                <div class="form-group">
                     <label for="selectListeSpecialitesPartenaire">Liste Specialités Partenaire:</label>
                     <select class="custom-select form-control" id="selectListeSpecialitesPartenaire"></select>
                     <ul class="list-group" id="listeSousSpecialitesPartenaire"></ul>
                 </div>
                 <div class="form-group">
-                    <label for="listeMobilitesPartenaire">Liste Mobiités Partenaire:</label>
+                    <label for="listeMobilitesPartenaire">Liste Mobilités Partenaire:</label>
                     <ul class="list-group" id="listeMobilitesPartenaire"></ul>
                 </div>
                 <div class="form-row">
@@ -91,7 +110,7 @@
                 </div>
             </form>
 
-            <button slot="modalFooter" type="button" id="boutonEditePartenaire" class="btn btn-success">Sauvegarder</button>
+            <button slot="modalFooter" type="button" id="boutonEditePartenaire" class="btn btn-custom">Sauvegarder</button>
             <button slot="modalFooter" type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
         </ModalSpecifique>
 
@@ -107,7 +126,7 @@
             <div slot="modalBody">
                 <Datatables ref="datatablesAidesFinancieresPartenaires" v-bind:proprietesDatatables="proprietesDatatablesAidesFinancieresPartenaires" idDatatables="datatablesAidesFinancieresPartenaires"></Datatables>
             </div>
-            <button slot="modalFooter" type="button" id="boutonEditeAidesFinancieresPartenaire" class="btn btn-success">Sauvegarder</button>
+            <button slot="modalFooter" type="button" id="boutonEditeAidesFinancieresPartenaire" class="btn btn-custom">Sauvegarder</button>
             <button slot="modalFooter" type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
         </ModalSpecifique>
 
@@ -122,7 +141,7 @@
             <div slot="modalBody">
                 <Datatables ref="datatablesContactsPartenaires" v-bind:proprietesDatatables="proprietesDatatablesContactsPartenaires" idDatatables="datatablesContactsPartenaires"></Datatables>
             </div>
-            <button slot="modalFooter" type="button" id="boutonEditeContactsPartenaire" class="btn btn-success">Sauvegarder</button>
+            <button slot="modalFooter" type="button" id="boutonEditeContactsPartenaire" class="btn btn-custom">Sauvegarder</button>
             <button slot="modalFooter" type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
         </ModalSpecifique>
 

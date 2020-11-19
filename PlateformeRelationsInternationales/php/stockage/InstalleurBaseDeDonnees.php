@@ -106,6 +106,16 @@ class InstalleurBaseDeDonnees {
 	}
 
 	/**
+	 * Créer la table ImagePartenaire dans la base.
+	 */
+	private function creerTableImagePartenaire(): void {
+		$requete = "CREATE TABLE IF NOT EXISTS PLATEFORME.IMAGEPARTENAIRE (" .
+				   "identifiantImagePartenaire INT PRIMARY KEY NOT NULL AUTO_INCREMENT," .
+				   "cheminImagePartenaireServeur VARCHAR(255));";
+        $this->pdo->exec($requete);
+	}
+
+	/**
 	 * Créer la table Partenaire dans la base.
 	 */
 	private function creerTablePartenaire(): void {
@@ -172,6 +182,19 @@ class InstalleurBaseDeDonnees {
 	}
 
 	/**
+	 * Créer la table Correspondance_Partenaire_ImagePartenaire dans la base.
+	 */
+	private function creerTableCorrespondancePartenaireImagePartenaire(): void {
+		$requete = "CREATE TABLE IF NOT EXISTS PLATEFORME.CORRESPONDANCE_PARTENAIRE_IMAGEPARTENAIRE (" .
+				   "identifiantPartenaire INT," .
+				   "identifiantImagePartenaire INT," .
+				   "PRIMARY KEY(identifiantPartenaire, identifiantImagePartenaire)," .
+				   "FOREIGN KEY (identifiantPartenaire) REFERENCES PARTENAIRE(identifiantPartenaire) ON DELETE CASCADE," .
+				   "FOREIGN KEY (identifiantImagePartenaire) REFERENCES IMAGEPARTENAIRE(identifiantImagePartenaire) ON DELETE CASCADE);";
+        $this->pdo->exec($requete);
+	}
+
+	/**
 	 * Constructeur prenant en paramètre le data source name, le nom d'utilisateur et le mot de passe de la base de données.
 	 * @param string $dataSourceName Le data source name de la base de données.
 	 * @param string $username Le nom d'utilisateur de la base de données.
@@ -204,11 +227,13 @@ class InstalleurBaseDeDonnees {
 			$this->creerTableMobilite();
 			$this->creerTableSpecialite();
 			$this->creerTableSousSpecialite();
+			$this->creerTableImagePartenaire();
 			$this->creerTablePartenaire();
 			$this->creerTableCorrespondancePartenaireSousSpecialite();
 			$this->creerTableCorrespondancePartenaireMobilite();
 			$this->creerTableCorrespondancePartenaireContact();
 			$this->creerTableCorrespondancePartenaireAideFinanciere();
+			$this->creerTableCorrespondancePartenaireImagePartenaire();
 			$this->pdo->commit();
 		}
 		catch (PDOException $exception) {
