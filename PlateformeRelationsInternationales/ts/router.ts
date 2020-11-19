@@ -2,6 +2,7 @@
 import VuePartenaire from "./vuesPlateforme/vuePartenaires";
 import VueAidesFinancieres from "./vuesPlateforme/vueAidesFinancieres";
 import VueContacts from "./vuesPlateforme/vueContacts";
+import VueCouts from "./vuesPlateforme/vueCouts";
 import VueAPropos from "./vuesPlateforme/vueAPropos";
 
 import Vue from "vue";
@@ -68,6 +69,18 @@ export default new Router({
             },
             meta: {
                 title: "Plateforme Relations Internationales - Contacts"
+            }
+        },
+        {
+            path: "/couts",
+            name: "couts",
+            component: VueCouts,
+            props: {
+                plateforme: plateforme,
+                controleurPlateforme: controleurPlateforme
+            },
+            meta: {
+                title: "Plateforme Relations Internationales - Couts"
             }
         },
         {

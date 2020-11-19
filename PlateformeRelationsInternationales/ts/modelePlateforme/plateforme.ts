@@ -4,6 +4,7 @@ import { Contact } from "./contact";
 import { Specialite } from "./specialite";
 import { Mobilite } from "./mobilite";
 import { SousSpecialite } from "./sousspecialite";
+import { Cout } from "./cout";
 
 export class Plateforme {
     private listeSpecialitesPlateforme: Specialite[];
@@ -11,6 +12,7 @@ export class Plateforme {
     private listePartenairesPlateforme: Partenaire[];
     private listeAidesFinancieresPlateforme: AideFinanciere[];
     private listeContactsPlateforme: Contact[];
+    private listeCoutsPlateforme: Cout[];
 
     public get ListeSpecialitesPlateforme(): Specialite[] {
         return this.listeSpecialitesPlateforme;
@@ -32,16 +34,21 @@ export class Plateforme {
         return this.listeContactsPlateforme;
     }
 
+    public get ListeCoutsPlateforme(): Cout[] {
+        return this.listeCoutsPlateforme;
+    }
+
     public constructor() {
         this.listeSpecialitesPlateforme = [];
         this.listeMobilitesPlateforme = [];
         this.listePartenairesPlateforme = [];
         this.listeAidesFinancieresPlateforme = [];
         this.listeContactsPlateforme = [];
+        this.listeCoutsPlateforme = [];
     }
 
     public getSpecialiteAvecIdentifiant(identifiantSpecialite: number): Specialite {
-        var res = null;
+        var res: Specialite = null;
         this.listeSpecialitesPlateforme.forEach((specialite: Specialite) => {
             if (specialite.IdentifiantSpecialite == identifiantSpecialite) {
                 res = specialite;
@@ -63,7 +70,7 @@ export class Plateforme {
     }
 
     public getMobiliteAvecIdentifiant(identifiantMobilite: number): Mobilite {
-        var res = null;
+        var res: Mobilite = null;
         this.listeMobilitesPlateforme.forEach((mobilite: Mobilite) => {
             if (mobilite.IdentifiantMobilite == identifiantMobilite) {
                 res = mobilite;
@@ -73,7 +80,7 @@ export class Plateforme {
     }
 
     public getAideFinanciereAvecIdentifiant(identifiantAideFinanciere: number): AideFinanciere {
-        var res = null;
+        var res: AideFinanciere = null;
         this.listeAidesFinancieresPlateforme.forEach((aideFinanciere: AideFinanciere) => {
             if (aideFinanciere.IdentifiantAideFinanciere == identifiantAideFinanciere) {
                 res = aideFinanciere;
@@ -83,7 +90,7 @@ export class Plateforme {
     }
 
     public getContactAvecIdentifiant(identifiantContact: number): Contact {
-        var res = null;
+        var res: Contact = null;
         this.listeContactsPlateforme.forEach((contact: Contact) => {
             if (contact.IdentifiantContact == identifiantContact) {
                 res = contact;
@@ -97,6 +104,26 @@ export class Plateforme {
         this.listeSpecialitesPlateforme.forEach((specialite: Specialite) => {
             if (specialite.ListeSousSpecialites.includes(sousSpecialite)) {
                 res = specialite;
+            }
+        });
+        return res;
+    }
+
+    public getCoutAvecIdentifiant(identifiantCout: number): Cout {
+        var res: Cout = null;
+        this.listeCoutsPlateforme.forEach((cout: Cout) => {
+            if (cout.IdentifiantCout == identifiantCout) {
+                res = cout;
+            }
+        });
+        return res;
+    }
+
+    public getCoutAvecNomPays(nomPaysCout: string): Cout {
+        var res: Cout = null;
+        this.listeCoutsPlateforme.forEach((cout: Cout) => {
+            if (cout.NomPaysCout == nomPaysCout) {
+                res = cout;
             }
         });
         return res;
@@ -154,6 +181,17 @@ export class Plateforme {
         var indexContact = this.listeContactsPlateforme.indexOf(contact);
         if (!(indexContact === undefined) && !(indexContact === null)) {
             this.listeContactsPlateforme.splice(indexContact, 1);
+        }
+    }
+
+    public ajouterCout(cout: Cout): void {
+        this.listeCoutsPlateforme.push(cout);
+    }
+
+    public supprimerCout(cout: Cout): void {
+        var indexCout = this.listeCoutsPlateforme.indexOf(cout);
+        if (!(indexCout === undefined) && !(indexCout === null)) {
+            this.listeCoutsPlateforme.splice(indexCout, 1);
         }
     }
 

@@ -1,0 +1,53 @@
+﻿<!-- Couts -->
+<section class="section couts mt-5">
+    <div class="container">
+
+        <div class="sectionHeader text-center">
+            <h2 class="sectionTitre">Gérer les couts</h2>
+            <div class="line"><span></span></div>
+            <p>
+                Modifier les couts par pays des partenaires.
+            </p>
+        </div>
+
+        <ModalErreur ref="modalErreur"></ModalErreur>
+
+        <Datatables ref="datatablesCouts" v-bind:proprietesDatatables="proprietesDatatablesCouts" idDatatables="datatablesCouts"></Datatables>
+
+        <ModalSpecifique ref="modalEditeCout" idModal="modalEditeContact" tailleModal="modal-lg">
+            <h5 slot="modalHeader" class="modal-tilte">
+                <span id="inputTitreCout"></span>
+            </h5>
+            <button slot="modalHeader" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+
+            <form slot="modalBody" class="form">
+                <input type="hidden" id="inputIdentifiantCout" value="0" />
+                <div class="form-group">
+                    <label for="inputCoutMoyenParMois">Cout Moyen Par Mois :</label>
+                    <input type="text" id="inputCoutMoyenParMois" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label for="inputCoutLogementParMois">Cout Logement par Mois :</label>
+                    <input type="text" id="inputCoutLogementParMois" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label for="inputCoutVieParMois">Cout Vie par Mois :</label>
+                    <input type="text" id="inputCoutVieParMois" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label for="inputCoutInscriptionParMois">Cout Inscription par Mois :</label>
+                    <input type="text" id="inputCoutInscriptionParMois" class="form-control" />
+                </div>
+            </form>
+
+            <button slot="modalFooter" type="button" id="boutonEditeCout" class="btn btn-custom">Sauvegarder</button>
+            <button slot="modalFooter" type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+        </ModalSpecifique>
+
+        <SpinnerSpecifique ref="spinner"></SpinnerSpecifique>
+
+    </div>
+</section>
+<!-- /Contacts -->

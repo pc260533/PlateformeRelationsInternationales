@@ -8,27 +8,7 @@
  * @version 1.0
  * @author Jean-Claude
  */
-class InstalleurBaseDeDonnees {
-	/**
-	 * Le data source name de la base de données.
-	 * @var mixed
-	 */
-	private $dataSourceName;
-	/**
-	 * Le nom d'utilisateur de la base de données.
-	 * @var mixed
-	 */
-	private $username;
-	/**
-	 * Le mot de passe de la base de données.
-	 * @var mixed
-	 */
-	private $password;
-	/**
-	 * L'instance de pdo.
-	 * @var mixed
-	 */
-	private $pdo;
+class InstalleurBaseDeDonnees extends StockageBaseDeDonnees {
 
 	/**
 	 * Créer la base de données Plateforme.
@@ -43,7 +23,7 @@ class InstalleurBaseDeDonnees {
 	 */
 	private function creerTableAideFinanciere(): void {
 		$requete = "CREATE TABLE IF NOT EXISTS PLATEFORME.AIDEFINANCIERE (" .
-				   "identifiantPartenaire INT PRIMARY KEY NOT NULL AUTO_INCREMENT," .
+				   "identifiantAideFinanciere INT PRIMARY KEY NOT NULL AUTO_INCREMENT," .
 				   "nomAideFinanciere VARCHAR(255));";
         $this->pdo->exec($requete);
 	}
@@ -68,7 +48,10 @@ class InstalleurBaseDeDonnees {
 		$requete = "CREATE TABLE IF NOT EXISTS PLATEFORME.LOCALISATION (" .
 				   "identifiantLocalisation INT PRIMARY KEY NOT NULL AUTO_INCREMENT," .
 				   "latitudeLocalisation VARCHAR(255)," .
-				   "longitudeLocalisation VARCHAR(255));";
+				   "longitudeLocalisation VARCHAR(255)," .
+				   "nomLocalisation VARCHAR(255)," .
+				   "nomPaysLocalisation VARCHAR(255)," .
+				   "codePaysLocalisation VARCHAR(255));";
         $this->pdo->exec($requete);
 	}
 
@@ -116,16 +99,33 @@ class InstalleurBaseDeDonnees {
 	}
 
 	/**
+	 * Créer la table Cout dans la base.
+	 */
+	private function creerTableCout(): void {
+		$requete = "CREATE TABLE IF NOT EXISTS PLATEFORME.COUT (" .
+				   "identifiantCout INT PRIMARY KEY NOT NULL AUTO_INCREMENT," .
+				   "nomPaysCout VARCHAR(255)," .
+				   "coutMoyenParMois VARCHAR(255)," .
+				   "coutLogementParMois VARCHAR(255)," .
+				   "coutVieParMois VARCHAR(255)," .
+				   "coutInscriptionParMois VARCHAR(255));";
+        $this->pdo->exec($requete);
+	}
+
+	/**
 	 * Créer la table Partenaire dans la base.
 	 */
 	private function creerTablePartenaire(): void {
 		$requete = "CREATE TABLE IF NOT EXISTS PLATEFORME.PARTENAIRE (" .
+				   "identifiantPartenaire INT PRIMARY KEY NOT NULL AUTO_INCREMENT," .
 				   "nomPartenaire VARCHAR(255)," .
 				   "domaineDeCompetencePartenaire VARCHAR(255)," .
 				   "identifiantLocalisation INT NOT NULL," .
 				   "informationLogementPartenaire TEXT," .
 				   "informationCoutPartenaire TEXT," .
-				   "FOREIGN KEY (identifiantLocalisation) REFERENCES LOCALISATION(identifiantLocalisation) ON DELETE CASCADE);";
+				   "identifiantCout INT NOT NULL," .
+				   "FOREIGN KEY (identifiantLocalisation) REFERENCES LOCALISATION(identifiantLocalisation) ON DELETE CASCADE," .
+				   "FOREIGN KEY (identifiantCout) REFERENCES COUT(identifiantCout) ON DELETE CASCADE);";
         $this->pdo->exec($requete);
 	}
 
@@ -202,16 +202,7 @@ class InstalleurBaseDeDonnees {
 	 * @throws ExceptionBaseDeDonneesPlateforme Exception du service de base de données.
 	 */
 	public function __construct(string $dataSourceName, string $username, string $password) {
-		try {
-			$this->dataSourceName = $dataSourceName;
-			$this->username = $username;
-			$this->password = $password;
-			$this->pdo = new PDO($this->dataSourceName, $this->username, $this->password);
-			$this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		}
-		catch (PDOException $exception) {
-			throw new ExceptionBaseDeDonneesPlateforme($exception);
-		}
+		parent::__construct($dataSourceName, $username, $password);
 	}
 
 	/**
@@ -221,6 +212,7 @@ class InstalleurBaseDeDonnees {
 	public function initialiserBaseDeDonnees(): void {
 		try {
 			$this->pdo->beginTransaction();
+			$this->creerBaseDeDonneesPlateforme();
 			$this->creerTableAideFinanciere();
 			$this->creerTableContact();
 			$this->creerTableLocalisation();
@@ -228,6 +220,7 @@ class InstalleurBaseDeDonnees {
 			$this->creerTableSpecialite();
 			$this->creerTableSousSpecialite();
 			$this->creerTableImagePartenaire();
+			$this->creerTableCout();
 			$this->creerTablePartenaire();
 			$this->creerTableCorrespondancePartenaireSousSpecialite();
 			$this->creerTableCorrespondancePartenaireMobilite();

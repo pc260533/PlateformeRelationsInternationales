@@ -7,8 +7,9 @@ import { Mobilite } from "./modelePlateforme/mobilite";
 import { AideFinanciere } from "./modelePlateforme/aideFinanciere";
 import { Contact } from "./modelePlateforme/contact";
 import { Localisation } from "./modelePlateforme/localisation";
-import { ErreurSerializable } from "./erreur/erreurSerializable";
 import { ImagePartenaire } from "./modelePlateforme/imagePartenaire";
+import { Cout } from "./modelePlateforme/cout";
+import { ErreurSerializable } from "./erreur/erreurSerializable";
 
 export class ControleurPlateforme {
     private listeVuesPlateforme: IVuePlateforme[];
@@ -102,6 +103,18 @@ export class ControleurPlateforme {
         });
     }
 
+    protected notifieAjoutCout(cout: Cout): void {
+        this.listeVuesPlateforme.forEach((ivuePlateforme: IVuePlateforme) => {
+            ivuePlateforme.ajoutCout(cout);
+        });
+    }
+
+    protected notifieModificationCout(cout: Cout): void {
+        this.listeVuesPlateforme.forEach((ivuePlateforme: IVuePlateforme) => {
+            ivuePlateforme.modificationCout(cout);
+        });
+    }
+
     public chargerListeSpecialites(): JQueryPromise<any> {
         if (this.modelePlateforme.ListeSpecialitesPlateforme.length > 0) {
             return $.Deferred().resolve();
@@ -159,7 +172,7 @@ export class ControleurPlateforme {
         });
     }
 
-    public ajouterPartenaire(partenaire: Partenaire): void  {
+    private ajouterPartenaireAjax(partenaire: Partenaire) {
         var that = this;
         var formData = new FormData();
         partenaire.ListeImagesPartenaire.forEach((imagePartenaire: ImagePartenaire, indexImagePartenaire: number) => {
@@ -184,7 +197,7 @@ export class ControleurPlateforme {
                     imagePartenaireObjet.CheminImagePartenaireServeur = imagePartenaire.cheminImagePartenaireServeur;
                     partenaire.ajouterImagePartenaire(imagePartenaireObjet);
                 });
-                console.log(partenaire);
+                partenaire.CoutPartenaire.ajouterPartenaireCout(partenaire);
                 that.modelePlateforme.ajouterPartenaire(partenaire);
                 that.notifieAjoutPartenaire(partenaire);
             },
@@ -193,22 +206,22 @@ export class ControleurPlateforme {
                 that.notifieErreur(that.creerErreurSerializable(erreur.responseJSON));
             }
         });
+    }
 
-        /*$.ajax({
-            url: "api/partenaires",
-            method: "post",
-            data: partenaire.getObjetSerializable(),
-            success: function (resultat) {
-                partenaire.IdentifiantPartenaire = resultat.identifiantPartenaire;
-                partenaire.LocalisationPartenaire.IdentifiantLocalisation = resultat.localisationPartenaire.identifiantLocalisation;
-                that.modelePlateforme.ajouterPartenaire(partenaire);
-                that.notifieAjoutPartenaire(partenaire);
-            },
-            error: function (erreur) {
-                //console.log(erreur);
-                that.notifieErreur(that.creerErreurSerializable(erreur.responseJSON));
-            }
-        });*/
+    public ajouterPartenaire(partenaire: Partenaire): void  {
+        var coutPartenaire = this.modelePlateforme.getCoutAvecNomPays(partenaire.LocalisationPartenaire.NomPaysLocalisation);
+        if (!coutPartenaire) {
+            var cout = new Cout();
+            cout.NomPaysCout = partenaire.LocalisationPartenaire.NomPaysLocalisation;
+            $.when(this.ajouterCout(cout)).done(() => {
+                partenaire.CoutPartenaire = cout;
+                this.ajouterPartenaireAjax(partenaire);
+            });
+        }
+        else {
+            partenaire.CoutPartenaire = coutPartenaire;
+            this.ajouterPartenaireAjax(partenaire);
+        }
     }
 
     public supprimerPartenaire(partenaire: Partenaire): void {
@@ -216,9 +229,10 @@ export class ControleurPlateforme {
         $.ajax({
             url: "api/partenaires",
             method: "delete",
-            //pour supprimer le partenaire il faut supprimer le aprtenaire et la localisation donc on passe l'id du partenaire et l'id de sa localisation
+            //pour supprimer le partenaire il faut supprimer le partenaire et la localisation donc on passe l'id du partenaire et l'id de sa localisation
             data: partenaire.getObjetSerializable(),
             success: function (resultat) {
+                partenaire.CoutPartenaire.supprimerPartenaireCout(partenaire);
                 that.modelePlateforme.supprimerPartenaire(partenaire);
                 that.notifieSuppressionPartenaire(partenaire);
             },
@@ -229,7 +243,7 @@ export class ControleurPlateforme {
         });
     }
 
-    public modifierPartenaire(ancienPartenaire: Partenaire, nouveauPartenaire: Partenaire): void {
+    private modifierPartenaireAjax(ancienPartenaire: Partenaire, nouveauPartenaire: Partenaire): void {
         nouveauPartenaire.IdentifiantPartenaire = ancienPartenaire.IdentifiantPartenaire;
         nouveauPartenaire.LocalisationPartenaire.IdentifiantLocalisation = ancienPartenaire.LocalisationPartenaire.IdentifiantLocalisation;
 
@@ -258,6 +272,9 @@ export class ControleurPlateforme {
                 ancienPartenaire.DomaineDeCompetencePartenaire = nouveauPartenaire.DomaineDeCompetencePartenaire;
                 ancienPartenaire.LocalisationPartenaire.LatitudeLocalisation = nouveauPartenaire.LocalisationPartenaire.LatitudeLocalisation;
                 ancienPartenaire.LocalisationPartenaire.LongitudeLocalisation = nouveauPartenaire.LocalisationPartenaire.LongitudeLocalisation;
+                ancienPartenaire.LocalisationPartenaire.NomLocalisation = nouveauPartenaire.LocalisationPartenaire.NomLocalisation;
+                ancienPartenaire.LocalisationPartenaire.NomPaysLocalisation = nouveauPartenaire.LocalisationPartenaire.NomPaysLocalisation;
+                ancienPartenaire.LocalisationPartenaire.CodePaysLocalisation = nouveauPartenaire.LocalisationPartenaire.CodePaysLocalisation;
                 ancienPartenaire.ListeSousSpecialitesPartenaire = nouveauPartenaire.ListeSousSpecialitesPartenaire;
                 ancienPartenaire.ListeMobilitesPartenaires = nouveauPartenaire.ListeMobilitesPartenaires;
                 ancienPartenaire.ListeAidesFinancieresPartenaires = nouveauPartenaire.ListeAidesFinancieresPartenaires;
@@ -279,6 +296,10 @@ export class ControleurPlateforme {
                     ancienPartenaire.ajouterImagePartenaire(imagePartenaireObjet);
                 });
 
+                ancienPartenaire.CoutPartenaire.supprimerPartenaireCout(ancienPartenaire);
+                ancienPartenaire.CoutPartenaire = nouveauPartenaire.CoutPartenaire;
+                ancienPartenaire.CoutPartenaire.ajouterPartenaireCout(ancienPartenaire);
+
                 that.notifieModificationPartenaire(ancienPartenaire);
             },
             error: function (erreur) {
@@ -286,28 +307,22 @@ export class ControleurPlateforme {
                 that.notifieErreur(that.creerErreurSerializable(erreur.responseJSON));
             }
         });
+    }
 
-        /*var that = this;
-        $.ajax({
-            url: "api/partenaires",
-            method: "put",
-            data: nouveauPartenaire.getObjetSerializable(),
-            success: function (resultat) {
-                ancienPartenaire.NomPartenaire = nouveauPartenaire.NomPartenaire;
-                ancienPartenaire.DomaineDeCompetencePartenaire = nouveauPartenaire.DomaineDeCompetencePartenaire;
-                ancienPartenaire.LocalisationPartenaire.LatitudeLocalisation = nouveauPartenaire.LocalisationPartenaire.LatitudeLocalisation;
-                ancienPartenaire.LocalisationPartenaire.LongitudeLocalisation = nouveauPartenaire.LocalisationPartenaire.LongitudeLocalisation;
-                ancienPartenaire.ListeSousSpecialitesPartenaire = nouveauPartenaire.ListeSousSpecialitesPartenaire;
-                ancienPartenaire.ListeMobilitesPartenaires = nouveauPartenaire.ListeMobilitesPartenaires;
-                ancienPartenaire.ListeAidesFinancieresPartenaires = nouveauPartenaire.ListeAidesFinancieresPartenaires;
-                ancienPartenaire.ListeContactsPartenaires = nouveauPartenaire.ListeContactsPartenaires;
-                that.notifieModificationPartenaire(ancienPartenaire);
-            },
-            error: function (erreur) {
-                //console.log(erreur);
-                that.notifieErreur(that.creerErreurSerializable(erreur.responseJSON));
-            }
-        });*/
+    public modifierPartenaire(ancienPartenaire: Partenaire, nouveauPartenaire: Partenaire): void {
+        var coutPartenaire = this.modelePlateforme.getCoutAvecNomPays(nouveauPartenaire.LocalisationPartenaire.NomPaysLocalisation);
+        if (!coutPartenaire) {
+            var cout = new Cout();
+            cout.NomPaysCout = nouveauPartenaire.LocalisationPartenaire.NomPaysLocalisation;
+            $.when(this.ajouterCout(cout)).done(() => {
+                nouveauPartenaire.CoutPartenaire = cout;
+                this.modifierPartenaireAjax(ancienPartenaire, nouveauPartenaire);
+            });
+        }
+        else {
+            nouveauPartenaire.CoutPartenaire = coutPartenaire;
+            this.modifierPartenaireAjax(ancienPartenaire, nouveauPartenaire);
+        }
     }
 
     public chargerListePartenaires(): JQueryPromise<any> {
@@ -333,6 +348,9 @@ export class ControleurPlateforme {
                     localisationPartenaire.IdentifiantLocalisation = partenaire.localisationPartenaire.identifiantLocalisation;
                     localisationPartenaire.LatitudeLocalisation = partenaire.localisationPartenaire.latitudeLocalisation;
                     localisationPartenaire.LongitudeLocalisation = partenaire.localisationPartenaire.longitudeLocalisation;
+                    localisationPartenaire.NomLocalisation = partenaire.localisationPartenaire.nomLocalisation;
+                    localisationPartenaire.NomPaysLocalisation = partenaire.localisationPartenaire.nomPaysLocalisation;
+                    localisationPartenaire.CodePaysLocalisation = partenaire.localisationPartenaire.codePaysLocalisation;
                     partenaireObjet.LocalisationPartenaire = localisationPartenaire;
 
                     partenaire.listeSousSpecialitesPartenaire.forEach((sousSpecialite: any) => {
@@ -356,6 +374,9 @@ export class ControleurPlateforme {
 
                     partenaireObjet.InformationLogementPartenaire = partenaire.informationLogementPartenaire;
                     partenaireObjet.InformationCoutPartenaire = partenaire.informationCoutPartenaire;
+
+                    partenaireObjet.CoutPartenaire = that.modelePlateforme.getCoutAvecIdentifiant(partenaire.coutPartenaire.identifiantCout);
+                    partenaireObjet.CoutPartenaire.ajouterPartenaireCout(partenaireObjet);
 
                     that.modelePlateforme.ajouterPartenaire(partenaireObjet);
                     that.notifieAjoutPartenaire(partenaireObjet);
@@ -535,6 +556,77 @@ export class ControleurPlateforme {
                     contactObjet.FonctionContact = contact.fonctionContact;
                     that.modelePlateforme.ajouterContact(contactObjet);
                     that.notifieAjoutContact(contactObjet);
+                    //console.log(that.modelePlateforme);
+                });
+            },
+            error: function (erreur) {
+                //console.log(erreur);
+                that.notifieErreur(that.creerErreurSerializable(erreur.responseJSON));
+            }
+        });
+    }
+
+    private ajouterCout(cout: Cout): JQueryPromise<any> {
+        var that = this;
+        return $.ajax({
+            url: "api/couts",
+            method: "post",
+            data: cout.getObjetSerializable(),
+            success: function (resultat) {
+                cout.IdentifiantCout = resultat.identifiantCout;
+                that.modelePlateforme.ajouterCout(cout);
+            },
+            error: function (erreur) {
+                //console.log(erreur);
+                that.notifieErreur(that.creerErreurSerializable(erreur.responseJSON));
+            }
+        });
+    }
+
+    public modifierCout(ancienCout: Cout, nouveauCout: Cout): void {
+        nouveauCout.IdentifiantCout = ancienCout.IdentifiantCout;
+        var that = this;
+        $.ajax({
+            url: "api/couts",
+            method: "put",
+            data: nouveauCout.getObjetSerializable(),
+            success: function (resultat) {
+                ancienCout.CoutMoyenParMois = nouveauCout.CoutMoyenParMois;
+                ancienCout.CoutLogementParMois = nouveauCout.CoutLogementParMois;
+                ancienCout.CoutVieParMois = nouveauCout.CoutVieParMois;
+                ancienCout.CoutInscriptionParMois = nouveauCout.CoutInscriptionParMois;
+                that.notifieModificationCout(ancienCout);
+            },
+            error: function (erreur) {
+                //console.log(erreur);
+                that.notifieErreur(that.creerErreurSerializable(erreur.responseJSON));
+            }
+        });
+    }
+
+    public chargerListeCouts(): JQueryPromise<any> {
+        if (this.modelePlateforme.ListeCoutsPlateforme.length > 0) {
+            this.modelePlateforme.ListeCoutsPlateforme.forEach((cout: Cout) => {
+                this.notifieAjoutCout(cout);
+            });
+            return $.Deferred().resolve();
+        }
+        var that = this;
+        return $.ajax({
+            url: "api/couts",
+            method: "get",
+            dataType: "json",
+            success: function (resultat) {
+                resultat.forEach(function (cout: any) {
+                    var coutObjet = new Cout();
+                    coutObjet.IdentifiantCout = cout.identifiantCout;
+                    coutObjet.NomPaysCout = cout.nomPaysCout;
+                    coutObjet.CoutMoyenParMois = cout.coutMoyenParMois;
+                    coutObjet.CoutLogementParMois = cout.coutLogementParMois;
+                    coutObjet.CoutVieParMois = cout.coutVieParMois;
+                    coutObjet.CoutInscriptionParMois = cout.coutInscriptionParMois;
+                    that.modelePlateforme.ajouterCout(coutObjet);
+                    that.notifieAjoutCout(coutObjet);
                     //console.log(that.modelePlateforme);
                 });
             },

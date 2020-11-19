@@ -6,6 +6,7 @@ import { SousSpecialite } from "../modelePlateforme/sousspecialite";
 import { Mobilite } from "../modelePlateforme/mobilite";
 import { AideFinanciere } from "../modelePlateforme/aideFinanciere";
 import { Contact } from "../modelePlateforme/contact";
+import { Cout } from "../modelePlateforme/cout";
 import { ErreurSerializable } from "../erreur/erreurSerializable";
 
 import ModalErreur from "./composants/modalErreur";
@@ -72,6 +73,14 @@ export default class VueAPropos extends Vue implements IVuePlateforme {
     }
 
     public modificationContact(contact: Contact): void {
+
+    }
+
+    public ajoutCout(cout: Cout): void {
+
+    }
+
+    public modificationCout(cout: Cout): void {
 
     }
 

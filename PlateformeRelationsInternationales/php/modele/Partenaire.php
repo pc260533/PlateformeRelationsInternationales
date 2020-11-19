@@ -20,6 +20,7 @@ class Partenaire implements ISerializable {
     private $informationLogementPartenaire;
     private $informationCoutPartenaire;
     private $listeImagesPartenaire;
+    private $coutPartenaire;
 
 	public function getIdentifiantPartenaire(): int {
 		return $this->identifiantPartenaire;
@@ -109,6 +110,14 @@ class Partenaire implements ISerializable {
         $this->listeImagesPartenaire = $listeImagesPartenaire;
     }
 
+	public function getCoutPartenaire(): Cout {
+		return $this->coutPartenaire;
+	}
+
+	public function setCoutPartenaire(Cout $coutPartenaire): void {
+        $this->coutPartenaire = $coutPartenaire;
+    }
+
 	private function getlisteSousSpecialitesSerializable() : array {
 		$res = array();
 		foreach ($this->listeSousSpecialitesPartenaire as $specialite) {
@@ -149,6 +158,12 @@ class Partenaire implements ISerializable {
 		return $res;
 	}
 
+	private function getCoutPartenaireSerializable() : array {
+		return array(
+			"identifiantCout" => $this->coutPartenaire->getIdentifiantCout(),
+		);
+	}
+
 	public function __construct() {
 		$this->identifiantPartenaire = 0;
 		$this->nomPartenaire = "";
@@ -161,6 +176,7 @@ class Partenaire implements ISerializable {
 		$this->informationLogementPartenaire = "";
 		$this->informationCoutPartenaire = "";
 		$this->listeImagesPartenaire = array();
+		$this->coutPartenaire = null;
 	}
 
 	public function ajouterSousSpecialite(SousSpecialite $sousSpecialite) {
@@ -231,7 +247,8 @@ class Partenaire implements ISerializable {
             "listeAidesFinancieresPartenaire" => $this->getListeAidesFinancieresSerializable(),
             "informationLogementPartenaire" => $this->getInformationLogementPartenaire(),
             "informationCoutPartenaire" => $this->getInformationCoutPartenaire(),
-            "listeImagesPartenaire" => $this->getListeImagesPartenaireSerializable()
+            "listeImagesPartenaire" => $this->getListeImagesPartenaireSerializable(),
+            "coutPartenaire" => $this->getCoutPartenaireSerializable()
         );
 	}
 

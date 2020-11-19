@@ -6,11 +6,13 @@ import { SousSpecialite } from "../modelePlateforme/sousspecialite";
 import { Mobilite } from "../modelePlateforme/mobilite";
 import { AideFinanciere } from "../modelePlateforme/aideFinanciere";
 import { Contact } from "../modelePlateforme/contact";
+import { Cout } from "../modelePlateforme/cout";
 import { ErreurSerializable } from "../erreur/erreurSerializable";
 
 import imagePartenaires from "../../images/accueil/partenaires.png";
 import imagesAidesFinancieres from "../../images/accueil/aidesfinancieres.png";
 import imageContacts from "../../images/accueil/contacts.png";
+import imageCouts from "../../images/accueil/couts.png";
 import imageAPropos from "../../images/accueil/apropos.png";
 
 import CarouselSpecifique from "./composants/carouselSpecifique";
@@ -74,10 +76,19 @@ export default class VueAccueil extends Vue implements IVuePlateforme {
 
     }
 
+    public ajoutCout(cout: Cout): void {
+
+    }
+
+    public modificationCout(cout: Cout): void {
+
+    }
+
     private afficherImages(): void {
         $("#imagePartenaires").attr("src", imagePartenaires);
         $("#imageAidesFinancieres").attr("src", imagesAidesFinancieres);
         $("#imageContacts").attr("src", imageContacts);
+        $("#imageCouts").attr("src", imageCouts);
         $("#imageAPropos").attr("src", imageAPropos);
     }
 

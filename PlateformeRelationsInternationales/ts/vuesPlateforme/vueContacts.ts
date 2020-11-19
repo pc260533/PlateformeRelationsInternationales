@@ -6,6 +6,7 @@ import { SousSpecialite } from "../modelePlateforme/sousspecialite";
 import { Mobilite } from "../modelePlateforme/mobilite";
 import { AideFinanciere } from "../modelePlateforme/aideFinanciere";
 import { Contact } from "../modelePlateforme/contact";
+import { Cout } from "../modelePlateforme/cout";
 import { ErreurSerializable } from "../erreur/erreurSerializable";
 
 import Datatables from "./composants/datatables";
@@ -78,6 +79,14 @@ export default class VueContacts extends Vue implements IVuePlateforme {
 
     public modificationContact(contact: Contact): void {
         this.datatablesContact.modifierLigneSelectionneeDansDatatables(contact);
+    }
+
+    public ajoutCout(cout: Cout): void {
+
+    }
+
+    public modificationCout(cout: Cout): void {
+
     }
 
     private initialiserDatatables() {

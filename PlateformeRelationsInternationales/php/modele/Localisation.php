@@ -12,6 +12,9 @@ class Localisation implements ISerializable {
 	private $identifiantLocalisation;
 	private $latitudeLocalisation;
 	private $longitudeLocalisation;
+	private $nomLocalisation;
+	private $nomPaysLocalisation;
+	private $codePaysLocalisation;
 
 	public function getIdentifiantLocalisation(): int {
         return $this->identifiantLocalisation;
@@ -37,10 +40,37 @@ class Localisation implements ISerializable {
         $this->longitudeLocalisation = $longitudeLocalisation;
     }
 
+	public function getNomLocalisation(): string {
+        return $this->nomLocalisation;
+    }
+
+    public function setNomLocalisation(string $nomLocalisation): void {
+        $this->nomLocalisation = $nomLocalisation;
+    }
+
+	public function getNomPaysLocalisation(): string {
+        return $this->nomPaysLocalisation;
+    }
+
+    public function setNomPaysLocalisation(string $nomPaysLocalisation): void {
+        $this->nomPaysLocalisation = $nomPaysLocalisation;
+    }
+
+	public function getCodePaysLocalisation(): string {
+        return $this->codePaysLocalisation;
+    }
+
+    public function setCodePaysLocalisation(string $codePaysLocalisation): void {
+        $this->codePaysLocalisation = $codePaysLocalisation;
+    }
+
 	public function __construct() {
 		$this->identifiantLocalisation = 0;
 		$this->latitudeLocalisation = "";
 		$this->longitudeLocalisation = "";
+		$this->nomLocalisation = "";
+		$this->nomPaysLocalisation = "";
+		$this->codePaysLocalisation = "";
 	}
 
 
@@ -54,7 +84,10 @@ class Localisation implements ISerializable {
 		return array(
 			"identifiantLocalisation" => $this->getIdentifiantLocalisation(),
             "latitudeLocalisation" => $this->getLatitudeLocalisation(),
-            "longitudeLocalisation" => $this->getLongitudeLocalisation()
+            "longitudeLocalisation" => $this->getLongitudeLocalisation(),
+            "nomLocalisation" => $this->getNomLocalisation(),
+            "nomPaysLocalisation" => $this->getNomPaysLocalisation(),
+            "codePaysLocalisation" => $this->getCodePaysLocalisation()
         );
 	}
 

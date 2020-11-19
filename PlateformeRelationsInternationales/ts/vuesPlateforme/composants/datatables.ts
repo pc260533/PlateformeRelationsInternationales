@@ -82,7 +82,12 @@ export default class Datatables<TypeLigne extends object> extends Vue {
 
     public modifierLigneSelectionneeDansDatatables(ligne: TypeLigne): void {
         this.datatables.row(".selected").data(ligne).draw();
-        
+    }
+
+    public redessinerDatatables(): void {
+        this.datatables.rows().data().each((ligne: TypeLigne, index: number) => {
+            this.datatables.row(index).data(ligne).draw();
+        });
     }
 
     public ajusterLesColonnes(): void {

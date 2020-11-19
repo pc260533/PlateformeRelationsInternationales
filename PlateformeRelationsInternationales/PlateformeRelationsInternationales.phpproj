@@ -27,10 +27,18 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="index.php" />
+    <Compile Include="php\controleurs\ControleurAidesFinancieres.php" />
+    <Compile Include="php\controleurs\ControleurContacts.php" />
+    <Compile Include="php\controleurs\ControleurCouts.php" />
+    <Compile Include="php\controleurs\ControleurMobilites.php" />
+    <Compile Include="php\controleurs\ControleurPartenaires.php" />
+    <Compile Include="php\controleurs\ControleurSpecialites.php" />
+    <Compile Include="php\controleurs\IControleurPlateforme.php" />
     <Compile Include="php\exception\ExceptionBaseDeDonneesPlateforme.php" />
     <Compile Include="php\exception\ExceptionSerializable.php" />
     <Compile Include="php\modele\AideFinanciere.php" />
     <Compile Include="php\modele\Contact.php" />
+    <Compile Include="php\modele\Cout.php" />
     <Compile Include="php\modele\ImagePartenaire.php" />
     <Compile Include="php\modele\ISerializable.php" />
     <Compile Include="php\modele\Localisation.php" />
@@ -39,9 +47,21 @@
     <Compile Include="php\modele\Plateforme.php" />
     <Compile Include="php\modele\SousSpecialite.php" />
     <Compile Include="php\modele\Specialite.php" />
+    <Compile Include="php\rest\aidesFinancieres.php" />
+    <Compile Include="php\rest\contacts.php" />
+    <Compile Include="php\rest\couts.php" />
+    <Compile Include="php\rest\mobilites.php" />
+    <Compile Include="php\rest\partenaires.php" />
+    <Compile Include="php\rest\specialites.php" />
+    <Compile Include="php\stockage\GestionFichiers.php" />
     <Compile Include="php\stockage\InstalleurBaseDeDonnees.php" />
+    <Compile Include="php\stockage\StockageAidesFinancieres.php" />
     <Compile Include="php\stockage\StockageBaseDeDonnees.php" />
-    <Compile Include="php\stockage\StockageFichiers.php" />
+    <Compile Include="php\stockage\StockageContacts.php" />
+    <Compile Include="php\stockage\StockageCouts.php" />
+    <Compile Include="php\stockage\StockageMobilites.php" />
+    <Compile Include="php\stockage\StockagePartenaires.php" />
+    <Compile Include="php\stockage\StockageSpecialites.php" />
     <Compile Include="php\templates\templatePageApplication.php" />
     <Compile Include="php\pages\Page.php" />
     <Compile Include="php\pages\PageApplication.php" />
@@ -53,6 +73,8 @@
     <Folder Include="images\apropos\" />
     <Folder Include="php\modele\" />
     <Folder Include="php\exception\" />
+    <Folder Include="php\controleurs\" />
+    <Folder Include="php\rest\" />
     <Folder Include="php\stockage\" />
     <Folder Include="php\templates\" />
     <Folder Include="php\pages\" />
@@ -84,6 +106,7 @@
     <Content Include="scss\vues\vueAidesFinancieres.scss" />
     <Content Include="scss\vues\vueAPropos.scss" />
     <Content Include="scss\vues\vueContacts.scss" />
+    <Content Include="scss\vues\vueCouts.scss" />
     <Content Include="scss\vues\vueErreur.scss" />
     <Content Include="scss\vues\vuePartenaires.scss" />
     <Content Include="tsconfig.json" />
@@ -95,6 +118,7 @@
     <Content Include="ts\main.ts" />
     <Content Include="ts\modelePlateforme\aideFinanciere.ts" />
     <Content Include="ts\modelePlateforme\contact.ts" />
+    <Content Include="ts\modelePlateforme\cout.ts" />
     <Content Include="ts\modelePlateforme\imagePartenaire.ts" />
     <Content Include="ts\modelePlateforme\iserializable.ts" />
     <Content Include="ts\modelePlateforme\localisation.ts" />
@@ -127,12 +151,14 @@
     <Content Include="ts\vuesPlateforme\templates\vueAPropos.html" />
     <Content Include="ts\vuesPlateforme\templates\vueAidesFinancieres.html" />
     <Content Include="ts\vuesPlateforme\templates\vueAccueil.html" />
+    <Content Include="ts\vuesPlateforme\templates\vueCouts.html" />
     <Content Include="ts\vuesPlateforme\templates\vueErreur.html" />
     <Content Include="ts\vuesPlateforme\vueAPropos.ts" />
     <Content Include="ts\vuesPlateforme\templates\vuePartenaires.html" />
     <Content Include="ts\vuesPlateforme\vueAccueil.ts" />
     <Content Include="ts\vuesPlateforme\vueAidesFinancieres.ts" />
     <Content Include="ts\vuesPlateforme\vueContacts.ts" />
+    <Content Include="ts\vuesPlateforme\vueCouts.ts" />
     <Content Include="ts\vuesPlateforme\vueErreur.ts" />
     <Content Include="ts\vuesPlateforme\vuePartenaires.ts" />
     <Content Include="Web.config" />

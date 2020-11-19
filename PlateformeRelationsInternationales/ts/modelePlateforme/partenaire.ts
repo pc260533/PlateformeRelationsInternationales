@@ -5,6 +5,7 @@ import { Contact } from "./contact";
 import { AideFinanciere } from "./aideFinanciere";
 import { ISerializable } from "./ISerializable";
 import { ImagePartenaire } from "./imagePartenaire";
+import { Cout } from "./cout";
 
 export class Partenaire implements ISerializable {
     private identifiantPartenaire: number;
@@ -18,6 +19,7 @@ export class Partenaire implements ISerializable {
     private informationLogementPartenaire: string;
     private informationCoutPartenaire: string;
     private listeImagesPartenaire: ImagePartenaire[];
+    private coutPartenaire: Cout;
 
     public get IdentifiantPartenaire(): number {
         return this.identifiantPartenaire;
@@ -107,6 +109,14 @@ export class Partenaire implements ISerializable {
         this.listeImagesPartenaire = listeImagesPartenaire;
     }
 
+    public get CoutPartenaire(): Cout {
+        return this.coutPartenaire;
+    }
+
+    public set CoutPartenaire(coutPartenaire: Cout) {
+        this.coutPartenaire = coutPartenaire;
+    }
+
     public getListeSousSpecialitesPartenaireId(): any[] {
         var listeSousSpecialitesPartenaireId: any[] = [];
         this.listeSousSpecialitesPartenaire.forEach((sousSpecialite: SousSpecialite) => {
@@ -169,6 +179,7 @@ export class Partenaire implements ISerializable {
         this.informationLogementPartenaire = "";
         this.informationCoutPartenaire = "";
         this.listeImagesPartenaire = [];
+        this.coutPartenaire = null;
     }
 
     public ajouterSousSpecialite(sousSpecialite: SousSpecialite): void {
@@ -238,7 +249,8 @@ export class Partenaire implements ISerializable {
             listeContactsPartenaire: this.getListeContactsPartenaireId(),
             informationLogementPartenaire: this.InformationLogementPartenaire,
             informationCoutPartenaire: this.InformationCoutPartenaire,
-            listeImagesPartenaire: this.getListeImagesPartenaire()
+            listeImagesPartenaire: this.getListeImagesPartenaire(),
+            coutPartenaire: this.CoutPartenaire.getObjetSerializableId()
         }
         return partenaire;
     }

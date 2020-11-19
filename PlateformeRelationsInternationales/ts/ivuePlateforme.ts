@@ -3,6 +3,7 @@ import { SousSpecialite } from "./modelePlateforme/sousspecialite";
 import { Mobilite } from "./modelePlateforme/mobilite";
 import { AideFinanciere } from "./modelePlateforme/aideFinanciere";
 import { Contact } from "./modelePlateforme/contact";
+import { Cout } from "./modelePlateforme/cout";
 import { ErreurSerializable } from "./erreur/erreurSerializable";
 
 export interface IVuePlateforme {
@@ -26,5 +27,9 @@ export interface IVuePlateforme {
     suppressionContact(contact: Contact): void;
 
     modificationContact(contact: Contact): void;
+
+    ajoutCout(cout: Cout): void;
+
+    modificationCout(cout: Cout): void;
 
 }

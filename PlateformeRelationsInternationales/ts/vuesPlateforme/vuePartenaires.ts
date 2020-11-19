@@ -8,6 +8,7 @@ import { Mobilite } from "../modelePlateforme/mobilite";
 import { Contact } from "../modelePlateforme/contact";
 import { Localisation } from "../modelePlateforme/localisation";
 import { SousSpecialite } from "../modelePlateforme/sousspecialite";
+import { Cout } from "../modelePlateforme/cout";
 import { ErreurSerializable } from "../erreur/erreurSerializable";
 
 import Datatables from "./composants/datatables";
@@ -61,10 +62,6 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
     }
 
     public ajoutPartenaire(partenaire: Partenaire): void {
-        /*if (partenaire.ListeImagesPartenaire.length > 0) {
-            $("#testImage").attr("src", partenaire.ListeImagesPartenaire[0].CheminImagePartenaireServeur);
-        }*/
-        
         var latitudeLocalisation = partenaire.LocalisationPartenaire.LatitudeLocalisation;
         var longitudeLocalisation = partenaire.LocalisationPartenaire.LongitudeLocalisation;
         if ((latitudeLocalisation != "") && (longitudeLocalisation != "")) {
@@ -121,6 +118,14 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
 
     }
 
+    public ajoutCout(cout: Cout): void {
+
+    }
+
+    public modificationCout(cout: Cout): void {
+
+    }
+
     private initialiserDatatables() {
         this.proprietesDatatablesPartenaires = new ProprietesDatatables();
         this.proprietesDatatablesPartenaires.OrdreDesElementsDeControle = "Bfti";
@@ -149,6 +154,11 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
             $("#selectListeContactsPartenaire").empty();
             $("#listeImagesPartenaireServeur").empty();
             $("#inputListeImagesPartenaires").removeClass("is-invalid");
+            $("#inputNomPartenaire").removeClass("is-invalid");
+            $("#inputLatitudePartenaire").removeClass("is-invalid");
+            $("#inputLongitudePartenaire").removeClass("is-invalid");
+            $("#inputNomLocalisationPartenaire").removeClass("is-invalid");
+            $("#inputNomPaysLocalisationPartenaire").removeClass("is-invalid");
             this.geocoderLocalisation.clear();
         });
 
@@ -172,6 +182,10 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
             specialiteSelectionnee.ListeSousSpecialites.forEach((sousSpecialite: SousSpecialite) => {
                 this.ajouterSousSpecialiteDansListe(sousSpecialite, false);
             });
+        });
+
+        $("#inputNomPartenaire").click(function () {
+            $("#inputNomPartenaire").removeClass("is-invalid");
         });
 
         $("#inputListeImagesPartenaires").click(function () {
@@ -395,6 +409,9 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
         var localisationPartenaire = new Localisation();
         localisationPartenaire.LatitudeLocalisation = $("#inputLatitudePartenaire").val() as string;
         localisationPartenaire.LongitudeLocalisation = $("#inputLongitudePartenaire").val() as string;
+        localisationPartenaire.NomLocalisation = $("#inputNomLocalisationPartenaire").val() as string;
+        localisationPartenaire.NomPaysLocalisation = $("#inputNomPaysLocalisationPartenaire").val() as string;
+        localisationPartenaire.CodePaysLocalisation = $("#inputCodePaysLocalisationPartenaire").val() as string;
         partenaire.LocalisationPartenaire = localisationPartenaire;
         partenaire.InformationLogementPartenaire = $("#textareaInformationLogementPartenaire").val() as string;
         partenaire.InformationCoutPartenaire = $("#textareaInformationCoutPartenaire").val() as string;
@@ -455,9 +472,25 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
         this.geocoderLocalisation.addTo("#geocoderLocalisation");
         $("#inputLatitudePartenaire").prop("disabled", true);
         $("#inputLongitudePartenaire").prop("disabled", true);
+        $("#inputNomLocalisationPartenaire").prop("disabled", true);
+        $("#inputNomPaysLocalisationPartenaire").prop("disabled", true);
         this.geocoderLocalisation.on("result", function (e) {
+            //On désactive l'affichage de précédente erreur.
+            $("#inputLatitudePartenaire").removeClass("is-invalid");
+            $("#inputLongitudePartenaire").removeClass("is-invalid");
+            $("#inputNomLocalisationPartenaire").removeClass("is-invalid");
+            $("#inputNomPaysLocalisationPartenaire").removeClass("is-invalid");
+
             $("#inputLatitudePartenaire").val(e.result.center[1]);
             $("#inputLongitudePartenaire").val(e.result.center[0])
+            $("#inputNomLocalisationPartenaire").val(e.result.place_name);
+            e.result.context.forEach((context: any) => {
+                if (context.id.startsWith("country")) {
+                    $("#inputNomPaysLocalisationPartenaire").val(context.text);
+                    $("#inputCodePaysLocalisationPartenaire").val(context.short_code);
+                }
+            });
+
         });
         //$("#geocoderLocalisation").find("input").val("Dijon, Côte-d'Or, France");
         //geocoder.setInput("Dijon, Côte-d'Or, France");
@@ -476,7 +509,8 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
         $.when(this.controleurPlateforme.chargerListeSpecialites(),
             this.controleurPlateforme.chargerListeMobilites(),
             this.controleurPlateforme.chargerListeAidesFinancieres(),
-            this.controleurPlateforme.chargerListeContacts()).done(() => {
+            this.controleurPlateforme.chargerListeContacts(),
+            this.controleurPlateforme.chargerListeCouts()).done(() => {
                 this.controleurPlateforme.chargerListePartenaires();
             });
     }
@@ -504,8 +538,26 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
         this.modalEditePartenaire.montrerModal();
         $("#boutonEditePartenaire").off();
         $("#boutonEditePartenaire").on("click", () => {
-            this.controleurPlateforme.ajouterPartenaire(this.creerPartenaire());
-            this.modalEditePartenaire.cacherModal();
+            try {
+                if ($("#inputNomPartenaire").val() == "") {
+                    $("#inputNomPartenaire").addClass("is-invalid");
+                    //throw new Error("");
+                }
+                if ($("#inputLatitudePartenaire").val() == "") {
+                    $("#inputLatitudePartenaire").addClass("is-invalid");
+                    $("#inputLongitudePartenaire").addClass("is-invalid");
+                    $("#inputNomLocalisationPartenaire").addClass("is-invalid");
+                    $("#inputNomPaysLocalisationPartenaire").addClass("is-invalid");
+                    //throw new Error("");
+                }
+                this.controleurPlateforme.ajouterPartenaire(this.creerPartenaire());
+                this.modalEditePartenaire.cacherModal();
+            }
+            catch {
+                $("body").animate({
+                    scrollTop: $($(".is-invalid")[0]).focus().offset().top - 25
+                }, 1000);
+            }
         });
     }
 
@@ -527,6 +579,9 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
             $("#inputDomaineDeCompetencePartenaire").val(premierPartenaireSelectionne.DomaineDeCompetencePartenaire);
             $("#inputLatitudePartenaire").val(premierPartenaireSelectionne.LocalisationPartenaire.LatitudeLocalisation);
             $("#inputLongitudePartenaire").val(premierPartenaireSelectionne.LocalisationPartenaire.LongitudeLocalisation);
+            $("#inputNomLocalisationPartenaire").val(premierPartenaireSelectionne.LocalisationPartenaire.NomLocalisation);
+            $("#inputNomPaysLocalisationPartenaire").val(premierPartenaireSelectionne.LocalisationPartenaire.NomPaysLocalisation);
+            $("#inputCodePaysLocalisationPartenaire").val(premierPartenaireSelectionne.LocalisationPartenaire.CodePaysLocalisation);
             $("#textareaInformationLogementPartenaire").val(premierPartenaireSelectionne.InformationLogementPartenaire);
             $("#textareaInformationCoutPartenaire").val(premierPartenaireSelectionne.InformationCoutPartenaire);
 
@@ -589,29 +644,18 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
                             }
                         });
                     });
-
                     var nouveauPartenaire = this.creerPartenaire();
-
-                    /*$("#listeImagesPartenaireServeur li").each((index: number, element: HTMLElement) => {
-                        var nomImagePartenaire = $(element).text().split("/").pop();
-                        console.log(nouveauPartenaire);
-                        if (nouveauPartenaire.getImagePartenaireAvecNomImage(nomImagePartenaire) != null) {
-                            $("#inputListeImagesPartenaires").addClass("is-invalid");
-                            return;
-                        }
-                    });*/
-
                     // tout ce qui est dans la liste des images du nouveau partenaire et qui a un fichier à null est supprimé sinon ajouté.
                     premierPartenaireSelectionne.ListeImagesPartenaire.forEach((imagePartenaire: ImagePartenaire) => {
                         if ($("#listeImagesPartenaireServeur li[value=" + imagePartenaire.IdentifiantImagePartenaire + "]").length == 0) {
                             nouveauPartenaire.ajouterImagePartenaire(imagePartenaire);
                         }
                     });
-
                     this.controleurPlateforme.modifierPartenaire(premierPartenaireSelectionne, nouveauPartenaire);
                     this.modalEditePartenaire.cacherModal();
                 }
-                catch {
+                catch (erreur) {
+                    console.log(erreur);
                     $("#inputListeImagesPartenaires").addClass("is-invalid");
                     $("body").animate({
                         scrollTop: $($(".is-invalid")[0]).focus().offset().top - 25
