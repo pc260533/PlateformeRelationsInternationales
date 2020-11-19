@@ -12,7 +12,9 @@ export class ControleurPlateforme {
     }
 
     public inscrire(ivuePlateforme: IVuePlateforme) {
-        this.listeVuesPlateforme.push(ivuePlateforme);
+        if (!this.listeVuesPlateforme.includes(ivuePlateforme)) {
+            this.listeVuesPlateforme.push(ivuePlateforme);
+        }
     }
 
     public resilier(ivuePlateforme: IVuePlateforme) {

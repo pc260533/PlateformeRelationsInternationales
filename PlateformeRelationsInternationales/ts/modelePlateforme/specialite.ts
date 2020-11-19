@@ -24,6 +24,7 @@ export class Specialite {
     public constructor() {
         this.identifiantSpecialite = 0;
         this.nomSpecialite = "";
+        this.listeSousSpecialites = [];
     }
 
     public ajouterSousSpecialite(sousSpecialite: SousSpecialite): void {

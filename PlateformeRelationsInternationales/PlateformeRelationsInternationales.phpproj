@@ -27,18 +27,33 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="index.php" />
+    <Compile Include="php\exception\ExceptionBaseDeDonneesPlateforme.php" />
+    <Compile Include="php\exception\ExceptionSerializable.php" />
+    <Compile Include="php\modele\AideFinanciere.php" />
+    <Compile Include="php\modele\Contact.php" />
+    <Compile Include="php\modele\Localisation.php" />
+    <Compile Include="php\modele\Mobilite.php" />
+    <Compile Include="php\modele\Partenaire.php" />
+    <Compile Include="php\modele\Plateforme.php" />
+    <Compile Include="php\modele\SousSpecialite.php" />
+    <Compile Include="php\modele\Specialite.php" />
+    <Compile Include="php\stockage\InstalleurBaseDeDonnees.php" />
     <Compile Include="php\templates\templatePageApplication.php" />
     <Compile Include="php\pages\Page.php" />
     <Compile Include="php\pages\PageApplication.php" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="images\" />
+    <Folder Include="images\accueil\" />
+    <Folder Include="images\erreur\" />
     <Folder Include="php\modele\" />
+    <Folder Include="php\exception\" />
+    <Folder Include="php\stockage\" />
     <Folder Include="php\templates\" />
     <Folder Include="php\pages\" />
     <Folder Include="scss\" />
     <Folder Include="php\" />
-    <Folder Include="scss\pages\" />
+    <Folder Include="scss\vues\" />
     <Folder Include="ts\" />
     <Folder Include="ts\modelePlateforme\" />
     <Folder Include="ts\vuesPlateforme\" />
@@ -46,10 +61,21 @@
     <Folder Include="ts\vuesPlateforme\templates\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include=".htaccess" />
+    <Content Include="images\accueil\categories.png" />
+    <Content Include="images\accueil\clients.png" />
+    <Content Include="images\accueil\marques.png" />
+    <Content Include="images\accueil\produits.png" />
+    <Content Include="images\erreur\text.png" />
     <Content Include="images\favicon.png" />
     <Content Include="images\logo.png" />
     <Content Include="package.json" />
     <Content Include="scss\style.scss" />
+    <Content Include="scss\vues\vueAccueil.scss" />
+    <Content Include="scss\vues\vueAidesFinancieres.scss" />
+    <Content Include="scss\vues\vueAPropos.scss" />
+    <Content Include="scss\vues\vueContacts.scss" />
+    <Content Include="scss\vues\vuePartenaires.scss" />
     <Content Include="tsconfig.json" />
     <Content Include="ts\application.ts" />
     <Content Include="ts\controleurPlateforme.ts" />
@@ -64,9 +90,20 @@
     <Content Include="ts\modelePlateforme\sousspecialite.ts" />
     <Content Include="ts\modelePlateforme\specialite.ts" />
     <Content Include="ts\router.ts" />
+    <Content Include="ts\shims-scss.d.ts" />
     <Content Include="ts\shims-vue.d.ts" />
     <Content Include="ts\applicationVue.ts" />
+    <Content Include="ts\vuesPlateforme\composants\datatables.ts" />
+    <Content Include="ts\vuesPlateforme\composants\modalSpecifique.ts" />
+    <Content Include="ts\vuesPlateforme\composants\proprietesDatatables.ts" />
+    <Content Include="ts\vuesPlateforme\composants\proprietesDatatablesBouton.ts" />
+    <Content Include="ts\vuesPlateforme\composants\proprietesDatatablesColonne.ts" />
+    <Content Include="ts\vuesPlateforme\composants\spinnerSpecifique.ts" />
+    <Content Include="ts\shims-png.d.ts" />
     <Content Include="ts\vuesPlateforme\templates\applicationVue.html" />
+    <Content Include="ts\vuesPlateforme\templates\datatables.html" />
+    <Content Include="ts\vuesPlateforme\templates\modalSpecifique.html" />
+    <Content Include="ts\vuesPlateforme\templates\spinnerSpecifique.html" />
     <Content Include="ts\vuesPlateforme\templates\vueContacts.html" />
     <Content Include="ts\vuesPlateforme\templates\vueAPropos.html" />
     <Content Include="ts\vuesPlateforme\templates\vueAidesFinancieres.html" />
@@ -77,6 +114,7 @@
     <Content Include="ts\vuesPlateforme\vueAidesFinancieres.ts" />
     <Content Include="ts\vuesPlateforme\vueContacts.ts" />
     <Content Include="ts\vuesPlateforme\vuePartenaires.ts" />
+    <Content Include="ts\vuesPlateforme\vuePlateforme.ts" />
     <Content Include="Web.config" />
     <Content Include="webpack.config.js" />
   </ItemGroup>

@@ -10,7 +10,7 @@
     "allowSyntheticDefaultImports": true,
     "noEmitOnError": true,
     "sourceMap": true,
-    "removeComments": true,
+    "removeComments": false,
     "skipLibCheck": true,
     "target": "es5",
     "module": "esnext", // Could be es6 but its in case we use Dynamic import()

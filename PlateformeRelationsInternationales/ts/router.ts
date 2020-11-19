@@ -6,8 +6,13 @@ import VueAPropos from "./vuesPlateforme/vueAPropos";
 
 import Vue from "vue";
 import Router from "vue-router";
+import { Plateforme } from "./modelePlateforme/plateforme";
+import { ControleurPlateforme } from "./controleurPlateforme";
 
 Vue.use(Router);
+
+const plateforme = new Plateforme();
+const controleurPlateforme = new ControleurPlateforme(plateforme);
 
 export default new Router({
     mode: "history",
@@ -18,31 +23,55 @@ export default new Router({
             alias: "/accueil",
             name: "accueil",
             component: VueAccueil,
-            props: true
+            props: {
+                plateforme: plateforme,
+                controleurPlateforme: controleurPlateforme
+            }
         },
         {
             path: "/partenaires",
             name: "partenaires",
             component: VuePartenaire,
-            props: true
+            props: {
+                plateforme: plateforme,
+                controleurPlateforme: controleurPlateforme
+            }
         },
         {
             path: "/aidesfinancieres",
             name: "aidesfinancieres",
             component: VueAidesFinancieres,
-            props: true
+            props: {
+                plateforme: plateforme,
+                controleurPlateforme: controleurPlateforme
+            }
         },
         {
             path: "/contacts",
             name: "contacts",
             component: VueContacts,
-            props: true
+            props: {
+                plateforme: plateforme,
+                controleurPlateforme: controleurPlateforme
+            }
         },
         {
             path: "/apropos",
             name: "apropos",
             component: VueAPropos,
-            props: true
+            props: {
+                plateforme: plateforme,
+                controleurPlateforme: controleurPlateforme
+            }
+        },
+        {
+            path: "*",
+            name: "tout",
+            component: VueAccueil,
+            props: {
+                plateforme: plateforme,
+                controleurPlateforme: controleurPlateforme
+            }
         },
         /*{
             path: "/about",

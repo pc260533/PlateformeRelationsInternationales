@@ -9,6 +9,9 @@ import { Component, Prop, Vue } from "vue-property-decorator";
     template: require("./templates/vueAidesFinancieres.html")
 })
 export default class VueAidesFinancieres extends Vue implements IVuePlateforme {
+    afficherImages(): void {
+        throw new Error("Method not implemented.");
+    }
     @Prop() private plateforme!: Plateforme;
     @Prop() private controleurPlateforme!: ControleurPlateforme;
 
@@ -29,6 +32,10 @@ export default class VueAidesFinancieres extends Vue implements IVuePlateforme {
         this.controleurPlateforme.inscrire(this);
         console.log(this.plateforme);
         console.log(this.controleurPlateforme);
+    }
+
+    beforeDestroy() {
+        this.controleurPlateforme.resilier(this);
     }
 
 }

@@ -1,0 +1,52 @@
+﻿/* Page d'Accueil */
+/* Présentation des fonctionnalités */
+body {
+    background: #f7f7f7;
+}
+
+.fonctionnalites {
+    background: #f7f7f7;
+}
+
+.fonctionnalites a:link,
+.fonctionnalites a:visited,
+.fonctionnalites a:hover,
+.fonctionnalites a:active {
+    text-decoration: none;
+    color: #212529;
+    background-color: #fff;
+}
+
+.fonctionnalites .fonct {
+    background: #fff;
+    padding: 20px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.fonctionnalites .fonct .testss {
+    text-align: center;
+}
+
+.fonctionnalites .fonct .icon {
+    margin: auto;
+    background-color: #2184BE;
+    width: 60px;
+    height: 60px;
+    text-align: center;
+    line-height: 60px;
+    color: #fff;
+    border-radius: 50%;
+}
+
+.fonctionnalites .fonct-title {
+    font-weight: bold;
+    font-size: 25px;
+    margin-bottom: 20px;
+}
+
+.fonctionnalites .fonct-desc {
+    font-size: 16px;
+    color: #888;
+    margin-bottom: 20px;
+}

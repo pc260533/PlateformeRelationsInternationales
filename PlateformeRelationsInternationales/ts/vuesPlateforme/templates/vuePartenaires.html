@@ -1,7 +1,27 @@
 ﻿<!-- Partenaires -->
 <section class="section partenaires mt-5">
     <div class="container">
-        <table id="datatablesPartenaires" class="display table-striped table-bordered" style="width:100%"></table>
+        <Datatables ref="datatablesPartenaires" v-bind:proprietesDatatables="proprietesDatatables"></Datatables>
+        <ModalSpecifique ref="modalEditePartenaire">
+            <h5 slot="modalHeader" class="modal-tilte">
+                <span id="inputTitreCategorie"></span>
+            </h5>
+            <button slot="modalHeader" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+
+            <form slot="modalBody" class="form">
+                <input type="hidden" id="inputIdentifiantCategorie" value="0" />
+                <div class="form-group">
+                    <label for="inputNomCategorie">Nom</label>
+                    <input type="text" id="inputNomCategorie" class="form-control" />
+                </div>
+            </form>
+
+            <button slot="modalFooter" type="button" id="boutonEditeCategorie" class="btn btn-success">Sauvegarder</button>
+            <button slot="modalFooter" type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+        </ModalSpecifique>
+        <SpinnerSpecifique ref="spinner"></SpinnerSpecifique>
     </div>
 </section>
 <!-- /Partenaires -->

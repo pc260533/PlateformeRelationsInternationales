@@ -2,6 +2,8 @@
 
 export interface IVuePlateforme {
 
+    afficherImages(): void;
+
     ajoutPartenaire(partenaire: Partenaire): void;
 
     modificationPartenaire(partenaire: Partenaire): void;

@@ -1,7 +1,6 @@
 ﻿export class SousSpecialite {
     private identifiantSousSpecialite: number;
     private nomSousSpecialite: string;
-    private
 
     public get IdentifiantSousSpecialite(): number {
         return this.identifiantSousSpecialite;
