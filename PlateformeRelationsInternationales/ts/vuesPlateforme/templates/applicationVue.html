@@ -10,12 +10,25 @@
             </a>
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" href="/partenaires">Partenaires</a>
-                    <router-link :to="{ name: 'partenaires', params: { msg, plateforme, controleurPlateforme } }">Aller à Partenaires</router-link>
+                    <router-link class="nav-link" :to="{ name: 'accueil', params: { plateforme, controleurPlateforme } }">Accueil</router-link>
+                    <router-link class="nav-link" :to="{ name: 'partenaires', params: { plateforme, controleurPlateforme } }">Partenaires</router-link>
+                    <router-link class="nav-link" :to="{ name: 'aidesfinancieres', params: { plateforme, controleurPlateforme } }">Aides Financières</router-link>
+                    <router-link class="nav-link" :to="{ name: 'contacts', params: { plateforme, controleurPlateforme } }">Contacts</router-link>
+                    <router-link class="nav-link" :to="{ name: 'apropos', params: { plateforme, controleurPlateforme } }">A Propos</router-link>
                 </li>
             </ul>
         </div>
     </nav>
+
     <router-view></router-view>
-    <!--<VuePartenaire msg="Hello world!" v-bind:plateforme="plateforme" v-bind:controleurPlateforme="controleurPlateforme" />-->
+
+    <div class="test"></div>
+
+    <footer class="footer pt-4 bg-dark text-light">
+        <div class="container text-center text-md-left">
+            <h5 class="text-uppercase">Plateforme Relations Internationales</h5>
+            <p>Toutes les fonctionnalités de la Platefrome Relations Internationales.</p>
+        </div>
+    </footer>
+
 </div>

@@ -1,25 +1,20 @@
-﻿import { Plateforme } from "./modelePlateforme/plateforme";
+﻿import { Component, Vue } from "vue-property-decorator";
 
-import { Component, Vue } from "vue-property-decorator";
-import VuePartenaire from "./vuesPlateforme/vuePartenaires";
+import { Plateforme } from "./modelePlateforme/plateforme";
 import { ControleurPlateforme } from "./controleurPlateforme";
 import { Partenaire } from "./modelePlateforme/partenaire";
 
 @Component({
-    template: require("./vuesPlateforme/templates/applicationVue.html"),
-    components: {
-        VuePartenaire
-    },
+    template: require("./vuesPlateforme/templates/applicationVue.html")
 })
 export default class ApplicationVue extends Vue {
     private plateforme: Plateforme;
     private controleurPlateforme: ControleurPlateforme;
-    private msg: string;
 
     public constructor() {
         super();
-        this.msg = "oui";
         this.plateforme = new Plateforme();
+        console.log(this.plateforme);
         let partenaire = new Partenaire();
         partenaire.NomPartenaire = "testNomPartenaire";
         this.plateforme.ajouterPartenaire(partenaire);
