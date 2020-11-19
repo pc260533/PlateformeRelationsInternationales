@@ -42,38 +42,6 @@ export default class VueAccueil extends Vue implements IVuePlateforme {
 
     }
 
-    public ajoutSousSpecialiteDansPartenaire(sousSpecialite: SousSpecialite, partenaire: Partenaire): void {
-
-    }
-
-    public suppressionSousSpecialiteDansPartenaire(sousSpecialite: SousSpecialite, partenaire: Partenaire): void {
-
-    }
-
-    public ajoutMobiliteDansPartenaire(mobilite: Mobilite, partenaire: Partenaire): void {
-
-    }
-
-    public suppressionMobiliteDansPartenaire(mobilite: Mobilite, partenaire: Partenaire): void {
-
-    }
-
-    public ajoutAideFinanciereDansPartenaire(aideFinanciere: AideFinanciere, partenaire: Partenaire): void {
-
-    }
-
-    public suppressionAideFinanciereDansPartenaire(aideFinanciere: AideFinanciere, partenaire: Partenaire): void {
-
-    }
-
-    public ajoutContactDansPartenaire(contact: Contact, partenaire: Partenaire): void {
-
-    }
-
-    public suppressionContactDansPartenaire(contact: Contact, partenaire: Partenaire): void {
-
-    }
-
     public ajoutAideFinanciere(aideFinanciere: AideFinanciere): void {
 
     }

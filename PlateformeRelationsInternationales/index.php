@@ -65,6 +65,34 @@ $app->post("/api/partenaires", function (Request $request, Response $response, $
 	$localisationPartenaire->setLatitudeLocalisation($partenaireArray["localisationPartenaire"]["latitudeLocalisation"]);
 	$localisationPartenaire->setLongitudeLocalisation($partenaireArray["localisationPartenaire"]["longitudeLocalisation"]);
 	$partenaire->setLocalisationPartenaire($localisationPartenaire);
+	if (isset($partenaireArray["listeSousSpecialitesPartenaire"])) {
+		foreach ($partenaireArray["listeSousSpecialitesPartenaire"] as $sousSpecialiteArray) {
+			$sousSpecialite = new SousSpecialite();
+			$sousSpecialite->setIdentifiantSousSpecialite($sousSpecialiteArray["identifiantSousSpecialite"]);
+			$partenaire->ajouterSousSpecialite($sousSpecialite);
+		}
+	}
+	if (isset($partenaireArray["listeMobilitesPartenaire"])) {
+		foreach ($partenaireArray["listeMobilitesPartenaire"] as $mobiliteArray) {
+			$mobilite = new Mobilite();
+			$mobilite->setIdentifiantMobilite($mobiliteArray["identifiantMobilite"]);
+			$partenaire->ajouterMobilite($mobilite);
+		}
+	}
+	if (isset($partenaireArray["listeAidesFinancieresPartenaire"])) {
+		foreach ($partenaireArray["listeAidesFinancieresPartenaire"] as $aideFinanciereArray) {
+			$aideFinanciere = new AideFinanciere();
+			$aideFinanciere->setIdentifiantAideFinanciere($aideFinanciereArray["identifiantAideFinanciere"]);
+			$partenaire->ajouterAideFinanciere($aideFinanciere);
+		}
+	}
+	if (isset($partenaireArray["listeContactsPartenaire"])) {
+		foreach ($partenaireArray["listeContactsPartenaire"] as $contactArray) {
+			$contact = new Contact();
+			$contact->setIdentifiantContact($contactArray["identifiantContact"]);
+			$partenaire->ajouterContact($contact);
+		}
+	}
 	$partenaire->setInformationLogementPartenaire($partenaireArray["informationLogementPartenaire"]);
 	$partenaire->setInformationCoutPartenaire($partenaireArray["informationCoutPartenaire"]);
 	$stockageBaseDeDonnee->ajouterPartenaire($partenaire);
@@ -82,6 +110,34 @@ $app->delete("/api/partenaires", function (Request $request, Response $response,
 	$localisationPartenaire = new Localisation();
 	$localisationPartenaire->setIdentifiantLocalisation($partenaireArray["localisationPartenaire"]["identifiantLocalisation"]);
 	$partenaire->setLocalisationPartenaire($localisationPartenaire);
+	if (isset($partenaireArray["listeSousSpecialitesPartenaire"])) {
+		foreach ($partenaireArray["listeSousSpecialitesPartenaire"] as $sousSpecialiteArray) {
+			$sousSpecialite = new SousSpecialite();
+			$sousSpecialite->setIdentifiantSousSpecialite($sousSpecialiteArray["identifiantSousSpecialite"]);
+			$partenaire->ajouterSousSpecialite($sousSpecialite);
+		}
+	}
+	if (isset($partenaireArray["listeMobilitesPartenaire"])) {
+		foreach ($partenaireArray["listeMobilitesPartenaire"] as $mobiliteArray) {
+			$mobilite = new Mobilite();
+			$mobilite->setIdentifiantMobilite($mobiliteArray["identifiantMobilite"]);
+			$partenaire->ajouterMobilite($mobilite);
+		}
+	}
+	if (isset($partenaireArray["listeAidesFinancieresPartenaire"])) {
+		foreach ($partenaireArray["listeAidesFinancieresPartenaire"] as $aideFinanciereArray) {
+			$aideFinanciere = new AideFinanciere();
+			$aideFinanciere->setIdentifiantAideFinanciere($aideFinanciereArray["identifiantAideFinanciere"]);
+			$partenaire->ajouterAideFinanciere($aideFinanciere);
+		}
+	}
+	if (isset($partenaireArray["listeContactsPartenaire"])) {
+		foreach ($partenaireArray["listeContactsPartenaire"] as $contactArray) {
+			$contact = new Contact();
+			$contact->setIdentifiantContact($contactArray["identifiantContact"]);
+			$partenaire->ajouterContact($contact);
+		}
+	}
 	$stockageBaseDeDonnee->supprimerPartenaire($partenaire);
 
 	$json = json_encode($partenaire->getObjetSerializable());
@@ -95,13 +151,42 @@ $app->put("/api/partenaires", function (Request $request, Response $response, $a
 	$partenaire = new Partenaire();
 	$partenaire->setIdentifiantPartenaire($partenaireArray["identifiantPartenaire"]);
 	$partenaire->setNomPartenaire($partenaireArray["nomPartenaire"]);
-	$partenaire->setDomaineDeCompetence($partenaireArray["domaineDeCompetence"]);
+	$partenaire->setDomaineDeCompetence($partenaireArray["domaineDeCompetencePartenaire"]);
 	$localisationPartenaire = new Localisation();
-	$localisationPartenaire->setLatitudeLocalisation($partenaireArray["localisation"]["latitudeLocalisation"]);
-	$localisationPartenaire->setLongitudeLocalisation($partenaireArray["localisation"]["longitudeLocalisation"]);
+	$localisationPartenaire->setIdentifiantLocalisation($partenaireArray["localisationPartenaire"]["identifiantLocalisation"]);
+	$localisationPartenaire->setLatitudeLocalisation($partenaireArray["localisationPartenaire"]["latitudeLocalisation"]);
+	$localisationPartenaire->setLongitudeLocalisation($partenaireArray["localisationPartenaire"]["longitudeLocalisation"]);
 	$partenaire->setLocalisationPartenaire($localisationPartenaire);
 	$partenaire->setInformationLogementPartenaire($partenaireArray["informationLogementPartenaire"]);
 	$partenaire->setInformationCoutPartenaire($partenaireArray["informationCoutPartenaire"]);
+	if (isset($partenaireArray["listeSousSpecialitesPartenaire"])) {
+		foreach ($partenaireArray["listeSousSpecialitesPartenaire"] as $sousSpecialiteArray) {
+			$sousSpecialite = new SousSpecialite();
+			$sousSpecialite->setIdentifiantSousSpecialite($sousSpecialiteArray["identifiantSousSpecialite"]);
+			$partenaire->ajouterSousSpecialite($sousSpecialite);
+		}
+	}
+	if (isset($partenaireArray["listeMobilitesPartenaire"])) {
+		foreach ($partenaireArray["listeMobilitesPartenaire"] as $mobiliteArray) {
+			$mobilite = new Mobilite();
+			$mobilite->setIdentifiantMobilite($mobiliteArray["identifiantMobilite"]);
+			$partenaire->ajouterMobilite($mobilite);
+		}
+	}
+	if (isset($partenaireArray["listeAidesFinancieresPartenaire"])) {
+		foreach ($partenaireArray["listeAidesFinancieresPartenaire"] as $aideFinanciereArray) {
+			$aideFinanciere = new AideFinanciere();
+			$aideFinanciere->setIdentifiantAideFinanciere($aideFinanciereArray["identifiantAideFinanciere"]);
+			$partenaire->ajouterAideFinanciere($aideFinanciere);
+		}
+	}
+	if (isset($partenaireArray["listeContactsPartenaire"])) {
+		foreach ($partenaireArray["listeContactsPartenaire"] as $contactArray) {
+			$contact = new Contact();
+			$contact->setIdentifiantContact($contactArray["identifiantContact"]);
+			$partenaire->ajouterContact($contact);
+		}
+	}
 	$stockageBaseDeDonnee->modifierPartenaire($partenaire);
 
 	$json = json_encode($partenaire->getObjetSerializable());

@@ -53,12 +53,20 @@ export class Partenaire implements ISerializable {
         return this.listeSousSpecialitesPartenaire;
     }
 
+    public set ListeSousSpecialitesPartenaire(listeSousSpecialitesPartenaire: SousSpecialite[]) {
+        this.listeSousSpecialitesPartenaire = listeSousSpecialitesPartenaire;
+    }
+
     public get ListeMobilitesPartenaires(): Mobilite[] {
         return this.listeMobilitesPartenaires;
     }
 
+    public set ListeMobilitesPartenaires(listeMobilitesPartenaires: Mobilite[]) {
+        this.listeMobilitesPartenaires = listeMobilitesPartenaires;
+    }
+
     public get ListeContactsPartenaires(): Contact[] {
-        return this.ListeContactsPartenaires;
+        return this.listeContactsPartenaires;
     }
 
     public set ListeContactsPartenaires(listeContactsPartenaires: Contact[]) {
@@ -87,6 +95,38 @@ export class Partenaire implements ISerializable {
 
     public set InformationCoutPartenaire(informationCoutPartenaire: string) {
         this.informationCoutPartenaire = informationCoutPartenaire;
+    }
+
+    public getListeSousSpecialitesPartenaireId(): any[] {
+        var listeSousSpecialitesPartenaireId: any[] = [];
+        this.listeSousSpecialitesPartenaire.forEach((sousSpecialite: SousSpecialite) => {
+            listeSousSpecialitesPartenaireId.push(sousSpecialite.getObjetSerializableId());
+        });
+        return listeSousSpecialitesPartenaireId;
+    }
+
+    public getListeMobilitesPartenaireId(): any[] {
+        var listeMobilitesPartenaireId: any[] = [];
+        this.listeMobilitesPartenaires.forEach((mobilite: Mobilite) => {
+            listeMobilitesPartenaireId.push(mobilite.getObjetSerializableId());
+        });
+        return listeMobilitesPartenaireId;
+    }
+
+    public getListeAidesFinancieresPartenaireId(): any[] {
+        var listeAidesFinancieresPartenaireId: any[] = [];
+        this.listeAidesFinancieresPartenaires.forEach((aideFinanciere: AideFinanciere) => {
+            listeAidesFinancieresPartenaireId.push(aideFinanciere.getObjetSerializableId());
+        });
+        return listeAidesFinancieresPartenaireId;
+    }
+
+    public getListeContactsPartenaireId(): any[] {
+        var listeContactsPartenaireId: any[] = [];
+        this.listeContactsPartenaires.forEach((contact: Contact) => {
+            listeContactsPartenaireId.push(contact.getObjetSerializableId());
+        });
+        return listeContactsPartenaireId;
     }
 
     public constructor() {
@@ -152,6 +192,10 @@ export class Partenaire implements ISerializable {
             nomPartenaire: this.NomPartenaire,
             domaineDeCompetencePartenaire: this.DomaineDeCompetencePartenaire,
             localisationPartenaire: this.LocalisationPartenaire.getObjetSerializable(),
+            listeSousSpecialitesPartenaire: this.getListeSousSpecialitesPartenaireId(),
+            listeMobilitesPartenaire: this.getListeMobilitesPartenaireId(),
+            listeAidesFinancieresPartenaire: this.getListeAidesFinancieresPartenaireId(),
+            listeContactsPartenaire: this.getListeContactsPartenaireId(),
             informationLogementPartenaire: this.InformationLogementPartenaire,
             informationCoutPartenaire: this.InformationCoutPartenaire
         }

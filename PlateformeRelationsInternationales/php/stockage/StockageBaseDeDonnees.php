@@ -31,28 +31,23 @@ class StockageBaseDeDonnees {
 	private $pdo;
 
 	private function ajouterLocalisation(Localisation $localisation) {
-		$this->pdo->beginTransaction();
 		$requete = "INSERT INTO LOCALISATION(LATITUDELOCALISATION, LONGITUDELOCALISATION) VALUES (:latitudelocalisation, :longitudelocalisation);";
 		$statement = $this->pdo->prepare($requete);
 		$statement->bindValue(":latitudelocalisation", $localisation->getLatitudeLocalisation(), PDO::PARAM_STR);
 		$statement->bindValue(":longitudelocalisation", $localisation->getLongitudeLocalisation(), PDO::PARAM_STR);
 		$statement->execute();
 		$localisation->setIdentifiantLocalisation(intval($this->pdo->lastInsertId()));
-		$this->pdo->commit();
 	}
 
 	private function supprimerLocalisation(Localisation $localisation) {
-		$this->pdo->beginTransaction();
 		$requete = "DELETE FROM LOCALISATION " .
 				   "WHERE IDENTIFIANTLOCALISATION = :identifiantlocalisation";
 		$statement = $this->pdo->prepare($requete);
 		$statement->bindValue(":identifiantlocalisation", $localisation->getIdentifiantLocalisation(), PDO::PARAM_INT);
 		$statement->execute();
-		$this->pdo->commit();
 	}
 
 	private function modifierLocalisation(Localisation $localisation) {
-		$this->pdo->beginTransaction();
 		$requete = "UPDATE LOCALISATION " .
 				   "SET LATITUDELOCALISATION = :latitudelocalisation, LONGITUDELOCALISATION = :longitudelocalisation " .
 				   "WHERE IDENTIFIANTLOCALISATION = :identifiantlocalisation;";
@@ -88,7 +83,6 @@ class StockageBaseDeDonnees {
 		$statement->execute();
 		$donnees = $statement->fetchAll();
 		foreach ($donnees as $ligne) {
-			$localisation = new Localisation();
 			$localisation->setLatitudeLocalisation($ligne["LATITUDELOCALISATION"]);
 			$localisation->setLongitudeLocalisation($ligne["LONGITUDELOCALISATION"]);
 		}
@@ -152,6 +146,102 @@ class StockageBaseDeDonnees {
 			$contact->setIdentifiantContact($ligne["IDENTIFIANTCONTACT"]);
 			$partenaire->ajouterContact($contact);
 		}
+	}
+
+	private function ajouterSousSpecialiteDansPartenaire(Partenaire $partenaire, SousSpecialite $sousSpecialite) {
+		$requete = "INSERT INTO CORRESPONDANCE_PARTENAIRE_SOUSSPECIALITE(IDENTIFIANTPARTENAIRE, IDENTIFIANTSOUSSPECIALITE) VALUES (:identifiantpartenaire, :identifiantsousspecialite);";
+		$statement = $this->pdo->prepare($requete);
+		$statement->bindValue(":identifiantpartenaire", $partenaire->getIdentifiantPartenaire(), PDO::PARAM_INT);
+		$statement->bindValue(":identifiantsousspecialite", $sousSpecialite->getIdentifiantSousSpecialite(), PDO::PARAM_INT);
+		$statement->execute();
+	}
+
+	private function supprimerSousSpecialiteDansPartenaire(Partenaire $partenaire, SousSpecialite $sousSpecialite) {
+		$requete = "DELETE FROM CORRESPONDANCE_PARTENAIRE_SOUSSPECIALITE " .
+				   "WHERE IDENTIFIANTPARTENAIRE = :identifiantpartenaire AND IDENTIFIANTSOUSSPECIALITE = :identifiantsousspecialite;";
+		$statement = $this->pdo->prepare($requete);
+		$statement->bindValue(":identifiantpartenaire", $partenaire->getIdentifiantPartenaire(), PDO::PARAM_INT);
+		$statement->bindValue(":identifiantsousspecialite", $sousSpecialite->getIdentifiantSousSpecialite(), PDO::PARAM_INT);
+		$statement->execute();
+	}
+	private function supprimerToutesSousSpecialitesDansPartenaire(Partenaire $partenaire) {
+		$requete = "DELETE FROM CORRESPONDANCE_PARTENAIRE_SOUSSPECIALITE " .
+				   "WHERE IDENTIFIANTPARTENAIRE = :identifiantpartenaire;";
+		$statement = $this->pdo->prepare($requete);
+		$statement->bindValue(":identifiantpartenaire", $partenaire->getIdentifiantPartenaire(), PDO::PARAM_INT);
+		$statement->execute();
+	}
+
+	private function ajouterMobiliteDansPartenaire(Partenaire $partenaire, Mobilite $mobilite) {
+		$requete = "INSERT INTO CORRESPONDANCE_PARTENAIRE_MOBILITE(IDENTIFIANTPARTENAIRE, IDENTIFIANTMOBILITE) VALUES (:identifiantpartenaire, :identifiantmobilite);";
+		$statement = $this->pdo->prepare($requete);
+		$statement->bindValue(":identifiantpartenaire", $partenaire->getIdentifiantPartenaire(), PDO::PARAM_INT);
+		$statement->bindValue(":identifiantmobilite", $mobilite->getIdentifiantMobilite(), PDO::PARAM_INT);
+		$statement->execute();
+	}
+
+	private function supprimerMobiliteDansPartenaire(Partenaire $partenaire, Mobilite $mobilite) {
+		$requete = "DELETE FROM CORRESPONDANCE_PARTENAIRE_MOBILITE " .
+				   "WHERE IDENTIFIANTPARTENAIRE = :identifiantpartenaire AND IDENTIFIANTMOBILITE = :identifiantmobilite;";
+		$statement = $this->pdo->prepare($requete);
+		$statement->bindValue(":identifiantpartenaire", $partenaire->getIdentifiantPartenaire(), PDO::PARAM_INT);
+		$statement->bindValue(":identifiantmobilite", $mobilite->getIdentifiantMobilite(), PDO::PARAM_INT);
+		$statement->execute();
+	}
+	private function supprimerToutesMobilitesDansPartenaire(Partenaire $partenaire) {
+		$requete = "DELETE FROM CORRESPONDANCE_PARTENAIRE_MOBILITE " .
+				   "WHERE IDENTIFIANTPARTENAIRE = :identifiantpartenaire;";
+		$statement = $this->pdo->prepare($requete);
+		$statement->bindValue(":identifiantpartenaire", $partenaire->getIdentifiantPartenaire(), PDO::PARAM_INT);
+		$statement->execute();
+	}
+
+	private function ajouterContactDansPartenaire(Partenaire $partenaire, Contact $contact) {
+		$requete = "INSERT INTO CORRESPONDANCE_PARTENAIRE_CONTACT(IDENTIFIANTPARTENAIRE, IDENTIFIANTCONTACT) VALUES (:identifiantpartenaire, :identifiantcontact);";
+		$statement = $this->pdo->prepare($requete);
+		$statement->bindValue(":identifiantpartenaire", $partenaire->getIdentifiantPartenaire(), PDO::PARAM_INT);
+		$statement->bindValue(":identifiantcontact", $contact->getIdentifiantContact(), PDO::PARAM_INT);
+		$statement->execute();
+	}
+
+	private function supprimerContactDansPartenaire(Partenaire $partenaire, Contact $contact) {
+		$requete = "DELETE FROM CORRESPONDANCE_PARTENAIRE_CONTACT " .
+				   "WHERE IDENTIFIANTPARTENAIRE = :identifiantpartenaire AND IDENTIFIANTCONTACT = :identifiantcontact;";
+		$statement = $this->pdo->prepare($requete);
+		$statement->bindValue(":identifiantpartenaire", $partenaire->getIdentifiantPartenaire(), PDO::PARAM_INT);
+		$statement->bindValue(":identifiantcontact", $contact->getIdentifiantContact(), PDO::PARAM_INT);
+		$statement->execute();
+	}
+	private function supprimerTousContactsDansPartenaire(Partenaire $partenaire) {
+		$requete = "DELETE FROM CORRESPONDANCE_PARTENAIRE_CONTACT " .
+				   "WHERE IDENTIFIANTPARTENAIRE = :identifiantpartenaire;";
+		$statement = $this->pdo->prepare($requete);
+		$statement->bindValue(":identifiantpartenaire", $partenaire->getIdentifiantPartenaire(), PDO::PARAM_INT);
+		$statement->execute();
+	}
+
+	private function ajouterAideFinanciereDansPartenaire(Partenaire $partenaire, AideFinanciere $aideFinanciere) {
+		$requete = "INSERT INTO CORRESPONDANCE_PARTENAIRE_AIDEFINANCIERE(IDENTIFIANTPARTENAIRE, IDENTIFIANTAIDEFINANCIERE) VALUES (:identifiantpartenaire, :identifiantaidefinanciere);";
+		$statement = $this->pdo->prepare($requete);
+		$statement->bindValue(":identifiantpartenaire", $partenaire->getIdentifiantPartenaire(), PDO::PARAM_INT);
+		$statement->bindValue(":identifiantaidefinanciere", $aideFinanciere->getIdentifiantAideFinanciere(), PDO::PARAM_INT);
+		$statement->execute();
+	}
+
+	private function supprimerAideFinanciereDansPartenaire(Partenaire $partenaire, AideFinanciere $aideFinanciere) {
+		$requete = "DELETE FROM CORRESPONDANCE_PARTENAIRE_AIDEFINANCIERE " .
+				   "WHERE IDENTIFIANTPARTENAIRE = :identifiantpartenaire AND IDENTIFIANTAIDEFINANCIERE = :identifiantaidefinanciere;";
+		$statement = $this->pdo->prepare($requete);
+		$statement->bindValue(":identifiantpartenaire", $partenaire->getIdentifiantPartenaire(), PDO::PARAM_INT);
+		$statement->bindValue(":identifiantaidefinanciere", $aideFinanciere->getIdentifiantAideFinanciere(), PDO::PARAM_INT);
+		$statement->execute();
+	}
+	private function supprimerToutesAidesFinancieresDansPartenaire(Partenaire $partenaire) {
+		$requete = "DELETE FROM CORRESPONDANCE_PARTENAIRE_AIDEFINANCIERE " .
+				   "WHERE IDENTIFIANTPARTENAIRE = :identifiantpartenaire;";
+		$statement = $this->pdo->prepare($requete);
+		$statement->bindValue(":identifiantpartenaire", $partenaire->getIdentifiantPartenaire(), PDO::PARAM_INT);
+		$statement->execute();
 	}
 
 	public function __construct(string $dataSourceName, string $username, string $password) {
@@ -228,143 +318,12 @@ class StockageBaseDeDonnees {
 		}
 	}
 
-	public function ajouterCorrespondancePartenaireSousSpecialite(Partenaire $partenaire, SousSpecialite $sousSpecialite) {
-		try {
-			$this->pdo->beginTransaction();
-			$requete = "INSERT INTO CORRESPONDANCE_PARTENAIRE_SOUSSPECIALITE(IDENTIFIANTPARTENAIRE, IDENTIFIANTSOUSSPECIALITE) VALUES (:identifiantpartenaire, :identifiantsousspecialite);";
-			$statement = $this->pdo->prepare($requete);
-			$statement->bindValue(":identifiantpartenaire", $partenaire->getIdentifiantPartenaire(), PDO::PARAM_INT);
-			$statement->bindValue(":identifiantsousspecialite", $sousSpecialite->getIdentifiantSousSpecialite(), PDO::PARAM_INT);
-			$statement->execute();
-			$this->pdo->commit();
-		}
-		catch (PDOException $exception) {
-			$this->pdo->rollBack();
-			throw new ExceptionBaseDeDonneesPlateforme($exception);
-		}
-	}
-
-	public function supprimerSousSpecialiteDansPartenaire(Partenaire $partenaire, SousSpecialite $sousSpecialite) {
-		try {
-			$this->pdo->beginTransaction();
-			$requete = "DELETE FROM CORRESPONDANCE_PARTENAIRE_SOUSSPECIALITE " .
-					   "WHERE IDENTIFIANTPARTENAIRE = :identifiantpartenaire AND IDENTIFIANTSOUSSPECIALITE = :identifiantsousspecialite;";
-			$statement = $this->pdo->prepare($requete);
-			$statement->bindValue(":identifiantpartenaire", $partenaire->getIdentifiantPartenaire(), PDO::PARAM_INT);
-			$statement->bindValue(":identifiantsousspecialite", $sousSpecialite->getIdentifiantSousSpecialite(), PDO::PARAM_INT);
-			$statement->execute();
-			$this->pdo->commit();
-		}
-		catch (PDOException $exception) {
-			$this->pdo->rollBack();
-			throw new ExceptionBaseDeDonneesPlateforme($exception);
-		}
-	}
-
-	public function ajouterCorrespondancePartenaireMobilite(Partenaire $partenaire, Mobilite $mobilite) {
-		try {
-			$this->pdo->beginTransaction();
-			$requete = "INSERT INTO CORRESPONDANCE_PARTENAIRE_MOBILITE(IDENTIFIANTPARTENAIRE, IDENTIFIANTMOBILITE) VALUES (:identifiantpartenaire, :identifiantmobilite);";
-			$statement = $this->pdo->prepare($requete);
-			$statement->bindValue(":identifiantpartenaire", $partenaire->getIdentifiantPartenaire(), PDO::PARAM_INT);
-			$statement->bindValue(":identifiantmobilite", $mobilite->getIdentifiantMobilite(), PDO::PARAM_INT);
-			$statement->execute();
-			$this->pdo->commit();
-		}
-		catch (PDOException $exception) {
-			$this->pdo->rollBack();
-			throw new ExceptionBaseDeDonneesPlateforme($exception);
-		}
-	}
-
-	public function supprimerMobiliteDansPartenaire(Partenaire $partenaire, Mobilite $mobilite) {
-		try {
-			$this->pdo->beginTransaction();
-			$requete = "DELETE FROM CORRESPONDANCE_PARTENAIRE_MOBILITE " .
-					   "WHERE IDENTIFIANTPARTENAIRE = :identifiantpartenaire AND IDENTIFIANTMOBILITE = :identifiantmobilite;";
-			$statement = $this->pdo->prepare($requete);
-			$statement->bindValue(":identifiantpartenaire", $partenaire->getIdentifiantPartenaire(), PDO::PARAM_INT);
-			$statement->bindValue(":identifiantmobilite", $mobilite->getIdentifiantMobilite(), PDO::PARAM_INT);
-			$statement->execute();
-			$this->pdo->commit();
-		}
-		catch (PDOException $exception) {
-			$this->pdo->rollBack();
-			throw new ExceptionBaseDeDonneesPlateforme($exception);
-		}
-	}
-
-	public function ajouterCorrespondancePartenaireContact(Partenaire $partenaire, Contact $contact) {
-		try {
-			$this->pdo->beginTransaction();
-			$requete = "INSERT INTO CORRESPONDANCE_PARTENAIRE_CONTACT(IDENTIFIANTPARTENAIRE, IDENTIFIANTCONTACT) VALUES (:identifiantpartenaire, :identifiantcontact);";
-			$statement = $this->pdo->prepare($requete);
-			$statement->bindValue(":identifiantpartenaire", $partenaire->getIdentifiantPartenaire(), PDO::PARAM_INT);
-			$statement->bindValue(":identifiantcontact", $contact->getIdentifiantContact(), PDO::PARAM_INT);
-			$statement->execute();
-			$this->pdo->commit();
-		}
-		catch (PDOException $exception) {
-			$this->pdo->rollBack();
-			throw new ExceptionBaseDeDonneesPlateforme($exception);
-		}
-	}
-
-	public function supprimerMobiliteDansContact(Partenaire $partenaire, Contact $contact) {
-		try {
-			$this->pdo->beginTransaction();
-			$requete = "DELETE FROM CORRESPONDANCE_PARTENAIRE_CONTACT " .
-					   "WHERE IDENTIFIANTPARTENAIRE = :identifiantpartenaire AND IDENTIFIANTCONTACT = :identifiantcontact;";
-			$statement = $this->pdo->prepare($requete);
-			$statement->bindValue(":identifiantpartenaire", $partenaire->getIdentifiantPartenaire(), PDO::PARAM_INT);
-			$statement->bindValue(":identifiantcontact", $contact->getIdentifiantContact(), PDO::PARAM_INT);
-			$statement->execute();
-			$this->pdo->commit();
-		}
-		catch (PDOException $exception) {
-			$this->pdo->rollBack();
-			throw new ExceptionBaseDeDonneesPlateforme($exception);
-		}
-	}
-
-	public function ajouterCorrespondancePartenaireAideFinanciere(Partenaire $partenaire, AideFinanciere $aideFinanciere) {
-		try {
-			$this->pdo->beginTransaction();
-			$requete = "INSERT INTO CORRESPONDANCE_PARTENAIRE_AIDEFINANCIERE(IDENTIFIANTPARTENAIRE, IDENTIFIANTAIDEFINANCIERE) VALUES (:identifiantpartenaire, :identifiantaidefinanciere);";
-			$statement = $this->pdo->prepare($requete);
-			$statement->bindValue(":identifiantpartenaire", $partenaire->getIdentifiantPartenaire(), PDO::PARAM_INT);
-			$statement->bindValue(":identifiantaidefinanciere", $aideFinanciere->getIdentifiantAideFinanciere(), PDO::PARAM_INT);
-			$statement->execute();
-			$this->pdo->commit();
-		}
-		catch (PDOException $exception) {
-			$this->pdo->rollBack();
-			throw new ExceptionBaseDeDonneesPlateforme($exception);
-		}
-	}
-
-	public function supprimerMobiliteDansAideFinanciere(Partenaire $partenaire, AideFinanciere $aideFinanciere) {
-		try {
-			$this->pdo->beginTransaction();
-			$requete = "DELETE FROM CORRESPONDANCE_PARTENAIRE_AIDEFINANCIERE " .
-					   "WHERE IDENTIFIANTPARTENAIRE = :identifiantpartenaire AND IDENTIFIANTAIDEFINANCIERE = :identifiantaidefinanciere;";
-			$statement = $this->pdo->prepare($requete);
-			$statement->bindValue(":identifiantpartenaire", $partenaire->getIdentifiantPartenaire(), PDO::PARAM_INT);
-			$statement->bindValue(":identifiantaidefinanciere", $aideFinanciere->getIdentifiantAideFinanciere(), PDO::PARAM_INT);
-			$statement->execute();
-			$this->pdo->commit();
-		}
-		catch (PDOException $exception) {
-			$this->pdo->rollBack();
-			throw new ExceptionBaseDeDonneesPlateforme($exception);
-		}
-	}
-
 	public function ajouterPartenaire(Partenaire $partenaire): void {
 		try {
+			$this->pdo->beginTransaction();
+
 			$this->ajouterLocalisation($partenaire->getLocalisationPartenaire());
 
-			$this->pdo->beginTransaction();
 			$requete = "INSERT INTO PARTENAIRE(NOMPARTENAIRE, DOMAINEDECOMPETENCEPARTENAIRE, IDENTIFIANTLOCALISATION, INFORMATIONLOGEMENTPARTENAIRE, INFORMATIONCOUTPARTENAIRE) VALUES (:nompartenaire, :domainedecompetencepartenaire, :identifiantlocalisation, :informationlogementpartenaire, :informationcoutpartenaire);";
 			$statement = $this->pdo->prepare($requete);
 			$statement->bindValue(":nompartenaire", $partenaire->getNomPartenaire(), PDO::PARAM_STR);
@@ -374,20 +333,21 @@ class StockageBaseDeDonnees {
 			$statement->bindValue(":informationcoutpartenaire", $partenaire->getInformationCoutPartenaire(), PDO::PARAM_STR);
 			$statement->execute();
 			$partenaire->setIdentifiantPartenaire(intval($this->pdo->lastInsertId()));
-			$this->pdo->commit();
-			/*foreach ($partenaire->getListeSpecialitesPartenaire() as $specialite) {
-				$this->ajouterCorrespondancePartenaireSpecialite($partenaire, $specialite);
-			}
-			foreach ($partenaire->getListeMobilitesPartenaires() as $mobilite) {
-				$this->ajouterCorrespondancePartenaireMobilite($partenaire, $mobilite);
-			}
-			foreach ($partenaire->getListeSpecialitesPartenaire() as $contact) {
-				$this->ajouterCorrespondancePartenaireContact($partenaire, $contact);
-			}
-			foreach ($partenaire->getListeSpecialitesPartenaire() as $aideFinanciere) {
-				$this->ajouterCorrespondancePartenaireAideFinanciere($partenaire, $aideFinanciere);
-			}*/
 
+			foreach ($partenaire->getListeSousSpecialitesPartenaire() as $sousSpecialite) {
+				$this->ajouterSousSpecialiteDansPartenaire($partenaire, $sousSpecialite);
+			}
+			foreach ($partenaire->getListeMobilitesPartenaire() as $mobilite) {
+				$this->ajouterMobiliteDansPartenaire($partenaire, $mobilite);
+			}
+			foreach ($partenaire->getListeAidesFinancieresPartenaire() as $aideFinanciere) {
+				$this->ajouterAideFinanciereDansPartenaire($partenaire, $aideFinanciere);
+			}
+			foreach ($partenaire->getListeContactsPartenaire() as $contact) {
+				$this->ajouterContactDansPartenaire($partenaire, $contact);
+			}
+
+			$this->pdo->commit();
 
 		}
 		catch (PDOException $exception) {
@@ -404,9 +364,10 @@ class StockageBaseDeDonnees {
 			$statement = $this->pdo->prepare($requete);
 			$statement->bindValue(":identifiantpartenaire", $partenaire->getIdentifiantPartenaire(), PDO::PARAM_INT);
 			$statement->execute();
-			$this->pdo->commit();
 
 			$this->supprimerLocalisation($partenaire->getLocalisationPartenaire());
+
+			$this->pdo->commit();
 		}
 		catch (PDOException $exception) {
 			$this->pdo->rollBack();
@@ -430,6 +391,22 @@ class StockageBaseDeDonnees {
 			$statement->execute();
 
 			$this->modifierLocalisation($partenaire->getLocalisationPartenaire());
+			$this->supprimerToutesSousSpecialitesDansPartenaire($partenaire);
+			$this->supprimerToutesMobilitesDansPartenaire($partenaire);
+			$this->supprimerToutesAidesFinancieresDansPartenaire($partenaire);
+			$this->supprimerTousContactsDansPartenaire($partenaire);
+			foreach ($partenaire->getListeSousSpecialitesPartenaire() as $sousSpecialite) {
+				$this->ajouterSousSpecialiteDansPartenaire($partenaire, $sousSpecialite);
+			}
+			foreach ($partenaire->getListeMobilitesPartenaire() as $mobilite) {
+				$this->ajouterMobiliteDansPartenaire($partenaire, $mobilite);
+			}
+			foreach ($partenaire->getListeAidesFinancieresPartenaire() as $aideFinanciere) {
+				$this->ajouterAideFinanciereDansPartenaire($partenaire, $aideFinanciere);
+			}
+			foreach ($partenaire->getListeContactsPartenaire() as $contact) {
+				$this->ajouterContactDansPartenaire($partenaire, $contact);
+			}
 
 			$this->pdo->commit();
 		}

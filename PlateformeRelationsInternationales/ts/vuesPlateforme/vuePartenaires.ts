@@ -53,38 +53,6 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
         this.datatablesPartenaires.modifierLigneSelectionneeDansDatatables(partenaire);
     }
 
-    public ajoutSousSpecialiteDansPartenaire(sousSpecialite: SousSpecialite, partenaire: Partenaire): void {
-
-    }
-
-    public suppressionSousSpecialiteDansPartenaire(sousSpecialite: SousSpecialite, partenaire: Partenaire): void {
-
-    }
-
-    public ajoutMobiliteDansPartenaire(mobilite: Mobilite, partenaire: Partenaire): void {
-
-    }
-
-    public suppressionMobiliteDansPartenaire(mobilite: Mobilite, partenaire: Partenaire): void {
-
-    }
-
-    public ajoutAideFinanciereDansPartenaire(aideFinanciere: AideFinanciere, partenaire: Partenaire): void {
-
-    }
-
-    public suppressionAideFinanciereDansPartenaire(aideFinanciere: AideFinanciere, partenaire: Partenaire): void {
-
-    }
-
-    public ajoutContactDansPartenaire(contact: Contact, partenaire: Partenaire): void {
-
-    }
-
-    public suppressionContactDansPartenaire(contact: Contact, partenaire: Partenaire): void {
-
-    }
-
     public ajoutAideFinanciere(aideFinanciere: AideFinanciere): void {
 
     }
@@ -153,10 +121,9 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
         $("#selectListeSpecialitesPartenaire").on("change", () => {
             var identifiantSpecialite: number = Number($("#selectListeSpecialitesPartenaire option:selected").val());
             var specialiteSelectionnee = this.plateforme.getSpecialiteAvecIdentifiant(identifiantSpecialite);
-            console.log(specialiteSelectionnee);
             $("#listeSousSpecialitesPartenaire").empty();
             specialiteSelectionnee.ListeSousSpecialites.forEach((sousSpecialite: SousSpecialite) => {
-                this.ajouterSousSpecialiteDansListe(sousSpecialite);
+                this.ajouterSousSpecialiteDansListe(sousSpecialite, false);
             });
         });
 
@@ -177,7 +144,7 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
         }));
     }
 
-    private ajouterSousSpecialiteDansListe(sousSpecialite: SousSpecialite): void {
+    private ajouterSousSpecialiteDansListe(sousSpecialite: SousSpecialite, estSelectionnee: boolean): void {
         var li = $("<li>", {
             value: sousSpecialite.IdentifiantSousSpecialite,
             "class": "list-group-item"
@@ -200,16 +167,22 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
             "class": "btn-group float-right",
             role: "group"
         });
-        buttonSupprimer.addClass("disabled");
+        if (estSelectionnee) {
+            buttonAjouter.prop("disabled", true);
+            li.addClass("list-group-item-secondary");
+        }
+        else {
+            buttonSupprimer.prop("disabled", true);
+        }
         buttonAjouter.on("click", () => {
             li.addClass("list-group-item-secondary");
-            buttonAjouter.addClass("disabled");
-            buttonSupprimer.removeClass("disabled");
+            buttonAjouter.prop("disabled", true);
+            buttonSupprimer.prop("disabled", false);
         });
         buttonSupprimer.on("click", () => {
             li.removeClass("list-group-item-secondary");
-            buttonSupprimer.addClass("disabled");
-            buttonAjouter.removeClass("disabled");
+            buttonSupprimer.prop("disabled", true);
+            buttonAjouter.prop("disabled", false);
         });
 
         buttonGroup.append(buttonAjouter);
@@ -219,7 +192,7 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
         $("#listeSousSpecialitesPartenaire").append(li);
     }
 
-    private ajouterMobiliteDansListe(mobilite: Mobilite): void {
+    private ajouterMobiliteDansListe(mobilite: Mobilite, estSelectionnee: boolean): void {
         var li = $("<li>", {
             value: mobilite.IdentifiantMobilite,
             "class": "list-group-item"
@@ -242,16 +215,22 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
             "class": "btn-group float-right",
             role: "group"
         });
-        buttonSupprimer.addClass("disabled");
+        if (estSelectionnee) {
+            buttonAjouter.prop("disabled", true);
+            li.addClass("list-group-item-secondary");
+        }
+        else {
+            buttonSupprimer.prop("disabled", true);
+        }
         buttonAjouter.on("click", () => {
             li.addClass("list-group-item-secondary");
-            buttonAjouter.addClass("disabled");
-            buttonSupprimer.removeClass("disabled");
+            buttonAjouter.prop("disabled", true);
+            buttonSupprimer.prop("disabled", false);
         });
         buttonSupprimer.on("click", () => {
             li.removeClass("list-group-item-secondary");
-            buttonSupprimer.addClass("disabled");
-            buttonAjouter.removeClass("disabled");
+            buttonSupprimer.prop("disabled", true);
+            buttonAjouter.prop("disabled", false);
         });
 
         buttonGroup.append(buttonAjouter);
@@ -324,6 +303,36 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
         return listeContactsSelectionnees;
     }
 
+    private creerPartenaire(): Partenaire {
+        var partenaire = new Partenaire();
+        partenaire.NomPartenaire = $("#inputNomPartenaire").val() as string;
+        partenaire.DomaineDeCompetencePartenaire = $("#inputDomaineDeCompetencePartenaire").val() as string;
+        var localisationPartenaire = new Localisation();
+        localisationPartenaire.LatitudeLocalisation = $("#inputLatitudePartenaire").val() as string;
+        localisationPartenaire.LongitudeLocalisation = $("#inputLongitudePartenaire").val() as string;
+        partenaire.LocalisationPartenaire = localisationPartenaire;
+        partenaire.InformationLogementPartenaire = $("#textareaInformationLogementPartenaire").val() as string;
+        partenaire.InformationCoutPartenaire = $("#textareaInformationCoutPartenaire").val() as string;
+
+        $("#listeSousSpecialitesPartenaire li").each((index: number, element: HTMLElement) => {
+            if ($(element).hasClass("list-group-item-secondary")) {
+                var identifiantSousSpecialite: number = Number($(element).val());
+                partenaire.ajouterSousSpecialite(this.plateforme.getSousSpecialiteAvecIdentifiant(identifiantSousSpecialite));
+            }
+        });
+
+        $("#listeMobilitesPartenaire li").each((index: number, element: HTMLElement) => {
+            if ($(element).hasClass("list-group-item-secondary")) {
+                var identifiantMobilite: number = Number($(element).val());
+                partenaire.ajouterMobilite(this.plateforme.getMobiliteAvecIdentifiant(identifiantMobilite));
+            }
+        });
+
+        partenaire.ListeAidesFinancieresPartenaires = this.getListeAidesFinancieresSelectionnees();
+        partenaire.ListeContactsPartenaires = this.getListeContactsSelectionnees();
+        return partenaire;
+    }
+
     public constructor() {
         super();
         this.initialiserDatatables();
@@ -346,16 +355,17 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
 
     private onAjouterPartenaireClick(): void {
         $("#inputTitrePartenaire").text("Ajout Partenaire");
+        $("#selectListeSpecialitesPartenaire").prop("disabled", false);
         this.plateforme.ListeSpecialitesPlateforme.forEach((specialite: Specialite) => {
             this.ajouterSpecialiteDansSelect(specialite);
         });
         if (this.plateforme.ListeSpecialitesPlateforme.length > 0) {
             this.plateforme.ListeSpecialitesPlateforme[0].ListeSousSpecialites.forEach((sousSpecialite: SousSpecialite) => {
-                this.ajouterSousSpecialiteDansListe(sousSpecialite);
+                this.ajouterSousSpecialiteDansListe(sousSpecialite, false);
             });
         }
         this.plateforme.ListeMobilitesPlateforme.forEach((mobilite: Mobilite) => {
-            this.ajouterMobiliteDansListe(mobilite);
+            this.ajouterMobiliteDansListe(mobilite, false);
         });
         this.modalEditePartenaire.montrerModal();
         $("#boutonEditePartenaire").off();
@@ -387,8 +397,6 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
             partenaire.ListeAidesFinancieresPartenaires = this.getListeAidesFinancieresSelectionnees();
             partenaire.ListeContactsPartenaires = this.getListeContactsSelectionnees();
 
-            console.log(partenaire);
-
             this.controleurPlateforme.ajouterPartenaire(partenaire);
             this.modalEditePartenaire.cacherModal();
         });
@@ -402,21 +410,65 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
     }
 
     private onModifierPartenaireClick(): void {
+        var listePartenairesSelectionnes: Partenaire[] = this.datatablesPartenaires.getListeLignesSelectionnees();
+        if (listePartenairesSelectionnes.length > 0) {
+            var premierPartenaireSelectionne = listePartenairesSelectionnes[0];
+            $("#inputTitrePartenaire").text("Modification Partenaire : " + premierPartenaireSelectionne.NomPartenaire);
+            $("#inputNomPartenaire").val(premierPartenaireSelectionne.NomPartenaire);
+            $("#inputDomaineDeCompetencePartenaire").val(premierPartenaireSelectionne.DomaineDeCompetencePartenaire);
+            $("#inputLatitudePartenaire").val(premierPartenaireSelectionne.LocalisationPartenaire.LatitudeLocalisation);
+            $("#inputLongitudePartenaire").val(premierPartenaireSelectionne.LocalisationPartenaire.LongitudeLocalisation);
+            $("#textareaInformationLogementPartenaire").val(premierPartenaireSelectionne.InformationLogementPartenaire);
+            $("#textareaInformationCoutPartenaire").val(premierPartenaireSelectionne.InformationCoutPartenaire);
 
+            if (premierPartenaireSelectionne.ListeSousSpecialitesPartenaire.length > 0) {
+                var specialiteSelectionnee = this.plateforme.getSpecialiteAvecSousSpecialite(premierPartenaireSelectionne.ListeSousSpecialitesPartenaire[0]);
+                this.ajouterSpecialiteDansSelect(specialiteSelectionnee);
+                $("#selectListeSpecialitesPartenaire").prop("disabled", true);
+                specialiteSelectionnee.ListeSousSpecialites.forEach((sousSpecialite: SousSpecialite) => {
+                    var sousSpecialiteEstSelectionnee: boolean = false;
+                    if (premierPartenaireSelectionne.ListeSousSpecialitesPartenaire.includes(sousSpecialite)) {
+                        sousSpecialiteEstSelectionnee = true;
+                    }
+                    this.ajouterSousSpecialiteDansListe(sousSpecialite, sousSpecialiteEstSelectionnee);
+                });
+            }
+            else {
+                $("#selectListeSpecialitesPartenaire").prop("disabled", false);
+                this.plateforme.ListeSpecialitesPlateforme.forEach((specialite: Specialite) => {
+                    this.ajouterSpecialiteDansSelect(specialite);
+                });
+                if (this.plateforme.ListeSpecialitesPlateforme.length > 0) {
+                    this.plateforme.ListeSpecialitesPlateforme[0].ListeSousSpecialites.forEach((sousSpecialite: SousSpecialite) => {
+                        this.ajouterSousSpecialiteDansListe(sousSpecialite, false);
+                    });
+                }
+            }
+
+            this.plateforme.ListeMobilitesPlateforme.forEach((mobilite: Mobilite) => {
+                var mobiliteEstSelectionnee: boolean = false;
+                if (premierPartenaireSelectionne.ListeMobilitesPartenaires.includes(mobilite)) {
+                    mobiliteEstSelectionnee = true;
+                }
+                this.ajouterMobiliteDansListe(mobilite, mobiliteEstSelectionnee);
+            });
+            premierPartenaireSelectionne.ListeAidesFinancieresPartenaires.forEach((aideFinanciere: AideFinanciere) => {
+                this.ajouterAideFinanciereDansSelect(aideFinanciere);
+            });
+
+            premierPartenaireSelectionne.ListeContactsPartenaires.forEach((contact: Contact) => {
+                this.ajouterContactDansSelect(contact);
+            });
+
+            this.modalEditePartenaire.montrerModal();
+            $("#boutonEditePartenaire").off();
+            $("#boutonEditePartenaire").on("click", () => {
+                this.controleurPlateforme.modifierPartenaire(premierPartenaireSelectionne, this.creerPartenaire());
+                this.modalEditePartenaire.cacherModal();
+            });
+        }
     }
 
-    /*private onClickAjouterSpecialitePartenaire(): void {
-
-    }
-    private onClickSupprimerSpecialitePartenaire(): void {
-
-    }
-    private onClickAjouterMobilitePartenaire(): void {
-
-    }
-    private onClickSupprimerMobilitePartenaire(): void {
-
-    }*/
     private onClickAjouterAideFinancierePartenaire(): void {
         // on a besoin du partenaire
         //soit ue variable partenaireSelectionne soit un event on off la ou on a le partenaire

@@ -12,22 +12,6 @@ export interface IVuePlateforme {
 
     modificationPartenaire(partenaire: Partenaire): void;
 
-    ajoutSousSpecialiteDansPartenaire(sousSpecialite: SousSpecialite, partenaire: Partenaire): void;
-
-    suppressionSousSpecialiteDansPartenaire(sousSpecialite: SousSpecialite, partenaire: Partenaire): void;
-
-    ajoutMobiliteDansPartenaire(mobilite: Mobilite, partenaire: Partenaire): void;
-
-    suppressionMobiliteDansPartenaire(mobilite: Mobilite, partenaire: Partenaire): void;
-
-    ajoutAideFinanciereDansPartenaire(aideFinanciere: AideFinanciere, partenaire: Partenaire): void;
-
-    suppressionAideFinanciereDansPartenaire(aideFinanciere: AideFinanciere, partenaire: Partenaire): void;
-
-    ajoutContactDansPartenaire(contact: Contact, partenaire: Partenaire): void;
-
-    suppressionContactDansPartenaire(contact: Contact, partenaire: Partenaire): void;
-
     ajoutAideFinanciere(aideFinanciere: AideFinanciere): void;
 
     suppressionAideFinanciere(aideFinanciere: AideFinanciere): void;

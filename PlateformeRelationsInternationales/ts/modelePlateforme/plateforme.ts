@@ -92,6 +92,16 @@ export class Plateforme {
         return res;
     }
 
+    public getSpecialiteAvecSousSpecialite(sousSpecialite: SousSpecialite): Specialite {
+        var res: Specialite = null;
+        this.listeSpecialitesPlateforme.forEach((specialite: Specialite) => {
+            if (specialite.ListeSousSpecialites.includes(sousSpecialite)) {
+                res = specialite;
+            }
+        });
+        return res;
+    }
+
     public ajouterSpecialite(specialite: Specialite): void {
         this.listeSpecialitesPlateforme.push(specialite);
     }

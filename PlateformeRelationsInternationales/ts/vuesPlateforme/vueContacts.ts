@@ -46,38 +46,6 @@ export default class VueContacts extends Vue implements IVuePlateforme {
 
     }
 
-    public ajoutSousSpecialiteDansPartenaire(sousSpecialite: SousSpecialite, partenaire: Partenaire): void {
-
-    }
-
-    public suppressionSousSpecialiteDansPartenaire(sousSpecialite: SousSpecialite, partenaire: Partenaire): void {
-
-    }
-
-    public ajoutMobiliteDansPartenaire(mobilite: Mobilite, partenaire: Partenaire): void {
-
-    }
-
-    public suppressionMobiliteDansPartenaire(mobilite: Mobilite, partenaire: Partenaire): void {
-
-    }
-
-    public ajoutAideFinanciereDansPartenaire(aideFinanciere: AideFinanciere, partenaire: Partenaire): void {
-
-    }
-
-    public suppressionAideFinanciereDansPartenaire(aideFinanciere: AideFinanciere, partenaire: Partenaire): void {
-
-    }
-
-    public ajoutContactDansPartenaire(contact: Contact, partenaire: Partenaire): void {
-
-    }
-
-    public suppressionContactDansPartenaire(contact: Contact, partenaire: Partenaire): void {
-
-    }
-
     public ajoutAideFinanciere(aideFinanciere: AideFinanciere): void {
 
     }
@@ -109,7 +77,7 @@ export default class VueContacts extends Vue implements IVuePlateforme {
         this.proprietesDatatablesContact.ajouterColonne(new ProprietesDatatablesColonne("Nom Contact", "nomContact"));
         this.proprietesDatatablesContact.ajouterColonne(new ProprietesDatatablesColonne("Prénom Contact", "prenomContact"));
         this.proprietesDatatablesContact.ajouterColonne(new ProprietesDatatablesColonne("Adresse Mail Contact", "adresseMailContact"));
-        this.proprietesDatatablesContact.ajouterColonne(new ProprietesDatatablesColonne("Focntion Contact", "fonctionContact"));
+        this.proprietesDatatablesContact.ajouterColonne(new ProprietesDatatablesColonne("Fonction Contact", "fonctionContact"));
         this.proprietesDatatablesContact.ajouterBouton(new ProprietesDatatablesBouton("Ajouter Contact", this.onClickAjouterContact));
         this.proprietesDatatablesContact.ajouterBouton(new ProprietesDatatablesBouton("Supprimer Contact", this.onClickSupprimerContact));
         this.proprietesDatatablesContact.ajouterBouton(new ProprietesDatatablesBouton("Modifier Contact", this.onClickModifierContact));

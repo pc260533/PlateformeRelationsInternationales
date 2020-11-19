@@ -12,25 +12,24 @@ import imageFavicon from "../images/favicon.png";
     template: require("./vuesPlateforme/templates/applicationVue.html")
 })
 export default class ApplicationVue extends Vue {
-    private plateforme: Plateforme;
-    private controleurPlateforme: ControleurPlateforme;
+    //private plateforme: Plateforme;
+    //private controleurPlateforme: ControleurPlateforme;
 
     public constructor() {
         super();
-        this.plateforme = new Plateforme();
+        /*this.plateforme = new Plateforme();
         console.log(this.plateforme);
         let partenaire = new Partenaire();
         partenaire.NomPartenaire = "testNomPartenaire";
         this.plateforme.ajouterPartenaire(partenaire);
-        this.controleurPlateforme = new ControleurPlateforme(this.plateforme);
+        this.controleurPlateforme = new ControleurPlateforme(this.plateforme);*/
     }
 
     created() {
-        //console.log("created");
+
     }
 
     mounted() {
-        //console.log("mounted");
         $("link").attr("href", imageFavicon);
         $("#imageLogo").attr("src", imageLogo);
     }

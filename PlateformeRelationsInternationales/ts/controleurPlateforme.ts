@@ -48,54 +48,6 @@ export class ControleurPlateforme {
         });
     }
 
-    protected notifieAjoutSousSpecialiteDansPartenaire(sousSpecialite: SousSpecialite, partenaire: Partenaire): void {
-        this.listeVuesPlateforme.forEach((ivuePlateforme: IVuePlateforme) => {
-            ivuePlateforme.ajoutSousSpecialiteDansPartenaire(sousSpecialite, partenaire);
-        });
-    }
-
-    protected notifieSuppressionSpecialiteDansPartenaire(sousSpecialite: SousSpecialite, partenaire: Partenaire): void {
-        this.listeVuesPlateforme.forEach((ivuePlateforme: IVuePlateforme) => {
-            ivuePlateforme.suppressionSousSpecialiteDansPartenaire(sousSpecialite, partenaire);
-        });
-    }
-
-    protected notifieAjoutMobiliteDansPartenaire(mobilite: Mobilite, partenaire: Partenaire): void {
-        this.listeVuesPlateforme.forEach((ivuePlateforme: IVuePlateforme) => {
-            ivuePlateforme.ajoutMobiliteDansPartenaire(mobilite, partenaire);
-        });
-    }
-
-    protected notifieSuppressionMobiliteDansPartenaire(mobilite: Mobilite, partenaire: Partenaire): void {
-        this.listeVuesPlateforme.forEach((ivuePlateforme: IVuePlateforme) => {
-            ivuePlateforme.suppressionMobiliteDansPartenaire(mobilite, partenaire);
-        });
-    }
-
-    protected notifieAjoutAideFinanciereDansPartenaire(aideFinanciere: AideFinanciere, partenaire: Partenaire): void {
-        this.listeVuesPlateforme.forEach((ivuePlateforme: IVuePlateforme) => {
-            ivuePlateforme.ajoutAideFinanciereDansPartenaire(aideFinanciere, partenaire);
-        });
-    }
-
-    protected notifieSuppressionAideFinanciereDansPartenaire(aideFinanciere: AideFinanciere, partenaire: Partenaire): void {
-        this.listeVuesPlateforme.forEach((ivuePlateforme: IVuePlateforme) => {
-            ivuePlateforme.suppressionAideFinanciereDansPartenaire(aideFinanciere, partenaire);
-        });
-    }
-
-    protected notifieAjoutContactDansPartenaire(contact: Contact, partenaire: Partenaire): void {
-        this.listeVuesPlateforme.forEach((ivuePlateforme: IVuePlateforme) => {
-            ivuePlateforme.ajoutContactDansPartenaire(contact, partenaire);
-        });
-    }
-
-    protected notifieSuppressionContactDansPartenaire(contact: Contact, partenaire: Partenaire): void {
-        this.listeVuesPlateforme.forEach((ivuePlateforme: IVuePlateforme) => {
-            ivuePlateforme.ajoutContactDansPartenaire(contact, partenaire);
-        });
-    }
-
     protected notifieAjoutAideFinanciere(aideFinanciere: AideFinanciere): void {
         this.listeVuesPlateforme.forEach((ivuePlateforme: IVuePlateforme) => {
             ivuePlateforme.ajoutAideFinanciere(aideFinanciere);
@@ -133,6 +85,9 @@ export class ControleurPlateforme {
     }
 
     public chargerListeSpecialites(): JQueryPromise<any> {
+        if (this.modelePlateforme.ListeSpecialitesPlateforme.length > 0) {
+            return $.Deferred().resolve();
+        }
         var that = this;
         return $.ajax({
             url: "api/specialites",
@@ -161,6 +116,9 @@ export class ControleurPlateforme {
     }
 
     public chargerListeMobilites(): JQueryPromise<any> {
+        if (this.modelePlateforme.ListeMobilitesPlateforme.length > 0) {
+            return $.Deferred().resolve();
+        }
         var that = this;
         return $.ajax({
             url: "api/mobilites",
@@ -189,7 +147,6 @@ export class ControleurPlateforme {
             method: "post",
             data: partenaire.getObjetSerializable(),
             success: function (resultat) {
-                console.log(resultat);
                 partenaire.IdentifiantPartenaire = resultat.identifiantPartenaire;
                 partenaire.LocalisationPartenaire.IdentifiantLocalisation = resultat.localisationPartenaire.identifiantLocalisation;
                 that.modelePlateforme.ajouterPartenaire(partenaire);
@@ -220,14 +177,24 @@ export class ControleurPlateforme {
         });
     }
 
-    public modifierPartenaire(partenaire: Partenaire): void {
+    public modifierPartenaire(ancienPartenaire: Partenaire, nouveauPartenaire: Partenaire): void {
+        nouveauPartenaire.IdentifiantPartenaire = ancienPartenaire.IdentifiantPartenaire;
+        nouveauPartenaire.LocalisationPartenaire.IdentifiantLocalisation = ancienPartenaire.LocalisationPartenaire.IdentifiantLocalisation;
         var that = this;
         $.ajax({
-            url: "api/partenaire",
+            url: "api/partenaires",
             method: "put",
-            data: partenaire.getObjetSerializable(),
+            data: nouveauPartenaire.getObjetSerializable(),
             success: function (resultat) {
-                that.notifieModificationPartenaire(partenaire);
+                ancienPartenaire.NomPartenaire = nouveauPartenaire.NomPartenaire;
+                ancienPartenaire.DomaineDeCompetencePartenaire = nouveauPartenaire.DomaineDeCompetencePartenaire;
+                ancienPartenaire.LocalisationPartenaire.LatitudeLocalisation = nouveauPartenaire.LocalisationPartenaire.LatitudeLocalisation;
+                ancienPartenaire.LocalisationPartenaire.LongitudeLocalisation = nouveauPartenaire.LocalisationPartenaire.LongitudeLocalisation;
+                ancienPartenaire.ListeSousSpecialitesPartenaire = nouveauPartenaire.ListeSousSpecialitesPartenaire;
+                ancienPartenaire.ListeMobilitesPartenaires = nouveauPartenaire.ListeMobilitesPartenaires;
+                ancienPartenaire.ListeAidesFinancieresPartenaires = nouveauPartenaire.ListeAidesFinancieresPartenaires;
+                ancienPartenaire.ListeContactsPartenaires = nouveauPartenaire.ListeContactsPartenaires;
+                that.notifieModificationPartenaire(ancienPartenaire);
             },
             error: function (erreur) {
                 console.log(erreur);
@@ -237,6 +204,12 @@ export class ControleurPlateforme {
     }
 
     public chargerListePartenaires(): JQueryPromise<any> {
+        if (this.modelePlateforme.ListePartenairesPlateforme.length > 0) {
+            this.modelePlateforme.ListePartenairesPlateforme.forEach((partenaire: Partenaire) => {
+                this.notifieAjoutPartenaire(partenaire);
+            });
+            return $.Deferred().resolve();
+        }
         var that = this;
         return $.ajax({
             url: "api/partenaires",
@@ -273,7 +246,7 @@ export class ControleurPlateforme {
 
                     that.modelePlateforme.ajouterPartenaire(partenaireObjet);
                     that.notifieAjoutPartenaire(partenaireObjet);
-                    console.log(that.modelePlateforme);
+                    //console.log(that.modelePlateforme);
                 });
             },
             error: function (erreur) {
@@ -281,90 +254,6 @@ export class ControleurPlateforme {
                 //that.notifieErreur(erreur.responseJSON);
             }
         });
-    }
-
-    public ajouterSousSpecialiteDansPartenaire(sousSpecialite: SousSpecialite, partenaire: Partenaire): void {
-        var that = this;
-        $.ajax({
-            url: "api/specialitePartenaire",
-            method: "post",
-            data: { sousspecialite: sousSpecialite.getObjetSerializableId(), partenaire: partenaire.getObjetSerializableId() },
-            success: function (resultat) {
-                partenaire.ajouterSousSpecialite(sousSpecialite);
-                that.notifieAjoutSousSpecialiteDansPartenaire(sousSpecialite, partenaire);
-            },
-            error: function (erreur) {
-                console.log(erreur);
-                //that.notifieErreur(erreur.responseJSON);
-            }
-        });
-    }
-
-    public supprimerSpecialiteDansPartenaire(specialite: Specialite, partenaire: Partenaire): void {
-
-    }
-
-    public ajouterMobiliteDansPartenaire(mobilite: Mobilite, partenaire: Partenaire): void {
-        var that = this;
-        $.ajax({
-            url: "api/mobilitePartenaire",
-            method: "post",
-            data: { specialite: mobilite.getObjetSerializableId(), partenaire: partenaire.getObjetSerializableId() },
-            success: function (resultat) {
-                partenaire.ajouterMobilite(mobilite);
-                that.notifieAjoutMobiliteDansPartenaire(mobilite, partenaire);
-            },
-            error: function (erreur) {
-                console.log(erreur);
-                //that.notifieErreur(erreur.responseJSON);
-            }
-        });
-    }
-
-    public supprimerMobiliteDansPartenaire(mobilite: Mobilite, partenaire: Partenaire): void {
-
-    }
-
-    public ajouterAideFinanciereDansPartenaire(aideFinanciere: AideFinanciere, partenaire: Partenaire): void {
-        var that = this;
-        $.ajax({
-            url: "api/aideFinancierePartenaire",
-            method: "post",
-            data: { specialite: aideFinanciere.getObjetSerializableId(), partenaire: partenaire.getObjetSerializableId() },
-            success: function (resultat) {
-                partenaire.ajouterAideFinanciere(aideFinanciere);
-                that.notifieAjoutAideFinanciereDansPartenaire(aideFinanciere, partenaire);
-            },
-            error: function (erreur) {
-                console.log(erreur);
-                //that.notifieErreur(erreur.responseJSON);
-            }
-        });
-    }
-
-    public supprimerAideFinanciereDansPartenaire(aideFinanciere: AideFinanciere, partenaire: Partenaire): void {
-
-    }
-
-    public ajouterContactDansPartenaire(contact: Contact, partenaire: Partenaire): void {
-        var that = this;
-        $.ajax({
-            url: "api/contactPartenaire",
-            method: "post",
-            data: { specialite: contact.getObjetSerializableId(), partenaire: partenaire.getObjetSerializableId() },
-            success: function (resultat) {
-                partenaire.ajouterContact(contact);
-                that.notifieAjoutContactDansPartenaire(contact, partenaire);
-            },
-            error: function (erreur) {
-                console.log(erreur);
-                //that.notifieErreur(erreur.responseJSON);
-            }
-        });
-    }
-
-    public supprimerContactDansPartenaire(contact: Contact, partenaire: Partenaire): void {
-
     }
 
     public ajouterAideFinanciere(aideFinanciere: AideFinanciere): void {
@@ -422,6 +311,12 @@ export class ControleurPlateforme {
     }
 
     public chargerListeAidesFinancieres(): JQueryPromise<any> {
+        if (this.modelePlateforme.ListeAidesFinancieresPlateforme.length > 0) {
+            this.modelePlateforme.ListeAidesFinancieresPlateforme.forEach((aideFinanciere: AideFinanciere) => {
+                this.notifieAjoutAideFinanciere(aideFinanciere);
+            });
+            return $.Deferred().resolve();
+        }
         var that = this;
         return $.ajax({
             url: "api/aidesfinancieres",
@@ -499,6 +394,12 @@ export class ControleurPlateforme {
     }
 
     public chargerListeContacts(): JQueryPromise<any> {
+        if (this.modelePlateforme.ListeContactsPlateforme.length > 0) {
+            this.modelePlateforme.ListeContactsPlateforme.forEach((contact: Contact) => {
+                this.notifieAjoutContact(contact);
+            });
+            return $.Deferred().resolve();
+        }
         var that = this;
         return $.ajax({
             url: "api/contacts",
