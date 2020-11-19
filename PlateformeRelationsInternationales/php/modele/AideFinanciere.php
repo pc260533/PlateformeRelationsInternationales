@@ -8,7 +8,7 @@
  * @version 1.0
  * @author Jean-Claude
  */
-class AideFinanciere {
+class AideFinanciere implements ISerializable {
 	private $identifiantAideFinanciere;
 	private $nomAideFinanciere;
 
@@ -33,4 +33,18 @@ class AideFinanciere {
 		$this->nomAideFinanciere = "";
 	}
 
+	#region ISerializable Members
+
+	/**
+	 *
+	 * @return array
+	 */
+	public function getObjetSerializable(): array {
+		return array(
+			"identifiantAideFinanciere" => $this->getIdentifiantAideFinanciere(),
+            "nomAideFinanciere" => $this->getNomAideFinanciere()
+        );
+	}
+
+	#endregion
 }

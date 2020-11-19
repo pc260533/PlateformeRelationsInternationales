@@ -1,4 +1,6 @@
-﻿export class Contact {
+﻿import { ISerializable } from "./ISerializable";
+
+export class Contact implements ISerializable {
     private identifiantContact: number;
     private nomContact: string;
     private prenomContact: string;
@@ -52,4 +54,23 @@
         this.adresseMailContact = "";
         this.fonctionContact = "";
     }
+
+    public getObjetSerializable(): any {
+        var contact = {
+            identifiantContact: this.IdentifiantContact,
+            nomContact: this.NomContact,
+            prenomContact: this.PrenomContact,
+            adresseMailContact: this.AdresseMailContact,
+            fonctionContact: this.FonctionContact,
+        }
+        return contact;
+    }
+
+    public getObjetSerializableId(): any {
+        var contact = {
+            identifiantContact: this.IdentifiantContact
+        }
+        return contact;
+    }
+
 }

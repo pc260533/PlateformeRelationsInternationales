@@ -17,4 +17,10 @@ export default class ModalSpecifique extends Vue {
         ($(this.$el) as any).modal("hide");
     }
 
+    public onCacherModal(callbackCacherModal: () => void): void {
+        $(this.$el).on("hidden.bs.modal", () => {
+            callbackCacherModal();
+        });
+    }
+
 }

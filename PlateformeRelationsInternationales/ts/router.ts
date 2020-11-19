@@ -26,6 +26,9 @@ export default new Router({
             props: {
                 plateforme: plateforme,
                 controleurPlateforme: controleurPlateforme
+            },
+            meta: {
+                title: "Plateforme Relations Internationales - Accueil"
             }
         },
         {
@@ -35,6 +38,9 @@ export default new Router({
             props: {
                 plateforme: plateforme,
                 controleurPlateforme: controleurPlateforme
+            },
+            meta: {
+                title: "Plateforme Relations Internationales - Partenaires"
             }
         },
         {
@@ -44,6 +50,9 @@ export default new Router({
             props: {
                 plateforme: plateforme,
                 controleurPlateforme: controleurPlateforme
+            },
+            meta: {
+                title: "Plateforme Relations Internationales - Aides Financieres"
             }
         },
         {
@@ -53,6 +62,9 @@ export default new Router({
             props: {
                 plateforme: plateforme,
                 controleurPlateforme: controleurPlateforme
+            },
+            meta: {
+                title: "Plateforme Relations Internationales - Contacts"
             }
         },
         {
@@ -62,6 +74,9 @@ export default new Router({
             props: {
                 plateforme: plateforme,
                 controleurPlateforme: controleurPlateforme
+            },
+            meta: {
+                title: "Plateforme Relations Internationales - A Propos"
             }
         },
         {
@@ -71,6 +86,9 @@ export default new Router({
             props: {
                 plateforme: plateforme,
                 controleurPlateforme: controleurPlateforme
+            },
+            meta: {
+                title: "Plateforme Relations Internationales - Accueil"
             }
         },
         /*{

@@ -1,7 +1,27 @@
 ﻿<!-- Aides Financières -->
 <section class="section aidesfinancieres mt-5">
     <div class="container">
-        <Datatables ref="datatablesAidesFinacieres" v-bind:proprietesDatatables="proprietesDatatables"></Datatables>
+        <Datatables ref="datatablesAidesFinancieres" v-bind:proprietesDatatables="proprietesDatatablesAidesFinancieres"></Datatables>
+        <ModalSpecifique ref="modalEditeAideFinanciere">
+            <h5 slot="modalHeader" class="modal-tilte">
+                <span id="inputTitreAideFinanciere"></span>
+            </h5>
+            <button slot="modalHeader" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+
+            <form slot="modalBody" class="form">
+                <input type="hidden" id="inputIdentifiantAideFinanciere" value="0" />
+                <div class="form-group">
+                    <label for="inputNomAideFinanciere">Nom Aide Financière :</label>
+                    <input type="text" id="inputNomAideFinanciere" class="form-control" />
+                </div>
+            </form>
+
+            <button slot="modalFooter" type="button" id="boutonEditeAideFinanciere" class="btn btn-success">Sauvegarder</button>
+            <button slot="modalFooter" type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+        </ModalSpecifique>
+        <SpinnerSpecifique ref="spinner"></SpinnerSpecifique>
     </div>
 </section>
 <!-- /Aides Financières -->

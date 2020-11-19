@@ -2,14 +2,15 @@
 import { Plateforme } from "../modelePlateforme/plateforme";
 import { ControleurPlateforme } from "../controleurPlateforme";
 import { Partenaire } from "../modelePlateforme/partenaire";
+import { Specialite } from "../modelePlateforme/specialite";
+import { Mobilite } from "../modelePlateforme/mobilite";
+import { AideFinanciere } from "../modelePlateforme/aideFinanciere";
+import { Contact } from "../modelePlateforme/contact";
 
 import imageCategories from "../../images/accueil/categories.png";
 import imageClients from "../../images/accueil/clients.png";
 import imageMarques from "../../images/accueil/marques.png";
 import imageProduits from "../../images/accueil/produits.png";
-
-import imageLogo from "../../images/logo.png";
-import imageFavicon from "../../images/favicon.png";
 
 //import "../../scss/vues/vueAccueil.scss";
 
@@ -22,14 +23,11 @@ export default class VueAccueil extends Vue implements IVuePlateforme {
     @Prop() private plateforme!: Plateforme;
     @Prop() private controleurPlateforme!: ControleurPlateforme;
 
-    public afficherImages(): void {
+    private afficherImages(): void {
         $("#imageCategories").attr("src", imageCategories);
         $("#imageClients").attr("src", imageClients);
         $("#imageMarques").attr("src", imageMarques);
         $("#imageProduits").attr("src", imageProduits);
-
-        $("link").attr("href", imageFavicon);
-        $("#imageLogo").attr("src", imageLogo);
     }
 
     public ajoutPartenaire(partenaire: Partenaire): void {
@@ -44,17 +42,70 @@ export default class VueAccueil extends Vue implements IVuePlateforme {
 
     }
 
+    public ajoutSpecialiteDansPartenaire(specialite: Specialite, partenaire: Partenaire): void {
+
+    }
+
+    public suppressionSpecialiteDansPartenaire(specialite: Specialite, partenaire: Partenaire): void {
+
+    }
+
+    public ajoutMobiliteDansPartenaire(mobilite: Mobilite, partenaire: Partenaire): void {
+
+    }
+
+    public suppressionMobiliteDansPartenaire(mobilite: Mobilite, partenaire: Partenaire): void {
+
+    }
+
+    public ajoutAideFinanciereDansPartenaire(aideFinanciere: AideFinanciere, partenaire: Partenaire): void {
+
+    }
+
+    public suppressionAideFinanciereDansPartenaire(aideFinanciere: AideFinanciere, partenaire: Partenaire): void {
+
+    }
+
+    public ajoutContactDansPartenaire(contact: Contact, partenaire: Partenaire): void {
+
+    }
+
+    public suppressionContactDansPartenaire(contact: Contact, partenaire: Partenaire): void {
+
+    }
+
+    public ajoutAideFinanciere(aideFinanciere: AideFinanciere): void {
+
+    }
+
+    public suppressionAideFinanciere(aideFinanciere: AideFinanciere): void {
+
+    }
+
+    public modificationAideFinanciere(aideFinanciere: AideFinanciere): void {
+
+    }
+
+    public ajoutContact(contact: Contact): void {
+
+    }
+
+    public suppressionContact(contact: Contact): void {
+
+    }
+
+    public modificationContact(contact: Contact): void {
+
+    }
+
     public constructor() {
         super();
         this.controleurPlateforme.inscrire(this);
-        console.log(this.plateforme);
-        console.log(this.controleurPlateforme);
     }
 
     mounted() {
         import(/* webpackChunkName: "accueilscss" */"../../scss/vues/vueAccueil.scss");
         this.afficherImages();
-        console.log(this.controleurPlateforme);
     }
 
     beforeDestroy() {

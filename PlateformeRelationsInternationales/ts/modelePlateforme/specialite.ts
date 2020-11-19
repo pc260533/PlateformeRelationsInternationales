@@ -1,6 +1,7 @@
 ﻿import { SousSpecialite } from "./sousspecialite";
+import { ISerializable } from "./ISerializable";
 
-export class Specialite {
+export class Specialite implements ISerializable {
     private identifiantSpecialite: number;
     private nomSpecialite: string;
     private listeSousSpecialites: SousSpecialite[];
@@ -36,6 +37,22 @@ export class Specialite {
         if (!(indexSousSpecialite === undefined) && !(indexSousSpecialite === null)) {
             this.listeSousSpecialites.splice(indexSousSpecialite, 1);
         }
+    }
+
+    public getObjetSerializable(): any {
+        var specialite = {
+            identifiantSpecialite: this.IdentifiantSpecialite,
+            nomSpecialite: this.NomSpecialite,
+            listeSousSpecialites: this.listeSousSpecialites
+        }
+        return specialite;
+    }
+
+    public getObjetSerializableId(): any {
+        var specialite = {
+            identifiantSpecialite: this.IdentifiantSpecialite
+        }
+        return specialite;
     }
 
 }

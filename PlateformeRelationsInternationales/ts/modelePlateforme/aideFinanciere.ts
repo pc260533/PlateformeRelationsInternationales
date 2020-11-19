@@ -1,4 +1,6 @@
-﻿export class AideFinanciere {
+﻿import { ISerializable } from "./ISerializable";
+
+export class AideFinanciere implements ISerializable {
     private identifiantAideFinanciere: number;
     private nomAideFinanciere: string;
 
@@ -21,6 +23,21 @@
     public constructor() {
         this.identifiantAideFinanciere = 0;
         this.nomAideFinanciere = "";
+    }
+
+    public getObjetSerializable(): any {
+        var aideFinanciere = {
+            identifiantAideFinanciere: this.IdentifiantAideFinanciere,
+            nomAideFinanciere: this.NomAideFinanciere
+        }
+        return aideFinanciere;
+    }
+
+    public getObjetSerializableId(): any {
+        var aideFinanciere = {
+            identifiantAideFinanciere: this.IdentifiantAideFinanciere
+        }
+        return aideFinanciere;
     }
 
 }

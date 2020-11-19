@@ -3,8 +3,9 @@ import { Localisation } from "./localisation";
 import { Mobilite } from "./mobilite";
 import { Contact } from "./contact";
 import { AideFinanciere } from "./aideFinanciere";
+import { ISerializable } from "./ISerializable";
 
-export class Partenaire {
+export class Partenaire implements ISerializable {
     private identifiantPartenaire: number;
     private nomPartenaire: string;
     private domaineDeCompetencePartenaire: string;
@@ -64,6 +65,22 @@ export class Partenaire {
         return this.listeAidesFinancieresPartenaires;
     }
 
+    public get InformationLogementPartenaire(): string {
+        return this.informationLogementPartenaire;
+    }
+
+    public set InformationLogementPartenaire(informationLogementPartenaire: string) {
+        this.informationLogementPartenaire = informationLogementPartenaire;
+    }
+
+    public get InformationCoutPartenaire(): string {
+        return this.informationCoutPartenaire;
+    }
+
+    public set InformationCoutPartenaire(informationCoutPartenaire: string) {
+        this.informationCoutPartenaire = informationCoutPartenaire;
+    }
+
     public constructor() {
         this.identifiantPartenaire = 0;
         this.nomPartenaire = "";
@@ -119,6 +136,25 @@ export class Partenaire {
         if (!(indexAideFinanciere === undefined) && !(indexAideFinanciere === null)) {
             this.listeAidesFinancieresPartenaires.splice(indexAideFinanciere, 1);
         }
+    }
+
+    public getObjetSerializable(): any {
+        var partenaire = {
+            identifiantPartenaire: this.IdentifiantPartenaire,
+            nomPartenaire: this.NomPartenaire,
+            domaineDeCompetencePartenaire: this.DomaineDeCompetencePartenaire,
+            localisationPartenaire: this.LocalisationPartenaire.getObjetSerializable(),
+            informationLogementPartenaire: this.InformationLogementPartenaire,
+            informationCoutPartenaire: this.InformationCoutPartenaire
+        }
+        return partenaire;
+    }
+
+    public getObjetSerializableId(): any {
+        var partenaire = {
+            identifiantPartenaire: this.IdentifiantPartenaire
+        }
+        return partenaire;
     }
 
 }

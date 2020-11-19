@@ -8,7 +8,7 @@
  * @version 1.0
  * @author Jean-Claude
  */
-class Localisation {
+class Localisation implements ISerializable {
 	private $identifiantLocalisation;
 	private $latitudeLocalisation;
 	private $longitudeLocalisation;
@@ -43,4 +43,20 @@ class Localisation {
 		$this->longitudeLocalisation = "";
 	}
 
+
+	#region ISerializable Members
+
+	/**
+	 *
+	 * @return array
+	 */
+	public function getObjetSerializable(): array {
+		return array(
+			"identifiantLocalisation" => $this->getIdentifiantLocalisation(),
+            "latitudeLocalisation" => $this->getLatitudeLocalisation(),
+            "longitudeLocalisation" => $this->getLongitudeLocalisation()
+        );
+	}
+
+	#endregion
 }

@@ -8,17 +8,17 @@
  * @version 1.0
  * @author Jean-Claude
  */
-class Specialite {
-	private $identifiantNomSpecialite;
+class Specialite implements ISerializable {
+	private $identifiantSpecialite;
 	private $nomSpecialite;
 	private $listeSousSpecialites;
 
-	public function getIdentifiantNomSpecialite(): int {
-		return $this->identifiantNomSpecialite;
+	public function getIdentifiantSpecialite(): int {
+		return $this->identifiantSpecialite;
 	}
 
-	public function setIdentifiantNomSpecialite(int $identifiantNomSpecialite): void {
-        $this->identifiantNomSpecialite = $identifiantNomSpecialite;
+	public function setIdentifiantSpecialite(int $identifiantSpecialite): void {
+        $this->identifiantSpecialite = $identifiantSpecialite;
     }
 
 	public function getNomSpecialite(): string {
@@ -37,8 +37,16 @@ class Specialite {
         $this->listeSousSpecialites = $listeSousSpecialites;
     }
 
+	private function getListeSousSpecialitesSerializable() : array {
+		$res = array();
+		foreach ($this->listeSousSpecialites as $sousSpecialite) {
+			$res[] = $sousSpecialite->getObjetSerializable();
+		}
+		return $res;
+	}
+
 	public function __construct() {
-		$this->identifiantNomSpecialite = 0;
+		$this->identifiantSpecialite = 0;
 		$this->nomSpecialite = "";
 		$this->listeSousSpecialites = array();
 	}
@@ -53,4 +61,20 @@ class Specialite {
 		}
 	}
 
+
+	#region ISerializable Members
+
+	/**
+	 *
+	 * @return array
+	 */
+	public function getObjetSerializable(): array {
+		return array(
+			"identifiantSpecialite" => $this->getIdentifiantSpecialite(),
+            "nomSpecialite" => $this->getNomSpecialite(),
+            "listeSousSpecialites" => $this->getListeSousSpecialitesSerializable()
+        );
+	}
+
+	#endregion
 }

@@ -21,7 +21,6 @@ export default class Datatables<TypeLigne extends object> extends Vue {
     private datatables: DataTables.Api;
 
     mounted() {
-        console.log(this.$el);
         this.datatables = $(this.$el).DataTable({
             scrollY: "500px",
             scrollCollapse: true,

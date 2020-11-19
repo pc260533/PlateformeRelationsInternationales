@@ -8,6 +8,10 @@ export class Application {
     private applicationVue: Vue;
 
     public constructor() {
+        /*router.beforeEach((to, from, next) => {
+            document.title = to.meta.title;
+            next();
+        });*/
         this.applicationVue = new Vue({
             /*data: {
                 plateforme: new Plateforme()

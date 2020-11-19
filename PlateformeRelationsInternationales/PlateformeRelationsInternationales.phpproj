@@ -31,6 +31,7 @@
     <Compile Include="php\exception\ExceptionSerializable.php" />
     <Compile Include="php\modele\AideFinanciere.php" />
     <Compile Include="php\modele\Contact.php" />
+    <Compile Include="php\modele\ISerializable.php" />
     <Compile Include="php\modele\Localisation.php" />
     <Compile Include="php\modele\Mobilite.php" />
     <Compile Include="php\modele\Partenaire.php" />
@@ -38,6 +39,7 @@
     <Compile Include="php\modele\SousSpecialite.php" />
     <Compile Include="php\modele\Specialite.php" />
     <Compile Include="php\stockage\InstalleurBaseDeDonnees.php" />
+    <Compile Include="php\stockage\StockageBaseDeDonnees.php" />
     <Compile Include="php\templates\templatePageApplication.php" />
     <Compile Include="php\pages\Page.php" />
     <Compile Include="php\pages\PageApplication.php" />
@@ -83,6 +85,7 @@
     <Content Include="ts\main.ts" />
     <Content Include="ts\modelePlateforme\aideFinanciere.ts" />
     <Content Include="ts\modelePlateforme\contact.ts" />
+    <Content Include="ts\modelePlateforme\iserializable.ts" />
     <Content Include="ts\modelePlateforme\localisation.ts" />
     <Content Include="ts\modelePlateforme\mobilite.ts" />
     <Content Include="ts\modelePlateforme\partenaire.ts" />
@@ -100,6 +103,7 @@
     <Content Include="ts\vuesPlateforme\composants\proprietesDatatablesColonne.ts" />
     <Content Include="ts\vuesPlateforme\composants\spinnerSpecifique.ts" />
     <Content Include="ts\shims-png.d.ts" />
+    <Content Include="ts\vuesPlateforme\IVuePlateformeDatatables.ts" />
     <Content Include="ts\vuesPlateforme\templates\applicationVue.html" />
     <Content Include="ts\vuesPlateforme\templates\datatables.html" />
     <Content Include="ts\vuesPlateforme\templates\modalSpecifique.html" />

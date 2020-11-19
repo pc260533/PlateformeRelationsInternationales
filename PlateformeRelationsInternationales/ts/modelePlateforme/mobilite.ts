@@ -1,4 +1,6 @@
-﻿export class Mobilite {
+﻿import { ISerializable } from "./ISerializable";
+
+export class Mobilite implements ISerializable {
     private identifiantMobilite: number;
     private typeMobilite: string;
 
@@ -21,6 +23,21 @@
     public constructor() {
         this.identifiantMobilite = 0;
         this.typeMobilite = "";
+    }
+
+    public getObjetSerializable(): any {
+        var mobilite = {
+            identifiantMobilite: this.IdentifiantMobilite,
+            typeMobilite: this.TypeMobilite
+        }
+        return mobilite;
+    }
+
+    public getObjetSerializableId(): any {
+        var mobilite = {
+            identifiantMobilite: this.IdentifiantMobilite
+        }
+        return mobilite;
     }
 
 }

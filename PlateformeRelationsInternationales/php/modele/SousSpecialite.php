@@ -8,7 +8,7 @@
  * @version 1.0
  * @author Jean-Claude
  */
-class SousSpecialite {
+class SousSpecialite implements ISerializable {
 	private $identifiantSousSpecialite;
 	private $nomSousSpecialite;
 
@@ -21,7 +21,7 @@ class SousSpecialite {
     }
 
 	public function getNomSousSpecialite(): string {
-		return $this->NomSousSpecialite;
+		return $this->nomSousSpecialite;
 	}
 
 	public function setNomSousSpecialite(string $nomSousSpecialite): void {
@@ -33,4 +33,19 @@ class SousSpecialite {
 		$this->nomSousSpecialite = "";
 	}
 
+
+	#region ISerializable Members
+
+	/**
+	 *
+	 * @return array
+	 */
+	public function getObjetSerializable(): array {
+		return array(
+			"identifiantSousSpecialite" => $this->getIdentifiantSousSpecialite(),
+            "nomSousSpecialite" => $this->getNomSousSpecialite()
+        );
+	}
+
+	#endregion
 }

@@ -1,4 +1,6 @@
-﻿export class Localisation {
+﻿import { ISerializable } from "./ISerializable";
+
+export class Localisation implements ISerializable {
     private identifiantLocalisation: number;
     private latitudeLocalisation: string;
     private longitudeLocalisation: string;
@@ -32,4 +34,21 @@
         this.latitudeLocalisation = "";
         this.longitudeLocalisation = "";
     }
+
+    public getObjetSerializable(): any {
+        var localisation = {
+            identifiantLocalisation: this.IdentifiantLocalisation,
+            latitudeLocalisation: this.LatitudeLocalisation,
+            longitudeLocalisation: this.LongitudeLocalisation
+        }
+        return localisation;
+    }
+
+    public getObjetSerializableId(): any {
+        var localisation = {
+            identifiantAideFinanciere: this.IdentifiantLocalisation
+        }
+        return localisation;
+    }
+
 }

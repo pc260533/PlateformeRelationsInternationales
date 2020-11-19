@@ -8,7 +8,7 @@
  * @version 1.0
  * @author Jean-Claude
  */
-class Mobilite {
+class Mobilite implements ISerializable {
 	private $identifiantMobilite;
 	private $typeMobilite;
 
@@ -33,4 +33,19 @@ class Mobilite {
 		$this->typeMobilite = "";
 	}
 
+
+	#region ISerializable Members
+
+	/**
+	 *
+	 * @return array
+	 */
+	public function getObjetSerializable(): array {
+		return array(
+			"identifiantMobilite" => $this->getIdentifiantMobilite(),
+            "typeMobilite" => $this->getTypeMobilite()
+        );
+	}
+
+	#endregion
 }

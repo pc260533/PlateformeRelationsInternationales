@@ -39,7 +39,7 @@ export default class SpinnerSpecifique extends Vue {
         this.spinner.spin(this.elementSpinner);
     }
 
-    public caherSpinner(): void {
+    public cacherSpinner(): void {
         this.spinner.stop();
     }
 

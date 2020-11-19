@@ -8,15 +8,15 @@
  * @version 1.0
  * @author Jean-Claude
  */
-class Partenaire {
+class Partenaire implements ISerializable {
 	private $identifiantPartenaire;
     private $nomPartenaire;
     private $domaineDeCompetencePartenaire;
     private $localisationPartenaire;
     private $listeSpecialitesPartenaire;
-    private $listeMobilitesPartenaires;
-    private $listeContactsPartenaires;
-    private $listeAidesFinancieresPartenaires;
+    private $listeMobilitesPartenaire;
+    private $listeContactsPartenaire;
+    private $listeAidesFinancieresPartenaire;
     private $informationLogementPartenaire;
     private $informationCoutPartenaire;
 
@@ -60,28 +60,28 @@ class Partenaire {
         $this->listeSpecialitesPartenaire = $listeSpecialitesPartenaire;
     }
 
-	public function getListeMobilitesPartenaires(): array {
-		return $this->listeMobilitesPartenaires;
+	public function getListeMobilitesPartenaire(): array {
+		return $this->listeMobilitesPartenaire;
 	}
 
-	public function setListeMobilitesPartenaires(array $listeMobilitesPartenaires): void {
-        $this->listeMobilitesPartenaires = $listeMobilitesPartenaires;
+	public function setListeMobilitesPartenaire(array $listeMobilitesPartenaire): void {
+        $this->listeMobilitesPartenaire = $listeMobilitesPartenaire;
     }
 
-	public function getListeContactsPartenaires(): array {
-		return $this->listeContactsPartenaires;
+	public function getListeContactsPartenaire(): array {
+		return $this->listeContactsPartenaire;
 	}
 
-	public function setListeContactsPartenaires(array $listeContactsPartenaires): void {
-        $this->listeContactsPartenaires = $listeContactsPartenaires;
+	public function setListeContactsPartenaire(array $listeContactsPartenaire): void {
+        $this->listeContactsPartenaire = $listeContactsPartenaire;
     }
 
-	public function getLlisteAidesFinancieresPartenaires(): array {
-		return $this->listeAidesFinancieresPartenaires;
+	public function getListeAidesFinancieresPartenaire(): array {
+		return $this->listeAidesFinancieresPartenaire;
 	}
 
-	public function setListeAidesFinancieresPartenaires(array $listeAidesFinancieresPartenaires): void {
-        $this->listeAidesFinancieresPartenaires = $listeAidesFinancieresPartenaires;
+	public function setListeAidesFinancieresPartenaire(array $listeAidesFinancieresPartenaire): void {
+        $this->listeAidesFinancieresPartenaire = $listeAidesFinancieresPartenaire;
     }
 
 	public function getInformationLogementPartenaire(): string {
@@ -100,15 +100,47 @@ class Partenaire {
         $this->informationCoutPartenaire = $informationCoutPartenaire;
     }
 
+	private function getListeSpecialitesSerializable() : array {
+		$res = array();
+		foreach ($this->listeSpecialitesPartenaire as $specialite) {
+			$res[] = $specialite->getObjetSerializable();
+		}
+		return $res;
+	}
+
+	private function getListeMobilitesSerializable() : array {
+		$res = array();
+		foreach ($this->listeMobilitesPartenaire as $mobilite) {
+			$res[] = $mobilite->getObjetSerializable();
+		}
+		return $res;
+	}
+
+	private function getListeContactsSerializable() : array {
+		$res = array();
+		foreach ($this->listeContactsPartenaire as $contact) {
+			$res[] = $contact->getObjetSerializable();
+		}
+		return $res;
+	}
+
+	private function getListeAidesFinancieresSerializable() : array {
+		$res = array();
+		foreach ($this->listeAidesFinancieresPartenaire as $aideFinanciere) {
+			$res[] = $aideFinanciere->getObjetSerializable();
+		}
+		return $res;
+	}
+
 	public function __construct() {
-		$this->identifiantNomSpecialite = 0;
+		$this->identifiantPartenaire = 0;
 		$this->nomPartenaire = "";
 		$this->domaineDeCompetencePartenaire = "";
 		$this->localisationPartenaire = null;
 		$this->listeSpecialitesPartenaire = array();
-		$this->listeMobilitesPartenaires = array();
-		$this->listeContactsPartenaires = array();
-		$this->listeAidesFinancieresPartenaires = array();
+		$this->listeMobilitesPartenaire = array();
+		$this->listeContactsPartenaire = array();
+		$this->listeAidesFinancieresPartenaire = array();
 		$this->informationLogementPartenaire = "";
 		$this->informationCoutPartenaire = "";
 	}
@@ -124,33 +156,56 @@ class Partenaire {
 	}
 
 	public function ajouterMobilite(Mobilite $mobilite) {
-		$this->listeMobilitesPartenaires[] = $mobilite;
+		$this->listeMobilitesPartenaire[] = $mobilite;
 	}
 
 	public function supprimerMobilite(Mobilite $mobilite) {
-		if (($key = array_search($mobilite, $this->listeMobilitesPartenaires)) !== false) {
-			unset($this->listeMobilitesPartenaires[$key]);
+		if (($key = array_search($mobilite, $this->listeMobilitesPartenaire)) !== false) {
+			unset($this->listeMobilitesPartenaire[$key]);
 		}
 	}
 
 	public function ajouterContact(Contact $contact) {
-		$this->listeContactsPartenaires[] = $contact;
+		$this->listeContactsPartenaire[] = $contact;
 	}
 
 	public function supprimerContact(Contact $contact) {
-		if (($key = array_search($contact, $this->listeContactsPartenaires)) !== false) {
-			unset($this->listeContactsPartenaires[$key]);
+		if (($key = array_search($contact, $this->listeContactsPartenaire)) !== false) {
+			unset($this->listeContactsPartenaire[$key]);
 		}
 	}
 
 	public function ajouterAideFinanciere(AideFinanciere $aideFinanciere) {
-		$this->listeAidesFinancieresPartenaires[] = $aideFinanciere;
+		$this->listeAidesFinancieresPartenaire[] = $aideFinanciere;
 	}
 
 	public function supprimerAideFinanciere(AideFinanciere $aideFinanciere) {
-		if (($key = array_search($aideFinanciere, $this->listeAidesFinancieresPartenaires)) !== false) {
-			unset($this->listeAidesFinancieresPartenaires[$key]);
+		if (($key = array_search($aideFinanciere, $this->listeAidesFinancieresPartenaire)) !== false) {
+			unset($this->listeAidesFinancieresPartenaire[$key]);
 		}
 	}
+
+	#region ISerializable Members
+
+	/**
+	 *
+	 * @return array
+	 */
+	public function getObjetSerializable(): array {
+		return array(
+			"identifiantPartenaire" => $this->getIdentifiantPartenaire(),
+            "nomPartenaire" => $this->getNomPartenaire(),
+            "domaineDeCompetencePartenaire" => $this->getDomaineDeCompetencePartenaire(),
+            "localisationPartenaire" => $this->getLocalisationPartenaire()->getObjetSerializable(),
+            "listeSpecialitesPartenaire" => $this->getListeSpecialitesSerializable(),
+            "listeMobilitesPartenaire" => $this->getListeMobilitesSerializable(),
+            "listeContactsPartenaire" => $this->getListeContactsSerializable(),
+            "listeAidesFinancieresPartenaire" => $this->getListeAidesFinancieresSerializable(),
+            "informationLogementPartenaire" => $this->getInformationLogementPartenaire(),
+            "informationCoutPartenaire" => $this->getInformationCoutPartenaire()
+        );
+	}
+
+	#endregion
 
 }

@@ -8,7 +8,7 @@
  * @version 1.0
  * @author Jean-Claude
  */
-class Contact {
+class Contact implements ISerializable {
 	private $identifiantContact;
     private $nomContact;
     private $prenomContact;
@@ -63,4 +63,22 @@ class Contact {
 		$this->fonctionContact = "";
 	}
 
+
+	#region ISerializable Members
+
+	/**
+	 *
+	 * @return array
+	 */
+	public function getObjetSerializable(): array {
+		return array(
+			"identifiantContact" => $this->getIdentifiantContact(),
+            "nomContact" => $this->getNomContact(),
+            "prenomContact" => $this->getPrenomContact(),
+            "adresseMailContact" => $this->getAdresseMailContact(),
+            "fonctionContact" => $this->getFonctionContact()
+        );
+	}
+
+	#endregion
 }
