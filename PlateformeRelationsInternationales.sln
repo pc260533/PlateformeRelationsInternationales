@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.1259
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{A0786B88-2ADB-4C21-ABE8-AA2D79766269}") = "PlateformeRelationsInternationales", "..\..\..\..\..\..\..\..\Users\Jean-Claude\Desktop\ESIREM\S7\PROJET\CODE\PlateformeRelationsInternationales_FF_Version_Git\PlateformeRelationsInternationales\PlateformeRelationsInternationales.phpproj", "{0E30598B-66BC-4E6C-B367-01EBA04D1B26}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0E30598B-66BC-4E6C-B367-01EBA04D1B26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E30598B-66BC-4E6C-B367-01EBA04D1B26}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {29E019E7-8A2D-4555-BCBB-5E64A54204E8}
+	EndGlobalSection
+EndGlobal
