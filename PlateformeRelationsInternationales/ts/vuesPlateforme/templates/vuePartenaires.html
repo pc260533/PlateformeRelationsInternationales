@@ -1,7 +1,15 @@
 ﻿<!-- Partenaires -->
 
 <section class="section partenaires mt-5">
+
+    <ModalErreur ref="modalErreur"></ModalErreur>
+
+    <div class="container mb-5">
+        <div id="mapListePartenaires"></div>
+    </div>
+
     <div class="container">
+
         <Datatables ref="datatablesPartenaires" v-bind:proprietesDatatables="proprietesDatatablesPartenaires" idDatatables="datatablesPartenaires"></Datatables>
 
         <ModalSpecifique ref="modalEditePartenaire" idModal="modalEditeContactsPartenaire" tailleModal="modal-xl">
@@ -23,12 +31,18 @@
                     <input type="text" id="inputDomaineDeCompetencePartenaire" class="form-control" />
                 </div>
                 <div class="form-group">
-                    <label for="inputLatitudePartenaire">Latitude Partenaire:</label>
-                    <input type="text" id="inputLatitudePartenaire" class="form-control" />
+                    <label for="geocoderLocalisation">Localisation Partenaire:</label>
+                    <div id="geocoderLocalisation"></div>
                 </div>
-                <div class="form-group">
-                    <label for="inputLongitudePartenaire">Longitude Partenaire:</label>
-                    <input type="text" id="inputLongitudePartenaire" class="form-control" />
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="inputLatitudePartenaire">Latitude Partenaire:</label>
+                        <input type="text" id="inputLatitudePartenaire" class="form-control" />
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="inputLongitudePartenaire">Longitude Partenaire:</label>
+                        <input type="text" id="inputLongitudePartenaire" class="form-control" />
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="selectListeSpecialitesPartenaire">Liste Specialités Partenaire:</label>

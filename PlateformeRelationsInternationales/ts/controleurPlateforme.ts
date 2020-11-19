@@ -7,10 +7,21 @@ import { Mobilite } from "./modelePlateforme/mobilite";
 import { AideFinanciere } from "./modelePlateforme/aideFinanciere";
 import { Contact } from "./modelePlateforme/contact";
 import { Localisation } from "./modelePlateforme/localisation";
+import { ErreurSerializable } from "./erreur/erreurSerializable";
 
 export class ControleurPlateforme {
     private listeVuesPlateforme: IVuePlateforme[];
     private modelePlateforme: Plateforme;
+
+    private creerErreurSerializable(erreurJson: any): ErreurSerializable {
+        var erreurSerializable = new ErreurSerializable();
+        erreurSerializable.MessageErreur = erreurJson.messageErreur;
+        erreurSerializable.TitreErreur = erreurJson.titreErreur;
+        erreurSerializable.StatusErreur = erreurJson.statusErreur;
+        erreurSerializable.DeveloppeurMessageErreur = erreurJson.developpeurMessageErreur;
+        erreurSerializable.StackTraceErreur = erreurJson.stackTraceErreur;
+        return erreurSerializable;
+    }
 
     public constructor(plateforme: Plateforme) {
         this.listeVuesPlateforme = [];
@@ -28,6 +39,12 @@ export class ControleurPlateforme {
         if (!(indexVuePlateforme === undefined) && !(indexVuePlateforme === null)) {
             this.listeVuesPlateforme.splice(indexVuePlateforme, 1);
         }
+    }
+
+    protected notifieErreur(erreur: ErreurSerializable): void {
+        this.listeVuesPlateforme.forEach((ivuePlateforme: IVuePlateforme) => {
+            ivuePlateforme.afficheErreur(erreur);
+        });
     }
 
     protected notifieAjoutPartenaire(partenaire: Partenaire): void {
@@ -98,6 +115,7 @@ export class ControleurPlateforme {
                     var specialiteObjet = new Specialite();
                     specialiteObjet.IdentifiantSpecialite = specialite.identifiantSpecialite;
                     specialiteObjet.NomSpecialite = specialite.nomSpecialite;
+                    specialiteObjet.CouleurSpecialite = specialite.couleurSpecialite;
                     specialite.listeSousSpecialites.forEach((sousSpecialite: any) => {
                         var sousSpecialiteObjet = new SousSpecialite();
                         sousSpecialiteObjet.IdentifiantSousSpecialite = sousSpecialite.identifiantSousSpecialite;
@@ -109,8 +127,8 @@ export class ControleurPlateforme {
                 });
             },
             error: function (erreur) {
-                console.log(erreur);
-                //that.notifieErreur(erreur.responseJSON);
+                //console.log(erreur);
+                that.notifieErreur(that.creerErreurSerializable(erreur.responseJSON));
             }
         });
     }
@@ -134,8 +152,8 @@ export class ControleurPlateforme {
                 });
             },
             error: function (erreur) {
-                console.log(erreur);
-                //that.notifieErreur(erreur.responseJSON);
+                //console.log(erreur);
+                that.notifieErreur(that.creerErreurSerializable(erreur.responseJSON));
             }
         });
     }
@@ -153,8 +171,8 @@ export class ControleurPlateforme {
                 that.notifieAjoutPartenaire(partenaire);
             },
             error: function (erreur) {
-                console.log(erreur);
-                //that.notifieErreur(erreur.responseJSON);
+                //console.log(erreur);
+                that.notifieErreur(that.creerErreurSerializable(erreur.responseJSON));
             }
         });
     }
@@ -164,15 +182,15 @@ export class ControleurPlateforme {
         $.ajax({
             url: "api/partenaires",
             method: "delete",
-            //pour supprimer le partenaire il faut supprimer le aprtenaire et a localisation donc on pass l'id du partenaire et l'id de sa localisation
+            //pour supprimer le partenaire il faut supprimer le aprtenaire et la localisation donc on passe l'id du partenaire et l'id de sa localisation
             data: partenaire.getObjetSerializable(),
             success: function (resultat) {
                 that.modelePlateforme.supprimerPartenaire(partenaire);
                 that.notifieSuppressionPartenaire(partenaire);
             },
             error: function (erreur) {
-                console.log(erreur);
-                //that.notifieErreur(erreur.responseJSON);
+                //console.log(erreur);
+                that.notifieErreur(that.creerErreurSerializable(erreur.responseJSON));
             }
         });
     }
@@ -197,8 +215,8 @@ export class ControleurPlateforme {
                 that.notifieModificationPartenaire(ancienPartenaire);
             },
             error: function (erreur) {
-                console.log(erreur);
-                //that.notifieErreur(erreur.responseJSON);
+                //console.log(erreur);
+                that.notifieErreur(that.creerErreurSerializable(erreur.responseJSON));
             }
         });
     }
@@ -250,8 +268,8 @@ export class ControleurPlateforme {
                 });
             },
             error: function (erreur) {
-                console.log(erreur);
-                //that.notifieErreur(erreur.responseJSON);
+                //console.log(erreur);
+                that.notifieErreur(that.creerErreurSerializable(erreur.responseJSON));
             }
         });
     }
@@ -268,8 +286,8 @@ export class ControleurPlateforme {
                 that.notifieAjoutAideFinanciere(aideFinanciere);
             },
             error: function (erreur) {
-                console.log(erreur);
-                //that.notifieErreur(erreur.responseJSON);
+                //console.log(erreur);
+                that.notifieErreur(that.creerErreurSerializable(erreur.responseJSON));
             }
         });
     }
@@ -288,24 +306,26 @@ export class ControleurPlateforme {
                 that.notifieSuppressionAideFinanciere(aideFinanciere);
             },
             error: function (erreur) {
-                console.log(erreur);
-                //that.notifieErreur(erreur.responseJSON);
+                //console.log(erreur);
+                that.notifieErreur(that.creerErreurSerializable(erreur.responseJSON));
             }
         });
     }
 
-    public modifierAideFinanciere(aideFinanciere: AideFinanciere): void {
+    public modifierAideFinanciere(ancienneAideFinanciere: AideFinanciere, nouvelleAideFinanciere: AideFinanciere): void {
+        nouvelleAideFinanciere.IdentifiantAideFinanciere = ancienneAideFinanciere.IdentifiantAideFinanciere;
         var that = this;
         $.ajax({
             url: "api/aidesfinancieres",
             method: "put",
-            data: aideFinanciere.getObjetSerializable(),
+            data: nouvelleAideFinanciere.getObjetSerializable(),
             success: function (resultat) {
-                that.notifieModificationAideFinanciere(aideFinanciere);
+                ancienneAideFinanciere.NomAideFinanciere = nouvelleAideFinanciere.NomAideFinanciere;
+                that.notifieModificationAideFinanciere(ancienneAideFinanciere);
             },
             error: function (erreur) {
-                console.log(erreur);
-                //that.notifieErreur(erreur.responseJSON);
+                //console.log(erreur);
+                that.notifieErreur(that.creerErreurSerializable(erreur.responseJSON));
             }
         });
     }
@@ -333,8 +353,8 @@ export class ControleurPlateforme {
                 });
             },
             error: function (erreur) {
-                console.log(erreur);
-                //that.notifieErreur(erreur.responseJSON);
+                //console.log(erreur);
+                that.notifieErreur(that.creerErreurSerializable(erreur.responseJSON));
             }
         });
     }
@@ -351,8 +371,8 @@ export class ControleurPlateforme {
                 that.notifieAjoutContact(contact);
             },
             error: function (erreur) {
-                console.log(erreur);
-                //that.notifieErreur(erreur.responseJSON);
+                //console.log(erreur);
+                that.notifieErreur(that.creerErreurSerializable(erreur.responseJSON));
             }
         });
     }
@@ -371,24 +391,29 @@ export class ControleurPlateforme {
                 that.notifieSuppressionContact(contact);
             },
             error: function (erreur) {
-                console.log(erreur);
-                //that.notifieErreur(erreur.responseJSON);
+                //console.log(erreur);
+                that.notifieErreur(that.creerErreurSerializable(erreur.responseJSON));
             }
         });
     }
 
-    public modifierContact(contact: Contact): void {
+    public modifierContact(ancienContact: Contact, nouveauContact: Contact): void {
+        nouveauContact.IdentifiantContact = ancienContact.IdentifiantContact;
         var that = this;
         $.ajax({
             url: "api/contacts",
             method: "put",
-            data: contact.getObjetSerializable(),
+            data: nouveauContact.getObjetSerializable(),
             success: function (resultat) {
-                that.notifieModificationContact(contact);
+                ancienContact.NomContact = nouveauContact.NomContact;
+                ancienContact.PrenomContact = nouveauContact.PrenomContact;
+                ancienContact.AdresseMailContact = nouveauContact.AdresseMailContact;
+                ancienContact.FonctionContact = nouveauContact.FonctionContact;
+                that.notifieModificationContact(ancienContact);
             },
             error: function (erreur) {
-                console.log(erreur);
-                //that.notifieErreur(erreur.responseJSON);
+                //console.log(erreur);
+                that.notifieErreur(that.creerErreurSerializable(erreur.responseJSON));
             }
         });
     }
@@ -419,8 +444,8 @@ export class ControleurPlateforme {
                 });
             },
             error: function (erreur) {
-                console.log(erreur);
-                //that.notifieErreur(erreur.responseJSON);
+                //console.log(erreur);
+                that.notifieErreur(that.creerErreurSerializable(erreur.responseJSON));
             }
         });
     }

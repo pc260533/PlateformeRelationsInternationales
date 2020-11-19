@@ -1,2 +1,56 @@
-﻿body {
+﻿/* Page A Propos */
+
+body {
+
+}
+
+.apropos .informationsAPropos h3 {
+    font-size: 25px;
+    font-weight: normal;
+    margin-bottom: 20px;
+}
+
+.apropos .informationsAPropos h3 span {
+    color: #2184BE;
+}
+
+.apropos .informationsAPropos .informationsAProposDescription {
+    line-height: 1.8;
+    color: #888;
+    margin-bottom: 20px;
+    text-align: justify;
+}
+
+.apropos .informationsAPropos p .proprieteApplication {
+    color: #2184BE;
+}
+
+.apropos .informationsAPropos .informationsAProposUl .informationsAProposLi a {
+    transition: all 0.3s ease-in-out;
+    color: #000;
+}
+
+.apropos .informationsAPropos .informationsAProposUl .informationsAProposLi a:hover {
+    color: #a6d2ff;
+}
+
+.apropos .informationsAPropos .informationsAProposBouton {
+    padding: 10px 20px;
+    margin-bottom: 15px;
+}
+
+.apropos .imageAPropos img {
+    width: 100%;
+}
+
+@media (max-width:375px) {
+    .apropos .informationsAPropos h3 {
+        font-size: 20px;
+    }
+}
+
+@media (min-width:576px) and (max-width:768px) {
+    .apropos .informationsAPropos {
+        text-align: center;
+    }
 }

@@ -10,17 +10,17 @@
  */
 class InstalleurBaseDeDonnees {
 	/**
-	 * Le data source name de la base de données.
+	 * Le data source name de la base de donnÃ©es.
 	 * @var mixed
 	 */
 	private $dataSourceName;
 	/**
-	 * Le nom d'utilisateur de la base de données.
+	 * Le nom d'utilisateur de la base de donnÃ©es.
 	 * @var mixed
 	 */
 	private $username;
 	/**
-	 * Le mot de passe de la base de données.
+	 * Le mot de passe de la base de donnÃ©es.
 	 * @var mixed
 	 */
 	private $password;
@@ -31,7 +31,7 @@ class InstalleurBaseDeDonnees {
 	private $pdo;
 
 	/**
-	 * Créer la base de données Plateforme.
+	 * CrÃ©er la base de donnÃ©es Plateforme.
 	 */
 	private function creerBaseDeDonneesPlateforme(): void {
 		$requete = "CREATE DATABASE IF NOT EXISTS PLATEFORME CHARACTER SET UTF8mb4 COLLATE utf8mb4_bin;";
@@ -39,7 +39,7 @@ class InstalleurBaseDeDonnees {
 	}
 
 	/**
-	 * Créer la table AideFinanciere dans la base.
+	 * CrÃ©er la table AideFinanciere dans la base.
 	 */
 	private function creerTableAideFinanciere(): void {
 		$requete = "CREATE TABLE IF NOT EXISTS PLATEFORME.AIDEFINANCIERE (" .
@@ -49,7 +49,7 @@ class InstalleurBaseDeDonnees {
 	}
 
 	/**
-	 * Créer la table Contact dans la base.
+	 * CrÃ©er la table Contact dans la base.
 	 */
 	private function creerTableContact(): void {
 		$requete = "CREATE TABLE IF NOT EXISTS PLATEFORME.CONTACT (" .
@@ -62,7 +62,7 @@ class InstalleurBaseDeDonnees {
 	}
 
 	/**
-	 * Créer la table Localisation dans la base.
+	 * CrÃ©er la table Localisation dans la base.
 	 */
 	private function creerTableLocalisation(): void {
 		$requete = "CREATE TABLE IF NOT EXISTS PLATEFORME.LOCALISATION (" .
@@ -73,7 +73,7 @@ class InstalleurBaseDeDonnees {
 	}
 
 	/**
-	 * Créer la table Mobilite dans la base.
+	 * CrÃ©er la table Mobilite dans la base.
 	 */
 	private function creerTableMobilite(): void {
 		$requete = "CREATE TABLE IF NOT EXISTS PLATEFORME.MOBILITE (" .
@@ -83,17 +83,18 @@ class InstalleurBaseDeDonnees {
 	}
 
 	/**
-	 * Créer la table Specialite dans la base.
+	 * CrÃ©er la table Specialite dans la base.
 	 */
 	private function creerTableSpecialite(): void {
 		$requete = "CREATE TABLE IF NOT EXISTS PLATEFORME.SPECIALITE (" .
 				   "identifiantSpecialite INT PRIMARY KEY NOT NULL AUTO_INCREMENT," .
-				   "nomSpecialite VARCHAR(255));";
+				   "nomSpecialite VARCHAR(255)," .
+				   "couleurSpecialite VARCHAR(255));";
         $this->pdo->exec($requete);
 	}
 
 	/**
-	 * Créer la table SousSpecialite dans la base.
+	 * CrÃ©er la table SousSpecialite dans la base.
 	 */
 	private function creerTableSousSpecialite(): void {
 		$requete = "CREATE TABLE IF NOT EXISTS PLATEFORME.SOUSSPECIALITE (" .
@@ -105,21 +106,21 @@ class InstalleurBaseDeDonnees {
 	}
 
 	/**
-	 * Créer la table Partenaire dans la base.
+	 * CrÃ©er la table Partenaire dans la base.
 	 */
 	private function creerTablePartenaire(): void {
 		$requete = "CREATE TABLE IF NOT EXISTS PLATEFORME.PARTENAIRE (" .
 				   "nomPartenaire VARCHAR(255)," .
 				   "domaineDeCompetencePartenaire VARCHAR(255)," .
 				   "identifiantLocalisation INT NOT NULL," .
-				   "informationLogementPartenaire TEXT" .
+				   "informationLogementPartenaire TEXT," .
 				   "informationCoutPartenaire TEXT," .
 				   "FOREIGN KEY (identifiantLocalisation) REFERENCES LOCALISATION(identifiantLocalisation) ON DELETE CASCADE);";
         $this->pdo->exec($requete);
 	}
 
 	/**
-	 * Créer la table Correspondance_Partenaire_SousSpecialite dans la base.
+	 * CrÃ©er la table Correspondance_Partenaire_SousSpecialite dans la base.
 	 */
 	private function creerTableCorrespondancePartenaireSousSpecialite(): void {
 		$requete = "CREATE TABLE IF NOT EXISTS PLATEFORME.CORRESPONDANCE_PARTENAIRE_SOUSSPECIALITE (" .
@@ -132,7 +133,7 @@ class InstalleurBaseDeDonnees {
 	}
 
 	/**
-	 * Créer la table Correspondance_Partenaire_Mobilite dans la base.
+	 * CrÃ©er la table Correspondance_Partenaire_Mobilite dans la base.
 	 */
 	private function creerTableCorrespondancePartenaireMobilite(): void {
 		$requete = "CREATE TABLE IF NOT EXISTS PLATEFORME.CORRESPONDANCE_PARTENAIRE_MOBILITE (" .
@@ -145,7 +146,7 @@ class InstalleurBaseDeDonnees {
 	}
 
 	/**
-	 * Créer la table Correspondance_Partenaire_Contact dans la base.
+	 * CrÃ©er la table Correspondance_Partenaire_Contact dans la base.
 	 */
 	private function creerTableCorrespondancePartenaireContact(): void {
 		$requete = "CREATE TABLE IF NOT EXISTS PLATEFORME.CORRESPONDANCE_PARTENAIRE_CONTACT (" .
@@ -158,7 +159,7 @@ class InstalleurBaseDeDonnees {
 	}
 
 	/**
-	 * Créer la table Correspondance_Partenaire_AideFinanciere dans la base.
+	 * CrÃ©er la table Correspondance_Partenaire_AideFinanciere dans la base.
 	 */
 	private function creerTableCorrespondancePartenaireAideFinanciere(): void {
 		$requete = "CREATE TABLE IF NOT EXISTS PLATEFORME.CORRESPONDANCE_PARTENAIRE_AIDEFINANCIERE (" .
@@ -171,11 +172,11 @@ class InstalleurBaseDeDonnees {
 	}
 
 	/**
-	 * Constructeur prenant en paramètre le data source name, le nom d'utilisateur et le mot de passe de la base de données.
-	 * @param string $dataSourceName Le data source name de la base de données.
-	 * @param string $username Le nom d'utilisateur de la base de données.
-	 * @param string $password Le mot de passe de la base de données.
-	 * @throws ExceptionBaseDeDonneesPlateforme Exception du service de base de données.
+	 * Constructeur prenant en paramÃ¨tre le data source name, le nom d'utilisateur et le mot de passe de la base de donnÃ©es.
+	 * @param string $dataSourceName Le data source name de la base de donnÃ©es.
+	 * @param string $username Le nom d'utilisateur de la base de donnÃ©es.
+	 * @param string $password Le mot de passe de la base de donnÃ©es.
+	 * @throws ExceptionBaseDeDonneesPlateforme Exception du service de base de donnÃ©es.
 	 */
 	public function __construct(string $dataSourceName, string $username, string $password) {
 		try {
@@ -191,8 +192,8 @@ class InstalleurBaseDeDonnees {
 	}
 
 	/**
-	 * Initialiser la base de données.
-	 * @throws ExceptionBaseDeDonneesPlateforme Exception du service de base de données.
+	 * Initialiser la base de donnÃ©es.
+	 * @throws ExceptionBaseDeDonneesPlateforme Exception du service de base de donnÃ©es.
 	 */
 	public function initialiserBaseDeDonnees(): void {
 		try {

@@ -11,6 +11,10 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Factory\AppFactory;
 
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Log\LoggerInterface;
+//use Slim\Psr7\Response;
+
 require __DIR__ . "./vendor/autoload.php";
 
 require __DIR__ . "./php/modele/ISerializable.php";
@@ -29,34 +33,79 @@ require __DIR__ . "./php/stockage/StockageBaseDeDonnees.php";
 require __DIR__ . "./php/exception/ExceptionSerializable.php";
 require __DIR__ . "./php/exception/ExceptionBaseDeDonneesPlateforme.php";
 
+function getVariableEnvironnement(string $variableEnvironnement): string {
+	$res = "";
+	if (isset($_ENV[$variableEnvironnement])) {
+		$res = $_ENV[$variableEnvironnement];
+	}
+	return $res;
+}
+
+function getStockageBaseDeDonnee(): StockageBaseDeDonnees {
+	return new StockageBaseDeDonnees(getVariableEnvironnement("DATASOURCENAME_BASEDEDONNEEPLATEFORME"), getVariableEnvironnement("USERNAME_BASEDEDONNEE"), getVariableEnvironnement("PASSWORD_BASEDEDONNEE"));
+}
+
+function getInstalleurBaseDeDonnees(): InstalleurBaseDeDonnees {
+	return new InstalleurBaseDeDonnees(getVariableEnvironnement("DATASOURCENAME_BASEDEDONNEE"), getVariableEnvironnement("USERNAME_BASEDEDONNEE"), getVariableEnvironnement("PASSWORD_BASEDEDONNEE"));
+}
+
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->load();
+
 $app = AppFactory::create();
 
 $app->addBodyParsingMiddleware();
 
-$stockageBaseDeDonnee = new StockageBaseDeDonnees("mysql:host=localhost;dbname=plateforme;charset=utf8", "root", "");
 
-$app->get("/api/specialites", function (Request $request, Response $response, $args) use ($stockageBaseDeDonnee) {
-	$json = json_encode($stockageBaseDeDonnee->chargerListeSpecialites());
+$app->addRoutingMiddleware();
+
+$customErrorHandler = function (ServerRequestInterface $request, Throwable $exception, bool $displayErrorDetails, bool $logErrors, bool $logErrorDetails, ?LoggerInterface $logger = null) use ($app) {
+    //$logger->error($exception->getMessage());
+
+	$json = null;
+	$status = "500";
+
+	if ($exception instanceof ExceptionBaseDeDonneesPlateforme) {
+		$json = json_encode($exception->toArray());
+		$status = $exception->getStatus();
+	}
+	else {
+		$exceptionBaseDeDonneesPlateforme = new ExceptionBaseDeDonneesPlateforme($exception);
+		$json = json_encode($exceptionBaseDeDonneesPlateforme->toArray());
+	}
+
+    $response = $app->getResponseFactory()->createResponse();
+    $response->getBody()->write($json);
+
+	return $response->withStatus($status)->withHeader("Content-Type", "application/json");
+};
+
+$errorMiddleware = $app->addErrorMiddleware(true, true, true, null);
+$errorMiddleware->setDefaultErrorHandler($customErrorHandler);
+
+
+$app->get("/api/specialites", function (Request $request, Response $response, $args) {
+	$json = json_encode(getStockageBaseDeDonnee()->chargerListeSpecialites());
 
 	$response->getBody()->write($json);
 	return $response->withHeader("Content-Type", "application/json");
 });
 
-$app->get("/api/mobilites", function (Request $request, Response $response, $args) use ($stockageBaseDeDonnee) {
-	$json = json_encode($stockageBaseDeDonnee->chargerListeMobilites());
+$app->get("/api/mobilites", function (Request $request, Response $response, $args) {
+	$json = json_encode(getStockageBaseDeDonnee()->chargerListeMobilites());
 
 	$response->getBody()->write($json);
 	return $response->withHeader("Content-Type", "application/json");
 });
 
-$app->get("/api/partenaires", function (Request $request, Response $response, $args) use ($stockageBaseDeDonnee) {
-	$json = json_encode($stockageBaseDeDonnee->chargerListePartenaires());
+$app->get("/api/partenaires", function (Request $request, Response $response, $args) {
+	$json = json_encode(getStockageBaseDeDonnee()->chargerListePartenaires());
 
 	$response->getBody()->write($json);
 	return $response->withHeader("Content-Type", "application/json");
 });
 
-$app->post("/api/partenaires", function (Request $request, Response $response, $args) use ($stockageBaseDeDonnee) {
+$app->post("/api/partenaires", function (Request $request, Response $response, $args) {
 	$partenaireArray = $request->getParsedBody();
 	$partenaire = new Partenaire();
 	$partenaire->setNomPartenaire($partenaireArray["nomPartenaire"]);
@@ -95,7 +144,7 @@ $app->post("/api/partenaires", function (Request $request, Response $response, $
 	}
 	$partenaire->setInformationLogementPartenaire($partenaireArray["informationLogementPartenaire"]);
 	$partenaire->setInformationCoutPartenaire($partenaireArray["informationCoutPartenaire"]);
-	$stockageBaseDeDonnee->ajouterPartenaire($partenaire);
+	getStockageBaseDeDonnee()->ajouterPartenaire($partenaire);
 
 	$json = json_encode($partenaire->getObjetSerializable());
 
@@ -103,7 +152,7 @@ $app->post("/api/partenaires", function (Request $request, Response $response, $
 	return $response->withHeader("Content-Type", "application/json");
 });
 
-$app->delete("/api/partenaires", function (Request $request, Response $response, $args) use ($stockageBaseDeDonnee) {
+$app->delete("/api/partenaires", function (Request $request, Response $response, $args) {
 	$partenaireArray = $request->getParsedBody();
 	$partenaire = new Partenaire();
 	$partenaire->setIdentifiantPartenaire($partenaireArray["identifiantPartenaire"]);
@@ -138,7 +187,7 @@ $app->delete("/api/partenaires", function (Request $request, Response $response,
 			$partenaire->ajouterContact($contact);
 		}
 	}
-	$stockageBaseDeDonnee->supprimerPartenaire($partenaire);
+	getStockageBaseDeDonnee()->supprimerPartenaire($partenaire);
 
 	$json = json_encode($partenaire->getObjetSerializable());
 
@@ -146,7 +195,7 @@ $app->delete("/api/partenaires", function (Request $request, Response $response,
 	return $response->withHeader("Content-Type", "application/json");
 });
 
-$app->put("/api/partenaires", function (Request $request, Response $response, $args) use ($stockageBaseDeDonnee) {
+$app->put("/api/partenaires", function (Request $request, Response $response, $args) {
 	$partenaireArray = $request->getParsedBody();
 	$partenaire = new Partenaire();
 	$partenaire->setIdentifiantPartenaire($partenaireArray["identifiantPartenaire"]);
@@ -187,7 +236,7 @@ $app->put("/api/partenaires", function (Request $request, Response $response, $a
 			$partenaire->ajouterContact($contact);
 		}
 	}
-	$stockageBaseDeDonnee->modifierPartenaire($partenaire);
+	getStockageBaseDeDonnee()->modifierPartenaire($partenaire);
 
 	$json = json_encode($partenaire->getObjetSerializable());
 
@@ -195,18 +244,18 @@ $app->put("/api/partenaires", function (Request $request, Response $response, $a
 	return $response->withHeader("Content-Type", "application/json");
 });
 
-$app->get("/api/aidesfinancieres", function (Request $request, Response $response, $args) use ($stockageBaseDeDonnee) {
-	$json = json_encode($stockageBaseDeDonnee->chargerListeAidesFinancieres());
+$app->get("/api/aidesfinancieres", function (Request $request, Response $response, $args) {
+	$json = json_encode(getStockageBaseDeDonnee()->chargerListeAidesFinancieres());
 
 	$response->getBody()->write($json);
 	return $response->withHeader("Content-Type", "application/json");
 });
 
-$app->post("/api/aidesfinancieres", function (Request $request, Response $response, $args) use ($stockageBaseDeDonnee) {
+$app->post("/api/aidesfinancieres", function (Request $request, Response $response, $args) {
 	$aideFinanciereArray = $request->getParsedBody();
 	$aideFinanciere = new AideFinanciere();
 	$aideFinanciere->setNomAideFinanciere($aideFinanciereArray["nomAideFinanciere"]);
-	$stockageBaseDeDonnee->ajouterAideFinanciere($aideFinanciere);
+	getStockageBaseDeDonnee()->ajouterAideFinanciere($aideFinanciere);
 
 	$json = json_encode($aideFinanciere->getObjetSerializable());
 
@@ -214,11 +263,11 @@ $app->post("/api/aidesfinancieres", function (Request $request, Response $respon
 	return $response->withHeader("Content-Type", "application/json");
 });
 
-$app->delete("/api/aidesfinancieres", function (Request $request, Response $response, $args) use ($stockageBaseDeDonnee) {
+$app->delete("/api/aidesfinancieres", function (Request $request, Response $response, $args) {
 	$aideFinanciereArray = $request->getParsedBody();
 	$aideFinanciere = new AideFinanciere();
 	$aideFinanciere->setIdentifiantAideFinanciere($aideFinanciereArray["identifiantAideFinanciere"]);
-	$stockageBaseDeDonnee->supprimerAideFinanciere($aideFinanciere);
+	getStockageBaseDeDonnee()->supprimerAideFinanciere($aideFinanciere);
 
 	$json = json_encode($aideFinanciere->getObjetSerializable());
 
@@ -226,12 +275,12 @@ $app->delete("/api/aidesfinancieres", function (Request $request, Response $resp
 	return $response->withHeader("Content-Type", "application/json");
 });
 
-$app->put("/api/aidesfinancieres", function (Request $request, Response $response, $args) use ($stockageBaseDeDonnee) {
+$app->put("/api/aidesfinancieres", function (Request $request, Response $response, $args) {
 	$aideFinanciereArray = $request->getParsedBody();
 	$aideFinanciere = new AideFinanciere();
 	$aideFinanciere->setIdentifiantAideFinanciere($aideFinanciereArray["identifiantAideFinanciere"]);
 	$aideFinanciere->setNomAideFinanciere($aideFinanciereArray["nomAideFinanciere"]);
-	$stockageBaseDeDonnee->modifierAideFinanciere($aideFinanciere);
+	getStockageBaseDeDonnee()->modifierAideFinanciere($aideFinanciere);
 
 	$json = json_encode($aideFinanciere->getObjetSerializable());
 
@@ -239,21 +288,21 @@ $app->put("/api/aidesfinancieres", function (Request $request, Response $respons
 	return $response->withHeader("Content-Type", "application/json");
 });
 
-$app->get("/api/contacts", function (Request $request, Response $response, $args) use ($stockageBaseDeDonnee) {
-	$json = json_encode($stockageBaseDeDonnee->chargerListeContacts());
+$app->get("/api/contacts", function (Request $request, Response $response, $args) {
+	$json = json_encode(getStockageBaseDeDonnee()->chargerListeContacts());
 
 	$response->getBody()->write($json);
 	return $response->withHeader("Content-Type", "application/json");
 });
 
-$app->post("/api/contacts", function (Request $request, Response $response, $args) use ($stockageBaseDeDonnee) {
+$app->post("/api/contacts", function (Request $request, Response $response, $args) {
 	$contactArray = $request->getParsedBody();
 	$contact = new Contact();
 	$contact->setNomContact($contactArray["nomContact"]);
 	$contact->setPrenomContact($contactArray["prenomContact"]);
 	$contact->setAdresseMailContact($contactArray["adresseMailContact"]);
 	$contact->setFonctionContact($contactArray["fonctionContact"]);
-	$stockageBaseDeDonnee->ajouterContact($contact);
+	getStockageBaseDeDonnee()->ajouterContact($contact);
 
 	$json = json_encode($contact->getObjetSerializable());
 
@@ -261,11 +310,11 @@ $app->post("/api/contacts", function (Request $request, Response $response, $arg
 	return $response->withHeader("Content-Type", "application/json");
 });
 
-$app->delete("/api/contacts", function (Request $request, Response $response, $args) use ($stockageBaseDeDonnee) {
+$app->delete("/api/contacts", function (Request $request, Response $response, $args) {
 	$contactArray = $request->getParsedBody();
 	$contact = new Contact();
 	$contact->setIdentifiantContact($contactArray["identifiantContact"]);
-	$stockageBaseDeDonnee->supprimerContact($contact);
+	getStockageBaseDeDonnee()->supprimerContact($contact);
 
 	$json = json_encode($contact->getObjetSerializable());
 
@@ -273,7 +322,7 @@ $app->delete("/api/contacts", function (Request $request, Response $response, $a
 	return $response->withHeader("Content-Type", "application/json");
 });
 
-$app->put("/api/contacts", function (Request $request, Response $response, $args) use ($stockageBaseDeDonnee) {
+$app->put("/api/contacts", function (Request $request, Response $response, $args) {
 	$contactArray = $request->getParsedBody();
 	$contact = new Contact();
 	$contact->setIdentifiantContact($contactArray["identifiantContact"]);
@@ -281,7 +330,7 @@ $app->put("/api/contacts", function (Request $request, Response $response, $args
 	$contact->setPrenomContact($contactArray["prenomContact"]);
 	$contact->setAdresseMailContact($contactArray["adresseMailContact"]);
 	$contact->setFonctionContact($contactArray["fonctionContact"]);
-	$stockageBaseDeDonnee->modifierContact($contact);
+	getStockageBaseDeDonnee()->modifierContact($contact);
 
 	$json = json_encode($contact->getObjetSerializable());
 
@@ -289,31 +338,57 @@ $app->put("/api/contacts", function (Request $request, Response $response, $args
 	return $response->withHeader("Content-Type", "application/json");
 });
 
-$app->get("/[{path:.*}]", function (Request $request, Response $response, $args) {
+/*$app->get("/erreur", function (Request $request, Response $response, $args) {
 	$templatePageApplication = "./php/templates/templatePageApplication.php";
-    if (file_exists($templatePageApplication)) {
-        $response->getBody()->write(file_get_contents($templatePageApplication));
-    }
+	if (file_exists($templatePageApplication)) {
+		$response->getBody()->write(file_get_contents($templatePageApplication));
+	}
 	else {
 		throw new \Slim\Exception\HttpInternalServerErrorException ($request, "La page contenant l'application est introuvable");
-    }
-    /*$response->getBody()->write('<!DOCTYPE html>
-<html lang="fr">
+	}
+	return $response;
+});*/
 
-<head>
-    <meta charset="utf-8">
-    <title>Plateforme Relations Internationales</title>
-    <link rel="icon" type="image/png" />
-</head>
+$app->get("/[{path:.*}]", function (Request $request, Response $response, $args) {
+	/*$erreur = false;
+	try {
+		$installeurBaseDeDonnee = new InstalleurBaseDeDonnees("mysql:host=localhost", "root", "");
+		$installeurBaseDeDonnee->initialiserBaseDeDonnees();
+	}
+	catch (ExceptionBaseDeDonneesPlateforme $exception) {
+		$erreur = true;
+	}
 
-<body>
-    <div id="app"></div>
-</body>
+	if (!$erreur) {
+		$templatePageApplication = "./php/templates/templatePageApplication.php";
+		if (file_exists($templatePageApplication)) {
+			$response->getBody()->write(file_get_contents($templatePageApplication));
+		}
+		else {
+			throw new \Slim\Exception\HttpInternalServerErrorException ($request, "La page contenant l'application est introuvable");
+		}
+		return $response;
+	}
+	else {
+		return $response->withStatus(302)->withHeader("Location", "/erreur");
+	}*/
 
-<script src="dist/bundle.js"></script>
+	try {
+		$installeurBaseDeDonnee = new InstalleurBaseDeDonnees("mysql:host=localhost", "root", "");
+		$installeurBaseDeDonnee->initialiserBaseDeDonnees();
+	}
+	catch (ExceptionBaseDeDonneesPlateforme $exception) {
+		var_dump($exception);
+	}
+	$templatePageApplication = "./php/templates/templatePageApplication.php";
+	if (file_exists($templatePageApplication)) {
+		$response->getBody()->write(file_get_contents($templatePageApplication));
+	}
+	else {
+		throw new \Slim\Exception\HttpInternalServerErrorException ($request, "La page contenant l'application est introuvable");
+	}
+	return $response;
 
-</html>');*/
-    return $response;
 });
 
 $app->run();

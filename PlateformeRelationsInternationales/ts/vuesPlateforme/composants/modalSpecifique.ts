@@ -6,6 +6,7 @@
 export default class ModalSpecifique extends Vue {
     @Prop() private idModal!: string;
     @Prop() private tailleModal!: string;
+    @Prop() private classeHeader!: string;
 
     mounted() {
 

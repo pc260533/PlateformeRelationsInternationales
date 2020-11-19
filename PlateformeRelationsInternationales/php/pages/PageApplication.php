@@ -1,13 +1,13 @@
 <?php
 
 /**
- * PageAccueil est la classe représentant une page d'accueil de l'application cliente.
+ * PageAccueil est la classe reprÃ©sentant une page d'accueil de l'application cliente.
  *
  * @author Pierre-Nicolas
  */
 class PageApplication extends Page {
 	/**
-	 * Constructeur sans paramètres.
+	 * Constructeur sans paramÃ¨tres.
 	 */
 	public function __construct() {
 		parent::__construct("./php/templates/templatePageApplication.php");

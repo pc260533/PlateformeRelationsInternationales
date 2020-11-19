@@ -2,6 +2,7 @@
 const webpack = require("webpack");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const VueLoaderPlugin = require("vue-loader/lib/plugin");
+const Dotenv = require("dotenv-webpack");
 
 module.exports = {
     entry: "./ts/main.ts",
@@ -74,7 +75,8 @@ module.exports = {
             "window.jQuery": "jquery"
         }),
         new CleanWebpackPlugin(),
-        new VueLoaderPlugin()
+        new VueLoaderPlugin(),
+        new Dotenv()
     ])
 
 };

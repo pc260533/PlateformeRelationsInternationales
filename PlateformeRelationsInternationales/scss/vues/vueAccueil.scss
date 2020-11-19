@@ -1,11 +1,22 @@
 ﻿/* Page d'Accueil */
 /* Présentation des fonctionnalités */
+
+.carousel-control-next,
+.carousel-control-prev/*,
+.carousel-indicators*/ {
+    filter: invert(100%);
+}
+
 body {
     background: #f7f7f7;
 }
 
 .fonctionnalites {
     background: #f7f7f7;
+}
+
+.carousel-inner .carousel-item img {
+    max-height: 400px;
 }
 
 .fonctionnalites a:link,

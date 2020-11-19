@@ -6,6 +6,7 @@ import { SousSpecialite } from "../modelePlateforme/sousspecialite";
 import { Mobilite } from "../modelePlateforme/mobilite";
 import { AideFinanciere } from "../modelePlateforme/aideFinanciere";
 import { Contact } from "../modelePlateforme/contact";
+import { ErreurSerializable } from "../erreur/erreurSerializable";
 
 import Datatables from "./composants/datatables";
 import { ProprietesDatatables } from "./composants/proprietesDatatables";
@@ -13,6 +14,7 @@ import { ProprietesDatatablesColonne } from "./composants/proprietesDatatablesCo
 import { ProprietesDatatablesBouton } from "./composants/proprietesDatatablesBouton";
 import ModalSpecifique from "./composants/modalSpecifique";
 import SpinnerSpecifique from "./composants/spinnerSpecifique";
+import ModalErreur from "./composants/modalErreur";
 
 import { Component, Prop, Vue, Ref } from "vue-property-decorator";
 
@@ -21,7 +23,8 @@ import { Component, Prop, Vue, Ref } from "vue-property-decorator";
     components: {
         Datatables,
         ModalSpecifique,
-        SpinnerSpecifique
+        SpinnerSpecifique,
+        ModalErreur
     }
 })
 export default class VueContacts extends Vue implements IVuePlateforme {
@@ -31,8 +34,13 @@ export default class VueContacts extends Vue implements IVuePlateforme {
     @Ref("datatablesContact") readonly datatablesContact!: Datatables<Contact>;
     @Ref("modalEditeContact") readonly modalEditeContact!: ModalSpecifique;
     @Ref("spinner") readonly spinner!: SpinnerSpecifique;
+    @Ref("modalErreur") readonly modalErreur!: ModalErreur;
 
     private proprietesDatatablesContact: ProprietesDatatables;
+
+    public afficheErreur(erreur: ErreurSerializable): void {
+        this.modalErreur.afficherErreur(erreur);
+    }
 
     public ajoutPartenaire(partenaire: Partenaire): void {
 
@@ -89,6 +97,15 @@ export default class VueContacts extends Vue implements IVuePlateforme {
         });
     }
 
+    private creerContact(): Contact {
+        var contact = new Contact();
+        contact.NomContact = $("#inputNomContact").val() as string;
+        contact.PrenomContact = $("#inputPrenomContact").val() as string;
+        contact.AdresseMailContact = $("#inputAdresseMailContact").val() as string;
+        contact.FonctionContact = $("#inputFonctionContact").val() as string;
+        return contact;
+    }
+
     public constructor() {
         super();
         this.initialiserDatatables();
@@ -111,12 +128,7 @@ export default class VueContacts extends Vue implements IVuePlateforme {
         this.modalEditeContact.montrerModal();
         $("#boutonEditeContact").off();
         $("#boutonEditeContact").on("click", () => {
-            var contact = new Contact();
-            contact.NomContact = $("#inputNomContact").val() as string;
-            contact.PrenomContact = $("#inputPrenomContact").val() as string;
-            contact.AdresseMailContact = $("#inputAdresseMailContact").val() as string;
-            contact.FonctionContact = $("#inputFonctionContact").val() as string;
-            this.controleurPlateforme.ajouterContact(contact);
+            this.controleurPlateforme.ajouterContact(this.creerContact());
             this.modalEditeContact.cacherModal();
         });
     }
@@ -141,11 +153,7 @@ export default class VueContacts extends Vue implements IVuePlateforme {
             this.modalEditeContact.montrerModal();
             $("#boutonEditeContact").off();
             $("#boutonEditeContact").on("click", () => {
-                premierContactSelectionne.NomContact = $("#inputNomContact").val() as string;
-                premierContactSelectionne.PrenomContact = $("#inputPrenomContact").val() as string;
-                premierContactSelectionne.AdresseMailContact = $("#inputAdresseMailContact").val() as string;
-                premierContactSelectionne.FonctionContact = $("#inputFonctionContact").val() as string;
-                this.controleurPlateforme.modifierContact(premierContactSelectionne);
+                this.controleurPlateforme.modifierContact(premierContactSelectionne, this.creerContact());
                 this.modalEditeContact.cacherModal();
             });
         }

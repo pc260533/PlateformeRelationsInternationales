@@ -2,6 +2,8 @@
 <section class="section aidesfinancieres mt-5">
     <div class="container">
 
+        <ModalErreur ref="modalErreur"></ModalErreur>
+
         <Datatables ref="datatablesAidesFinancieres" v-bind:proprietesDatatables="proprietesDatatablesAidesFinancieres" idDatatables="datatablesAidesFinancieres"></Datatables>
 
         <ModalSpecifique ref="modalEditeAideFinanciere" idModal="modalEditeAideFinanciere" tailleModal="modal-lg">

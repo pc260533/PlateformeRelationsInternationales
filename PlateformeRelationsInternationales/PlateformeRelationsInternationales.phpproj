@@ -48,6 +48,7 @@
     <Folder Include="images\" />
     <Folder Include="images\accueil\" />
     <Folder Include="images\erreur\" />
+    <Folder Include="images\apropos\" />
     <Folder Include="php\modele\" />
     <Folder Include="php\exception\" />
     <Folder Include="php\stockage\" />
@@ -58,16 +59,20 @@
     <Folder Include="scss\vues\" />
     <Folder Include="ts\" />
     <Folder Include="ts\modelePlateforme\" />
+    <Folder Include="ts\erreur\" />
     <Folder Include="ts\vuesPlateforme\" />
     <Folder Include="ts\vuesPlateforme\composants\" />
     <Folder Include="ts\vuesPlateforme\templates\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include=".env" />
     <Content Include=".htaccess" />
+    <Content Include="images\accueil\background.jpg" />
     <Content Include="images\accueil\categories.png" />
     <Content Include="images\accueil\clients.png" />
     <Content Include="images\accueil\marques.png" />
     <Content Include="images\accueil\produits.png" />
+    <Content Include="images\apropos\apropos.png" />
     <Content Include="images\erreur\text.png" />
     <Content Include="images\favicon.png" />
     <Content Include="images\logo.png" />
@@ -77,10 +82,13 @@
     <Content Include="scss\vues\vueAidesFinancieres.scss" />
     <Content Include="scss\vues\vueAPropos.scss" />
     <Content Include="scss\vues\vueContacts.scss" />
+    <Content Include="scss\vues\vueErreur.scss" />
     <Content Include="scss\vues\vuePartenaires.scss" />
+    <Content Include="scss\vues\vuePlateforme.scss" />
     <Content Include="tsconfig.json" />
     <Content Include="ts\application.ts" />
     <Content Include="ts\controleurPlateforme.ts" />
+    <Content Include="ts\erreur\erreurSerializable.ts" />
     <Content Include="ts\ivuePlateforme.ts" />
     <Content Include="ts\main.ts" />
     <Content Include="ts\modelePlateforme\aideFinanciere.ts" />
@@ -96,7 +104,9 @@
     <Content Include="ts\shims-scss.d.ts" />
     <Content Include="ts\shims-vue.d.ts" />
     <Content Include="ts\applicationVue.ts" />
+    <Content Include="ts\vuesPlateforme\composants\carouselSpecifique.ts" />
     <Content Include="ts\vuesPlateforme\composants\datatables.ts" />
+    <Content Include="ts\vuesPlateforme\composants\modalErreur.ts" />
     <Content Include="ts\vuesPlateforme\composants\modalSpecifique.ts" />
     <Content Include="ts\vuesPlateforme\composants\proprietesDatatables.ts" />
     <Content Include="ts\vuesPlateforme\composants\proprietesDatatablesBouton.ts" />
@@ -105,20 +115,23 @@
     <Content Include="ts\shims-png.d.ts" />
     <Content Include="ts\vuesPlateforme\IVuePlateformeDatatables.ts" />
     <Content Include="ts\vuesPlateforme\templates\applicationVue.html" />
+    <Content Include="ts\vuesPlateforme\templates\carouselSpecifique.html" />
     <Content Include="ts\vuesPlateforme\templates\datatables.html" />
+    <Content Include="ts\vuesPlateforme\templates\modalErreur.html" />
     <Content Include="ts\vuesPlateforme\templates\modalSpecifique.html" />
     <Content Include="ts\vuesPlateforme\templates\spinnerSpecifique.html" />
     <Content Include="ts\vuesPlateforme\templates\vueContacts.html" />
     <Content Include="ts\vuesPlateforme\templates\vueAPropos.html" />
     <Content Include="ts\vuesPlateforme\templates\vueAidesFinancieres.html" />
     <Content Include="ts\vuesPlateforme\templates\vueAccueil.html" />
+    <Content Include="ts\vuesPlateforme\templates\vueErreur.html" />
     <Content Include="ts\vuesPlateforme\vueAPropos.ts" />
     <Content Include="ts\vuesPlateforme\templates\vuePartenaires.html" />
     <Content Include="ts\vuesPlateforme\vueAccueil.ts" />
     <Content Include="ts\vuesPlateforme\vueAidesFinancieres.ts" />
     <Content Include="ts\vuesPlateforme\vueContacts.ts" />
+    <Content Include="ts\vuesPlateforme\vueErreur.ts" />
     <Content Include="ts\vuesPlateforme\vuePartenaires.ts" />
-    <Content Include="ts\vuesPlateforme\vuePlateforme.ts" />
     <Content Include="Web.config" />
     <Content Include="webpack.config.js" />
   </ItemGroup>

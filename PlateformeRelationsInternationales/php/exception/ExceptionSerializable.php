@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ExceptionSerializable est la classe abstraite qui représente une exception sérializable.
+ * ExceptionSerializable est la classe abstraite qui reprÃ©sente une exception sÃ©rializable.
  *
  * ExceptionSerializable description.
  *
@@ -53,7 +53,7 @@ abstract class ExceptionSerializable extends Exception {
 	}
 
 	/**
-	 * Retourner le message développeur de l'exception.
+	 * Retourner le message dÃ©veloppeur de l'exception.
 	 * @return string
 	 */
 	public function getDeveloppeurMessage(): string {
@@ -79,9 +79,9 @@ abstract class ExceptionSerializable extends Exception {
 	/**
 	 * Construit l'exception.
 	 *
-	 * @param string $message Le message de l'exception à lancer.
+	 * @param string $message Le message de l'exception Ã  lancer.
 	 * @param int $code Le code de l'exception.
-	 * @param Throwable $previous L'exception précédente, utilisée pour le chaînage d'exception.
+	 * @param Throwable $previous L'exception prÃ©cÃ©dente, utilisÃ©e pour le chaÃ®nage d'exception.
 	 */
 	public function __construct($message, $titre, $status, $code, $previous) {
 		$this->status = $status;
@@ -90,17 +90,17 @@ abstract class ExceptionSerializable extends Exception {
 	}
 
 	/**
-	 * Retourner un tableau représentant l'exception sérialisable.
+	 * Retourner un tableau reprÃ©sentant l'exception sÃ©rialisable.
 	 * @return array
 	 */
 	public function toArray(): array {
 		return array(
-			"message" => $this->getMessage(),
-			"titre" => $this->getTitre(),
-			"status" => $this->getStatus(),
-			"code" => $this->getCode(),
-			"developpeurMessage" => $this->getDeveloppeurMessage(),
-			"stackTrace" => $this->getStackTrace()
+			"messageErreur" => $this->getMessage(),
+			"titreErreur" => $this->getTitre(),
+			"statusErreur" => $this->getStatus(),
+			"codeErreur" => $this->getCode(),
+			"developpeurMessageErreur" => $this->getDeveloppeurMessage(),
+			"stackTraceErreur" => $this->getStackTrace()
         );
 	}
 

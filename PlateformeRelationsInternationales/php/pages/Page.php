@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Page est la classe abstraite représentant une page de l'application cliente.
+ * Page est la classe abstraite reprÃ©sentant une page de l'application cliente.
  *
  * @author Pierre-Nicolas
  */
@@ -13,7 +13,7 @@ abstract class Page {
 	private $cheminFichierTemplate;
 
 	/**
-	 * Contrsuteur prenant en paramètre le chemin Le chemin du fichier de template.
+	 * Contrsuteur prenant en paramÃ¨tre le chemin Le chemin du fichier de template.
 	 * @param string $cheminFichierTemplate Le chemin Le chemin du fichier de template.
 	 */
 	public function __construct(string $cheminFichierTemplate) {

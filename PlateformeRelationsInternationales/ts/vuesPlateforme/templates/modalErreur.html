@@ -1,0 +1,31 @@
+﻿<ModalSpecifique ref="modalErreur" idModal="modalErreur" tailleModal="modal-lg" classeHeader="bg-danger">
+    <h4 slot="modalHeader" class="modal-tilte">
+        <span id="titreErreur"></span>
+    </h4>
+    <button slot="modalHeader" type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+
+    <h4 slot="modalBody">
+        Une erreur est survenue :
+        <br />
+        <span id="message"></span>
+    </h4>
+    <br slot="modalBody" />
+    <h4 slot="modalBody">Détails :</h4>
+    <div slot="modalBody">
+        Status :
+        <span id="status"></span>
+    </div>
+    <div slot="modalBody">
+        Développeur message :
+        <div class="card text-white bg-danger p-2" id="developpeurMessage"></div>
+    </div>
+    <div slot="modalBody">
+        Stack Trace :
+        <pre id="stackTrace"></pre>
+    </div>
+
+    <button slot="modalFooter" type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+
+</ModalSpecifique>

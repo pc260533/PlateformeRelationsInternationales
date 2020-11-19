@@ -4,6 +4,7 @@ import { ISerializable } from "./ISerializable";
 export class Specialite implements ISerializable {
     private identifiantSpecialite: number;
     private nomSpecialite: string;
+    private couleurSpecialite: string;
     private listeSousSpecialites: SousSpecialite[];
 
     public get IdentifiantSpecialite(): number {
@@ -22,6 +23,14 @@ export class Specialite implements ISerializable {
         this.nomSpecialite = nomSpecialite;
     }
 
+    public get CouleurSpecialite(): string {
+        return this.couleurSpecialite;
+    }
+
+    public set CouleurSpecialite(couleurSpecialite: string) {
+        this.couleurSpecialite = couleurSpecialite;
+    }
+
     public get ListeSousSpecialites(): SousSpecialite[] {
         return this.listeSousSpecialites;
     }
@@ -29,6 +38,7 @@ export class Specialite implements ISerializable {
     public constructor() {
         this.identifiantSpecialite = 0;
         this.nomSpecialite = "";
+        this.couleurSpecialite = "";
         this.listeSousSpecialites = [];
     }
 
@@ -47,6 +57,7 @@ export class Specialite implements ISerializable {
         var specialite = {
             identifiantSpecialite: this.IdentifiantSpecialite,
             nomSpecialite: this.NomSpecialite,
+            couleurSpecialite: this.CouleurSpecialite,
             listeSousSpecialites: this.listeSousSpecialites
         }
         return specialite;

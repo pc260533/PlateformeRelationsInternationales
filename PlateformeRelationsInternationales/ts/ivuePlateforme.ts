@@ -3,8 +3,11 @@ import { SousSpecialite } from "./modelePlateforme/sousspecialite";
 import { Mobilite } from "./modelePlateforme/mobilite";
 import { AideFinanciere } from "./modelePlateforme/aideFinanciere";
 import { Contact } from "./modelePlateforme/contact";
+import { ErreurSerializable } from "./erreur/erreurSerializable";
 
 export interface IVuePlateforme {
+
+    afficheErreur(erreur: ErreurSerializable): void;
 
     ajoutPartenaire(partenaire: Partenaire): void;
 

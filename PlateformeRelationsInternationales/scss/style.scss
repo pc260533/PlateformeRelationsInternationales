@@ -1,5 +1,21 @@
 ﻿@import "../node_modules/bootstrap/scss/bootstrap";
 
+#geocoderLocalisation {
+    width: 100%;
+}
+
+.mapboxgl-ctrl-geocoder {
+    min-width: 100%;
+}
+
+#geocoderLocalisation input {
+    outline: none;
+}
+
+#mapListePartenaires {
+    height: 500px;
+}
+
 .modal {
     overflow-y: scroll;
 }

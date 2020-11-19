@@ -11,6 +11,7 @@
 class Specialite implements ISerializable {
 	private $identifiantSpecialite;
 	private $nomSpecialite;
+	private $couleurSpecialite;
 	private $listeSousSpecialites;
 
 	public function getIdentifiantSpecialite(): int {
@@ -27,6 +28,14 @@ class Specialite implements ISerializable {
 
 	public function setNomSpecialite(string $nomSpecialite): void {
         $this->nomSpecialite = $nomSpecialite;
+    }
+
+	public function getCouleurSpecialite(): string {
+		return $this->couleurSpecialite;
+	}
+
+	public function setCouleurSpecialite(string $couleurSpecialite): void {
+        $this->couleurSpecialite = $couleurSpecialite;
     }
 
 	public function getListeSousSpecialites(): array {
@@ -48,6 +57,7 @@ class Specialite implements ISerializable {
 	public function __construct() {
 		$this->identifiantSpecialite = 0;
 		$this->nomSpecialite = "";
+		$this->couleurSpecialite = "";
 		$this->listeSousSpecialites = array();
 	}
 
@@ -72,6 +82,7 @@ class Specialite implements ISerializable {
 		return array(
 			"identifiantSpecialite" => $this->getIdentifiantSpecialite(),
             "nomSpecialite" => $this->getNomSpecialite(),
+            "couleurSpecialite" => $this->getCouleurSpecialite(),
             "listeSousSpecialites" => $this->getListeSousSpecialitesSerializable()
         );
 	}

@@ -1,18 +1,18 @@
 <?php
 
 /**
- * ExceptionBaseDeDonneesPlateforme est la classe qui représente une exception du service de la base de données.
+ * ExceptionBaseDeDonneesPlateforme est la classe qui reprÃ©sente une exception du service de la base de donnÃ©es.
  *
  * @author Pierre-Nicolas
  */
 class ExceptionBaseDeDonneesPlateforme extends ExceptionSerializable {
 
 	/**
-	 * Constructeur prennant en paramètre l'exception englobée.
-	 * @param mixed $previous : exption englobée.
+	 * Constructeur prennant en paramÃ¨tre l'exception englobÃ©e.
+	 * @param mixed $previous : exption englobÃ©e.
 	 */
 	public function __construct($previous) {
-		parent::__construct("Une erreur générale de la base de données plateforme est survenue.", "Erreur générale de la base de données plateforme", 500, 500, $previous);
+		parent::__construct("Une erreur gÃ©nÃ©rale de la base de donnÃ©es plateforme est survenue.", "Erreur gÃ©nÃ©rale de la base de donnÃ©es plateforme", 500, 500, $previous);
 	}
 
 }

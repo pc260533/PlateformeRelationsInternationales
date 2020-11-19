@@ -2,6 +2,8 @@
 <section class="section contacts mt-5">
     <div class="container">
 
+        <ModalErreur ref="modalErreur"></ModalErreur>
+
         <Datatables ref="datatablesContact" v-bind:proprietesDatatables="proprietesDatatablesContact" idDatatables="datatablesContact"></Datatables>
 
         <ModalSpecifique ref="modalEditeContact" idModal="modalEditeContact" tailleModal="modal-lg">

@@ -1,77 +1,89 @@
 ﻿<!-- Accueil -->
 <!-- Fonctionnalites -->
-<section class="section fonctionnalites">
-    <div class="container">
-        <div class="section-header text-center">
-            <h2 class="section-title">Fonctionnalités de Plateformes Relations Internationnales</h2>
-            <div class="line"><span></span></div>
-            <p>
-                Toutes les fonctionnalités de la Plateformes Relations Internationnales.
-            </p>
-        </div>
 
-        <div class="row">
-            <router-link class="col-md-6 col-12" :to="{ name: 'partenaires' }">
-                <div>
-                    <div class="fonct">
-                        <div class="icon">
-                            <img width="50" id="imageCategories" alt="" />
-                        </div>
-                        <h3 class="fonct-title">Partenaires</h3>
-                        <p>
-                            Gérer les partenaires.
-                        </p>
-                    </div>
-                </div>
-            </router-link>
+<div>
+    <ModalErreur ref="modalErreur"></ModalErreur>
 
-            <router-link class="col-md-6 col-12" :to="{ name: 'aidesfinancieres' }">
-                <div>
-                    <div class="fonct">
-                        <div class="icon">
-                            <img width="50" id="imageClients" alt="" />
-                        </div>
-                        <h3 class="fonct-title">Aides Financières</h3>
-                        <p>
-                            Gérer les aides financieres.
-                        </p>
-                    </div>
-                </div>
-            </router-link>
-
-        </div>
-
-        <div class="row">
-
-            <router-link class="col-md-6 col-12" :to="{ name: 'contacts' }">
-                <div>
-                    <div class="fonct">
-                        <div class="icon">
-                            <img width="50" id="imageMarques" alt="" />
-                        </div>
-                        <h3 class="fonct-title">Contacts</h3>
-                        <p>
-                            Gérer les contacts.
-                        </p>
-                    </div>
-                </div>
-            </router-link>
-
-            <router-link class="col-md-6 col-12" :to="{ name: 'apropos' }">
-                <div>
-                    <div class="fonct">
-                        <div class="icon">
-                            <img width="40" id="imageProduits" alt="" />
-                        </div>
-                        <h3 class="fonct-title">A Propos</h3>
-                        <p>
-                            Page à propos de l'application.
-                        </p>
-                    </div>
-                </div>
-            </router-link>
-        </div>
+    <div class="container mt-5">
+        <CarouselSpecifique ref="carouselAccueil" idCarousel="carouselAccueil"></CarouselSpecifique>
     </div>
-</section>
+
+    <section class="section fonctionnalites">
+
+        <div class="container">
+
+            <div class="section-header text-center">
+                <h2 class="section-title">Fonctionnalités de Plateformes Relations Internationnales</h2>
+                <div class="line"><span></span></div>
+                <p>
+                    Toutes les fonctionnalités de la Plateformes Relations Internationnales.
+                </p>
+            </div>
+
+            <div class="row">
+                <router-link class="col-md-6 col-12" :to="{ name: 'partenaires' }">
+                    <div>
+                        <div class="fonct">
+                            <div class="icon">
+                                <img width="50" id="imageCategories" alt="" />
+                            </div>
+                            <h3 class="fonct-title">Partenaires</h3>
+                            <p>
+                                Gérer les partenaires.
+                            </p>
+                        </div>
+                    </div>
+                </router-link>
+
+                <router-link class="col-md-6 col-12" :to="{ name: 'aidesfinancieres' }">
+                    <div>
+                        <div class="fonct">
+                            <div class="icon">
+                                <img width="50" id="imageClients" alt="" />
+                            </div>
+                            <h3 class="fonct-title">Aides Financières</h3>
+                            <p>
+                                Gérer les aides financieres.
+                            </p>
+                        </div>
+                    </div>
+                </router-link>
+
+            </div>
+
+            <div class="row">
+
+                <router-link class="col-md-6 col-12" :to="{ name: 'contacts' }">
+                    <div>
+                        <div class="fonct">
+                            <div class="icon">
+                                <img width="50" id="imageMarques" alt="" />
+                            </div>
+                            <h3 class="fonct-title">Contacts</h3>
+                            <p>
+                                Gérer les contacts.
+                            </p>
+                        </div>
+                    </div>
+                </router-link>
+
+                <router-link class="col-md-6 col-12" :to="{ name: 'apropos' }">
+                    <div>
+                        <div class="fonct">
+                            <div class="icon">
+                                <img width="40" id="imageProduits" alt="" />
+                            </div>
+                            <h3 class="fonct-title">A Propos</h3>
+                            <p>
+                                Page à propos de l'application.
+                            </p>
+                        </div>
+                    </div>
+                </router-link>
+            </div>
+        </div>
+    </section>
+</div>
+
 <!-- /Fonctionnalites -->
 <!-- /Accueil -->

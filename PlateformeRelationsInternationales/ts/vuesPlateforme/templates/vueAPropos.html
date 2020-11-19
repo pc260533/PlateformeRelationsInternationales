@@ -1,2 +1,57 @@
 ﻿<!-- A Propos -->
+
+<section class="sections apropos mt-5">
+    <div class="container">
+
+        <ModalErreur ref="modalErreur"></ModalErreur>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="informationsAPropos">
+                    <h3>Bienvenue sur <span>Plateforme Relations Internationales</span> permettant de gérer les relations internationales de l'Esirem.</h3>
+                    <p class="informationsAProposDescription">
+                        Nom : <span class="proprieteApplication">{{ nomApplication }}</span>
+                    </p>
+                    <p class="informationsAProposDescription">
+                        Version : <span class="proprieteApplication">{{ versionApplication }}</span>
+                    </p>
+                    <p class="informationsAProposDescription">
+                        Database host : <span class="proprieteApplication">{{ databaseHostApplication }}</span>
+                    </p>
+                    <p class="informationsAProposDescription">
+                        Crédits Client :
+                    </p>
+                    <ul class="informationsAProposUl">
+                        <li v-for="creditClientApplication in listeCreditsClientsApplication" class="informationsAProposLi">
+                            <a :href="creditClientApplication.lienCredit" target="_blank">{{ creditClientApplication.nomCredit }}</a>
+                        </li>
+                    </ul>
+                    <p class="informationsAProposDescription">
+                        Crédits Serveur :
+                    </p>
+                    <ul class="informationsAProposUl">
+                        <li v-for="creditServeurApplication in listeCreditsServeursApplication" class="informationsAProposLi">
+                            <a :href="creditServeurApplication.lienCredit" target="_blank">{{ creditServeurApplication.nomCredit }}</a>
+                        </li>
+                    </ul>
+                    <p class="informationsAProposDescription">
+                        Auteurs :
+                    </p>
+                    <ul class="informationsAProposUl">
+                        <li v-for="auteurApplication in listeAuteursApplication" class="informationsAProposLi">
+                             <a :href="auteurApplication.lienAuteur" target="_blank">{{ auteurApplication.nomAuteur }}</a>
+                        </li>
+                    </ul>
+                    <a href="" target="_blank" class="btn btn-primary btn-custom informationsAProposBouton" role="button" aria-disabled="true">Plus d'informations</a>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="imageAPropos">
+                    <img id="imageAPropos" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- /A Propos -->

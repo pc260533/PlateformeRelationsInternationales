@@ -10,17 +10,17 @@
  */
 class StockageBaseDeDonnees {
 	/**
-	 * Le data source name de la base de données.
+	 * Le data source name de la base de donnÃ©es.
 	 * @var mixed
 	 */
 	private $dataSourceName;
 	/**
-	 * Le nom d'utilisateur de la base de données.
+	 * Le nom d'utilisateur de la base de donnÃ©es.
 	 * @var mixed
 	 */
 	private $username;
 	/**
-	 * Le mot de passe de la base de données.
+	 * Le mot de passe de la base de donnÃ©es.
 	 * @var mixed
 	 */
 	private $password;
@@ -260,7 +260,7 @@ class StockageBaseDeDonnees {
 	public function chargerListeSpecialites(): array {
 		try {
 			$listeSpecialites = array();
-			$requete = "SELECT IDENTIFIANTSPECIALITE, NOMSPECIALITE ".
+			$requete = "SELECT IDENTIFIANTSPECIALITE, NOMSPECIALITE, COULEURSPECIALITE ".
 					   "FROM SPECIALITE;";
 			$statement = $this->pdo->prepare($requete);
 			$statement->execute();
@@ -269,6 +269,7 @@ class StockageBaseDeDonnees {
 				$specialite = new Specialite();
 				$specialite->setIdentifiantSpecialite($ligne["IDENTIFIANTSPECIALITE"]);
 				$specialite->setNomSpecialite($ligne["NOMSPECIALITE"]);
+				$specialite->setCouleurSpecialite($ligne["COULEURSPECIALITE"]);
 				$this->chargerListeSousSpecialites($specialite);
 				$listeSpecialites[] = $specialite->getObjetSerializable();
 			}

@@ -6,6 +6,7 @@ import { SousSpecialite } from "../modelePlateforme/sousspecialite";
 import { Mobilite } from "../modelePlateforme/mobilite";
 import { AideFinanciere } from "../modelePlateforme/aideFinanciere";
 import { Contact } from "../modelePlateforme/contact";
+import { ErreurSerializable } from "../erreur/erreurSerializable";
 
 import Datatables from "./composants/datatables";
 import { ProprietesDatatables } from "./composants/proprietesDatatables";
@@ -13,6 +14,7 @@ import { ProprietesDatatablesColonne } from "./composants/proprietesDatatablesCo
 import { ProprietesDatatablesBouton } from "./composants/proprietesDatatablesBouton";
 import ModalSpecifique from "./composants/modalSpecifique";
 import SpinnerSpecifique from "./composants/spinnerSpecifique";
+import ModalErreur from "./composants/modalErreur";
 
 import { Component, Prop, Vue, Ref } from "vue-property-decorator";
 
@@ -21,7 +23,8 @@ import { Component, Prop, Vue, Ref } from "vue-property-decorator";
     components: {
         Datatables,
         ModalSpecifique,
-        SpinnerSpecifique
+        SpinnerSpecifique,
+        ModalErreur
     }
 })
 export default class VueAidesFinancieres extends Vue implements IVuePlateforme {
@@ -31,8 +34,13 @@ export default class VueAidesFinancieres extends Vue implements IVuePlateforme {
     @Ref("datatablesAidesFinancieres") readonly datatablesAidesFinancieres!: Datatables<AideFinanciere>;
     @Ref("modalEditeAideFinanciere") readonly modalEditeAideFinanciere!: ModalSpecifique;
     @Ref("spinner") readonly spinner!: SpinnerSpecifique;
+    @Ref("modalErreur") readonly modalErreur!: ModalErreur;
 
     private proprietesDatatablesAidesFinancieres: ProprietesDatatables;
+
+    public afficheErreur(erreur: ErreurSerializable): void {
+        this.modalErreur.afficherErreur(erreur);
+    }
 
     public ajoutPartenaire(partenaire: Partenaire): void {
 
@@ -92,6 +100,11 @@ export default class VueAidesFinancieres extends Vue implements IVuePlateforme {
         });
     }
 
+    private creerAideFinanciere(): AideFinanciere {
+        var aideFinanciere = new AideFinanciere();
+        aideFinanciere.NomAideFinanciere = $("#inputNomAideFinanciere").val() as string;
+        return aideFinanciere;
+    }
 
     public constructor() {
         super();
@@ -115,9 +128,7 @@ export default class VueAidesFinancieres extends Vue implements IVuePlateforme {
         this.modalEditeAideFinanciere.montrerModal();
         $("#boutonEditeAideFinanciere").off();
         $("#boutonEditeAideFinanciere").on("click", () => {
-            var aideFinanciere = new AideFinanciere();
-            aideFinanciere.NomAideFinanciere = $("#inputNomAideFinanciere").val() as string;
-            this.controleurPlateforme.ajouterAideFinanciere(aideFinanciere);
+            this.controleurPlateforme.ajouterAideFinanciere(this.creerAideFinanciere());
             this.modalEditeAideFinanciere.cacherModal();
         });
     }
@@ -139,8 +150,7 @@ export default class VueAidesFinancieres extends Vue implements IVuePlateforme {
             this.modalEditeAideFinanciere.montrerModal();
             $("#boutonEditeAideFinanciere").off();
             $("#boutonEditeAideFinanciere").on("click", () => {
-                premiereAideFinanciereSelectionnee.NomAideFinanciere = $("#inputNomAideFinanciere").val() as string;
-                this.controleurPlateforme.modifierAideFinanciere(premiereAideFinanciereSelectionnee);
+                this.controleurPlateforme.modifierAideFinanciere(premiereAideFinanciereSelectionnee, this.creerAideFinanciere());
                 this.modalEditeAideFinanciere.cacherModal();
             });
         }
