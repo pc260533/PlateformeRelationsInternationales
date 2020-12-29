@@ -165,7 +165,25 @@ class InstalleurBaseDeDonnees extends StockageBaseDeDonnees {
 		$requete = "CREATE TABLE IF NOT EXISTS PLATEFORME.TEMPLATEMAIL (" .
 				   "identifiantTemplateMail INT PRIMARY KEY NOT NULL AUTO_INCREMENT," .
 				   "nomTemplateMail VARCHAR(255)," .
+				   "sujetTemplateMail VARCHAR(255)," .
 				   "messageHtmlTemplateMail TEXT);";
+        $this->pdo->exec($requete);
+	}
+
+	/**
+	 * Créer la table Mail dans la base.
+	 */
+	private function creerTableMail(): void {
+		$requete = "CREATE TABLE IF NOT EXISTS PLATEFORME.MAIL (" .
+				   "identifiantMail INT PRIMARY KEY NOT NULL AUTO_INCREMENT," .
+				   "dateEnvoie DATE," .
+				   "estEnvoye BOOLEAN," .
+				   "sujetMail VARCHAR(255) NULL," .
+				   "messageHtmlMail TEXT NULL," .
+				   "identifiantTemplateMail INT NULL," .
+				   "identifiantPartenaire INT NOT NULL," .
+				   "FOREIGN KEY (identifiantTemplateMail) REFERENCES TEMPLATEMAIL(identifiantTemplateMail) ON DELETE CASCADE," .
+				   "FOREIGN KEY (identifiantPartenaire) REFERENCES PARTENAIRE(identifiantPartenaire) ON DELETE CASCADE);";
         $this->pdo->exec($requete);
 	}
 
@@ -293,6 +311,120 @@ class InstalleurBaseDeDonnees extends StockageBaseDeDonnees {
 	}
 
 	/**
+	 * Créer la table Correspondance_Mail_AContactEntrager dans la base.
+	 */
+	private function creerTableCorrespondanceMailAContactEtranger(): void {
+		$requete = "CREATE TABLE IF NOT EXISTS PLATEFORME.CORRESPONDANCE_MAIL_ACONTACTETRANGER (" .
+				   "identifiantMail INT," .
+				   "identifiantContact INT," .
+				   "PRIMARY KEY(identifiantMail, identifiantContact)," .
+				   "FOREIGN KEY (identifiantMail) REFERENCES MAIL(identifiantMail) ON DELETE CASCADE," .
+				   "FOREIGN KEY (identifiantContact) REFERENCES CONTACT(identifiantContact) ON DELETE CASCADE);";
+        $this->pdo->exec($requete);
+	}
+
+	/**
+	 * Créer la table Correspondance_Mail_ACoordinateur dans la base.
+	 */
+	private function creerTableCorrespondanceMailACoordinateur(): void {
+		$requete = "CREATE TABLE IF NOT EXISTS PLATEFORME.CORRESPONDANCE_MAIL_ACOORDINATEUR (" .
+				   "identifiantMail INT," .
+				   "identifiantContact INT," .
+				   "PRIMARY KEY(identifiantMail, identifiantContact)," .
+				   "FOREIGN KEY (identifiantMail) REFERENCES MAIL(identifiantMail) ON DELETE CASCADE," .
+				   "FOREIGN KEY (identifiantContact) REFERENCES CONTACT(identifiantContact) ON DELETE CASCADE);";
+        $this->pdo->exec($requete);
+	}
+
+	/**
+	 * Créer la table Correspondance_Mail_AContactMail dans la base.
+	 */
+	private function creerTableCorrespondanceMailAContactMail(): void {
+		$requete = "CREATE TABLE IF NOT EXISTS PLATEFORME.CORRESPONDANCE_MAIL_ACONTACTMAIL (" .
+				   "identifiantMail INT," .
+				   "adresseMailContactMail VARCHAR(191)," .
+				   "PRIMARY KEY(identifiantMail, adresseMailContactMail)," .
+				   "FOREIGN KEY (identifiantMail) REFERENCES CONTACT(identifiantMail) ON DELETE CASCADE);";
+        $this->pdo->exec($requete);
+	}
+
+	/**
+	 * Créer la table Correspondance_Mail_CCContactEntrager dans la base.
+	 */
+	private function creerTableCorrespondanceMailCCContactEtranger(): void {
+		$requete = "CREATE TABLE IF NOT EXISTS PLATEFORME.CORRESPONDANCE_MAIL_CCCONTACTETRANGER (" .
+				   "identifiantMail INT," .
+				   "identifiantContact INT," .
+				   "PRIMARY KEY(identifiantMail, identifiantContact)," .
+				   "FOREIGN KEY (identifiantMail) REFERENCES MAIL(identifiantMail) ON DELETE CASCADE," .
+				   "FOREIGN KEY (identifiantContact) REFERENCES CONTACT(identifiantContact) ON DELETE CASCADE);";
+        $this->pdo->exec($requete);
+	}
+
+	/**
+	 * Créer la table Correspondance_Mail_CCCoordinateur dans la base.
+	 */
+	private function creerTableCorrespondanceMailCCCoordinateur(): void {
+		$requete = "CREATE TABLE IF NOT EXISTS PLATEFORME.CORRESPONDANCE_MAIL_CCCOORDINATEUR (" .
+				   "identifiantMail INT," .
+				   "identifiantContact INT," .
+				   "PRIMARY KEY(identifiantMail, identifiantContact)," .
+				   "FOREIGN KEY (identifiantMail) REFERENCES MAIL(identifiantMail) ON DELETE CASCADE," .
+				   "FOREIGN KEY (identifiantContact) REFERENCES CONTACT(identifiantContact) ON DELETE CASCADE);";
+        $this->pdo->exec($requete);
+	}
+
+	/**
+	 * Créer la table Correspondance_Mail_CCContactMail dans la base.
+	 */
+	private function creerTableCorrespondanceMailCCContactMail(): void {
+		$requete = "CREATE TABLE IF NOT EXISTS PLATEFORME.CORRESPONDANCE_MAIL_CCCONTACTMAIL (" .
+				   "identifiantMail INT," .
+				   "adresseMailContactMail VARCHAR(191)," .
+				   "PRIMARY KEY(identifiantMail, adresseMailContactMail)," .
+				   "FOREIGN KEY (identifiantMail) REFERENCES CONTACT(identifiantMail) ON DELETE CASCADE);";
+        $this->pdo->exec($requete);
+	}
+
+	/**
+	 * Créer la table Correspondance_Mail_CCIContactEntrager dans la base.
+	 */
+	private function creerTableCorrespondanceMailCCIContactEtranger(): void {
+		$requete = "CREATE TABLE IF NOT EXISTS PLATEFORME.CORRESPONDANCE_MAIL_CCICONTACTETRANGER (" .
+				   "identifiantMail INT," .
+				   "identifiantContact INT," .
+				   "PRIMARY KEY(identifiantMail, identifiantContact)," .
+				   "FOREIGN KEY (identifiantMail) REFERENCES MAIL(identifiantMail) ON DELETE CASCADE," .
+				   "FOREIGN KEY (identifiantContact) REFERENCES CONTACT(identifiantContact) ON DELETE CASCADE);";
+        $this->pdo->exec($requete);
+	}
+
+	/**
+	 * Créer la table Correspondance_Mail_CCICoordinateur dans la base.
+	 */
+	private function creerTableCorrespondanceMailCCICoordinateur(): void {
+		$requete = "CREATE TABLE IF NOT EXISTS PLATEFORME.CORRESPONDANCE_MAIL_CCICOORDINATEUR (" .
+				   "identifiantMail INT," .
+				   "identifiantContact INT," .
+				   "PRIMARY KEY(identifiantMail, identifiantContact)," .
+				   "FOREIGN KEY (identifiantMail) REFERENCES MAIL(identifiantMail) ON DELETE CASCADE," .
+				   "FOREIGN KEY (identifiantContact) REFERENCES CONTACT(identifiantContact) ON DELETE CASCADE);";
+        $this->pdo->exec($requete);
+	}
+
+	/**
+	 * Créer la table Correspondance_Mail_CCIContactMail dans la base.
+	 */
+	private function creerTableCorrespondanceMailCCIContactMail(): void {
+		$requete = "CREATE TABLE IF NOT EXISTS PLATEFORME.CORRESPONDANCE_MAIL_CCICONTACTMAIL (" .
+				   "identifiantMail INT," .
+				   "adresseMailContactMail VARCHAR(191)," .
+				   "PRIMARY KEY(identifiantMail, adresseMailContactMail)," .
+				   "FOREIGN KEY (identifiantMail) REFERENCES CONTACT(identifiantMail) ON DELETE CASCADE);";
+        $this->pdo->exec($requete);
+	}
+
+	/**
 	 * Constructeur prenant en paramètre le data source name, le nom d'utilisateur et le mot de passe de la base de données.
 	 * @param string $dataSourceName Le data source name de la base de données.
 	 * @param string $username Le nom d'utilisateur de la base de données.
@@ -324,6 +456,7 @@ class InstalleurBaseDeDonnees extends StockageBaseDeDonnees {
 			$this->creerTableDomaineDeCompetence();
 			$this->creerTableUtilisateur();
 			$this->creerTableTemplateMail();
+			$this->creerTableMail();
 			$this->creerTablePartenaire();
 			$this->creerTableCorrespondancePartenaireSousSpecialite();
 			$this->creerTableCorrespondancePartenaireMobilite();
@@ -333,6 +466,15 @@ class InstalleurBaseDeDonnees extends StockageBaseDeDonnees {
 			$this->creerTableCorrespondancePartenaireImagePartenaire();
 			$this->creerTableCorrespondancePartenaireVoeu();
 			$this->creerTableCorrespondancePartenaireDomaineDeCompetence();
+			$this->creerTableCorrespondanceMailAContactEtranger();
+			$this->creerTableCorrespondanceMailACoordinateur();
+			$this->creerTableCorrespondanceMailAContactMail();
+			$this->creerTableCorrespondanceMailCCContactEtranger();
+			$this->creerTableCorrespondanceMailCCCoordinateur();
+			$this->creerTableCorrespondanceMailCCContactMail();
+			$this->creerTableCorrespondanceMailCCIContactEtranger();
+			$this->creerTableCorrespondanceMailCCICoordinateur();
+			$this->creerTableCorrespondanceMailCCIContactMail();
 			$this->pdo->commit();
 		}
 		catch (PDOException $exception) {

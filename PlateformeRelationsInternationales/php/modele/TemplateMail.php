@@ -11,6 +11,7 @@
 class TemplateMail implements ISerializable {
 	private $identifiantTemplateMail;
 	private $nomTemplateMail;
+	private $sujetTemplateMail;
 	private $messageHtmlTemplateMail;
 
 	public function getIdentifiantTemplateMail(): int {
@@ -29,6 +30,14 @@ class TemplateMail implements ISerializable {
 		$this->nomTemplateMail = $nomTemplateMail;
 	}
 
+	public function getSujetTemplateMail(): string {
+		return $this->sujetTemplateMail;
+	}
+
+	public function setSujetTemplateMail(string $sujetTemplateMail): void {
+		$this->sujetTemplateMail = $sujetTemplateMail;
+	}
+
 	public function getMessageHtmlTemplateMail(): string {
 		return $this->messageHtmlTemplateMail;
 	}
@@ -40,6 +49,7 @@ class TemplateMail implements ISerializable {
 	public function __construct() {
 		$this->identifiantTemplateMail = 0;
 		$this->nomTemplateMail = "";
+		$this->sujetTemplateMail = "";
 		$this->messageHtmlTemplateMail = "";
 	}
 
@@ -53,6 +63,7 @@ class TemplateMail implements ISerializable {
 		return array(
 			"identifiantTemplateMail" => $this->getIdentifiantTemplateMail(),
 			"nomTemplateMail" => $this->getNomTemplateMail(),
+			"sujetTemplateMail" => $this->getSujetTemplateMail(),
             "messageHtmlTemplateMail" => $this->getMessageHtmlTemplateMail()
         );
 	}

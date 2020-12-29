@@ -37,9 +37,11 @@ require __DIR__ . "./php/modele/Voeu.php";
 require __DIR__ . "./php/modele/DomaineDeCompetence.php";
 require __DIR__ . "./php/modele/Utilisateur.php";
 require __DIR__ . "./php/modele/TemplateMail.php";
+require __DIR__ . "./php/modele/ContactMail.php";
+require __DIR__ . "./php/modele/Mail.php";
 
-require __DIR__ . "./php/gestionMails/ContactMail.php";
-require __DIR__ . "./php/gestionMails/Mail.php";
+require __DIR__ . "./php/gestionMails/ContactMailGestionMails.php";
+require __DIR__ . "./php/gestionMails/MailGestionMails.php";
 require __DIR__ . "./php/gestionMails/GestionMails.php";
 
 require __DIR__ . "./php/stockage/StockageBaseDeDonnees.php";
@@ -56,6 +58,7 @@ require __DIR__ . "./php/stockage/StockageEtatsPartenaires.php";
 require __DIR__ . "./php/stockage/StockageVoeux.php";
 require __DIR__ . "./php/stockage/StockageTemplatesMails.php";
 require __DIR__ . "./php/stockage/StockageDomainesDeCompetences.php";
+require __DIR__ . "./php/stockage/StockageMails.php";
 require __DIR__ . "./php/stockage/StockageUtilisateurs.php";
 require __DIR__ . "./php/stockage/GestionFichiers.php";
 

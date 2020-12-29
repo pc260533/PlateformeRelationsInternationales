@@ -19,6 +19,9 @@ class ControleurTemplatesMails implements IControleurPlateforme {
 		if (isset($templateMailArray["nomTemplateMail"])) {
 			$templateMail->setNomTemplateMail($templateMailArray["nomTemplateMail"]);
 		}
+		if (isset($templateMailArray["sujetTemplateMail"])) {
+			$templateMail->setSujetTemplateMail($templateMailArray["sujetTemplateMail"]);
+		}
 		if (isset($templateMailArray["messageHtmlTemplateMail"])) {
 			$templateMail->setMessageHtmlTemplateMail($templateMailArray["messageHtmlTemplateMail"]);
 		}

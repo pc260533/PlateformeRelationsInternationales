@@ -21,7 +21,7 @@ export class Application {
                     next("authentification");
                 }
             }
-            else if ((to.name == "deconnexion") || (to.name == "detailsUtilisateur")) {
+            else if ((to.name == "deconnexion") || (to.name == "detailsUtilisateur") || (to.name == "mails")) {
                 if (store.state.storeModuleAuthentification.utilisateurConnecte) {
                     next();
                 }

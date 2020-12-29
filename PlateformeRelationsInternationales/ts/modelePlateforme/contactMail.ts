@@ -1,22 +1,23 @@
 ﻿import { ISerializable } from "./ISerializable";
+import { IContact } from "./icontact";
 
-export class ContactMail implements ISerializable {
+export class ContactMail implements ISerializable, IContact {
     private nomContactMail: string;
     private adresseMailContactMail: string;
 
-    public get NomContactMail(): string {
+    public get NomContact(): string {
         return this.nomContactMail;
     }
 
-    public set NomContactMail(nomContactMail: string) {
+    public set NomContact(nomContactMail: string) {
         this.nomContactMail = nomContactMail;
     }
 
-    public get AdresseMailContactMail(): string {
+    public get AdresseMailContact(): string {
         return this.adresseMailContactMail;
     }
 
-    public set AdresseMailContactMail(adresseMailContactMail: string) {
+    public set AdresseMailContact(adresseMailContactMail: string) {
         this.adresseMailContactMail = adresseMailContactMail;
     }
 
@@ -27,15 +28,15 @@ export class ContactMail implements ISerializable {
 
     public getObjetSerializable(): any {
         var contactMail = {
-            nomContactMail: this.NomContactMail,
-            adresseMailContactMail: this.AdresseMailContactMail,
+            nomContactMail: this.NomContact,
+            adresseMailContactMail: this.AdresseMailContact,
         }
         return contactMail;
     }
 
     public getObjetSerializableId(): any {
         var contactMail = {
-            nomContactMail: this.NomContactMail
+            nomContactMail: this.NomContact
         }
         return contactMail;
     }

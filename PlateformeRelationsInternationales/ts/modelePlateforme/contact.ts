@@ -1,6 +1,7 @@
 ﻿import { ISerializable } from "./ISerializable";
+import { IContact } from "./icontact";
 
-export abstract class Contact implements ISerializable {
+export abstract class Contact implements ISerializable, IContact {
     private identifiantContact: number;
     private nomContact: string;
     private prenomContact: string;

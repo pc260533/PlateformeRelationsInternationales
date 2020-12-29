@@ -50,7 +50,7 @@ import { ContactEtranger } from "../modelePlateforme/contactEtranger";
 import { Coordinateur } from "../modelePlateforme/coordinateur";
 import { IVueContactsEtrangers } from "./ivueContactsEtrangers";
 import MultipleSelectAvecTag from "./composants/multipleSelectAvecTag";
-import { OptionMultipleSelectAvecTag } from "./composants/OptionMultipleSelectAvecTag";
+import { OptionMultipleSelectAvecTag } from "./composants/optionMultipleSelectAvecTag";
 
 @Component({
     template: require("./templates/vuePartenaires.html"),

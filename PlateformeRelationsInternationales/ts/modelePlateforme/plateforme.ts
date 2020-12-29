@@ -12,6 +12,7 @@ import { ContactEtranger } from "./contactEtranger";
 import { Coordinateur } from "./coordinateur";
 import { Utilisateur } from "./utilisateur";
 import { TemplateMail } from "./templateMail";
+import { Mail } from "./mail";
 
 export class Plateforme {
     private listeSpecialitesPlateforme: Specialite[];
@@ -26,6 +27,7 @@ export class Plateforme {
     private listeDomainesDeCompetences: DomaineDeCompetence[];
     private listeUtilisateursPlateforme: Utilisateur[];
     private listeTemplatesMails: TemplateMail[];
+    private listeMails: Mail[];
     private utilisateurConnecte: Utilisateur;
 
     public get ListeSpecialitesPlateforme(): Specialite[] {
@@ -76,6 +78,10 @@ export class Plateforme {
         return this.listeTemplatesMails;
     }
 
+    public get ListeMails(): Mail[] {
+        return this.listeMails;
+    }
+
     public get UtilisateurConnecte(): Utilisateur {
         return this.utilisateurConnecte;
     }
@@ -97,6 +103,7 @@ export class Plateforme {
         this.listeDomainesDeCompetences = [];
         this.listeUtilisateursPlateforme = [];
         this.listeTemplatesMails = [];
+        this.listeMails = [];
         this.utilisateurConnecte = null;
     }
 
@@ -127,6 +134,16 @@ export class Plateforme {
         this.listeMobilitesPlateforme.forEach((mobilite: Mobilite) => {
             if (mobilite.IdentifiantMobilite == identifiantMobilite) {
                 res = mobilite;
+            }
+        });
+        return res;
+    }
+
+    public getPartenaireAvecIdentifiant(identfiantPartenaire: number): Partenaire {
+        var res: Partenaire = null;
+        this.listePartenairesPlateforme.forEach((partenaire: Partenaire) => {
+            if (partenaire.IdentifiantPartenaire == identfiantPartenaire) {
+                res = partenaire;
             }
         });
         return res;
@@ -247,6 +264,16 @@ export class Plateforme {
         this.listeTemplatesMails.forEach((templateMail: TemplateMail) => {
             if (templateMail.IdentifiantTemplateMail == identifiantTemplateMail) {
                 res = templateMail;
+            }
+        });
+        return res;
+    }
+
+    public getMailAvecIdentifiant(identifiantMail: number): Mail {
+        var res: Mail = null;
+        this.listeMails.forEach((mail: Mail) => {
+            if (mail.IdentifiantMail == identifiantMail) {
+                res = mail;
             }
         });
         return res;
@@ -381,6 +408,17 @@ export class Plateforme {
         var indexTemplateMail = this.listeTemplatesMails.indexOf(templateMail);
         if (!(indexTemplateMail === undefined) && !(indexTemplateMail === null)) {
             this.listeTemplatesMails.splice(indexTemplateMail, 1);
+        }
+    }
+
+    public ajouterMail(mail: Mail): void {
+        this.listeMails.push(mail);
+    }
+
+    public supprimerMail(mail: Mail): void {
+        var indexMail = this.listeMails.indexOf(mail);
+        if (!(indexMail === undefined) && !(indexMail === null)) {
+            this.listeMails.splice(indexMail, 1);
         }
     }
 

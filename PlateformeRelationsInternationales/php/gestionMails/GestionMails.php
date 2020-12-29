@@ -17,10 +17,11 @@ class GestionMails {
 
 	}
 
-	public function envoyerMail(Mail $mailAEnvoyer) {
+	public function envoyerMail(MailGestionMails $mailAEnvoyer) {
 		$mail = new PHPMailer(true);
 		$erreurDebug = array();
 		try {
+			$mail->CharSet = "UTF-8";
 			$mail->isSMTP();
 			$mail->SMTPDebug = 2;
 			$mail->Host = getVariableEnvironnement("SMTP_HOST");

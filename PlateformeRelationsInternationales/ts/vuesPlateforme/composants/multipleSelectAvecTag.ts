@@ -1,4 +1,4 @@
-﻿import { OptionMultipleSelectAvecTag } from "./OptionMultipleSelectAvecTag";
+﻿import { OptionMultipleSelectAvecTag } from "./optionMultipleSelectAvecTag";
 
 import { Component, Prop, Vue } from "vue-property-decorator";
 
@@ -56,6 +56,16 @@ export default class MultipleSelectAvecTag extends Vue {
         var listeOptionsSelectionnees: OptionMultipleSelectAvecTag[] = [];
         this.multipleSelect.select2("data").forEach((optionData: OptionData) => {
             listeOptionsSelectionnees.push(new OptionMultipleSelectAvecTag(optionData.id, optionData.text));
+        });
+        return listeOptionsSelectionnees;
+    }
+
+    public getListeOptionsSelectionneeAvecGroupe(): OptionMultipleSelectAvecTag[] {
+        var listeOptionsSelectionnees: OptionMultipleSelectAvecTag[] = [];
+        this.multipleSelect.select2("data").forEach((optionData: OptionData) => {
+            var optionMultipleSelectAvecTag: OptionMultipleSelectAvecTag = new OptionMultipleSelectAvecTag(optionData.id, optionData.text);
+            optionMultipleSelectAvecTag.GroupeParentOption = $(optionData.element).prevAll().filter("optgroup").first().attr("label");
+            listeOptionsSelectionnees.push(optionMultipleSelectAvecTag);
         });
         return listeOptionsSelectionnees;
     }

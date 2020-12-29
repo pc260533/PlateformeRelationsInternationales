@@ -3,6 +3,7 @@
 export class TemplateMail implements ISerializable {
     private identifiantTemplateMail: number;
     private nomTemplateMail: string;
+    private sujetTemplateMail: string;
     private messageHtmlTemplateMail: string;
 
     public get IdentifiantTemplateMail(): number {
@@ -21,6 +22,14 @@ export class TemplateMail implements ISerializable {
         this.nomTemplateMail = nomTemplateMail;
     }
 
+    public get SujetTemplateMail(): string {
+        return this.sujetTemplateMail;
+    }
+
+    public set SujetTemplateMail(sujetTemplateMail: string) {
+        this.sujetTemplateMail = sujetTemplateMail;
+    }
+
     public get MessageHtmlTemplateMail(): string {
         return this.messageHtmlTemplateMail;
     }
@@ -32,6 +41,7 @@ export class TemplateMail implements ISerializable {
     public constructor() {
         this.identifiantTemplateMail = 0;
         this.nomTemplateMail = "";
+        this.sujetTemplateMail = "";
         this.messageHtmlTemplateMail = "";
     }
 
@@ -39,6 +49,7 @@ export class TemplateMail implements ISerializable {
         var templateHtml = {
             identifiantTemplateMail: this.IdentifiantTemplateMail,
             nomTemplateMail: this.NomTemplateMail,
+            sujetTemplateMail: this.SujetTemplateMail,
             messageHtmlTemplateMail: this.MessageHtmlTemplateMail
         }
         return templateHtml;

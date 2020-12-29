@@ -79,6 +79,7 @@ export class ControleurTemplatesMails extends ControleurPlateforme {
             data: { utilisateur: that.modelePlateforme.UtilisateurConnecte.getObjetSerializableId(), templateMail: nouveauTemplateHtml.getObjetSerializable() },
             success: function (resultat) {
                 ancienTemplateMail.NomTemplateMail = nouveauTemplateHtml.NomTemplateMail;
+                ancienTemplateMail.SujetTemplateMail = nouveauTemplateHtml.SujetTemplateMail;
                 ancienTemplateMail.MessageHtmlTemplateMail = nouveauTemplateHtml.MessageHtmlTemplateMail;
                 that.notifieModificationTemplateMail(ancienTemplateMail);
             },
@@ -106,6 +107,7 @@ export class ControleurTemplatesMails extends ControleurPlateforme {
                     var templateMailObjet = new TemplateMail();
                     templateMailObjet.IdentifiantTemplateMail = templateMail.identifiantTemplateMail;
                     templateMailObjet.NomTemplateMail = templateMail.nomTemplateMail;
+                    templateMailObjet.SujetTemplateMail = templateMail.sujetTemplateMail;
                     templateMailObjet.MessageHtmlTemplateMail = templateMail.messageHtmlTemplateMail;
                     that.modelePlateforme.ajouterTemplateMail(templateMailObjet);
                     that.notifieAjoutTemplateMail(templateMailObjet);
