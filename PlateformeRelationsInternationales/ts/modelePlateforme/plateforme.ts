@@ -11,6 +11,7 @@ import { DomaineDeCompetence } from "./domaineDeCompetence";
 import { ContactEtranger } from "./contactEtranger";
 import { Coordinateur } from "./coordinateur";
 import { Utilisateur } from "./utilisateur";
+import { TemplateMail } from "./templateMail";
 
 export class Plateforme {
     private listeSpecialitesPlateforme: Specialite[];
@@ -24,6 +25,7 @@ export class Plateforme {
     private listeEtatsPartenairesPlateforme: EtatPartenaire[];
     private listeDomainesDeCompetences: DomaineDeCompetence[];
     private listeUtilisateursPlateforme: Utilisateur[];
+    private listeTemplatesMails: TemplateMail[];
     private utilisateurConnecte: Utilisateur;
 
     public get ListeSpecialitesPlateforme(): Specialite[] {
@@ -70,6 +72,10 @@ export class Plateforme {
         return this.listeUtilisateursPlateforme;
     }
 
+    public get ListeTemplatesMails(): TemplateMail[] {
+        return this.listeTemplatesMails;
+    }
+
     public get UtilisateurConnecte(): Utilisateur {
         return this.utilisateurConnecte;
     }
@@ -90,6 +96,7 @@ export class Plateforme {
         this.listeEtatsPartenairesPlateforme = [];
         this.listeDomainesDeCompetences = [];
         this.listeUtilisateursPlateforme = [];
+        this.listeTemplatesMails = [];
         this.utilisateurConnecte = null;
     }
 
@@ -225,6 +232,26 @@ export class Plateforme {
         return res;
     }
 
+    public getUtilisateurAvecNom(nomUtilisateur: string): Utilisateur {
+        var res: Utilisateur = null;
+        this.listeUtilisateursPlateforme.forEach((utilisateur: Utilisateur) => {
+            if (utilisateur.NomUtilisateur == nomUtilisateur) {
+                res = utilisateur;
+            }
+        });
+        return res;
+    }
+
+    public getTemplateMailAvecIdentifiant(identifiantTemplateMail: number): TemplateMail {
+        var res: TemplateMail = null;
+        this.listeTemplatesMails.forEach((templateMail: TemplateMail) => {
+            if (templateMail.IdentifiantTemplateMail == identifiantTemplateMail) {
+                res = templateMail;
+            }
+        });
+        return res;
+    }
+
     public ajouterSpecialite(specialite: Specialite): void {
         this.listeSpecialitesPlateforme.push(specialite);
     }
@@ -343,6 +370,17 @@ export class Plateforme {
         var indexUtilisateur = this.listeUtilisateursPlateforme.indexOf(utilisateur);
         if (!(indexUtilisateur === undefined) && !(indexUtilisateur === null)) {
             this.listeUtilisateursPlateforme.splice(indexUtilisateur, 1);
+        }
+    }
+
+    public ajouterTemplateMail(templateMail: TemplateMail): void {
+        this.listeTemplatesMails.push(templateMail);
+    }
+
+    public supprimerTemplateMail(templateMail: TemplateMail): void {
+        var indexTemplateMail = this.listeTemplatesMails.indexOf(templateMail);
+        if (!(indexTemplateMail === undefined) && !(indexTemplateMail === null)) {
+            this.listeTemplatesMails.splice(indexTemplateMail, 1);
         }
     }
 

@@ -5,7 +5,7 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 import "select2";
 import "select2/dist/css/select2.css";
 import "@ttskch/select2-bootstrap4-theme/dist/select2-bootstrap4.css"
-import { OptionData } from "select2";
+import { OptionData, SearchOptions } from "select2";
 
 @Component({
     template: require("../templates/multipleSelectAvecTag.html")
@@ -13,6 +13,7 @@ import { OptionData } from "select2";
 export default class MultipleSelectAvecTag extends Vue {
     @Prop() private idMultipleSelectAvecTag!: string;
     @Prop() private placeholderSelect!: string;
+    @Prop() private tagActive!: boolean;
     private multipleSelect: JQuery<Element>;
 
     public constructor() {
@@ -25,7 +26,19 @@ export default class MultipleSelectAvecTag extends Vue {
             placeholder: this.placeholderSelect,
             theme: "bootstrap4",
             width: "100%",
-            allowClear: true
+            allowClear: true,
+            tags: this.tagActive,
+            createTag: function (params: SearchOptions) {
+                var valeurTag = $.trim(params.term);
+                if (!/\S+@\S+\.\S+/.test(valeurTag)) {
+                  return null;
+                }
+                return {
+                    id: valeurTag,
+                    text: valeurTag,
+                    newTag: true
+                }
+            }
         });
     }
 
@@ -53,6 +66,10 @@ export default class MultipleSelectAvecTag extends Vue {
 
     public ajouterOptionDansSelect(optionMultipleSelectAvecTag: OptionMultipleSelectAvecTag): void {
         this.multipleSelect.append(new Option(optionMultipleSelectAvecTag.TexteOption, optionMultipleSelectAvecTag.IdentifiantOption, false, false)).trigger("change");
+    }
+
+    public viderSelect(): void {
+        this.multipleSelect.empty().trigger("change");
     }
 
 }

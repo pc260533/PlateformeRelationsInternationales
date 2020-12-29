@@ -10,6 +10,7 @@ import { ControleurMobilites } from "./controleursPlateforme/controleurMobilites
 import { ControleurPartenaires } from "./controleursPlateforme/controleurPartenaires";
 import { ControleurSpecialites } from "./controleursPlateforme/controleurSpecialites";
 import { ControleurVoeux } from "./controleursPlateforme/controleurVoeux";
+import { ControleurTemplatesMails } from "./controleursPlateforme/controleurTemplatesMails";
 import { ControleurUtilisateurs } from "./controleursPlateforme/controleurUtilisateurs";
 import { ControleurAuthentification } from "./controleursPlateforme/controleurAuthentification";
 
@@ -21,6 +22,7 @@ import VuePartenaire from "./vuesPlateforme/vuePartenaires";
 import VueAidesFinancieres from "./vuesPlateforme/vueAidesFinancieres";
 import VueCoordinateurs from "./vuesPlateforme/vueCoordinateurs";
 import VueCouts from "./vuesPlateforme/vueCouts";
+import VueMails from "./vuesPlateforme/vueMails";
 import VueAdministration from "./vuesPlateforme/vueAdministration";
 import VueAPropos from "./vuesPlateforme/vueAPropos";
 import VueErreur from "./vuesPlateforme/vueErreur";
@@ -45,6 +47,7 @@ const controleurMobilites = new ControleurMobilites(plateforme);
 const controleurPartenaires = new ControleurPartenaires(plateforme);
 const controleurSpecialites = new ControleurSpecialites(plateforme);
 const controleurVoeux = new ControleurVoeux(plateforme);
+const controleurTemplatesMails = new ControleurTemplatesMails(plateforme);
 const controleurUtilisateurs = new ControleurUtilisateurs(plateforme);
 const controleurAuthentification = new ControleurAuthentification(plateforme);
 
@@ -129,6 +132,28 @@ export default new Router({
             },
             meta: {
                 title: "Plateforme Relations Internationales - Couts"
+            }
+        },
+        {
+            path: "/mails",
+            name: "mails",
+            component: VueMails,
+            props: {
+                plateforme: plateforme,
+                controleurAidesFinancieres: controleurAidesFinancieres,
+                controleurContactsEtrangers: controleurContactsEtrangers,
+                controleurCoordinateurs: controleurCoordinateurs,
+                controleurDomainesDeCompetences: controleurDomainesDeCompetences,
+                controleurEtatsPartenaires: controleurEtatsPartenaires,
+                controleurMails: controleurMails,
+                controleurMobilites: controleurMobilites,
+                controleurPartenaires: controleurPartenaires,
+                controleurSpecialites: controleurSpecialites,
+                controleurVoeux: controleurVoeux,
+                controleurTemplatesMails: controleurTemplatesMails
+            },
+            meta: {
+                title: "Plateforme Relations Internationales - Mails"
             }
         },
         {

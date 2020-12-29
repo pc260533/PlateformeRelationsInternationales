@@ -1,12 +1,6 @@
 ﻿import { IVuePlateforme } from "../ivuePlateforme";
 import { Plateforme } from "../modelePlateforme/plateforme";
 import { ControleurPlateforme } from "../controleurPlateforme";
-import { Partenaire } from "../modelePlateforme/partenaire";
-import { SousSpecialite } from "../modelePlateforme/sousspecialite";
-import { Mobilite } from "../modelePlateforme/mobilite";
-import { AideFinanciere } from "../modelePlateforme/aideFinanciere";
-import { Contact } from "../modelePlateforme/contact";
-import { Cout } from "../modelePlateforme/cout";
 import { ErreurSerializable } from "../erreur/erreurSerializable";
 import { InformationSerializable } from "../information/informationSerializable";
 
@@ -14,6 +8,7 @@ import imagePartenaires from "../../images/accueil/partenaires.png";
 import imagesAidesFinancieres from "../../images/accueil/aidesfinancieres.png";
 import imageCoordinateurs from "../../images/accueil/coordinateurs.png";
 import imageCouts from "../../images/accueil/couts.png";
+import imageMails from "../../images/accueil/mails.png";
 import imageAPropos from "../../images/accueil/apropos.png";
 import imageAdministration from "../../images/accueil/administration.png";
 
@@ -51,6 +46,7 @@ export default class VueAccueil extends Vue implements IVuePlateforme {
         $("#imageAidesFinancieres").attr("src", imagesAidesFinancieres);
         $("#imageCoordinateurs").attr("src", imageCoordinateurs);
         $("#imageCouts").attr("src", imageCouts);
+        $("#imageMails").attr("src", imageMails);
         $("#imageAPropos").attr("src", imageAPropos);
         $("#imageAdministration").attr("src", imageAdministration);
     }

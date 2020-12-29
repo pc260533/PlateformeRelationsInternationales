@@ -159,6 +159,17 @@ class InstalleurBaseDeDonnees extends StockageBaseDeDonnees {
 	}
 
 	/**
+	 * Créer la table TemplateMail dans la base.
+	 */
+	private function creerTableTemplateMail(): void {
+		$requete = "CREATE TABLE IF NOT EXISTS PLATEFORME.TEMPLATEMAIL (" .
+				   "identifiantTemplateMail INT PRIMARY KEY NOT NULL AUTO_INCREMENT," .
+				   "nomTemplateMail VARCHAR(255)," .
+				   "messageHtmlTemplateMail TEXT);";
+        $this->pdo->exec($requete);
+	}
+
+	/**
 	 * Créer la table Partenaire dans la base.
 	 */
 	private function creerTablePartenaire(): void {
@@ -312,6 +323,7 @@ class InstalleurBaseDeDonnees extends StockageBaseDeDonnees {
 			$this->creerTableVoeu();
 			$this->creerTableDomaineDeCompetence();
 			$this->creerTableUtilisateur();
+			$this->creerTableTemplateMail();
 			$this->creerTablePartenaire();
 			$this->creerTableCorrespondancePartenaireSousSpecialite();
 			$this->creerTableCorrespondancePartenaireMobilite();

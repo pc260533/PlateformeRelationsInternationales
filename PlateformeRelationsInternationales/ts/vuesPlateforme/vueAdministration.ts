@@ -624,6 +624,10 @@ export default class VueAdminisitration extends Vue implements IVueContactsEtran
                     $("#inputNomUtilisateur").addClass("is-invalid");
                     throw new ErreurChampsNonRemplis();
                 }
+                if (this.plateforme.getUtilisateurAvecNom($("#inputNomUtilisateur").val() as string)) {
+                    $("#inputNomUtilisateur").addClass("is-invalid");
+                    throw new ErreurChampsNonRemplis();
+                }
                 if (!/\S+@\S+\.\S+/.test($("#inputAdresseMailUtilisateur").val() as string)) {
                     $("#inputAdresseMailUtilisateur").addClass("is-invalid");
                     throw new ErreurChampsNonRemplis();

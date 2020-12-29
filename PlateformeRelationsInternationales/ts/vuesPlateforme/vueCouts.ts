@@ -10,11 +10,6 @@ import { ControleurMobilites } from "../controleursPlateforme/controleurMobilite
 import { ControleurPartenaires } from "../controleursPlateforme/controleurPartenaires";
 import { ControleurSpecialites } from "../controleursPlateforme/controleurSpecialites";
 import { ControleurVoeux } from "../controleursPlateforme/controleurVoeux";
-import { Partenaire } from "../modelePlateforme/partenaire";
-import { SousSpecialite } from "../modelePlateforme/sousspecialite";
-import { Mobilite } from "../modelePlateforme/mobilite";
-import { AideFinanciere } from "../modelePlateforme/aideFinanciere";
-import { Contact } from "../modelePlateforme/contact";
 import { Cout } from "../modelePlateforme/cout";
 import { ErreurSerializable } from "../erreur/erreurSerializable";
 import { InformationSerializable } from "../information/informationSerializable";
@@ -144,7 +139,8 @@ export default class VueCouts extends Vue implements IVueCouts {
         this.controleurMobilites.resilier(this);
         this.controleurPartenaires.resilier(this);
         this.controleurSpecialites.resilier(this);
-        this.controleurVoeux.resilier(this);    }
+        this.controleurVoeux.resilier(this);
+    }
 
     private onClickModifierCout(): void {
         var listeCoutsSelectionne: Cout[] = this.datatablesCouts.getListeLignesSelectionnees();

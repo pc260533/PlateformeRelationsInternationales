@@ -1,6 +1,7 @@
 ﻿import { IVuePlateforme } from "../ivuePlateforme";
 import { Plateforme } from "../modelePlateforme/plateforme";
 import { ControleurAuthentification } from "../controleursPlateforme/controleurAuthentification";
+import { Utilisateur } from "../modelePlateforme/utilisateur";
 import { ErreurSerializable } from "../erreur/erreurSerializable";
 import { InformationSerializable } from "../information/informationSerializable";
 
@@ -9,7 +10,6 @@ import ModalErreur from "./composants/modalErreur";
 import "../../scss/vues/vueAuthentification.scss";
 
 import { Component, Prop, Vue, Ref } from "vue-property-decorator";
-import { Utilisateur } from "../modelePlateforme/utilisateur";
 
 @Component({
     template: require("./templates/vueAuthentification.html"),

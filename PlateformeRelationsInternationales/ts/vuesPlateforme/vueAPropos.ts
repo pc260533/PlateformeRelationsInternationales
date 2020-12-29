@@ -1,12 +1,6 @@
 ﻿import { IVuePlateforme } from "../ivuePlateforme";
 import { Plateforme } from "../modelePlateforme/plateforme";
 import { ControleurPlateforme } from "../controleurPlateforme";
-import { Partenaire } from "../modelePlateforme/partenaire";
-import { SousSpecialite } from "../modelePlateforme/sousspecialite";
-import { Mobilite } from "../modelePlateforme/mobilite";
-import { AideFinanciere } from "../modelePlateforme/aideFinanciere";
-import { Contact } from "../modelePlateforme/contact";
-import { Cout } from "../modelePlateforme/cout";
 import { ErreurSerializable } from "../erreur/erreurSerializable";
 import { InformationSerializable } from "../information/informationSerializable";
 

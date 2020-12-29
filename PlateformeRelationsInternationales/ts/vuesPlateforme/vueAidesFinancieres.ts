@@ -1,12 +1,7 @@
 ﻿import { IVueAidesFinancieres } from "./ivueAidesFinancieres";
 import { Plateforme } from "../modelePlateforme/plateforme";
 import { ControleurAidesFinancieres } from "../controleursPlateforme/controleurAidesFinancieres";
-import { Partenaire } from "../modelePlateforme/partenaire";
-import { SousSpecialite } from "../modelePlateforme/sousspecialite";
-import { Mobilite } from "../modelePlateforme/mobilite";
 import { AideFinanciere } from "../modelePlateforme/aideFinanciere";
-import { Contact } from "../modelePlateforme/contact";
-import { Cout } from "../modelePlateforme/cout";
 import { ErreurSerializable } from "../erreur/erreurSerializable";
 import { InformationSerializable } from "../information/informationSerializable";
 

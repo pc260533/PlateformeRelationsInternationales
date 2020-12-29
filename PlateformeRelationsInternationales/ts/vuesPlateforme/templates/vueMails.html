@@ -1,0 +1,84 @@
+﻿<!-- Mails -->
+<section class="section aidesfinancieres mt-5">
+    <div class="container">
+
+        <div class="sectionHeader text-center">
+            <h2 class="sectionTitre">Gérer la communication avec les partenaires</h2>
+            <div class="line"><span></span></div>
+            <p>
+                Envoyer des mails et Ajouter, modifier, supprimer des templates de mails.
+            </p>
+        </div>
+
+        <ModalErreur ref="modalErreur"></ModalErreur>
+        <ModalInformation ref="modalInformation"></ModalInformation>
+
+        <Datatables ref="datatablesPartenaires" v-bind:proprietesDatatables="proprietesDatatablesPartenaires" idDatatables="datatablesPartenaires"></Datatables>
+
+        <Datatables ref="datatablesTemplatesMails" v-bind:proprietesDatatables="proprietesDatatablesTemplatesMails" idDatatables="datatablesTemplatesMails"></Datatables>
+
+        <ModalSpecifique ref="modalEditeMailPartenaire" idModal="modalEditeMailPartenaire" tailleModal="modal-xl">
+            <h5 slot="modalHeader" class="modal-tilte">
+                <span id="inputTitreMailPartenaire"></span>
+            </h5>
+            <button slot="modalHeader" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+
+            <form slot="modalBody" class="form">
+                <div class="form-group">
+                    <label for="multipleSelectAvecTagDestinatairesMail">A :</label>
+                    <MultipleSelectAvecTag ref="multipleSelectAvecTagDestinatairesMail" idMultipleSelectAvecTag="multipleSelectAvecTagDestinatairesMail" placeholderSelect="Sélectionner des destinataires" tagActive="true"></MultipleSelectAvecTag>
+                </div>
+                <div class="form-group">
+                    <label for="multipleSelectAvecTagCCMail">CC :</label>
+                    <MultipleSelectAvecTag ref="multipleSelectAvecTagCCMail" idMultipleSelectAvecTag="multipleSelectAvecTagCCMail" placeholderSelect="Sélectionner des CC" tagActive="true"></MultipleSelectAvecTag>
+                </div>
+                <div class="form-group">
+                    <label for="multipleSelectAvecTagCCIMail">CCI :</label>
+                    <MultipleSelectAvecTag ref="multipleSelectAvecTagCCIMail" idMultipleSelectAvecTag="multipleSelectAvecTagCCIMail" placeholderSelect="Sélectionner des CCI" tagActive="true"></MultipleSelectAvecTag>
+                </div>
+                <div class="form-group">
+                    <label for="inputSujetMail">Sujet :</label>
+                    <input type="text" id="inputSujetMail" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label for="selectTemplateMail">Template :</label>
+                    <select class="custom-select form-control" id="selectTemplateMail"></select>
+                </div>
+            </form>
+
+            <EditeurHtml slot="modalBody" ref="editeurHtmlMail" idEditeurHtml="editeurHtmlMail"></EditeurHtml>
+
+
+            <button slot="modalFooter" type="button" id="boutonEditeMailPartenaire" class="btn btn-custom">Sauvegarder</button>
+            <button slot="modalFooter" type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+        </ModalSpecifique>
+
+        <ModalSpecifique ref="modalEditeTemplateMail" idModal="modalEditeTemplateMail" tailleModal="modal-xl">
+            <h5 slot="modalHeader" class="modal-tilte">
+                <span id="inputTitreTemplateMail"></span>
+            </h5>
+            <button slot="modalHeader" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+
+            <form slot="modalBody" class="form">
+                <input type="hidden" id="inputIdentifiantTemplateMail" value="0" />
+                <div class="form-group">
+                    <label for="inputNomTemplateMail">Nom Template Mail :</label>
+                    <input type="text" id="inputNomTemplateMail" class="form-control" />
+                </div>
+            </form>
+
+            <EditeurHtml slot="modalBody" ref="editeurHtmlTemplateMail" idEditeurHtml="editeurHtmlTemplateMail"></EditeurHtml>
+
+            <button slot="modalFooter" type="button" id="boutonEditeTemplateMail" class="btn btn-custom">Sauvegarder</button>
+            <button slot="modalFooter" type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+        </ModalSpecifique>
+
+        <SpinnerSpecifique ref="spinner"></SpinnerSpecifique>
+
+    </div>
+</section>
+<!-- /Mails -->
