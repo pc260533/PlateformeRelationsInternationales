@@ -10,7 +10,7 @@
     <SaveServerSettingsInUserFile>false</SaveServerSettingsInUserFile>
     <Runtime>PHP</Runtime>
     <RuntimeVersion>7.2</RuntimeVersion>
-    <EnvName>IISExpress</EnvName>
+    <EnvName>PHPDev</EnvName>
     <PHPDevHostName>localhost</PHPDevHostName>
     <PHPDevAutoPort>true</PHPDevAutoPort>
     <CustomXdebugPort>9000</CustomXdebugPort>
@@ -20,6 +20,7 @@
     <DBGpProxyPort>9001</DBGpProxyPort>
     <IISProjectUrl>http://localhost:7472/</IISProjectUrl>
     <IISExpressSslEnabled>false</IISExpressSslEnabled>
+    <IISExpressSecurePort>44300</IISExpressSecurePort>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <IncludeDebugInformation>true</IncludeDebugInformation>
@@ -33,6 +34,7 @@
     <Compile Include="php\controleurs\ControleurContacts.php" />
     <Compile Include="php\controleurs\ControleurCouts.php" />
     <Compile Include="php\controleurs\ControleurEtatsPartenaires.php" />
+    <Compile Include="php\controleurs\ControleurMails.php" />
     <Compile Include="php\controleurs\ControleurMobilites.php" />
     <Compile Include="php\controleurs\ControleurPartenaires.php" />
     <Compile Include="php\controleurs\ControleurSpecialites.php" />
@@ -40,6 +42,8 @@
     <Compile Include="php\controleurs\IControleurPlateforme.php" />
     <Compile Include="php\exception\ExceptionBaseDeDonneesPlateforme.php" />
     <Compile Include="php\exception\ExceptionSerializable.php" />
+    <Compile Include="php\exception\ExceptionVoeuxDejaValides.php" />
+    <Compile Include="php\gestionMails\ContactMail.php" />
     <Compile Include="php\modele\AideFinanciere.php" />
     <Compile Include="php\modele\Contact.php" />
     <Compile Include="php\modele\Cout.php" />
@@ -47,6 +51,7 @@
     <Compile Include="php\modele\ImagePartenaire.php" />
     <Compile Include="php\modele\ISerializable.php" />
     <Compile Include="php\modele\Localisation.php" />
+    <Compile Include="php\gestionMails\Mail.php" />
     <Compile Include="php\modele\Mobilite.php" />
     <Compile Include="php\modele\Partenaire.php" />
     <Compile Include="php\modele\Plateforme.php" />
@@ -63,6 +68,7 @@
     <Compile Include="php\rest\specialites.php" />
     <Compile Include="php\rest\voeux.php" />
     <Compile Include="php\stockage\GestionFichiers.php" />
+    <Compile Include="php\gestionMails\GestionMails.php" />
     <Compile Include="php\stockage\InstalleurBaseDeDonnees.php" />
     <Compile Include="php\stockage\StockageAidesFinancieres.php" />
     <Compile Include="php\stockage\StockageBaseDeDonnees.php" />
@@ -85,6 +91,7 @@
     <Folder Include="php\modele\" />
     <Folder Include="php\exception\" />
     <Folder Include="php\controleurs\" />
+    <Folder Include="php\gestionMails\" />
     <Folder Include="php\rest\" />
     <Folder Include="php\stockage\" />
     <Folder Include="php\templates\" />
@@ -112,6 +119,7 @@
     <Content Include="images\favicon.png" />
     <Content Include="images\logo.png" />
     <Content Include="package.json" />
+    <Content Include="php\templates\validationListeVoeuxPartenaires.php" />
     <Content Include="scss\style.scss" />
     <Content Include="scss\vues\vueAccueil.scss" />
     <Content Include="scss\vues\vueAidesFinancieres.scss" />

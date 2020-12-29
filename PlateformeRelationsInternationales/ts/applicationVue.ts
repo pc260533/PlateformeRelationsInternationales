@@ -6,6 +6,7 @@ import { Component, Vue, Watch } from "vue-property-decorator";
 import { Route } from "vue-router";
 
 import imageLogo from "../images/logo.png";
+import imageLogoNoir from "../images/logoNoir.png";
 import imageFavicon from "../images/favicon.png";
 
 @Component({
@@ -31,6 +32,7 @@ export default class ApplicationVue extends Vue {
 
     mounted() {
         $("link").attr("href", imageFavicon);
+        $("#imageLogo").attr("src", imageLogoNoir);
         $("#imageLogo").attr("src", imageLogo);
     }
 

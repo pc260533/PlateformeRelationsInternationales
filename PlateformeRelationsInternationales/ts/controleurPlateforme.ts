@@ -271,6 +271,8 @@ export class ControleurPlateforme {
     }
 
     private modifierPartenaireAjax(ancienPartenaire: Partenaire, nouveauPartenaire: Partenaire): void {
+        console.log(nouveauPartenaire);
+        console.log(ancienPartenaire);
         nouveauPartenaire.IdentifiantPartenaire = ancienPartenaire.IdentifiantPartenaire;
         nouveauPartenaire.LocalisationPartenaire.IdentifiantLocalisation = ancienPartenaire.LocalisationPartenaire.IdentifiantLocalisation;
 
@@ -649,7 +651,7 @@ export class ControleurPlateforme {
         $.ajax({
             url: "api/mails/validerVoeuxPartenaires",
             method: "post",
-            data: { listePartenaire: listePartenaireSerializable, adresseMailVoeu: adresseMailVoeu },
+            data: { listePartenaires: listePartenaireSerializable, adresseMailVoeu: adresseMailVoeu },
             success: function (resultat) {
                 //actualiser les voeux
             },

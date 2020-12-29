@@ -248,6 +248,13 @@ class StockagePartenaires extends StockageBaseDeDonnees {
 		$statement->bindValue(":identifiantvoeu", $voeu->getIdentifiantVoeu(), PDO::PARAM_INT);
 		$statement->execute();
 	}
+	private function supprimerTousVoeuDansPartenaire(Partenaire $partenaire) {
+		$requete = "DELETE FROM CORRESPONDANCE_PARTENAIRE_VOEU " .
+				   "WHERE IDENTIFIANTPARTENAIRE = :identifiantpartenaire;";
+		$statement = $this->pdo->prepare($requete);
+		$statement->bindValue(":identifiantpartenaire", $partenaire->getIdentifiantPartenaire(), PDO::PARAM_INT);
+		$statement->execute();
+	}
 
 	private function ajouterImagePartenaire(ImagePartenaire $imagePartenaire) {
 		$requete = "INSERT INTO IMAGEPARTENAIRE(CHEMINIMAGEPARTENAIRESERVEUR) VALUES (:cheminimagepartenaireserveur);";
@@ -365,6 +372,20 @@ class StockagePartenaires extends StockageBaseDeDonnees {
 		}
 	}
 
+	public function ajouterListeVoeuxDansListePartenaires(array $listeVoeux, array $listePartenaires): void {
+		try {
+			$this->pdo->beginTransaction();
+			foreach ($listeVoeux as $index => $voeu) {
+				$this->ajouterVoeuDansPartenaire($listePartenaires[$index], $voeu);
+			}
+			$this->pdo->commit();
+		}
+		catch (PDOException $exception) {
+			$this->pdo->rollBack();
+			throw new ExceptionBaseDeDonneesPlateforme($exception);
+		}
+	}
+
 	public function supprimerPartenaire(Partenaire $partenaire): void {
 		try {
 			$this->pdo->beginTransaction();
@@ -411,7 +432,8 @@ class StockagePartenaires extends StockageBaseDeDonnees {
 			$this->supprimerToutesMobilitesDansPartenaire($partenaire);
 			$this->supprimerToutesAidesFinancieresDansPartenaire($partenaire);
 			$this->supprimerTousContactsDansPartenaire($partenaire);
-			//supprimer tous les voeux et ajouter 
+			$this->supprimerTousVoeuDansPartenaire($partenaire);
+			//supprimer tous les voeux et ajouter
 			foreach ($partenaire->getListeSousSpecialitesPartenaire() as $sousSpecialite) {
 				$this->ajouterSousSpecialiteDansPartenaire($partenaire, $sousSpecialite);
 			}
@@ -423,6 +445,9 @@ class StockagePartenaires extends StockageBaseDeDonnees {
 			}
 			foreach ($partenaire->getListeContactsPartenaire() as $contact) {
 				$this->ajouterContactDansPartenaire($partenaire, $contact);
+			}
+			foreach ($partenaire->getListeVoeuxPartenaire() as $voeu) {
+				$this->ajouterVoeuDansPartenaire($partenaire, $voeu);
 			}
 
 			$listeImagesPartenairesASupprimer = array();

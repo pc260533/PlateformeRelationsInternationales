@@ -352,7 +352,7 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
     }
 
     private supprimerVoeuDansSelect(voeu: Voeu): void {
-        $("#selectListeContactsPartenaire option[value='" + voeu.IdentifiantVoeu + "']").remove();
+        $("#selectListeVoeuxPartenaire option[value='" + voeu.IdentifiantVoeu + "']").remove();
     }
 
     private ajouterImagePartenaireDansListe(imagePartenaire: ImagePartenaire): void {
@@ -487,6 +487,7 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
 
         partenaire.ListeAidesFinancieresPartenaires = this.getListeAidesFinancieresSelectionnees();
         partenaire.ListeContactsPartenaires = this.getListeContactsSelectionnees();
+        partenaire.ListeVoeuxPartenaire = this.getListeVoeuxSelectionnees();
         return partenaire;
     }
 
@@ -856,12 +857,18 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
     }
 
     private onSupprimerVoeuPartenaireClick(): void {
-
+        var listeVoeusSelectionnes: Voeu[] = this.datatablesVoeuxPartenaires.getListeLignesSelectionnees();
+        console.log(listeVoeusSelectionnes);
+        listeVoeusSelectionnes.forEach((voeu: Voeu) => {
+            this.supprimerVoeuDansSelect(voeu);
+        });
     }
 
     private onValiderVoeuxPartenairesClick(): void {
         var listePartenairesSelectionnes: Partenaire[] = this.datatablesPartenaires.getListeLignesSelectionnees();
-        this.controleurPlateforme.validerListeVoeuxPartenaires(listePartenairesSelectionnes, "pierre-nicolas_chassagne@etu.u-bourgogne.fr");
+        if (listePartenairesSelectionnes.length == 3) {
+            this.controleurPlateforme.validerListeVoeuxPartenaires(listePartenairesSelectionnes, "pierre-nicolas_chassagne@etu.u-bourgogne.fr");
+        }
     }
 
 }

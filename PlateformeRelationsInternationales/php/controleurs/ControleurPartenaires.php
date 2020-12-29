@@ -12,7 +12,7 @@ class ControleurPartenaires implements IControleurPlateforme {
 	private $stockagePartenaires;
 	private $gestionFichiers;
 
-	private function creerPartenaire(array $partenaireArray): Partenaire {
+	public function creerPartenaire(array $partenaireArray): Partenaire {
 		$partenaire = new Partenaire();
 		if (isset($partenaireArray["identifiantPartenaire"])) {
 			$partenaire->setIdentifiantPartenaire($partenaireArray["identifiantPartenaire"]);
@@ -77,6 +77,13 @@ class ControleurPartenaires implements IControleurPlateforme {
 				$partenaire->ajouterContact($contact);
 			}
 		}
+		if (isset($partenaireArray["listeVoeuxPartenaire"])) {
+			foreach ($partenaireArray["listeVoeuxPartenaire"] as $voeuArray) {
+				$voeu = new Voeu();
+				$voeu->setIdentifiantVoeu($voeuArray["identifiantVoeu"]);
+				$partenaire->ajouterVoeu($voeu);
+			}
+		}
 		if (isset($partenaireArray["listeImagesPartenaire"])) {
 			foreach ($partenaireArray["listeImagesPartenaire"] as $imagePartenaireArray) {
 				$imagePartenaire = new ImagePartenaire();
@@ -121,6 +128,10 @@ class ControleurPartenaires implements IControleurPlateforme {
 	public function __construct() {
 		$this->stockagePartenaires = new StockagePartenaires(getVariableEnvironnement("DATASOURCENAME_BASEDEDONNEEPLATEFORME"), getVariableEnvironnement("USERNAME_BASEDEDONNEE"), getVariableEnvironnement("PASSWORD_BASEDEDONNEE"));
 		$this->gestionFichiers = new GestionFichiers();
+	}
+
+	public function ajouterListeVoeuxDansListePartenaires(array $listeVoeux, array $listePartenaires): void {
+		$this->stockagePartenaires->ajouterListeVoeuxDansListePartenaires($listeVoeux, $listePartenaires);
 	}
 
 	public function ajouterPartenaire(array $partenaireArray, array $uploadedFiles): Partenaire {
