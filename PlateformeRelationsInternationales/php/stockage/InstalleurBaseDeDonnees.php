@@ -171,23 +171,6 @@ class InstalleurBaseDeDonnees extends StockageBaseDeDonnees {
 	}
 
 	/**
-	 * Créer la table Mail dans la base.
-	 */
-	private function creerTableMail(): void {
-		$requete = "CREATE TABLE IF NOT EXISTS PLATEFORME.MAIL (" .
-				   "identifiantMail INT PRIMARY KEY NOT NULL AUTO_INCREMENT," .
-				   "dateEnvoie DATE," .
-				   "estEnvoye BOOLEAN," .
-				   "sujetMail VARCHAR(255) NULL," .
-				   "messageHtmlMail TEXT NULL," .
-				   "identifiantTemplateMail INT NULL," .
-				   "identifiantPartenaire INT NOT NULL," .
-				   "FOREIGN KEY (identifiantTemplateMail) REFERENCES TEMPLATEMAIL(identifiantTemplateMail) ON DELETE CASCADE," .
-				   "FOREIGN KEY (identifiantPartenaire) REFERENCES PARTENAIRE(identifiantPartenaire) ON DELETE CASCADE);";
-        $this->pdo->exec($requete);
-	}
-
-	/**
 	 * Créer la table Partenaire dans la base.
 	 */
 	private function creerTablePartenaire(): void {
@@ -203,6 +186,23 @@ class InstalleurBaseDeDonnees extends StockageBaseDeDonnees {
 				   "FOREIGN KEY (identifiantLocalisation) REFERENCES LOCALISATION(identifiantLocalisation) ON DELETE CASCADE," .
 				   "FOREIGN KEY (identifiantCout) REFERENCES COUT(identifiantCout) ON DELETE CASCADE," .
 				   "FOREIGN KEY (identifiantEtatPartenaire) REFERENCES ETATPARTENAIRE(identifiantEtatPartenaire) ON DELETE CASCADE);";
+        $this->pdo->exec($requete);
+	}
+
+	/**
+	 * Créer la table Mail dans la base.
+	 */
+	private function creerTableMail(): void {
+		$requete = "CREATE TABLE IF NOT EXISTS PLATEFORME.MAIL (" .
+				   "identifiantMail INT PRIMARY KEY NOT NULL AUTO_INCREMENT," .
+				   "dateEnvoie DATE," .
+				   "estEnvoye BOOLEAN," .
+				   "sujetMail VARCHAR(255) NULL," .
+				   "messageHtmlMail TEXT NULL," .
+				   "identifiantTemplateMail INT NULL," .
+				   "identifiantPartenaire INT NOT NULL," .
+				   "FOREIGN KEY (identifiantTemplateMail) REFERENCES TEMPLATEMAIL(identifiantTemplateMail) ON DELETE CASCADE," .
+				   "FOREIGN KEY (identifiantPartenaire) REFERENCES PARTENAIRE(identifiantPartenaire) ON DELETE CASCADE);";
         $this->pdo->exec($requete);
 	}
 
@@ -344,7 +344,7 @@ class InstalleurBaseDeDonnees extends StockageBaseDeDonnees {
 				   "identifiantMail INT," .
 				   "adresseMailContactMail VARCHAR(191)," .
 				   "PRIMARY KEY(identifiantMail, adresseMailContactMail)," .
-				   "FOREIGN KEY (identifiantMail) REFERENCES CONTACT(identifiantMail) ON DELETE CASCADE);";
+				   "FOREIGN KEY (identifiantMail) REFERENCES MAIL(identifiantMail) ON DELETE CASCADE);";
         $this->pdo->exec($requete);
 	}
 
@@ -382,7 +382,7 @@ class InstalleurBaseDeDonnees extends StockageBaseDeDonnees {
 				   "identifiantMail INT," .
 				   "adresseMailContactMail VARCHAR(191)," .
 				   "PRIMARY KEY(identifiantMail, adresseMailContactMail)," .
-				   "FOREIGN KEY (identifiantMail) REFERENCES CONTACT(identifiantMail) ON DELETE CASCADE);";
+				   "FOREIGN KEY (identifiantMail) REFERENCES MAIL(identifiantMail) ON DELETE CASCADE);";
         $this->pdo->exec($requete);
 	}
 
@@ -420,7 +420,7 @@ class InstalleurBaseDeDonnees extends StockageBaseDeDonnees {
 				   "identifiantMail INT," .
 				   "adresseMailContactMail VARCHAR(191)," .
 				   "PRIMARY KEY(identifiantMail, adresseMailContactMail)," .
-				   "FOREIGN KEY (identifiantMail) REFERENCES CONTACT(identifiantMail) ON DELETE CASCADE);";
+				   "FOREIGN KEY (identifiantMail) REFERENCES MAIL(identifiantMail) ON DELETE CASCADE);";
         $this->pdo->exec($requete);
 	}
 
@@ -456,8 +456,8 @@ class InstalleurBaseDeDonnees extends StockageBaseDeDonnees {
 			$this->creerTableDomaineDeCompetence();
 			$this->creerTableUtilisateur();
 			$this->creerTableTemplateMail();
-			$this->creerTableMail();
 			$this->creerTablePartenaire();
+			$this->creerTableMail();
 			$this->creerTableCorrespondancePartenaireSousSpecialite();
 			$this->creerTableCorrespondancePartenaireMobilite();
 			$this->creerTableCorrespondancePartenaireContactEtranger();
