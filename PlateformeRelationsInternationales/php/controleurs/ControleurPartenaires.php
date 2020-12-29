@@ -20,8 +20,14 @@ class ControleurPartenaires implements IControleurPlateforme {
 		if (isset($partenaireArray["nomPartenaire"])) {
 			$partenaire->setNomPartenaire($partenaireArray["nomPartenaire"]);
 		}
-		if (isset($partenaireArray["domaineDeCompetencePartenaire"])) {
-			$partenaire->setDomaineDeCompetence($partenaireArray["domaineDeCompetencePartenaire"]);
+		if (isset($partenaireArray["lienPartenaire"])) {
+			$partenaire->setLienPartenaire($partenaireArray["lienPartenaire"]);
+		}
+		if (isset($partenaireArray["informationLogementPartenaire"])) {
+			$partenaire->setInformationLogementPartenaire($partenaireArray["informationLogementPartenaire"]);
+		}
+		if (isset($partenaireArray["informationCoutPartenaire"])) {
+			$partenaire->setInformationCoutPartenaire($partenaireArray["informationCoutPartenaire"]);
 		}
 		$localisationPartenaire = new Localisation();
 		if (isset($partenaireArray["localisationPartenaire"]["identifiantLocalisation"])) {
@@ -43,11 +49,22 @@ class ControleurPartenaires implements IControleurPlateforme {
 			$localisationPartenaire->setCodePaysLocalisation($partenaireArray["localisationPartenaire"]["codePaysLocalisation"]);
 		}
 		$partenaire->setLocalisationPartenaire($localisationPartenaire);
-		if (isset($partenaireArray["informationLogementPartenaire"])) {
-			$partenaire->setInformationLogementPartenaire($partenaireArray["informationLogementPartenaire"]);
+		$coutPartenaire = new Cout();
+		if (isset($partenaireArray["coutPartenaire"]["identifiantCout"])) {
+			$coutPartenaire->setIdentifiantCout($partenaireArray["coutPartenaire"]["identifiantCout"]);
 		}
-		if (isset($partenaireArray["informationCoutPartenaire"])) {
-			$partenaire->setInformationCoutPartenaire($partenaireArray["informationCoutPartenaire"]);
+		$partenaire->setCoutPartenaire($coutPartenaire);
+		$etatPartenaire = new EtatPartenaire();
+		if (isset($partenaireArray["etatPartenaire"]["identifiantEtatPartenaire"])) {
+			$etatPartenaire->setIdentifiantEtatPartenaire($partenaireArray["etatPartenaire"]["identifiantEtatPartenaire"]);
+		}
+		$partenaire->setEtatPartenaire($etatPartenaire);
+		if (isset($partenaireArray["listeDomainesDeCompetencesPartenaire"])) {
+			foreach ($partenaireArray["listeDomainesDeCompetencesPartenaire"] as $domaineDeCompetenceArray) {
+				$domaineDeCompetence = new DomaineDeCompetence();
+				$domaineDeCompetence->setIdentifiantDomaineDeCompetence($domaineDeCompetenceArray["identifiantDomaineDeCompetence"]);
+				$partenaire->ajouterDomaineDeCompetence($domaineDeCompetence);
+			}
 		}
 		if (isset($partenaireArray["listeSousSpecialitesPartenaire"])) {
 			foreach ($partenaireArray["listeSousSpecialitesPartenaire"] as $sousSpecialiteArray) {
@@ -96,19 +113,6 @@ class ControleurPartenaires implements IControleurPlateforme {
 				}
 			}
 		}
-		$coutPartenaire = new Cout();
-		if (isset($partenaireArray["coutPartenaire"]["identifiantCout"])) {
-			$coutPartenaire->setIdentifiantCout($partenaireArray["coutPartenaire"]["identifiantCout"]);
-		}
-		$partenaire->setCoutPartenaire($coutPartenaire);
-		if (isset($partenaireArray["lienPartenaire"])) {
-			$partenaire->setLienPartenaire($partenaireArray["lienPartenaire"]);
-		}
-		$etatPartenaire = new EtatPartenaire();
-		if (isset($partenaireArray["etatPartenaire"]["identifiantEtatPartenaire"])) {
-			$etatPartenaire->setIdentifiantEtatPartenaire($partenaireArray["etatPartenaire"]["identifiantEtatPartenaire"]);
-		}
-		$partenaire->setEtatPartenaire($etatPartenaire);
 		return $partenaire;
 	}
 

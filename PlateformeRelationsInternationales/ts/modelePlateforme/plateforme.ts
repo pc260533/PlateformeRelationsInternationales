@@ -7,6 +7,7 @@ import { SousSpecialite } from "./sousspecialite";
 import { Cout } from "./cout";
 import { EtatPartenaire } from "./etatpartenaire";
 import { Voeu } from "./voeu";
+import { DomaineDeCompetence } from "./domaineDeCompetence";
 
 export class Plateforme {
     private listeSpecialitesPlateforme: Specialite[];
@@ -17,6 +18,7 @@ export class Plateforme {
     private listeVoeuxPlateforme: Voeu[];
     private listeCoutsPlateforme: Cout[];
     private listeEtatsPartenairesPlateforme: EtatPartenaire[];
+    private listeDomainesDeCompetences: DomaineDeCompetence[];
 
     public get ListeSpecialitesPlateforme(): Specialite[] {
         return this.listeSpecialitesPlateforme;
@@ -50,6 +52,10 @@ export class Plateforme {
         return this.listeEtatsPartenairesPlateforme;
     }
 
+    public get ListeDomainesDeCompetences(): DomaineDeCompetence[] {
+        return this.listeDomainesDeCompetences;
+    }
+
     public constructor() {
         this.listeSpecialitesPlateforme = [];
         this.listeMobilitesPlateforme = [];
@@ -59,6 +65,7 @@ export class Plateforme {
         this.listeVoeuxPlateforme = [];
         this.listeCoutsPlateforme = [];
         this.listeEtatsPartenairesPlateforme = [];
+        this.listeDomainesDeCompetences = [];
     }
 
     public getSpecialiteAvecIdentifiant(identifiantSpecialite: number): Specialite {
@@ -163,6 +170,16 @@ export class Plateforme {
         return res;
     }
 
+    public getDomaineDeCompetenceAvecIdentifiant(identifiantDomaineDeCompetence: number): DomaineDeCompetence {
+        var res: DomaineDeCompetence = null;
+        this.listeDomainesDeCompetences.forEach((domaineDeCompetence: DomaineDeCompetence) => {
+            if (domaineDeCompetence.IdentifiantDomaineDeCompetence == identifiantDomaineDeCompetence) {
+                res = domaineDeCompetence;
+            }
+        });
+        return res;
+    }
+
     public ajouterSpecialite(specialite: Specialite): void {
         this.listeSpecialitesPlateforme.push(specialite);
     }
@@ -248,6 +265,17 @@ export class Plateforme {
         var indexEtatPartenaire = this.listeEtatsPartenairesPlateforme.indexOf(etatPartenaire);
         if (!(indexEtatPartenaire === undefined) && !(indexEtatPartenaire === null)) {
             this.listeEtatsPartenairesPlateforme.splice(indexEtatPartenaire, 1);
+        }
+    }
+
+    public ajouterDomaineDeCompetence(domaineDeCompetence: DomaineDeCompetence): void {
+        this.listeDomainesDeCompetences.push(domaineDeCompetence);
+    }
+
+    public supprimerDomaineDeCompetence(domaineDeCompetence: DomaineDeCompetence): void {
+        var indexDomaineDeCompetence = this.listeDomainesDeCompetences.indexOf(domaineDeCompetence);
+        if (!(indexDomaineDeCompetence === undefined) && !(indexDomaineDeCompetence === null)) {
+            this.listeDomainesDeCompetences.splice(indexDomaineDeCompetence, 1);
         }
     }
 

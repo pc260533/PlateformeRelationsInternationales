@@ -135,18 +135,27 @@ class InstalleurBaseDeDonnees extends StockageBaseDeDonnees {
 	}
 
 	/**
+	 * Créer la table DomaineDeCompetence dans la base.
+	 */
+	private function creerTableDomaineDeCompetence(): void {
+		$requete = "CREATE TABLE IF NOT EXISTS PLATEFORME.DOMAINEDECOMPETENCE (" .
+				   "identifiantDomaineDeCompetence INT PRIMARY KEY NOT NULL AUTO_INCREMENT," .
+				   "nomDomaineDeCompetence VARCHAR(255));";
+        $this->pdo->exec($requete);
+	}
+
+	/**
 	 * Créer la table Partenaire dans la base.
 	 */
 	private function creerTablePartenaire(): void {
 		$requete = "CREATE TABLE IF NOT EXISTS PLATEFORME.PARTENAIRE (" .
 				   "identifiantPartenaire INT PRIMARY KEY NOT NULL AUTO_INCREMENT," .
 				   "nomPartenaire VARCHAR(255)," .
-				   "domaineDeCompetencePartenaire VARCHAR(255)," .
-				   "identifiantLocalisation INT NOT NULL," .
+				   "lienPartenaire VARCHAR(255)," .
 				   "informationLogementPartenaire TEXT," .
 				   "informationCoutPartenaire TEXT," .
+				   "identifiantLocalisation INT NOT NULL," .
 				   "identifiantCout INT NOT NULL," .
-				   "lienPartenaire VARCHAR(255)," .
 				   "identifiantEtatPartenaire INT NOT NULL," .
 				   "FOREIGN KEY (identifiantLocalisation) REFERENCES LOCALISATION(identifiantLocalisation) ON DELETE CASCADE," .
 				   "FOREIGN KEY (identifiantCout) REFERENCES COUT(identifiantCout) ON DELETE CASCADE," .
@@ -233,6 +242,19 @@ class InstalleurBaseDeDonnees extends StockageBaseDeDonnees {
 	}
 
 	/**
+	 * Créer la table Correspondance_Partenaire_DomaineDeCompetence dans la base.
+	 */
+	private function creerTableCorrespondancePartenaireDomaineDeCompetence(): void {
+		$requete = "CREATE TABLE IF NOT EXISTS PLATEFORME.CORRESPONDANCE_PARTENAIRE_DOMAINEDECOMPETENCE (" .
+				   "identifiantPartenaire INT," .
+				   "identifiantDomaineDeCompetence INT," .
+				   "PRIMARY KEY(identifiantPartenaire, identifiantDomaineDeCompetence)," .
+				   "FOREIGN KEY (identifiantPartenaire) REFERENCES PARTENAIRE(identifiantPartenaire) ON DELETE CASCADE," .
+				   "FOREIGN KEY (identifiantDomaineDeCompetence) REFERENCES DOMAINEDECOMPETENCE(identifiantDomaineDeCompetence) ON DELETE CASCADE);";
+        $this->pdo->exec($requete);
+	}
+
+	/**
 	 * Constructeur prenant en paramètre le data source name, le nom d'utilisateur et le mot de passe de la base de données.
 	 * @param string $dataSourceName Le data source name de la base de données.
 	 * @param string $username Le nom d'utilisateur de la base de données.
@@ -261,6 +283,7 @@ class InstalleurBaseDeDonnees extends StockageBaseDeDonnees {
 			$this->creerTableCout();
 			$this->creerTableEtatPartenaire();
 			$this->creerTableVoeu();
+			$this->creerTableDomaineDeCompetence();
 			$this->creerTablePartenaire();
 			$this->creerTableCorrespondancePartenaireSousSpecialite();
 			$this->creerTableCorrespondancePartenaireMobilite();
@@ -268,6 +291,7 @@ class InstalleurBaseDeDonnees extends StockageBaseDeDonnees {
 			$this->creerTableCorrespondancePartenaireAideFinanciere();
 			$this->creerTableCorrespondancePartenaireImagePartenaire();
 			$this->creerTableCorrespondancePartenaireVoeu();
+			$this->creerTableCorrespondancePartenaireDomaineDeCompetence();
 			$this->pdo->commit();
 		}
 		catch (PDOException $exception) {

@@ -20,6 +20,8 @@ abstract class ExceptionSerializable extends Exception {
 	 */
 	private $status;
 
+	private $ajoutDeveloppeurMessage;
+
 	/**
 	 * Retourner le titre de l'exception.
 	 * @return string Le titre de l'exception.
@@ -61,6 +63,9 @@ abstract class ExceptionSerializable extends Exception {
 		if ($this->getPrevious()) {
 			$res = utf8_encode($this->getPrevious()->getMessage());
 		}
+		if ($this->ajoutDeveloppeurMessage) {
+			$res .= utf8_encode($this->ajoutDeveloppeurMessage);
+		}
 		return $res;
 	}
 
@@ -83,9 +88,10 @@ abstract class ExceptionSerializable extends Exception {
 	 * @param int $code Le code de l'exception.
 	 * @param Throwable $previous L'exception précédente, utilisée pour le chaînage d'exception.
 	 */
-	public function __construct($message, $titre, $status, $code, $previous) {
+	public function __construct($message, $titre, $status, $code, $previous, $ajoutDeveloppeurMessage) {
 		$this->status = $status;
 		$this->titre = $titre;
+		$this->ajoutDeveloppeurMessage = $ajoutDeveloppeurMessage;
 		parent::__construct($message, $code, $previous);
 	}
 

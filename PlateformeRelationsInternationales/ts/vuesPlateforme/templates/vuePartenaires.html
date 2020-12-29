@@ -11,6 +11,7 @@
     </div>
 
     <ModalErreur ref="modalErreur"></ModalErreur>
+    <ModalInformation ref="modalInformation"></ModalInformation>
 
     <div class="container mb-5">
         <div id="mapListePartenaires"></div>
@@ -36,10 +37,6 @@
                     <div class="invalid-feedback">
                         Veuillez donner un nom de partenaire.
                     </div>
-                </div>
-                <div class="form-group">
-                    <label for="inputDomaineDeCompetencePartenaire">Domaine de compétence Partenaire:</label>
-                    <input type="text" id="inputDomaineDeCompetencePartenaire" class="form-control" />
                 </div>
                 <div class="form-group">
                     <label for="inputLienPartenaire">Lien Partenaire:</label>
@@ -81,8 +78,8 @@
                         <div class="invalid-feedback">
                             Veuillez choisir une localisation.
                         </div>
-                        <input type="hidden" id="inputCodePaysLocalisationPartenaire" class="form-control" />
                     </div>
+                    <input type="hidden" id="inputCodePaysLocalisationPartenaire" class="form-control" />
                 </div>
                 <div class="form-group">
                     <label for="inputListeImagesPartenaires">Ajouter des fichiers aux partenaires:</label>
@@ -95,14 +92,47 @@
                     <label for="listeImagesPartenaireServeur">Liste Images Partenaire sur le serveur:</label>
                     <ul class="list-group" id="listeImagesPartenaireServeur"></ul>
                 </div>
-                <div class="form-group">
-                    <label for="selectListeSpecialitesPartenaire">Liste Specialités Partenaire:</label>
-                    <select class="custom-select form-control" id="selectListeSpecialitesPartenaire"></select>
-                    <ul class="list-group" id="listeSousSpecialitesPartenaire"></ul>
+                <div class="form-row">
+                    <div class="form-group col-md-9">
+                        <label for="selectListeDomainesDeCompetencesPartenaire">Liste Domaines De Compétences Partenaire:</label>
+                        <select class="custom-select form-control" id="selectListeDomainesDeCompetencesPartenaire" multiple></select>
+                    </div>
+                    <div class="form-group col-md-3 my-auto">
+                        <div class="form-row pb-1">
+                            <button type="button" id="boutonAjouterDomaineDeCompetencePartenaire" class="btn btn-secondary mx-auto">Selectionner Domaine De Compétence</button>
+                        </div>
+                        <div class="form-row">
+                            <button type="button" id="boutonSupprimerDomaineDeCompetencePartenaire" class="btn btn-secondary mx-auto">Supprimer Domaine De Compétence</button>
+                        </div>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="listeMobilitesPartenaire">Liste Mobilités Partenaire:</label>
-                    <ul class="list-group" id="listeMobilitesPartenaire"></ul>
+                <div class="form-row">
+                    <div class="form-group col-md-9">
+                        <label for="selectListeSousSpecialitesPartenaire">Liste Sous Specialités Partenaire:</label>
+                        <select class="custom-select form-control" id="selectListeSousSpecialitesPartenaire" multiple></select>
+                    </div>
+                    <div class="form-group col-md-3 my-auto">
+                        <div class="form-row pb-1">
+                            <button type="button" id="boutonEditerSousSpecialitePartenaire" class="btn btn-secondary mx-auto">Editer Sous Spécialités</button>
+                        </div>
+                        <div class="form-row">
+                            <button type="button" id="boutonSupprimerSousSpecialitePartenaire" class="btn btn-secondary mx-auto">Supprimer Sous Spécialités</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-9">
+                        <label for="selectListeMobilitesPartenaire">Liste Mobilites Partenaire:</label>
+                        <select class="custom-select form-control" id="selectListeMobilitesPartenaire" multiple></select>
+                    </div>
+                    <div class="form-group col-md-3 my-auto">
+                        <div class="form-row pb-1">
+                            <button type="button" id="boutonAjouterMobilitePartenaire" class="btn btn-secondary mx-auto">Ajouter Mobilité</button>
+                        </div>
+                        <div class="form-row">
+                            <button type="button" id="boutonSupprimerMobilitePartenaire" class="btn btn-secondary mx-auto">Supprimer Mobilité</button>
+                        </div>
+                    </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-9">
@@ -139,7 +169,7 @@
                     </div>
                     <div class="form-group col-md-3 my-auto">
                         <div class="form-row pb-1">
-                            <button type="button" id="boutonOuvrirModalEditeVoeuxPartenaire" class="btn btn-secondary mx-auto">Editer Voeux</button>
+                            <button type="button" id="boutonSupprimerVoeuPartenaire" class="btn btn-secondary mx-auto">Supprimer Voeu</button>
                         </div>
                     </div>
                 </div>
@@ -157,6 +187,70 @@
             <button slot="modalFooter" type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
         </ModalSpecifique>
 
+        <ModalSpecifique ref="modalEditeDomaineDeCompetence" idModal="modalEditeDomaineDeCompetence" tailleModal="modal-lg">
+            <h5 slot="modalHeader" class="modal-tilte">
+                <span id="inputTitreDomaineDeCompetence"></span>
+            </h5>
+            <button slot="modalHeader" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+
+            <form slot="modalBody" class="form">
+                <input type="hidden" id="inputIdentifiantDomaineDeCompetence" value="0" />
+                <div class="form-group">
+                    <label for="inputNomDomaineDeCompetence">Nom Domaine De Compétence :</label>
+                    <input type="text" id="inputNomDomaineDeCompetence" class="form-control" />
+                </div>
+            </form>
+
+            <button slot="modalFooter" type="button" id="boutonEditeDomaineDeCompetence" class="btn btn-custom">Sauvegarder</button>
+            <button slot="modalFooter" type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+        </ModalSpecifique>
+
+        <ModalSpecifique ref="modalEditeDomainesDeCompetencesPartenaire" idModal="modalEditeDomainesDeCompetencesPartenaire" tailleModal="modal-lg">
+            <h5 slot="modalHeader" class="modal-tilte">
+                <span id="inputTitreDomainesDeCompetencesPartenaire"></span>
+            </h5>
+            <button slot="modalHeader" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+
+            <div slot="modalBody">
+                <Datatables ref="datatablesDomainesDeCompetencesPartenaires" v-bind:proprietesDatatables="proprietesDatatablesDomainesDeCompetencesPartenaires" idDatatables="datatablesDomainesDeCompetencesPartenaires"></Datatables>
+            </div>
+            <button slot="modalFooter" type="button" id="boutonEditeDomainesDeCompetencesPartenaire" class="btn btn-custom">Sauvegarder</button>
+            <button slot="modalFooter" type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+        </ModalSpecifique>
+
+        <ModalSpecifique ref="modalEditeSousSpecialitesPartenaire" idModal="modalEditeSousSpecialitesPartenaire" tailleModal="modal-lg">
+            <h5 slot="modalHeader" class="modal-tilte">
+                <span id="inputTitreSousSpecialitesPartenaire"></span>
+            </h5>
+            <button slot="modalHeader" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+
+            <div slot="modalBody">
+                <TreeSpecifique ref="treeSousSpecialitesPartenaire" idTree="treeSousSpecialitesPartenaire"></TreeSpecifique>
+            </div>
+            <button slot="modalFooter" type="button" id="boutonEditeSousSpecialitesPartenaire" class="btn btn-custom">Sauvegarder</button>
+            <button slot="modalFooter" type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+        </ModalSpecifique>
+
+        <ModalSpecifique ref="modalEditeMobilitesPartenaire" idModal="modalEditeMobilitesPartenaire" tailleModal="modal-lg">
+            <h5 slot="modalHeader" class="modal-tilte">
+                <span id="inputTitreMobilitesPartenaire"></span>
+            </h5>
+            <button slot="modalHeader" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+
+            <div slot="modalBody">
+                <Datatables ref="datatablesMobilitesPartenaires" v-bind:proprietesDatatables="proprietesDatatablesMobilitesPartenaires" idDatatables="datatablesMobilitesPartenaires"></Datatables>
+            </div>
+            <button slot="modalFooter" type="button" id="boutonEditeMobilitesPartenaire" class="btn btn-custom">Sauvegarder</button>
+            <button slot="modalFooter" type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+        </ModalSpecifique>
 
         <ModalSpecifique ref="modalEditeAidesFinancieresPartenaire" idModal="modalEditeAidesFinancieresPartenaire" tailleModal="modal-lg">
             <h5 slot="modalHeader" class="modal-tilte">
@@ -200,6 +294,31 @@
                 <Datatables ref="datatablesVoeuxPartenaires" v-bind:proprietesDatatables="proprietesDatatablesVoeuxPartenaires" idDatatables="datatablesVoeuxPartenaires"></Datatables>
             </div>
             <button slot="modalFooter" type="button" id="boutonEditeVoeuxPartenaire" class="btn btn-custom">Sauvegarder</button>
+            <button slot="modalFooter" type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+        </ModalSpecifique>
+
+        <ModalSpecifique ref="modalValideVoeuxPartenaires" idModal="modalValideVoeuxPartenaires" tailleModal="modal-lg">
+            <h5 slot="modalHeader" class="modal-tilte">
+                <span id="inputTitreValideVoeuxPartenaire"></span>
+            </h5>
+            <button slot="modalHeader" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+
+            <div slot="modalBody">
+                <Datatables ref="datatablesListeVoeuxPartenaires" v-bind:proprietesDatatables="proprietesDatatablesListeVoeuxPartenaires" idDatatables="datatablesListeVoeuxPartenaires"></Datatables>
+                <form slot="modalBody" class="form mt-3">
+                    <div class="form-group">
+                        <label for="inputAdresseMailVoeuxPartenaires">Adresse mail etu :</label>
+                        <input type="email" id="inputAdresseMailVoeuxPartenaires" class="form-control" />
+                        <div class="invalid-feedback">
+                            Veuillez donner un adresse mail valide.
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <button slot="modalFooter" type="button" id="boutonValideVoeuxPartenaires" class="btn btn-custom">Valider</button>
             <button slot="modalFooter" type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
         </ModalSpecifique>
 

@@ -1,0 +1,20 @@
+﻿<ModalSpecifique ref="modalInformation" idModal="modalInformation" tailleModal="modal-lg" classeHeader="bg-info">
+    <h4 slot="modalHeader" class="modal-tilte">
+        <span class="text-white" id="titreInformation"></span>
+    </h4>
+    <button slot="modalHeader" type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+
+    <h4 slot="modalBody">
+        <span id="messageInformation"></span>
+    </h4>
+    <br slot="modalBody" />
+    <h4 slot="modalBody">Détails :</h4>
+    <div slot="modalBody">
+        <div class="card text-white bg-info p-2" id="detailsInformation"></div>
+    </div>
+
+    <button slot="modalFooter" type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+
+</ModalSpecifique>

@@ -15,7 +15,7 @@ class ExceptionVoeuxDejaValides extends ExceptionSerializable {
 	 * @param mixed $previous : exption englobée.
 	 */
 	public function __construct() {
-		parent::__construct("Les voeux ont déjà été validés.", "Erreur voeux déjà validés", 500, 500, null);
+		parent::__construct("Les voeux ont déjà été validés.", "Erreur voeux déjà validés", 500, 500, null, null);
 	}
 
 }

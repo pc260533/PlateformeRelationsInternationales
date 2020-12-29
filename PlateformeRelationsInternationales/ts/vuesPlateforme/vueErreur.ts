@@ -8,6 +8,7 @@ import { AideFinanciere } from "../modelePlateforme/aideFinanciere";
 import { Contact } from "../modelePlateforme/contact";
 import { Cout } from "../modelePlateforme/cout";
 import { ErreurSerializable } from "../erreur/erreurSerializable";
+import { InformationSerializable } from "../information/informationSerializable";
 
 import "../../scss/vues/vueErreur.scss";
 
@@ -22,6 +23,10 @@ export default class VueErreur extends Vue implements IVuePlateforme {
     @Prop() private erreurSerializable!: ErreurSerializable;
 
     public afficheErreur(erreur: ErreurSerializable): void {
+
+    }
+
+    public afficheInformation(information: InformationSerializable): void {
 
     }
 

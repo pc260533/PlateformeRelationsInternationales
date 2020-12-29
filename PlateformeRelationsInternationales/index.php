@@ -32,6 +32,7 @@ require __DIR__ . "./php/modele/ImagePartenaire.php";
 require __DIR__ . "./php/modele/Cout.php";
 require __DIR__ . "./php/modele/EtatPartenaire.php";
 require __DIR__ . "./php/modele/Voeu.php";
+require __DIR__ . "./php/modele/DomaineDeCompetence.php";
 
 require __DIR__ . "./php/gestionMails/ContactMail.php";
 require __DIR__ . "./php/gestionMails/Mail.php";
@@ -47,6 +48,7 @@ require __DIR__ . "./php/stockage/StockageContacts.php";
 require __DIR__ . "./php/stockage/StockageCouts.php";
 require __DIR__ . "./php/stockage/StockageEtatsPartenaires.php";
 require __DIR__ . "./php/stockage/StockageVoeux.php";
+require __DIR__ . "./php/stockage/StockageDomainesDeCompetences.php";
 require __DIR__ . "./php/stockage/GestionFichiers.php";
 
 require __DIR__ . "./php/controleurs/IControleurPlateforme.php";
@@ -58,11 +60,13 @@ require __DIR__ . "./php/controleurs/ControleurContacts.php";
 require __DIR__ . "./php/controleurs/ControleurCouts.php";
 require __DIR__ . "./php/controleurs/ControleurEtatsPartenaires.php";
 require __DIR__ . "./php/controleurs/ControleurVoeux.php";
+require __DIR__ . "./php/controleurs/ControleurDomainesDeCompetences.php";
 require __DIR__ . "./php/controleurs/ControleurMails.php";
 
 require __DIR__ . "./php/exception/ExceptionSerializable.php";
 require __DIR__ . "./php/exception/ExceptionBaseDeDonneesPlateforme.php";
 require __DIR__ . "./php/exception/ExceptionVoeuxDejaValides.php";
+require __DIR__ . "./php/exception/ExceptionGestionMails.php";
 
 function getVariableEnvironnement(string $variableEnvironnement): string {
 	$res = "";
@@ -100,6 +104,10 @@ $customErrorHandler = function (ServerRequestInterface $request, Throwable $exce
 		$json = json_encode($exception->toArray());
 		$status = $exception->getStatus();
 	}
+	else if ($exception instanceof ExceptionGestionMails) {
+		$json = json_encode($exception->toArray());
+		$status = $exception->getStatus();
+	}
 	else if ($exception instanceof ExceptionVoeuxDejaValides) {
 		session_start();
 		$_SESSION["exception"] = $exception->toArray();
@@ -126,6 +134,7 @@ require __DIR__ . "./php/rest/contacts.php";
 require __DIR__ . "./php/rest/couts.php";
 require __DIR__ . "./php/rest/etatsPartenaires.php";
 require __DIR__ . "./php/rest/voeux.php";
+require __DIR__ . "./php/rest/domainesDeCompetences.php";
 require __DIR__ . "./php/rest/mails.php";
 
 $app->get("/erreur", function (Request $request, Response $response, $args) {

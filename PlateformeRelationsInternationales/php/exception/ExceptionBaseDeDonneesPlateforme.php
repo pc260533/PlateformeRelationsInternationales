@@ -12,7 +12,7 @@ class ExceptionBaseDeDonneesPlateforme extends ExceptionSerializable {
 	 * @param mixed $previous : exption englobée.
 	 */
 	public function __construct($previous) {
-		parent::__construct("Une erreur générale de la base de données plateforme est survenue.", "Erreur générale de la base de données plateforme", 500, 500, $previous);
+		parent::__construct("Une erreur générale de la base de données plateforme est survenue.", "Erreur générale de la base de données plateforme", 500, 500, $previous, null);
 	}
 
 }

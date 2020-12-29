@@ -12,6 +12,8 @@ import { Cout } from "./modelePlateforme/cout";
 import { ErreurSerializable } from "./erreur/erreurSerializable";
 import { EtatPartenaire } from "./modelePlateforme/etatpartenaire";
 import { Voeu } from "./modelePlateforme/voeu";
+import { InformationSerializable } from "./information/informationSerializable";
+import { DomaineDeCompetence } from "./modelePlateforme/domaineDeCompetence";
 
 export class ControleurPlateforme {
     private listeVuesPlateforme: IVuePlateforme[];
@@ -25,6 +27,14 @@ export class ControleurPlateforme {
         erreurSerializable.DeveloppeurMessageErreur = erreurJson.developpeurMessageErreur;
         erreurSerializable.StackTraceErreur = erreurJson.stackTraceErreur;
         return erreurSerializable;
+    }
+
+    private creerInformationSerializable(informationJson: any): InformationSerializable {
+        var informationSerializable = new InformationSerializable();
+        informationSerializable.TitreInformation = informationJson.titreInformation;
+        informationSerializable.MessageInformation = informationJson.messageInformation;
+        informationSerializable.DetailsInformation = informationJson.detailsInformation;
+        return informationSerializable;
     }
 
     public constructor(plateforme: Plateforme) {
@@ -48,6 +58,12 @@ export class ControleurPlateforme {
     protected notifieErreur(erreur: ErreurSerializable): void {
         this.listeVuesPlateforme.forEach((ivuePlateforme: IVuePlateforme) => {
             ivuePlateforme.afficheErreur(erreur);
+        });
+    }
+
+    protected notifieInformation(information: InformationSerializable): void {
+        this.listeVuesPlateforme.forEach((ivuePlateforme: IVuePlateforme) => {
+            ivuePlateforme.afficheInformation(information);
         });
     }
 
@@ -116,6 +132,32 @@ export class ControleurPlateforme {
             ivuePlateforme.modificationCout(cout);
         });
     }
+
+    public chargerListeDomainesDeCompetences(): JQueryPromise<any> {
+        if (this.modelePlateforme.ListeDomainesDeCompetences.length > 0) {
+            return $.Deferred().resolve();
+        }
+        var that = this;
+        return $.ajax({
+            url: "api/domainesDeCompetences",
+            method: "get",
+            dataType: "json",
+            success: function (resultat) {
+                resultat.forEach(function (domaineDeCompetence: any) {
+                    var domaineDeCompetenceObjet = new DomaineDeCompetence();
+                    domaineDeCompetenceObjet.IdentifiantDomaineDeCompetence = domaineDeCompetence.identifiantDomaineDeCompetence;
+                    domaineDeCompetenceObjet.NomDomaineDeCompetence = domaineDeCompetence.nomDomaineDeCompetence;
+                    that.modelePlateforme.ajouterDomaineDeCompetence(domaineDeCompetenceObjet);
+                    console.log(that.modelePlateforme);
+                });
+            },
+            error: function (erreur) {
+                //console.log(erreur);
+                that.notifieErreur(that.creerErreurSerializable(erreur.responseJSON));
+            }
+        });
+    }
+
 
     public chargerListeSpecialites(): JQueryPromise<any> {
         if (this.modelePlateforme.ListeSpecialitesPlateforme.length > 0) {
@@ -271,8 +313,6 @@ export class ControleurPlateforme {
     }
 
     private modifierPartenaireAjax(ancienPartenaire: Partenaire, nouveauPartenaire: Partenaire): void {
-        console.log(nouveauPartenaire);
-        console.log(ancienPartenaire);
         nouveauPartenaire.IdentifiantPartenaire = ancienPartenaire.IdentifiantPartenaire;
         nouveauPartenaire.LocalisationPartenaire.IdentifiantLocalisation = ancienPartenaire.LocalisationPartenaire.IdentifiantLocalisation;
 
@@ -298,26 +338,28 @@ export class ControleurPlateforme {
             processData: false,
             success: function (resultat) {
                 ancienPartenaire.NomPartenaire = nouveauPartenaire.NomPartenaire;
-                ancienPartenaire.DomaineDeCompetencePartenaire = nouveauPartenaire.DomaineDeCompetencePartenaire;
                 ancienPartenaire.LienPartenaire = nouveauPartenaire.LienPartenaire;
+                ancienPartenaire.InformationLogementPartenaire = nouveauPartenaire.InformationLogementPartenaire;
+                ancienPartenaire.InformationCoutPartenaire = nouveauPartenaire.InformationCoutPartenaire;
                 ancienPartenaire.LocalisationPartenaire.LatitudeLocalisation = nouveauPartenaire.LocalisationPartenaire.LatitudeLocalisation;
                 ancienPartenaire.LocalisationPartenaire.LongitudeLocalisation = nouveauPartenaire.LocalisationPartenaire.LongitudeLocalisation;
                 ancienPartenaire.LocalisationPartenaire.NomLocalisation = nouveauPartenaire.LocalisationPartenaire.NomLocalisation;
                 ancienPartenaire.LocalisationPartenaire.NomPaysLocalisation = nouveauPartenaire.LocalisationPartenaire.NomPaysLocalisation;
                 ancienPartenaire.LocalisationPartenaire.CodePaysLocalisation = nouveauPartenaire.LocalisationPartenaire.CodePaysLocalisation;
+                ancienPartenaire.CoutPartenaire.supprimerPartenaireCout(ancienPartenaire);
+                ancienPartenaire.CoutPartenaire = nouveauPartenaire.CoutPartenaire;
+                ancienPartenaire.CoutPartenaire.ajouterPartenaireCout(ancienPartenaire);
+                ancienPartenaire.EtatPartenaire = nouveauPartenaire.EtatPartenaire;
+                ancienPartenaire.ListeDomainesDeCompetencesPartenaire = nouveauPartenaire.ListeDomainesDeCompetencesPartenaire;
                 ancienPartenaire.ListeSousSpecialitesPartenaire = nouveauPartenaire.ListeSousSpecialitesPartenaire;
                 ancienPartenaire.ListeMobilitesPartenaires = nouveauPartenaire.ListeMobilitesPartenaires;
                 ancienPartenaire.ListeAidesFinancieresPartenaires = nouveauPartenaire.ListeAidesFinancieresPartenaires;
                 ancienPartenaire.ListeContactsPartenaires = nouveauPartenaire.ListeContactsPartenaires;
-                ancienPartenaire.InformationLogementPartenaire = nouveauPartenaire.InformationLogementPartenaire;
-                ancienPartenaire.InformationCoutPartenaire = nouveauPartenaire.InformationCoutPartenaire;
 
                 //On supprime les images qui ont été supprimés.
                 nouveauPartenaire.ListeImagesPartenaire.forEach((imagePartenaire: ImagePartenaire) => {
                     ancienPartenaire.supprimerImagePartenaire(imagePartenaire);
                 });
-                console.log(ancienPartenaire.ListeImagesPartenaire);
-                console.log(nouveauPartenaire.ListeImagesPartenaire);
                 // On ajoute les images qui ont été ajoutés sans le lien vers le fichier local qui est maintenant inutile.
                 resultat.listeImagesPartenaire.forEach((imagePartenaire: any) => {
                     var imagePartenaireObjet = new ImagePartenaire();
@@ -325,11 +367,6 @@ export class ControleurPlateforme {
                     imagePartenaireObjet.CheminImagePartenaireServeur = imagePartenaire.cheminImagePartenaireServeur;
                     ancienPartenaire.ajouterImagePartenaire(imagePartenaireObjet);
                 });
-
-                ancienPartenaire.CoutPartenaire.supprimerPartenaireCout(ancienPartenaire);
-                ancienPartenaire.CoutPartenaire = nouveauPartenaire.CoutPartenaire;
-                ancienPartenaire.CoutPartenaire.ajouterPartenaireCout(ancienPartenaire);
-                ancienPartenaire.EtatPartenaire = nouveauPartenaire.EtatPartenaire;
 
                 that.notifieModificationPartenaire(ancienPartenaire);
             },
@@ -373,9 +410,9 @@ export class ControleurPlateforme {
                     var partenaireObjet = new Partenaire();
                     partenaireObjet.IdentifiantPartenaire = partenaire.identifiantPartenaire;
                     partenaireObjet.NomPartenaire = partenaire.nomPartenaire;
-                    partenaireObjet.DomaineDeCompetencePartenaire = partenaire.domaineDeCompetencePartenaire;
                     partenaireObjet.LienPartenaire = partenaire.lienPartenaire;
-
+                    partenaireObjet.InformationLogementPartenaire = partenaire.informationLogementPartenaire;
+                    partenaireObjet.InformationCoutPartenaire = partenaire.informationCoutPartenaire;
                     var localisationPartenaire = new Localisation();
                     localisationPartenaire.IdentifiantLocalisation = partenaire.localisationPartenaire.identifiantLocalisation;
                     localisationPartenaire.LatitudeLocalisation = partenaire.localisationPartenaire.latitudeLocalisation;
@@ -384,7 +421,12 @@ export class ControleurPlateforme {
                     localisationPartenaire.NomPaysLocalisation = partenaire.localisationPartenaire.nomPaysLocalisation;
                     localisationPartenaire.CodePaysLocalisation = partenaire.localisationPartenaire.codePaysLocalisation;
                     partenaireObjet.LocalisationPartenaire = localisationPartenaire;
-
+                    partenaireObjet.CoutPartenaire = that.modelePlateforme.getCoutAvecIdentifiant(partenaire.coutPartenaire.identifiantCout);
+                    partenaireObjet.CoutPartenaire.ajouterPartenaireCout(partenaireObjet);
+                    partenaireObjet.EtatPartenaire = that.modelePlateforme.getEtatPartenaireAvecIdentifiant(partenaire.etatPartenaire.identifiantEtatPartenaire);
+                    partenaire.listeDomainesDeCompetencesPartenaire.forEach((domaineDeCompetence: any) => {
+                        partenaireObjet.ajouterDomaineDeCompetence(that.modelePlateforme.getDomaineDeCompetenceAvecIdentifiant(domaineDeCompetence.identifiantDomaineDeCompetence));
+                    });
                     partenaire.listeSousSpecialitesPartenaire.forEach((sousSpecialite: any) => {
                         partenaireObjet.ajouterSousSpecialite(that.modelePlateforme.getSousSpecialiteAvecIdentifiant(sousSpecialite.identifiantSousSpecialite));
                     });
@@ -407,18 +449,28 @@ export class ControleurPlateforme {
                         partenaireObjet.ajouterImagePartenaire(imagePartenaireObjet);
                     });
 
-                    partenaireObjet.InformationLogementPartenaire = partenaire.informationLogementPartenaire;
-                    partenaireObjet.InformationCoutPartenaire = partenaire.informationCoutPartenaire;
-
-                    partenaireObjet.CoutPartenaire = that.modelePlateforme.getCoutAvecIdentifiant(partenaire.coutPartenaire.identifiantCout);
-                    partenaireObjet.CoutPartenaire.ajouterPartenaireCout(partenaireObjet);
-
-                    partenaireObjet.EtatPartenaire = that.modelePlateforme.getEtatPartenaireAvecIdentifiant(partenaire.etatPartenaire.identifiantEtatPartenaire);
-
                     that.modelePlateforme.ajouterPartenaire(partenaireObjet);
                     that.notifieAjoutPartenaire(partenaireObjet);
                     //console.log(that.modelePlateforme);
                 });
+            },
+            error: function (erreur) {
+                //console.log(erreur);
+                that.notifieErreur(that.creerErreurSerializable(erreur.responseJSON));
+            }
+        });
+    }
+
+    public ajouterDomaineDeCompetence(domaineDeCompetence: DomaineDeCompetence): void {
+        var that = this;
+        $.ajax({
+            url: "api/domainesDeCompetences",
+            method: "post",
+            data: domaineDeCompetence.getObjetSerializable(),
+            success: function (resultat) {
+                domaineDeCompetence.IdentifiantDomaineDeCompetence = resultat.identifiantAideFinanciere;
+                that.modelePlateforme.ajouterDomaineDeCompetence(domaineDeCompetence);
+                //that.notifieAjoutDomaineDeCompetence(domaineDeCompetence);
             },
             error: function (erreur) {
                 //console.log(erreur);
@@ -652,8 +704,10 @@ export class ControleurPlateforme {
             url: "api/mails/validerVoeuxPartenaires",
             method: "post",
             data: { listePartenaires: listePartenaireSerializable, adresseMailVoeu: adresseMailVoeu },
-            success: function (resultat) {
-                //actualiser les voeux
+            success: function (information) {
+                //console.log(information);
+                that.notifieInformation(that.creerInformationSerializable(information));
+
             },
             error: function (erreur) {
                 //console.log(erreur);

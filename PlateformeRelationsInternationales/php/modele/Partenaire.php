@@ -11,19 +11,19 @@
 class Partenaire implements ISerializable {
 	private $identifiantPartenaire;
     private $nomPartenaire;
-    private $domaineDeCompetencePartenaire;
+	private $lienPartenaire;
+	private $informationLogementPartenaire;
+    private $informationCoutPartenaire;
     private $localisationPartenaire;
+	private $coutPartenaire;
+    private $etatPartenaire;
+    private $listeDomainesDeCompetencesPartenaire;
     private $listeSousSpecialitesPartenaire;
     private $listeMobilitesPartenaire;
+	private $listeAidesFinancieresPartenaire;
     private $listeContactsPartenaire;
-    private $listeAidesFinancieresPartenaire;
     private $listeVoeuxPartenaire;
-    private $informationLogementPartenaire;
-    private $informationCoutPartenaire;
-    private $listeImagesPartenaire;
-    private $coutPartenaire;
-    private $lienPartenaire;
-    private $etatPartenaire;
+	private $listeImagesPartenaire;
 
 	public function getIdentifiantPartenaire(): int {
 		return $this->identifiantPartenaire;
@@ -41,12 +41,28 @@ class Partenaire implements ISerializable {
         $this->nomPartenaire = $nomPartenaire;
     }
 
-	public function getDomaineDeCompetencePartenaire(): string {
-		return $this->domaineDeCompetencePartenaire;
+	public function getLienPartenaire(): string {
+		return $this->lienPartenaire;
 	}
 
-	public function setDomaineDeCompetence(string $domaineDeCompetencePartenaire): void {
-        $this->domaineDeCompetencePartenaire = $domaineDeCompetencePartenaire;
+	public function setLienPartenaire(string $lienPartenaire): void {
+        $this->lienPartenaire = $lienPartenaire;
+    }
+
+	public function getInformationLogementPartenaire(): string {
+		return $this->informationLogementPartenaire;
+	}
+
+	public function setInformationLogementPartenaire(string $informationLogementPartenaire): void {
+        $this->informationLogementPartenaire = $informationLogementPartenaire;
+    }
+
+	public function getInformationCoutPartenaire(): string {
+		return $this->informationCoutPartenaire;
+	}
+
+	public function setInformationCoutPartenaire(string $informationCoutPartenaire): void {
+        $this->informationCoutPartenaire = $informationCoutPartenaire;
     }
 
 	public function getLocalisationPartenaire(): Localisation {
@@ -55,6 +71,30 @@ class Partenaire implements ISerializable {
 
 	public function setLocalisationPartenaire(Localisation $localisationPartenaire): void {
         $this->localisationPartenaire = $localisationPartenaire;
+    }
+
+	public function getCoutPartenaire(): Cout {
+		return $this->coutPartenaire;
+	}
+
+	public function setCoutPartenaire(Cout $coutPartenaire): void {
+        $this->coutPartenaire = $coutPartenaire;
+    }
+
+	public function getEtatPartenaire(): EtatPartenaire {
+		return $this->etatPartenaire;
+	}
+
+	public function setEtatPartenaire(EtatPartenaire $etatPartenaire): void {
+        $this->etatPartenaire = $etatPartenaire;
+    }
+
+	public function getListeDomainesDeComeptencesPartenaire(): array {
+		return $this->listeDomainesDeCompetencesPartenaire;
+	}
+
+	public function setListeDomainesDeComeptencesPartenaire(array $listeDomainesDeCompetencesPartenaire): void {
+        $this->listeDomainesDeCompetencesPartenaire = $listeDomainesDeCompetencesPartenaire;
     }
 
 	public function getListeSousSpecialitesPartenaire(): array {
@@ -97,22 +137,6 @@ class Partenaire implements ISerializable {
         $this->listeVoeuxPartenaire = $listeVoeuxPartenaire;
     }
 
-	public function getInformationLogementPartenaire(): string {
-		return $this->informationLogementPartenaire;
-	}
-
-	public function setInformationLogementPartenaire(string $informationLogementPartenaire): void {
-        $this->informationLogementPartenaire = $informationLogementPartenaire;
-    }
-
-	public function getInformationCoutPartenaire(): string {
-		return $this->informationCoutPartenaire;
-	}
-
-	public function setInformationCoutPartenaire(string $informationCoutPartenaire): void {
-        $this->informationCoutPartenaire = $informationCoutPartenaire;
-    }
-
 	public function getListeImagesPartenaire(): array {
 		return $this->listeImagesPartenaire;
 	}
@@ -121,29 +145,19 @@ class Partenaire implements ISerializable {
         $this->listeImagesPartenaire = $listeImagesPartenaire;
     }
 
-	public function getCoutPartenaire(): Cout {
-		return $this->coutPartenaire;
+	private function getCoutPartenaireSerializable() : array {
+		return array(
+			"identifiantCout" => $this->coutPartenaire->getIdentifiantCout(),
+		);
 	}
 
-	public function setCoutPartenaire(Cout $coutPartenaire): void {
-        $this->coutPartenaire = $coutPartenaire;
-    }
-
-	public function getLienPartenaire(): string {
-		return $this->lienPartenaire;
+	private function getListeDomainesDeCompetencesSerializable() : array {
+		$res = array();
+		foreach ($this->listeDomainesDeCompetencesPartenaire as $domaineDeCompetence) {
+			$res[] = $domaineDeCompetence->getObjetSerializable();
+		}
+		return $res;
 	}
-
-	public function setLienPartenaire(string $lienPartenaire): void {
-        $this->lienPartenaire = $lienPartenaire;
-    }
-
-	public function getEtatPartenaire(): EtatPartenaire {
-		return $this->etatPartenaire;
-	}
-
-	public function setEtatPartenaire(EtatPartenaire $etatPartenaire): void {
-        $this->etatPartenaire = $etatPartenaire;
-    }
 
 	private function getlisteSousSpecialitesSerializable() : array {
 		$res = array();
@@ -161,18 +175,18 @@ class Partenaire implements ISerializable {
 		return $res;
 	}
 
-	private function getListeContactsSerializable() : array {
-		$res = array();
-		foreach ($this->listeContactsPartenaire as $contact) {
-			$res[] = $contact->getObjetSerializable();
-		}
-		return $res;
-	}
-
 	private function getListeAidesFinancieresSerializable() : array {
 		$res = array();
 		foreach ($this->listeAidesFinancieresPartenaire as $aideFinanciere) {
 			$res[] = $aideFinanciere->getObjetSerializable();
+		}
+		return $res;
+	}
+
+	private function getListeContactsSerializable() : array {
+		$res = array();
+		foreach ($this->listeContactsPartenaire as $contact) {
+			$res[] = $contact->getObjetSerializable();
 		}
 		return $res;
 	}
@@ -193,28 +207,32 @@ class Partenaire implements ISerializable {
 		return $res;
 	}
 
-	private function getCoutPartenaireSerializable() : array {
-		return array(
-			"identifiantCout" => $this->coutPartenaire->getIdentifiantCout(),
-		);
-	}
-
 	public function __construct() {
 		$this->identifiantPartenaire = 0;
 		$this->nomPartenaire = "";
-		$this->domaineDeCompetencePartenaire = "";
+		$this->lienPartenaire = "";
+		$this->informationLogementPartenaire = "";
+		$this->informationCoutPartenaire = "";
 		$this->localisationPartenaire = null;
+		$this->coutPartenaire = null;
+		$this->etatPartenaire = null;
+		$this->listeDomainesDeCompetencesPartenaire = array();
 		$this->listeSousSpecialitesPartenaire = array();
 		$this->listeMobilitesPartenaire = array();
 		$this->listeContactsPartenaire = array();
 		$this->listeAidesFinancieresPartenaire = array();
 		$this->listeVoeuxPartenaire = array();
-		$this->informationLogementPartenaire = "";
-		$this->informationCoutPartenaire = "";
 		$this->listeImagesPartenaire = array();
-		$this->coutPartenaire = null;
-		$this->lienPartenaire = "";
-		$this->etatPartenaire = null;
+	}
+
+	public function ajouterDomaineDeCompetence(DomaineDeCompetence $domaineDeCompetence) {
+		$this->listeDomainesDeCompetencesPartenaire[] = $domaineDeCompetence;
+	}
+
+	public function supprimerDomaineDeCompetence(DomaineDeCompetence $domaineDeCompetence) {
+		if (($key = array_search($domaineDeCompetence, $this->listeDomainesDeCompetencesPartenaire)) !== false) {
+			unset($this->listeDomainesDeCompetencesPartenaire[$key]);
+		}
 	}
 
 	public function ajouterSousSpecialite(SousSpecialite $sousSpecialite) {
@@ -237,16 +255,6 @@ class Partenaire implements ISerializable {
 		}
 	}
 
-	public function ajouterContact(Contact $contact) {
-		$this->listeContactsPartenaire[] = $contact;
-	}
-
-	public function supprimerContact(Contact $contact) {
-		if (($key = array_search($contact, $this->listeContactsPartenaire)) !== false) {
-			unset($this->listeContactsPartenaire[$key]);
-		}
-	}
-
 	public function ajouterAideFinanciere(AideFinanciere $aideFinanciere) {
 		$this->listeAidesFinancieresPartenaire[] = $aideFinanciere;
 	}
@@ -254,6 +262,16 @@ class Partenaire implements ISerializable {
 	public function supprimerAideFinanciere(AideFinanciere $aideFinanciere) {
 		if (($key = array_search($aideFinanciere, $this->listeAidesFinancieresPartenaire)) !== false) {
 			unset($this->listeAidesFinancieresPartenaire[$key]);
+		}
+	}
+
+	public function ajouterContact(Contact $contact) {
+		$this->listeContactsPartenaire[] = $contact;
+	}
+
+	public function supprimerContact(Contact $contact) {
+		if (($key = array_search($contact, $this->listeContactsPartenaire)) !== false) {
+			unset($this->listeContactsPartenaire[$key]);
 		}
 	}
 
@@ -287,19 +305,19 @@ class Partenaire implements ISerializable {
 		return array(
 			"identifiantPartenaire" => $this->getIdentifiantPartenaire(),
             "nomPartenaire" => $this->getNomPartenaire(),
-            "domaineDeCompetencePartenaire" => $this->getDomaineDeCompetencePartenaire(),
+			"lienPartenaire" => $this->getLienPartenaire(),
+			"informationLogementPartenaire" => $this->getInformationLogementPartenaire(),
+            "informationCoutPartenaire" => $this->getInformationCoutPartenaire(),
             "localisationPartenaire" => $this->getLocalisationPartenaire()->getObjetSerializable(),
+			"coutPartenaire" => $this->getCoutPartenaireSerializable(),
+            "etatPartenaire" => $this->getEtatPartenaire()->getObjetSerializable(),
+            "listeDomainesDeCompetencesPartenaire" => $this->getListeDomainesDeCompetencesSerializable(),
             "listeSousSpecialitesPartenaire" => $this->getListeSousSpecialitesSerializable(),
             "listeMobilitesPartenaire" => $this->getListeMobilitesSerializable(),
             "listeContactsPartenaire" => $this->getListeContactsSerializable(),
             "listeAidesFinancieresPartenaire" => $this->getListeAidesFinancieresSerializable(),
             "listeVoeuxPartenaire" => $this->getListeVoeuxSerializable(),
-            "informationLogementPartenaire" => $this->getInformationLogementPartenaire(),
-            "informationCoutPartenaire" => $this->getInformationCoutPartenaire(),
-            "listeImagesPartenaire" => $this->getListeImagesPartenaireSerializable(),
-            "coutPartenaire" => $this->getCoutPartenaireSerializable(),
-            "lienPartenaire" => $this->getLienPartenaire(),
-            "etatPartenaire" => $this->getEtatPartenaire()->getObjetSerializable()
+            "listeImagesPartenaire" => $this->getListeImagesPartenaireSerializable()
         );
 	}
 

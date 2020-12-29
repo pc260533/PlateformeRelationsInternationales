@@ -10,6 +10,10 @@ body {
     z-index: 2000;
 }
 
+#modalInformation {
+    z-index: 2000;
+}
+
 /* Mapboxgl et Geocoder */
 #geocoderLocalisation {
     width: 100%;
@@ -27,3 +31,9 @@ body {
     height: 500px;
 }
 /* Mapboxgl et Geocoder */
+
+/* Jstree Bootstrap Theme */
+.jstree-node {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+/* Jstree Bootstrap Theme */

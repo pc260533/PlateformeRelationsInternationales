@@ -8,6 +8,7 @@ import { AideFinanciere } from "../modelePlateforme/aideFinanciere";
 import { Contact } from "../modelePlateforme/contact";
 import { Cout } from "../modelePlateforme/cout";
 import { ErreurSerializable } from "../erreur/erreurSerializable";
+import { InformationSerializable } from "../information/informationSerializable";
 
 import Datatables from "./composants/datatables";
 import { ProprietesDatatables } from "./composants/proprietesDatatables";
@@ -43,6 +44,10 @@ export default class VueAidesFinancieres extends Vue implements IVuePlateforme {
 
     public afficheErreur(erreur: ErreurSerializable): void {
         this.modalErreur.afficherErreur(erreur);
+    }
+
+    public afficheInformation(information: InformationSerializable): void {
+
     }
 
     public ajoutPartenaire(partenaire: Partenaire): void {
