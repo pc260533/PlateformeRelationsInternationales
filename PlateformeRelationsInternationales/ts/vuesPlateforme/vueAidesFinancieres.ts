@@ -114,14 +114,14 @@ export default class VueAidesFinancieres extends Vue implements IVuePlateforme {
     private creerAideFinanciere(): AideFinanciere {
         var aideFinanciere = new AideFinanciere();
         aideFinanciere.NomAideFinanciere = $("#inputNomAideFinanciere").val() as string;
+        aideFinanciere.DescriptionAideFinanciere = $("#textareaDescriptionAideFinanciere").val() as string;
+        aideFinanciere.LienAideFinanciere = $("#inputLienAideFinanciere").val() as string;
         return aideFinanciere;
     }
 
     public constructor() {
         super();
         this.initialiserDatatables();
-        //this.controleurPlateforme.inscrire(this);
-        //this.controleurPlateforme.chargerListeAidesFinancieres();
     }
 
     mounted() {
@@ -158,6 +158,8 @@ export default class VueAidesFinancieres extends Vue implements IVuePlateforme {
             $("#inputTitreAideFinanciere").text("Modifiaction Aide Financiere : " + premiereAideFinanciereSelectionnee.NomAideFinanciere);
             $("#inputIdentifiantAideFinanciere").val(premiereAideFinanciereSelectionnee.IdentifiantAideFinanciere);
             $("#inputNomAideFinanciere").val(premiereAideFinanciereSelectionnee.NomAideFinanciere);
+            $("#textareaDescriptionAideFinanciere").val(premiereAideFinanciereSelectionnee.DescriptionAideFinanciere);
+            $("#inputLienAideFinanciere").val(premiereAideFinanciereSelectionnee.LienAideFinanciere);
             this.modalEditeAideFinanciere.montrerModal();
             $("#boutonEditeAideFinanciere").off();
             $("#boutonEditeAideFinanciere").on("click", () => {

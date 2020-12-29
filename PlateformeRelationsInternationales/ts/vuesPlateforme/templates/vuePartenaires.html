@@ -42,6 +42,14 @@
                     <input type="text" id="inputDomaineDeCompetencePartenaire" class="form-control" />
                 </div>
                 <div class="form-group">
+                    <label for="inputLienPartenaire">Lien Partenaire:</label>
+                    <input type="url" id="inputLienPartenaire" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label for="selectEtatPartenaire">Etat Partenaire:</label>
+                    <select class="custom-select form-control" id="selectEtatPartenaire"></select>
+                </div>
+                <div class="form-group">
                     <label for="geocoderLocalisation">Localisation Partenaire:</label>
                     <div id="geocoderLocalisation"></div>
                 </div>
@@ -124,6 +132,17 @@
                         </div>
                     </div>
                 </div>
+                <div class="form-row">
+                    <div class="form-group col-md-9">
+                        <label for="selectListeVoeuxPartenaire">Liste Voeux Partenaire:</label>
+                        <select class="custom-select form-control" id="selectListeVoeuxPartenaire" multiple></select>
+                    </div>
+                    <div class="form-group col-md-3 my-auto">
+                        <div class="form-row pb-1">
+                            <button type="button" id="boutonOuvrirModalEditeVoeuxPartenaire" class="btn btn-secondary mx-auto">Editer Voeux</button>
+                        </div>
+                    </div>
+                </div>
                 <div class="form-group">
                     <label for="textareaInformationLogementPartenaire">Information Logement Partenaire:</label>
                     <textarea class="form-control" id="textareaInformationLogementPartenaire" rows="3"></textarea>
@@ -166,6 +185,21 @@
                 <Datatables ref="datatablesContactsPartenaires" v-bind:proprietesDatatables="proprietesDatatablesContactsPartenaires" idDatatables="datatablesContactsPartenaires"></Datatables>
             </div>
             <button slot="modalFooter" type="button" id="boutonEditeContactsPartenaire" class="btn btn-custom">Sauvegarder</button>
+            <button slot="modalFooter" type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+        </ModalSpecifique>
+
+        <ModalSpecifique ref="modalEditeVoeuxPartenaire" idModal="modalEditeVoeuxPartenaire" tailleModal="modal-lg">
+            <h5 slot="modalHeader" class="modal-tilte">
+                <span id="inputTitreVoeuxPartenaire"></span>
+            </h5>
+            <button slot="modalHeader" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+
+            <div slot="modalBody">
+                <Datatables ref="datatablesVoeuxPartenaires" v-bind:proprietesDatatables="proprietesDatatablesVoeuxPartenaires" idDatatables="datatablesVoeuxPartenaires"></Datatables>
+            </div>
+            <button slot="modalFooter" type="button" id="boutonEditeVoeuxPartenaire" class="btn btn-custom">Sauvegarder</button>
             <button slot="modalFooter" type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
         </ModalSpecifique>
 

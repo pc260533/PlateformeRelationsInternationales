@@ -24,7 +24,9 @@ class InstalleurBaseDeDonnees extends StockageBaseDeDonnees {
 	private function creerTableAideFinanciere(): void {
 		$requete = "CREATE TABLE IF NOT EXISTS PLATEFORME.AIDEFINANCIERE (" .
 				   "identifiantAideFinanciere INT PRIMARY KEY NOT NULL AUTO_INCREMENT," .
-				   "nomAideFinanciere VARCHAR(255));";
+				   "nomAideFinanciere VARCHAR(255)," .
+				   "descriptionAideFinanciere TEXT," .
+				   "lienAideFinanciere VARCHAR(255));";
         $this->pdo->exec($requete);
 	}
 
@@ -113,6 +115,26 @@ class InstalleurBaseDeDonnees extends StockageBaseDeDonnees {
 	}
 
 	/**
+	 * Créer la table EtatPartenaire dans la base.
+	 */
+	private function creerTableEtatPartenaire(): void {
+		$requete = "CREATE TABLE IF NOT EXISTS PLATEFORME.ETATPARTENAIRE (" .
+				   "identifiantEtatPartenaire INT PRIMARY KEY NOT NULL AUTO_INCREMENT," .
+				   "nomEtatPartenaire VARCHAR(255));";
+        $this->pdo->exec($requete);
+	}
+
+	/**
+	 * Créer la table Voeu dans la base.
+	 */
+	private function creerTableVoeu(): void {
+		$requete = "CREATE TABLE IF NOT EXISTS PLATEFORME.VOEU (" .
+				   "identifiantVoeu INT PRIMARY KEY NOT NULL AUTO_INCREMENT," .
+				   "adresseMailVoeu VARCHAR(255));";
+        $this->pdo->exec($requete);
+	}
+
+	/**
 	 * Créer la table Partenaire dans la base.
 	 */
 	private function creerTablePartenaire(): void {
@@ -124,8 +146,11 @@ class InstalleurBaseDeDonnees extends StockageBaseDeDonnees {
 				   "informationLogementPartenaire TEXT," .
 				   "informationCoutPartenaire TEXT," .
 				   "identifiantCout INT NOT NULL," .
+				   "lienPartenaire VARCHAR(255)," .
+				   "identifiantEtatPartenaire INT NOT NULL," .
 				   "FOREIGN KEY (identifiantLocalisation) REFERENCES LOCALISATION(identifiantLocalisation) ON DELETE CASCADE," .
-				   "FOREIGN KEY (identifiantCout) REFERENCES COUT(identifiantCout) ON DELETE CASCADE);";
+				   "FOREIGN KEY (identifiantCout) REFERENCES COUT(identifiantCout) ON DELETE CASCADE," .
+				   "FOREIGN KEY (identifiantEtatPartenaire) REFERENCES ETATPARTENAIRE(identifiantEtatPartenaire) ON DELETE CASCADE);";
         $this->pdo->exec($requete);
 	}
 
@@ -195,6 +220,19 @@ class InstalleurBaseDeDonnees extends StockageBaseDeDonnees {
 	}
 
 	/**
+	 * Créer la table Correspondance_Partenaire_Voeu dans la base.
+	 */
+	private function creerTableCorrespondancePartenaireVoeu(): void {
+		$requete = "CREATE TABLE IF NOT EXISTS PLATEFORME.CORRESPONDANCE_PARTENAIRE_VOEU (" .
+				   "identifiantPartenaire INT," .
+				   "identifiantVoeu INT," .
+				   "PRIMARY KEY(identifiantPartenaire, identifiantVoeu)," .
+				   "FOREIGN KEY (identifiantPartenaire) REFERENCES PARTENAIRE(identifiantPartenaire) ON DELETE CASCADE," .
+				   "FOREIGN KEY (identifiantVoeu) REFERENCES VOEU(identifiantVoeu) ON DELETE CASCADE);";
+        $this->pdo->exec($requete);
+	}
+
+	/**
 	 * Constructeur prenant en paramètre le data source name, le nom d'utilisateur et le mot de passe de la base de données.
 	 * @param string $dataSourceName Le data source name de la base de données.
 	 * @param string $username Le nom d'utilisateur de la base de données.
@@ -221,12 +259,15 @@ class InstalleurBaseDeDonnees extends StockageBaseDeDonnees {
 			$this->creerTableSousSpecialite();
 			$this->creerTableImagePartenaire();
 			$this->creerTableCout();
+			$this->creerTableEtatPartenaire();
+			$this->creerTableVoeu();
 			$this->creerTablePartenaire();
 			$this->creerTableCorrespondancePartenaireSousSpecialite();
 			$this->creerTableCorrespondancePartenaireMobilite();
 			$this->creerTableCorrespondancePartenaireContact();
 			$this->creerTableCorrespondancePartenaireAideFinanciere();
 			$this->creerTableCorrespondancePartenaireImagePartenaire();
+			$this->creerTableCorrespondancePartenaireVoeu();
 			$this->pdo->commit();
 		}
 		catch (PDOException $exception) {

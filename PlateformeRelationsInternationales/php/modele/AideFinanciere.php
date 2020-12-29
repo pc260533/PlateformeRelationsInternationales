@@ -11,6 +11,8 @@
 class AideFinanciere implements ISerializable {
 	private $identifiantAideFinanciere;
 	private $nomAideFinanciere;
+	private $descriptionAideFinanciere;
+	private $lienAideFinanciere;
 
 	public function getIdentifiantAideFinanciere(): int {
 		return $this->identifiantAideFinanciere;
@@ -28,9 +30,27 @@ class AideFinanciere implements ISerializable {
 		$this->nomAideFinanciere = $nomAideFinanciere;
 	}
 
+	public function getDescriptionAideFinanciere(): string {
+		return $this->descriptionAideFinanciere;
+	}
+
+	public function setDescriptionAideFinanciere(string $descriptionAideFinanciere): void {
+		$this->descriptionAideFinanciere = $descriptionAideFinanciere;
+	}
+
+	public function getLienAideFinanciere(): string {
+		return $this->lienAideFinanciere;
+	}
+
+	public function setLienAideFinanciere(string $lienAideFinanciere): void {
+		$this->lienAideFinanciere = $lienAideFinanciere;
+	}
+
 	public function __construct() {
 		$this->identifiantAideFinanciere = 0;
 		$this->nomAideFinanciere = "";
+		$this->descriptionAideFinanciere = "";
+		$this->lienAideFinanciere = "";
 	}
 
 	#region ISerializable Members
@@ -42,7 +62,9 @@ class AideFinanciere implements ISerializable {
 	public function getObjetSerializable(): array {
 		return array(
 			"identifiantAideFinanciere" => $this->getIdentifiantAideFinanciere(),
-            "nomAideFinanciere" => $this->getNomAideFinanciere()
+            "nomAideFinanciere" => $this->getNomAideFinanciere(),
+            "descriptionAideFinanciere" => $this->getDescriptionAideFinanciere(),
+            "lienAideFinanciere" => $this->getLienAideFinanciere()
         );
 	}
 

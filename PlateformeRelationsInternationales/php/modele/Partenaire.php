@@ -17,10 +17,13 @@ class Partenaire implements ISerializable {
     private $listeMobilitesPartenaire;
     private $listeContactsPartenaire;
     private $listeAidesFinancieresPartenaire;
+    private $listeVoeuxPartenaire;
     private $informationLogementPartenaire;
     private $informationCoutPartenaire;
     private $listeImagesPartenaire;
     private $coutPartenaire;
+    private $lienPartenaire;
+    private $etatPartenaire;
 
 	public function getIdentifiantPartenaire(): int {
 		return $this->identifiantPartenaire;
@@ -86,6 +89,14 @@ class Partenaire implements ISerializable {
         $this->listeAidesFinancieresPartenaire = $listeAidesFinancieresPartenaire;
     }
 
+	public function getListeVoeuxPartenaire(): array {
+		return $this->listeVoeuxPartenaire;
+	}
+
+	public function setListeVoeuxPartenaire(array $listeVoeuxPartenaire): void {
+        $this->listeVoeuxPartenaire = $listeVoeuxPartenaire;
+    }
+
 	public function getInformationLogementPartenaire(): string {
 		return $this->informationLogementPartenaire;
 	}
@@ -116,6 +127,22 @@ class Partenaire implements ISerializable {
 
 	public function setCoutPartenaire(Cout $coutPartenaire): void {
         $this->coutPartenaire = $coutPartenaire;
+    }
+
+	public function getLienPartenaire(): string {
+		return $this->lienPartenaire;
+	}
+
+	public function setLienPartenaire(string $lienPartenaire): void {
+        $this->lienPartenaire = $lienPartenaire;
+    }
+
+	public function getEtatPartenaire(): EtatPartenaire {
+		return $this->etatPartenaire;
+	}
+
+	public function setEtatPartenaire(EtatPartenaire $etatPartenaire): void {
+        $this->etatPartenaire = $etatPartenaire;
     }
 
 	private function getlisteSousSpecialitesSerializable() : array {
@@ -150,6 +177,14 @@ class Partenaire implements ISerializable {
 		return $res;
 	}
 
+	private function getListeVoeuxSerializable() : array {
+		$res = array();
+		foreach ($this->listeVoeuxPartenaire as $voeu) {
+			$res[] = $voeu->getObjetSerializable();
+		}
+		return $res;
+	}
+
 	private function getListeImagesPartenaireSerializable() : array {
 		$res = array();
 		foreach ($this->listeImagesPartenaire as $imagePartenaire) {
@@ -173,10 +208,13 @@ class Partenaire implements ISerializable {
 		$this->listeMobilitesPartenaire = array();
 		$this->listeContactsPartenaire = array();
 		$this->listeAidesFinancieresPartenaire = array();
+		$this->listeVoeuxPartenaire = array();
 		$this->informationLogementPartenaire = "";
 		$this->informationCoutPartenaire = "";
 		$this->listeImagesPartenaire = array();
 		$this->coutPartenaire = null;
+		$this->lienPartenaire = "";
+		$this->etatPartenaire = null;
 	}
 
 	public function ajouterSousSpecialite(SousSpecialite $sousSpecialite) {
@@ -219,6 +257,16 @@ class Partenaire implements ISerializable {
 		}
 	}
 
+	public function ajouterVoeu(Voeu $voeu) {
+		$this->listeVoeuxPartenaire[] = $voeu;
+	}
+
+	public function supprimerVoeu(Voeu $voeu) {
+		if (($key = array_search($voeu, $this->listeVoeuxPartenaire)) !== false) {
+			unset($this->listeVoeuxPartenaire[$key]);
+		}
+	}
+
 	public function ajouterImagePartenaire(ImagePartenaire $imagePartenaire) {
 		$this->listeImagesPartenaire[] = $imagePartenaire;
 	}
@@ -245,10 +293,13 @@ class Partenaire implements ISerializable {
             "listeMobilitesPartenaire" => $this->getListeMobilitesSerializable(),
             "listeContactsPartenaire" => $this->getListeContactsSerializable(),
             "listeAidesFinancieresPartenaire" => $this->getListeAidesFinancieresSerializable(),
+            "listeVoeuxPartenaire" => $this->getListeVoeuxSerializable(),
             "informationLogementPartenaire" => $this->getInformationLogementPartenaire(),
             "informationCoutPartenaire" => $this->getInformationCoutPartenaire(),
             "listeImagesPartenaire" => $this->getListeImagesPartenaireSerializable(),
-            "coutPartenaire" => $this->getCoutPartenaireSerializable()
+            "coutPartenaire" => $this->getCoutPartenaireSerializable(),
+            "lienPartenaire" => $this->getLienPartenaire(),
+            "etatPartenaire" => $this->getEtatPartenaire()->getObjetSerializable()
         );
 	}
 

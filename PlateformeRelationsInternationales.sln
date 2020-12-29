@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.1259
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{A0786B88-2ADB-4C21-ABE8-AA2D79766269}") = "PlateformeRelationsInternationales", "..\..\..\..\..\..\..\..\Users\Jean-Claude\Desktop\ESIREM\S7\PROJET\CODE\PlateformeRelationsInternationales_FF_Version_Git\PlateformeRelationsInternationales\PlateformeRelationsInternationales.phpproj", "{0E30598B-66BC-4E6C-B367-01EBA04D1B26}"
+Project("{A0786B88-2ADB-4C21-ABE8-AA2D79766269}") = "PlateformeRelationsInternationales", "PlateformeRelationsInternationales\PlateformeRelationsInternationales.phpproj", "{0E30598B-66BC-4E6C-B367-01EBA04D1B26}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

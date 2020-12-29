@@ -5,6 +5,8 @@ import { Specialite } from "./specialite";
 import { Mobilite } from "./mobilite";
 import { SousSpecialite } from "./sousspecialite";
 import { Cout } from "./cout";
+import { EtatPartenaire } from "./etatpartenaire";
+import { Voeu } from "./voeu";
 
 export class Plateforme {
     private listeSpecialitesPlateforme: Specialite[];
@@ -12,7 +14,9 @@ export class Plateforme {
     private listePartenairesPlateforme: Partenaire[];
     private listeAidesFinancieresPlateforme: AideFinanciere[];
     private listeContactsPlateforme: Contact[];
+    private listeVoeuxPlateforme: Voeu[];
     private listeCoutsPlateforme: Cout[];
+    private listeEtatsPartenairesPlateforme: EtatPartenaire[];
 
     public get ListeSpecialitesPlateforme(): Specialite[] {
         return this.listeSpecialitesPlateforme;
@@ -34,8 +38,16 @@ export class Plateforme {
         return this.listeContactsPlateforme;
     }
 
+    public get ListeVoeuxPlateforme(): Voeu[] {
+        return this.listeVoeuxPlateforme;
+    }
+
     public get ListeCoutsPlateforme(): Cout[] {
         return this.listeCoutsPlateforme;
+    }
+
+    public get ListeEtatsPartenairesPlateforme(): EtatPartenaire[] {
+        return this.listeEtatsPartenairesPlateforme;
     }
 
     public constructor() {
@@ -44,7 +56,9 @@ export class Plateforme {
         this.listePartenairesPlateforme = [];
         this.listeAidesFinancieresPlateforme = [];
         this.listeContactsPlateforme = [];
+        this.listeVoeuxPlateforme = [];
         this.listeCoutsPlateforme = [];
+        this.listeEtatsPartenairesPlateforme = [];
     }
 
     public getSpecialiteAvecIdentifiant(identifiantSpecialite: number): Specialite {
@@ -99,6 +113,16 @@ export class Plateforme {
         return res;
     }
 
+    public getVoeuAvecIdentifiant(identifiantVoeu: number): Voeu {
+        var res: Voeu = null;
+        this.listeVoeuxPlateforme.forEach((voeu: Voeu) => {
+            if (voeu.IdentifiantVoeu == identifiantVoeu) {
+                res = voeu;
+            }
+        });
+        return res;
+    }
+
     public getSpecialiteAvecSousSpecialite(sousSpecialite: SousSpecialite): Specialite {
         var res: Specialite = null;
         this.listeSpecialitesPlateforme.forEach((specialite: Specialite) => {
@@ -124,6 +148,16 @@ export class Plateforme {
         this.listeCoutsPlateforme.forEach((cout: Cout) => {
             if (cout.NomPaysCout == nomPaysCout) {
                 res = cout;
+            }
+        });
+        return res;
+    }
+
+    public getEtatPartenaireAvecIdentifiant(identifiantEtatPartenaire: number): EtatPartenaire {
+        var res: EtatPartenaire = null;
+        this.listeEtatsPartenairesPlateforme.forEach((etatPartenaire: EtatPartenaire) => {
+            if (etatPartenaire.IdentifiantEtatPartenaire == identifiantEtatPartenaire) {
+                res = etatPartenaire;
             }
         });
         return res;
@@ -184,6 +218,17 @@ export class Plateforme {
         }
     }
 
+    public ajouterVoeu(voeu: Voeu): void {
+        this.listeVoeuxPlateforme.push(voeu);
+    }
+
+    public supprimerVoeu(voeu: Voeu): void {
+        var indexVoeu = this.listeVoeuxPlateforme.indexOf(voeu);
+        if (!(indexVoeu === undefined) && !(indexVoeu === null)) {
+            this.listeVoeuxPlateforme.splice(indexVoeu, 1);
+        }
+    }
+
     public ajouterCout(cout: Cout): void {
         this.listeCoutsPlateforme.push(cout);
     }
@@ -192,6 +237,17 @@ export class Plateforme {
         var indexCout = this.listeCoutsPlateforme.indexOf(cout);
         if (!(indexCout === undefined) && !(indexCout === null)) {
             this.listeCoutsPlateforme.splice(indexCout, 1);
+        }
+    }
+
+    public ajouterEtatPartenaire(etatPartenaire: EtatPartenaire): void {
+        this.listeEtatsPartenairesPlateforme.push(etatPartenaire);
+    }
+
+    public supprimerEtatPartenaire(etatPartenaire: EtatPartenaire): void {
+        var indexEtatPartenaire = this.listeEtatsPartenairesPlateforme.indexOf(etatPartenaire);
+        if (!(indexEtatPartenaire === undefined) && !(indexEtatPartenaire === null)) {
+            this.listeEtatsPartenairesPlateforme.splice(indexEtatPartenaire, 1);
         }
     }
 

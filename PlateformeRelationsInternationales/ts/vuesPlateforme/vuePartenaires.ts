@@ -28,6 +28,9 @@ import "../../scss/vues/vuePartenaires.scss";
 
 import { Component, Prop, Vue, Ref } from "vue-property-decorator";
 import { ImagePartenaire } from "../modelePlateforme/imagePartenaire";
+import { ErreurChampsNonRemplis } from "../erreur/erreurChampsNonRemplis";
+import { EtatPartenaire } from "../modelePlateforme/etatpartenaire";
+import { Voeu } from "../modelePlateforme/voeu";
 
 @Component({
     template: require("./templates/vuePartenaires.html"),
@@ -44,6 +47,7 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
     private proprietesDatatablesPartenaires: ProprietesDatatables;
     private proprietesDatatablesAidesFinancieresPartenaires: ProprietesDatatables;
     private proprietesDatatablesContactsPartenaires: ProprietesDatatables;
+    private proprietesDatatablesVoeuxPartenaires: ProprietesDatatables;
     private mapListePartenaire: mapboxgl.Map;
     private geocoderLocalisation: MapboxGeocoder;
     private mapPartenairesMarker: Map<Partenaire, Marker>;
@@ -51,9 +55,11 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
     @Ref("datatablesPartenaires") readonly datatablesPartenaires!: Datatables<Partenaire>;
     @Ref("datatablesAidesFinancieresPartenaires") readonly datatablesAidesFinancieresPartenaires!: Datatables<AideFinanciere>;
     @Ref("datatablesContactsPartenaires") readonly datatablesContactsPartenaires!: Datatables<Contact>;
+    @Ref("datatablesVoeuxPartenaires") readonly datatablesVoeuxPartenaires!: Datatables<Voeu>;
     @Ref("modalEditePartenaire") readonly modalEditePartenaire!: ModalSpecifique;
     @Ref("modalEditeAidesFinancieresPartenaire") readonly modalEditeAidesFinancieresPartenaire!: ModalSpecifique;
     @Ref("modalEditeContactsPartenaire") readonly modalEditeContactsPartenaire!: ModalSpecifique;
+    @Ref("modalEditeVoeuxPartenaire") readonly modalEditeVoeuxPartenaire!: ModalSpecifique;
     @Ref("spinner") readonly spinner!: SpinnerSpecifique;
     @Ref("modalErreur") readonly modalErreur!: ModalErreur;
 
@@ -134,6 +140,7 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
         this.proprietesDatatablesPartenaires.ajouterBouton(new ProprietesDatatablesBouton("Ajouter Partenaire", this.onAjouterPartenaireClick));
         this.proprietesDatatablesPartenaires.ajouterBouton(new ProprietesDatatablesBouton("Supprimer Partenaire", this.onSupprimerPartenaireClick));
         this.proprietesDatatablesPartenaires.ajouterBouton(new ProprietesDatatablesBouton("Modifier Partenaire", this.onModifierPartenaireClick));
+        this.proprietesDatatablesPartenaires.ajouterBouton(new ProprietesDatatablesBouton("Valider les voeux", this.onValiderVoeuxPartenairesClick));
 
         this.proprietesDatatablesAidesFinancieresPartenaires = new ProprietesDatatables();
         this.proprietesDatatablesAidesFinancieresPartenaires.OrdreDesElementsDeControle = "fti";
@@ -142,11 +149,17 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
         this.proprietesDatatablesContactsPartenaires = new ProprietesDatatables();
         this.proprietesDatatablesContactsPartenaires.OrdreDesElementsDeControle = "fti";
         this.proprietesDatatablesContactsPartenaires.ajouterColonne(new ProprietesDatatablesColonne("Nom Contact", "nomContact"));
+
+        this.proprietesDatatablesVoeuxPartenaires = new ProprietesDatatables();
+        this.proprietesDatatablesVoeuxPartenaires.OrdreDesElementsDeControle = "Bfti";
+        this.proprietesDatatablesVoeuxPartenaires.ajouterColonne(new ProprietesDatatablesColonne("Adresse Mail Voeu", "adresseMailVoeu"));
+        this.proprietesDatatablesVoeuxPartenaires.ajouterBouton(new ProprietesDatatablesBouton("Supprimer Voeu", this.onSupprimerVoeuPartenaireClick));
     }
 
     private initialiserEvenementsModals(): void {
         this.modalEditePartenaire.onCacherModal(() => {
             $("form").trigger("reset");
+            //$("#selectEtatPartenaire").empty();
             $("#selectListeSpecialitesPartenaire").empty();
             $("#listeSousSpecialitesPartenaire").empty();
             $("#listeMobilitesPartenaire").empty();
@@ -173,6 +186,9 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
         });
         $("#boutonSupprimerContactPartenaire").on("click", () => {
             this.onClickSupprimerContactPartenaire();
+        });
+        $("#boutonOuvrirModalEditeVoeuxPartenaire").on("click", () => {
+            this.onClickOuvrirModalEditeVoeuxPartenaire();
         });
 
         $("#selectListeSpecialitesPartenaire").on("change", () => {
@@ -328,6 +344,17 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
         $("#selectListeContactsPartenaire option[value='" + contact.IdentifiantContact + "']").remove(); 
     }
 
+    private ajouterVoeuDansSelect(voeu: Voeu): void {
+        $("#selectListeVoeuxPartenaire").append($("<option>", {
+            value: voeu.IdentifiantVoeu,
+            text: voeu.AdresseMailVoeu
+        }));
+    }
+
+    private supprimerVoeuDansSelect(voeu: Voeu): void {
+        $("#selectListeContactsPartenaire option[value='" + voeu.IdentifiantVoeu + "']").remove();
+    }
+
     private ajouterImagePartenaireDansListe(imagePartenaire: ImagePartenaire): void {
         var li = $("<li>", {
             value: imagePartenaire.IdentifiantImagePartenaire,
@@ -352,6 +379,17 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
         li.append(buttonSupprimer);
         li.append(imgPartenaire.height(50));
         $("#listeImagesPartenaireServeur").append(li);
+    }
+
+    private ajouterEtatPartenaireDansSelect(etatPartenaire: EtatPartenaire): void {
+        $("#selectEtatPartenaire").append($("<option>", {
+            value: etatPartenaire.IdentifiantEtatPartenaire,
+            text: etatPartenaire.NomEtatPartenaire
+        }));
+    }
+
+    private supprimerEtatPartenaireDansSelect(etatPartenaire: EtatPartenaire): void {
+        $("#selectEtatPartenaire option[value='" + etatPartenaire.IdentifiantEtatPartenaire + "']").remove();
     }
 
     private getListeSousSpecialitesSelectionnees(): SousSpecialite[] {
@@ -394,6 +432,15 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
         return listeContactsSelectionnees;
     }
 
+    private getListeVoeuxSelectionnees(): Voeu[] {
+        var listeVoeuxSelectionnes: Voeu[] = [];
+        $("#selectListeVoeuxPartenaire option").each((index: number, element: HTMLElement) => {
+            var identifiantVoeu: number = Number($(element).val());
+            listeVoeuxSelectionnes.push(this.plateforme.getVoeuAvecIdentifiant(identifiantVoeu));
+        });
+        return listeVoeuxSelectionnes;
+    }
+
     private getCouleurMarkerPartenaire(partenaire: Partenaire): string {
         var couleurSpecialitePartenaire = "#f0f0f0";
         if (partenaire.ListeSousSpecialitesPartenaire.length > 0) {
@@ -406,6 +453,8 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
         var partenaire = new Partenaire();
         partenaire.NomPartenaire = $("#inputNomPartenaire").val() as string;
         partenaire.DomaineDeCompetencePartenaire = $("#inputDomaineDeCompetencePartenaire").val() as string;
+        partenaire.LienPartenaire = $("#inputLienPartenaire").val() as string;
+        partenaire.EtatPartenaire = this.plateforme.getEtatPartenaireAvecIdentifiant(Number($("#selectEtatPartenaire").val()));
         var localisationPartenaire = new Localisation();
         localisationPartenaire.LatitudeLocalisation = $("#inputLatitudePartenaire").val() as string;
         localisationPartenaire.LongitudeLocalisation = $("#inputLongitudePartenaire").val() as string;
@@ -510,8 +559,15 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
             this.controleurPlateforme.chargerListeMobilites(),
             this.controleurPlateforme.chargerListeAidesFinancieres(),
             this.controleurPlateforme.chargerListeContacts(),
-            this.controleurPlateforme.chargerListeCouts()).done(() => {
+            this.controleurPlateforme.chargerListeVoeux(),
+            this.controleurPlateforme.chargerListeCouts(),
+            this.controleurPlateforme.chargerListeEtatsPartenaires()).done(() => {
                 this.controleurPlateforme.chargerListePartenaires();
+                console.log(this.plateforme);
+                this.plateforme.ListeEtatsPartenairesPlateforme.forEach((etatPartenaire: EtatPartenaire) => {
+                    this.ajouterEtatPartenaireDansSelect(etatPartenaire);
+                });
+
             });
     }
 
@@ -535,25 +591,30 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
         this.plateforme.ListeMobilitesPlateforme.forEach((mobilite: Mobilite) => {
             this.ajouterMobiliteDansListe(mobilite, false);
         });
+        //mis dans le mounted car ne change jamais
+        /*this.plateforme.ListeEtatsPartenairesPlateforme.forEach((etatPartenaire: EtatPartenaire) => {
+            this.ajouterEtatPartenaireDansSelect(etatPartenaire);
+        });*/
         this.modalEditePartenaire.montrerModal();
         $("#boutonEditePartenaire").off();
         $("#boutonEditePartenaire").on("click", () => {
             try {
                 if ($("#inputNomPartenaire").val() == "") {
                     $("#inputNomPartenaire").addClass("is-invalid");
-                    //throw new Error("");
+                    throw new ErreurChampsNonRemplis();
                 }
                 if ($("#inputLatitudePartenaire").val() == "") {
                     $("#inputLatitudePartenaire").addClass("is-invalid");
                     $("#inputLongitudePartenaire").addClass("is-invalid");
                     $("#inputNomLocalisationPartenaire").addClass("is-invalid");
                     $("#inputNomPaysLocalisationPartenaire").addClass("is-invalid");
-                    //throw new Error("");
+                    throw new ErreurChampsNonRemplis();
                 }
                 this.controleurPlateforme.ajouterPartenaire(this.creerPartenaire());
                 this.modalEditePartenaire.cacherModal();
             }
-            catch {
+            catch (erreur) {
+                console.log(erreur);
                 $("body").animate({
                     scrollTop: $($(".is-invalid")[0]).focus().offset().top - 25
                 }, 1000);
@@ -577,6 +638,8 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
             $("#inputTitrePartenaire").text("Modification Partenaire : " + premierPartenaireSelectionne.NomPartenaire);
             $("#inputNomPartenaire").val(premierPartenaireSelectionne.NomPartenaire);
             $("#inputDomaineDeCompetencePartenaire").val(premierPartenaireSelectionne.DomaineDeCompetencePartenaire);
+            $("#inputLienPartenaire").val(premierPartenaireSelectionne.LienPartenaire);
+            $("#selectEtatPartenaire").val(premierPartenaireSelectionne.EtatPartenaire.IdentifiantEtatPartenaire);
             $("#inputLatitudePartenaire").val(premierPartenaireSelectionne.LocalisationPartenaire.LatitudeLocalisation);
             $("#inputLongitudePartenaire").val(premierPartenaireSelectionne.LocalisationPartenaire.LongitudeLocalisation);
             $("#inputNomLocalisationPartenaire").val(premierPartenaireSelectionne.LocalisationPartenaire.NomLocalisation);
@@ -626,6 +689,10 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
                 this.ajouterContactDansSelect(contact);
             });
 
+            premierPartenaireSelectionne.ListeVoeuxPartenaire.forEach((voeu: Voeu) => {
+                this.ajouterVoeuDansSelect(voeu);
+            });
+
             premierPartenaireSelectionne.ListeImagesPartenaire.forEach((imagePartenaire: ImagePartenaire) => {
                 this.ajouterImagePartenaireDansListe(imagePartenaire);
             });
@@ -640,7 +707,7 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
                         $("#listeImagesPartenaireServeur li").each((index: number, element: HTMLElement) => {
                             var nomImagePartenaire = $(element).find("span").text().split("/").pop();
                             if (nomImagePartenaire == nomImagePartenaireSelectionnee) {
-                                throw new Error();
+                                throw new ErreurChampsNonRemplis();
                             }
                         });
                     });
@@ -768,6 +835,33 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
             });
             this.modalEditeContactsPartenaire.cacherModal();
         });
+    }
+
+    private onClickOuvrirModalEditeVoeuxPartenaire(): void {
+        var listePartenairesSelectionnes: Partenaire[] = this.datatablesPartenaires.getListeLignesSelectionnees();
+        if (listePartenairesSelectionnes.length > 0) {
+            var premierPartenaireSelectionne = listePartenairesSelectionnes[0];
+            $("#inputTitreVoeuxPartenaire").text("Edition Voeux dans le partenaire : " + premierPartenaireSelectionne.NomPartenaire);
+            this.datatablesVoeuxPartenaires.viderDatatables();
+            /*var listeVoeuxSelectionnes: Voeu[] = this.getListeVoeuxSelectionnees();
+            listeVoeuxSelectionnes.forEach((voeu: Voeu) => {
+                this.datatablesVoeuxPartenaires.ajouterLigneDansDatatables(voeu);
+            });*/
+            //même chose
+            premierPartenaireSelectionne.ListeVoeuxPartenaire.forEach((voeu: Voeu) => {
+                this.datatablesVoeuxPartenaires.ajouterLigneDansDatatables(voeu);
+            });
+        }
+        this.modalEditeVoeuxPartenaire.montrerModal();
+    }
+
+    private onSupprimerVoeuPartenaireClick(): void {
+
+    }
+
+    private onValiderVoeuxPartenairesClick(): void {
+        var listePartenairesSelectionnes: Partenaire[] = this.datatablesPartenaires.getListeLignesSelectionnees();
+        this.controleurPlateforme.validerListeVoeuxPartenaires(listePartenairesSelectionnes, "pierre-nicolas_chassagne@etu.u-bourgogne.fr");
     }
 
 }

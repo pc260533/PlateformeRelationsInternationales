@@ -121,6 +121,21 @@ class StockagePartenaires extends StockageBaseDeDonnees {
 		}
 	}
 
+	private function chargerVoeuxDansPartenaire(Partenaire $partenaire): void {
+		$requete = "SELECT IDENTIFIANTVOEU ".
+				   "FROM CORRESPONDANCE_PARTENAIRE_VOEU ".
+				   "WHERE IDENTIFIANTPARTENAIRE = :identifiantpartenaire;";
+		$statement = $this->pdo->prepare($requete);
+		$statement->bindValue(":identifiantpartenaire", $partenaire->getIdentifiantPartenaire(), PDO::PARAM_INT);
+		$statement->execute();
+		$donnees = $statement->fetchAll();
+		foreach ($donnees as $ligne) {
+			$voeu = new Voeu();
+			$voeu->setIdentifiantVoeu($ligne["IDENTIFIANTVOEU"]);
+			$partenaire->ajouterVoeu($voeu);
+		}
+	}
+
 	private function ajouterSousSpecialiteDansPartenaire(Partenaire $partenaire, SousSpecialite $sousSpecialite) {
 		$requete = "INSERT INTO CORRESPONDANCE_PARTENAIRE_SOUSSPECIALITE(IDENTIFIANTPARTENAIRE, IDENTIFIANTSOUSSPECIALITE) VALUES (:identifiantpartenaire, :identifiantsousspecialite);";
 		$statement = $this->pdo->prepare($requete);
@@ -209,12 +224,28 @@ class StockagePartenaires extends StockageBaseDeDonnees {
 		$statement->bindValue(":identifiantaidefinanciere", $aideFinanciere->getIdentifiantAideFinanciere(), PDO::PARAM_INT);
 		$statement->execute();
 	}
-
 	private function supprimerToutesAidesFinancieresDansPartenaire(Partenaire $partenaire) {
 		$requete = "DELETE FROM CORRESPONDANCE_PARTENAIRE_AIDEFINANCIERE " .
 				   "WHERE IDENTIFIANTPARTENAIRE = :identifiantpartenaire;";
 		$statement = $this->pdo->prepare($requete);
 		$statement->bindValue(":identifiantpartenaire", $partenaire->getIdentifiantPartenaire(), PDO::PARAM_INT);
+		$statement->execute();
+	}
+
+	private function ajouterVoeuDansPartenaire(Partenaire $partenaire, Voeu $voeu) {
+		$requete = "INSERT INTO CORRESPONDANCE_PARTENAIRE_VOEU(IDENTIFIANTPARTENAIRE, IDENTIFIANTVOEU) VALUES (:identifiantpartenaire, :identifiantvoeu);";
+		$statement = $this->pdo->prepare($requete);
+		$statement->bindValue(":identifiantpartenaire", $partenaire->getIdentifiantPartenaire(), PDO::PARAM_INT);
+		$statement->bindValue(":identifiantvoeu", $voeu->getIdentifiantVoeu(), PDO::PARAM_INT);
+		$statement->execute();
+	}
+
+	private function supprimerVoeuDansPartenaire(Partenaire $partenaire, Voeu $voeu) {
+		$requete = "DELETE FROM CORRESPONDANCE_PARTENAIRE_VOEU " .
+				   "WHERE IDENTIFIANTPARTENAIRE = :identifiantpartenaire AND IDENTIFIANTVOEU = :identifiantvoeu;";
+		$statement = $this->pdo->prepare($requete);
+		$statement->bindValue(":identifiantpartenaire", $partenaire->getIdentifiantPartenaire(), PDO::PARAM_INT);
+		$statement->bindValue(":identifiantvoeu", $voeu->getIdentifiantVoeu(), PDO::PARAM_INT);
 		$statement->execute();
 	}
 
@@ -277,7 +308,7 @@ class StockagePartenaires extends StockageBaseDeDonnees {
 
 			$this->ajouterLocalisation($partenaire->getLocalisationPartenaire());
 
-			$requete = "INSERT INTO PARTENAIRE(NOMPARTENAIRE, DOMAINEDECOMPETENCEPARTENAIRE, IDENTIFIANTLOCALISATION, INFORMATIONLOGEMENTPARTENAIRE, INFORMATIONCOUTPARTENAIRE, IDENTIFIANTCOUT) VALUES (:nompartenaire, :domainedecompetencepartenaire, :identifiantlocalisation, :informationlogementpartenaire, :informationcoutpartenaire, :identifiantcout);";
+			$requete = "INSERT INTO PARTENAIRE(NOMPARTENAIRE, DOMAINEDECOMPETENCEPARTENAIRE, IDENTIFIANTLOCALISATION, INFORMATIONLOGEMENTPARTENAIRE, INFORMATIONCOUTPARTENAIRE, IDENTIFIANTCOUT, LIENPARTENAIRE, IDENTIFIANTETATPARTENAIRE) VALUES (:nompartenaire, :domainedecompetencepartenaire, :identifiantlocalisation, :informationlogementpartenaire, :informationcoutpartenaire, :identifiantcout, :lienpartenaire, :identifiantetatpartenaire);";
 			$statement = $this->pdo->prepare($requete);
 			$statement->bindValue(":nompartenaire", $partenaire->getNomPartenaire(), PDO::PARAM_STR);
 			$statement->bindValue(":domainedecompetencepartenaire", $partenaire->getDomaineDeCompetencePartenaire(), PDO::PARAM_STR);
@@ -285,6 +316,8 @@ class StockagePartenaires extends StockageBaseDeDonnees {
 			$statement->bindValue(":informationlogementpartenaire", $partenaire->getInformationLogementPartenaire(), PDO::PARAM_STR);
 			$statement->bindValue(":informationcoutpartenaire", $partenaire->getInformationCoutPartenaire(), PDO::PARAM_STR);
 			$statement->bindValue(":identifiantcout", $partenaire->getCoutPartenaire()->getIdentifiantCout(), PDO::PARAM_INT);
+			$statement->bindValue(":lienpartenaire", $partenaire->getLienPartenaire(), PDO::PARAM_STR);
+			$statement->bindValue(":identifiantetatpartenaire", $partenaire->getEtatPartenaire()->getIdentifiantEtatPartenaire(), PDO::PARAM_INT);
 			$statement->execute();
 			$partenaire->setIdentifiantPartenaire(intval($this->pdo->lastInsertId()));
 
@@ -299,6 +332,9 @@ class StockagePartenaires extends StockageBaseDeDonnees {
 			}
 			foreach ($partenaire->getListeContactsPartenaire() as $contact) {
 				$this->ajouterContactDansPartenaire($partenaire, $contact);
+			}
+			foreach ($partenaire->getListeVoeuxPartenaire() as $voeu) {
+				$this->ajouterVoeuDansPartenaire($partenaire, $voeu);
 			}
 			/*foreach ($partenaire->getListeImagesPartenaire() as $imagePartenaire) {
 			$this->ajouterImagePartenaire($imagePartenaire);
@@ -356,7 +392,7 @@ class StockagePartenaires extends StockageBaseDeDonnees {
 		try {
 			$this->pdo->beginTransaction();
 			$requete = "UPDATE PARTENAIRE " .
-					   "SET NOMPARTENAIRE = :nompartenaire, DOMAINEDECOMPETENCEPARTENAIRE = :domainedecompetencepartenaire, IDENTIFIANTLOCALISATION = :identifiantlocalisation, INFORMATIONLOGEMENTPARTENAIRE = :informationlogementpartenaire, INFORMATIONCOUTPARTENAIRE = :informationcoutpartenaire, IDENTIFIANTCOUT = :identifiantcout " .
+					   "SET NOMPARTENAIRE = :nompartenaire, DOMAINEDECOMPETENCEPARTENAIRE = :domainedecompetencepartenaire, IDENTIFIANTLOCALISATION = :identifiantlocalisation, INFORMATIONLOGEMENTPARTENAIRE = :informationlogementpartenaire, INFORMATIONCOUTPARTENAIRE = :informationcoutpartenaire, IDENTIFIANTCOUT = :identifiantcout, LIENPARTENAIRE = :lienpartenaire, IDENTIFIANTETATPARTENAIRE = :identifiantetatpartenaire " .
 					   "WHERE IDENTIFIANTPARTENAIRE = :identifiantpartenaire;";
 			$statement = $this->pdo->prepare($requete);
 			$statement->bindValue(":nompartenaire", $partenaire->getNomPartenaire(), PDO::PARAM_STR);
@@ -366,6 +402,8 @@ class StockagePartenaires extends StockageBaseDeDonnees {
 			$statement->bindValue(":informationcoutpartenaire", $partenaire->getInformationCoutPartenaire(), PDO::PARAM_STR);
 			$statement->bindValue(":identifiantpartenaire", $partenaire->getIdentifiantPartenaire(), PDO::PARAM_INT);
 			$statement->bindValue(":identifiantcout", $partenaire->getCoutPartenaire()->getIdentifiantCout(), PDO::PARAM_INT);
+			$statement->bindValue(":lienpartenaire", $partenaire->getLienPartenaire(), PDO::PARAM_STR);
+			$statement->bindValue(":identifiantetatpartenaire", $partenaire->getEtatPartenaire()->getIdentifiantEtatPartenaire(), PDO::PARAM_INT);
 			$statement->execute();
 
 			$this->modifierLocalisation($partenaire->getLocalisationPartenaire());
@@ -373,6 +411,7 @@ class StockagePartenaires extends StockageBaseDeDonnees {
 			$this->supprimerToutesMobilitesDansPartenaire($partenaire);
 			$this->supprimerToutesAidesFinancieresDansPartenaire($partenaire);
 			$this->supprimerTousContactsDansPartenaire($partenaire);
+			//supprimer tous les voeux et ajouter 
 			foreach ($partenaire->getListeSousSpecialitesPartenaire() as $sousSpecialite) {
 				$this->ajouterSousSpecialiteDansPartenaire($partenaire, $sousSpecialite);
 			}
@@ -412,7 +451,7 @@ class StockagePartenaires extends StockageBaseDeDonnees {
 	public function chargerListePartenaires(): array {
 		try {
 			$listePartenaires = array();
-			$requete = "SELECT IDENTIFIANTPARTENAIRE, NOMPARTENAIRE, DOMAINEDECOMPETENCEPARTENAIRE, IDENTIFIANTLOCALISATION, INFORMATIONLOGEMENTPARTENAIRE, INFORMATIONCOUTPARTENAIRE, IDENTIFIANTCOUT ".
+			$requete = "SELECT IDENTIFIANTPARTENAIRE, NOMPARTENAIRE, DOMAINEDECOMPETENCEPARTENAIRE, IDENTIFIANTLOCALISATION, INFORMATIONLOGEMENTPARTENAIRE, INFORMATIONCOUTPARTENAIRE, IDENTIFIANTCOUT, LIENPARTENAIRE, IDENTIFIANTETATPARTENAIRE ".
 					   "FROM PARTENAIRE;";
 			$statement = $this->pdo->prepare($requete);
 			$statement->execute();
@@ -430,12 +469,17 @@ class StockagePartenaires extends StockageBaseDeDonnees {
 				$cout = new Cout();
 				$cout->setIdentifiantCout($ligne["IDENTIFIANTCOUT"]);
 				$partenaire->setCoutPartenaire($cout);
+				$partenaire->setLienPartenaire($ligne["LIENPARTENAIRE"]);
+				$etatPartenaire = new EtatPartenaire();
+				$etatPartenaire->setIdentifiantEtatPartenaire($ligne["IDENTIFIANTETATPARTENAIRE"]);
+				$partenaire->setEtatPartenaire($etatPartenaire);
 
 				$this->chargerLocalisationPartenaire($localisation);
 				$this->chargerSousSpecialitesDansPartenaire($partenaire);
 				$this->chargerMobilitesDansPartenaire($partenaire);
 				$this->chargerAidesFinancieresDansPartenaire($partenaire);
 				$this->chargerContactsDansPartenaire($partenaire);
+				$this->chargerVoeuxDansPartenaire($partenaire);
 				$this->chargerImagesPartenaireDansPartenaire($partenaire);
 
 				$listePartenaires[] = $partenaire->getObjetSerializable();

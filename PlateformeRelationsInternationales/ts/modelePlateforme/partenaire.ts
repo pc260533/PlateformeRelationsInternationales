@@ -6,6 +6,8 @@ import { AideFinanciere } from "./aideFinanciere";
 import { ISerializable } from "./ISerializable";
 import { ImagePartenaire } from "./imagePartenaire";
 import { Cout } from "./cout";
+import { EtatPartenaire } from "./etatpartenaire";
+import { Voeu } from "./voeu";
 
 export class Partenaire implements ISerializable {
     private identifiantPartenaire: number;
@@ -16,10 +18,13 @@ export class Partenaire implements ISerializable {
     private listeMobilitesPartenaires: Mobilite[];
     private listeContactsPartenaires: Contact[];
     private listeAidesFinancieresPartenaires: AideFinanciere[];
+    private listeVoeuxPartenaire: Voeu[];
     private informationLogementPartenaire: string;
     private informationCoutPartenaire: string;
     private listeImagesPartenaire: ImagePartenaire[];
     private coutPartenaire: Cout;
+    private lienPartenaire: string;
+    private etatPartenaire: EtatPartenaire;
 
     public get IdentifiantPartenaire(): number {
         return this.identifiantPartenaire;
@@ -85,6 +90,14 @@ export class Partenaire implements ISerializable {
         this.listeAidesFinancieresPartenaires = listeAidesFinancieresPartenaires;
     }
 
+    public get ListeVoeuxPartenaire(): Voeu[] {
+        return this.listeVoeuxPartenaire;
+    }
+
+    public set ListeVoeuxPartenaire(listeVoeuxPartenaire: Voeu[]) {
+        this.listeVoeuxPartenaire = listeVoeuxPartenaire;
+    }
+
     public get InformationLogementPartenaire(): string {
         return this.informationLogementPartenaire;
     }
@@ -115,6 +128,22 @@ export class Partenaire implements ISerializable {
 
     public set CoutPartenaire(coutPartenaire: Cout) {
         this.coutPartenaire = coutPartenaire;
+    }
+
+    public get LienPartenaire(): string {
+        return this.lienPartenaire;
+    }
+
+    public set LienPartenaire(lienPartenaire: string) {
+        this.lienPartenaire = lienPartenaire;
+    }
+
+    public get EtatPartenaire(): EtatPartenaire {
+        return this.etatPartenaire;
+    }
+
+    public set EtatPartenaire(etatPartenaire: EtatPartenaire) {
+        this.etatPartenaire = etatPartenaire;
     }
 
     public getListeSousSpecialitesPartenaireId(): any[] {
@@ -149,6 +178,14 @@ export class Partenaire implements ISerializable {
         return listeContactsPartenaireId;
     }
 
+    public getListeVoeuxPartenaireId(): any[] {
+        var listeVoeuxPartenaireId: any[] = [];
+        this.listeVoeuxPartenaire.forEach((voeu: Voeu) => {
+            listeVoeuxPartenaireId.push(voeu.getObjetSerializableId());
+        });
+        return listeVoeuxPartenaireId;
+    }
+
     public getListeImagesPartenaire(): any[] {
         var listeImagesPartenaire: any[] = [];
         this.listeImagesPartenaire.forEach((imagePartenaire: ImagePartenaire) => {
@@ -176,10 +213,13 @@ export class Partenaire implements ISerializable {
         this.listeMobilitesPartenaires = [];
         this.listeContactsPartenaires = [];
         this.listeAidesFinancieresPartenaires = [];
+        this.listeVoeuxPartenaire = [];
         this.informationLogementPartenaire = "";
         this.informationCoutPartenaire = "";
         this.listeImagesPartenaire = [];
         this.coutPartenaire = null;
+        this.lienPartenaire = "";
+        this.etatPartenaire = null;
     }
 
     public ajouterSousSpecialite(sousSpecialite: SousSpecialite): void {
@@ -226,6 +266,17 @@ export class Partenaire implements ISerializable {
         }
     }
 
+    public ajouterVoeu(voeu: Voeu): void {
+        this.listeVoeuxPartenaire.push(voeu);
+    }
+
+    public supprimerVoeu(voeu: Voeu): void {
+        var indexVoeu = this.listeVoeuxPartenaire.indexOf(voeu);
+        if (!(indexVoeu === undefined) && !(indexVoeu === null)) {
+            this.listeVoeuxPartenaire.splice(indexVoeu, 1);
+        }
+    }
+
     public ajouterImagePartenaire(imagePartenaire: ImagePartenaire): void {
         this.listeImagesPartenaire.push(imagePartenaire);
     }
@@ -247,10 +298,13 @@ export class Partenaire implements ISerializable {
             listeMobilitesPartenaire: this.getListeMobilitesPartenaireId(),
             listeAidesFinancieresPartenaire: this.getListeAidesFinancieresPartenaireId(),
             listeContactsPartenaire: this.getListeContactsPartenaireId(),
+            listeVoeuxPartenaire: this.getListeVoeuxPartenaireId(),
             informationLogementPartenaire: this.InformationLogementPartenaire,
             informationCoutPartenaire: this.InformationCoutPartenaire,
             listeImagesPartenaire: this.getListeImagesPartenaire(),
-            coutPartenaire: this.CoutPartenaire.getObjetSerializableId()
+            coutPartenaire: this.CoutPartenaire.getObjetSerializableId(),
+            lienPartenaire: this.LienPartenaire,
+            etatPartenaire: this.EtatPartenaire.getObjetSerializableId()
         }
         return partenaire;
     }

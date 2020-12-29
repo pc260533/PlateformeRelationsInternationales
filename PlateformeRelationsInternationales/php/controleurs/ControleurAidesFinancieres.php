@@ -19,6 +19,12 @@ class ControleurAidesFinancieres implements IControleurPlateforme {
 		if (isset($aideFinanciereArray["nomAideFinanciere"])) {
 			$aideFinanciere->setNomAideFinanciere($aideFinanciereArray["nomAideFinanciere"]);
 		}
+		if (isset($aideFinanciereArray["descriptionAideFinanciere"])) {
+			$aideFinanciere->setDescriptionAideFinanciere($aideFinanciereArray["descriptionAideFinanciere"]);
+		}
+		if (isset($aideFinanciereArray["lienAideFinanciere"])) {
+			$aideFinanciere->setLienAideFinanciere($aideFinanciereArray["lienAideFinanciere"]);
+		}
 		return $aideFinanciere;
 	}
 

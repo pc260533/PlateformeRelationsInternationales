@@ -30,6 +30,8 @@ require __DIR__ . "./php/modele/SousSpecialite.php";
 require __DIR__ . "./php/modele/Specialite.php";
 require __DIR__ . "./php/modele/ImagePartenaire.php";
 require __DIR__ . "./php/modele/Cout.php";
+require __DIR__ . "./php/modele/EtatPartenaire.php";
+require __DIR__ . "./php/modele/Voeu.php";
 
 require __DIR__ . "./php/stockage/StockageBaseDeDonnees.php";
 require __DIR__ . "./php/stockage/InstalleurBaseDeDonnees.php";
@@ -39,6 +41,8 @@ require __DIR__ . "./php/stockage/StockagePartenaires.php";
 require __DIR__ . "./php/stockage/StockageAidesFinancieres.php";
 require __DIR__ . "./php/stockage/StockageContacts.php";
 require __DIR__ . "./php/stockage/StockageCouts.php";
+require __DIR__ . "./php/stockage/StockageEtatsPartenaires.php";
+require __DIR__ . "./php/stockage/StockageVoeux.php";
 require __DIR__ . "./php/stockage/GestionFichiers.php";
 
 require __DIR__ . "./php/controleurs/IControleurPlateforme.php";
@@ -48,6 +52,8 @@ require __DIR__ . "./php/controleurs/ControleurPartenaires.php";
 require __DIR__ . "./php/controleurs/ControleurAidesFinancieres.php";
 require __DIR__ . "./php/controleurs/ControleurContacts.php";
 require __DIR__ . "./php/controleurs/ControleurCouts.php";
+require __DIR__ . "./php/controleurs/ControleurEtatsPartenaires.php";
+require __DIR__ . "./php/controleurs/ControleurVoeux.php";
 
 require __DIR__ . "./php/exception/ExceptionSerializable.php";
 require __DIR__ . "./php/exception/ExceptionBaseDeDonneesPlateforme.php";
@@ -106,6 +112,9 @@ require __DIR__ . "./php/rest/partenaires.php";
 require __DIR__ . "./php/rest/aidesFinancieres.php";
 require __DIR__ . "./php/rest/contacts.php";
 require __DIR__ . "./php/rest/couts.php";
+require __DIR__ . "./php/rest/etatsPartenaires.php";
+require __DIR__ . "./php/rest/voeux.php";
+require __DIR__ . "./php/rest/mails.php";
 
 $app->get("/erreur", function (Request $request, Response $response, $args) {
 	session_start();

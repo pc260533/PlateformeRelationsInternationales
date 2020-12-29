@@ -17,9 +17,11 @@ class StockageAidesFinancieres extends StockageBaseDeDonnees {
 	public function ajouterAideFinanciere(AideFinanciere $aideFinanciere): void {
 		try {
 			$this->pdo->beginTransaction();
-			$requete = "INSERT INTO AIDEFINANCIERE(NOMAIDEFINANCIERE) VALUES (:nomaidefinanciere);";
+			$requete = "INSERT INTO AIDEFINANCIERE(NOMAIDEFINANCIERE, DESCRIPTIONAIDEFINANCIERE, LIENAIDEFINANCIERE) VALUES (:nomaidefinanciere, :descriptionaidefinanciere, :lienaidefinanciere);";
 			$statement = $this->pdo->prepare($requete);
 			$statement->bindValue(":nomaidefinanciere", $aideFinanciere->getNomAideFinanciere(), PDO::PARAM_STR);
+			$statement->bindValue(":descriptionaidefinanciere", $aideFinanciere->getDescriptionAideFinanciere(), PDO::PARAM_STR);
+			$statement->bindValue(":lienaidefinanciere", $aideFinanciere->getLienAideFinanciere(), PDO::PARAM_STR);
 			$statement->execute();
 			$aideFinanciere->setIdentifiantAideFinanciere(intval($this->pdo->lastInsertId()));
 			$this->pdo->commit();
@@ -50,10 +52,12 @@ class StockageAidesFinancieres extends StockageBaseDeDonnees {
 		try {
 			$this->pdo->beginTransaction();
 			$requete = "UPDATE AIDEFINANCIERE " .
-					   "SET NOMAIDEFINANCIERE = :nomaidefinanciere " .
+					   "SET NOMAIDEFINANCIERE = :nomaidefinanciere, DESCRIPTIONAIDEFINANCIERE = :descriptionaidefinanciere, LIENAIDEFINANCIERE = :lienaidefinanciere " .
 					   "WHERE IDENTIFIANTAIDEFINANCIERE = :identifiantaidefinanciere;";
 			$statement = $this->pdo->prepare($requete);
 			$statement->bindValue(":nomaidefinanciere", $aideFinanciere->getNomAideFinanciere(), PDO::PARAM_STR);
+			$statement->bindValue(":descriptionaidefinanciere", $aideFinanciere->getDescriptionAideFinanciere(), PDO::PARAM_STR);
+			$statement->bindValue(":lienaidefinanciere", $aideFinanciere->getLienAideFinanciere(), PDO::PARAM_STR);
 			$statement->bindValue(":identifiantaidefinanciere", $aideFinanciere->getIdentifiantAideFinanciere(), PDO::PARAM_INT);
 			$statement->execute();
 			$this->pdo->commit();
@@ -67,7 +71,7 @@ class StockageAidesFinancieres extends StockageBaseDeDonnees {
 	public function chargerListeAidesFinancieres(): array {
 		try {
 			$listeAidesFinancieres = array();
-			$requete = "SELECT IDENTIFIANTAIDEFINANCIERE, NOMAIDEFINANCIERE ".
+			$requete = "SELECT IDENTIFIANTAIDEFINANCIERE, NOMAIDEFINANCIERE, DESCRIPTIONAIDEFINANCIERE, LIENAIDEFINANCIERE ".
 					   "FROM AIDEFINANCIERE;";
 			$statement = $this->pdo->prepare($requete);
 			$statement->execute();
@@ -76,6 +80,8 @@ class StockageAidesFinancieres extends StockageBaseDeDonnees {
 				$aideFinanciere = new AideFinanciere();
 				$aideFinanciere->setIdentifiantAideFinanciere($ligne["IDENTIFIANTAIDEFINANCIERE"]);
 				$aideFinanciere->setNomAideFinanciere($ligne["NOMAIDEFINANCIERE"]);
+				$aideFinanciere->setDescriptionAideFinanciere($ligne["DESCRIPTIONAIDEFINANCIERE"]);
+				$aideFinanciere->setLienAideFinanciere($ligne["LIENAIDEFINANCIERE"]);
 				$listeAidesFinancieres[] = $aideFinanciere->getObjetSerializable();
 			}
 			return $listeAidesFinancieres;
