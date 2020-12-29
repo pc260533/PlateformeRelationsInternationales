@@ -1,0 +1,62 @@
+﻿<!-- Détails Utilisateur -->
+
+<section class="sections detailsUtilisateur mt-5">
+    <div class="container">
+
+        <div class="sectionHeader text-center">
+            <h2 class="sectionTitre">Détails Utilisateur</h2>
+            <div class="line"><span></span></div>
+            <p>
+                Informations concernant l'utilisateur connecté.
+            </p>
+        </div>
+
+        <ModalErreur ref="modalErreur"></ModalErreur>
+
+        <div class="row">
+            <div class="informationsAPropos">
+                <p class="informationsAProposDescription">
+                    Identifiant Utilisateur : <span class="proprieteApplication">{{ identifiantUtilisateur }}</span>
+                </p>
+                <p class="informationsAProposDescription">
+                    Nom Utilisateur : <span class="proprieteApplication">{{ nomUtilisateur }}</span>
+                </p>
+                <p class="informationsAProposDescription">
+                    Adresse Mail Utilisateur : <span class="proprieteApplication">{{ adresseMailUtilisateur }}</span>
+                </p>
+                <p class="informationsAProposDescription">
+                    Rôles :
+                </p>
+                <ul class="informationsAProposUl">
+                    <li class="informationsAProposLi">Coordinateur</li>
+                    <li v-if="estAdministrateur" class="informationsAProposLi">Administrateur</li>
+                </ul>
+                <button type="button" id="boutonModificationMotDePasseUtilisateur" class="btn btn-custom">Réinitialiser le mot de passe</button>
+            </div>
+        </div>
+
+        <ModalSpecifique ref="modalEditeMotDePasseUtilisateur" idModal="modalEditeMotDePasseUtilisateur" tailleModal="modal-lg">
+            <h5 slot="modalHeader" class="modal-tilte">
+                <span id="inputTitreMotDePasseUtisiateur"></span>
+            </h5>
+            <button slot="modalHeader" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+
+            <form slot="modalBody" class="form">
+                <div class="form-group">
+                    <label for="inputMotDePasseUtilisateur">Nouveau Mot De Passe :</label>
+                    <input type="password" id="inputMotDePasseUtilisateur" class="form-control" />
+                </div>
+            </form>
+
+            <button slot="modalFooter" type="button" id="boutonEditeMotDePasseUtilisateur" class="btn btn-custom">Sauvegarder</button>
+            <button slot="modalFooter" type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+        </ModalSpecifique>
+
+        <SpinnerSpecifique ref="spinner"></SpinnerSpecifique>
+
+    </div>
+</section>
+
+<!-- /Détails Utilisateur -->

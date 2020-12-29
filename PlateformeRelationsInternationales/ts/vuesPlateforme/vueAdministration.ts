@@ -7,6 +7,7 @@ import { ControleurMobilites } from "../controleursPlateforme/controleurMobilite
 import { ControleurSpecialites } from "../controleursPlateforme/controleurSpecialites";
 import { ControleurVoeux } from "../controleursPlateforme/controleurVoeux";
 import { ControleurDomainesDeCompetences } from "../controleursPlateforme/controleurDomainesDeCompetences";
+import { ControleurUtilisateurs } from "../controleursPlateforme/controleurUtilisateurs";
 import { Partenaire } from "../modelePlateforme/partenaire";
 import { ContactEtranger } from "../modelePlateforme/contactEtranger";
 import { DomaineDeCompetence } from "../modelePlateforme/domaineDeCompetence";
@@ -15,6 +16,7 @@ import { Mobilite } from "../modelePlateforme/mobilite";
 import { Specialite } from "../modelePlateforme/specialite";
 import { SousSpecialite } from "../modelePlateforme/sousspecialite";
 import { Voeu } from "../modelePlateforme/voeu";
+import { Utilisateur } from "../modelePlateforme/utilisateur";
 import { ErreurSerializable } from "../erreur/erreurSerializable";
 import { InformationSerializable } from "../information/informationSerializable";
 
@@ -34,6 +36,8 @@ import { IVueEtatsPartenaires } from "./ivueEtatsPartenaires";
 import { IVueMobilites } from "./ivueMobilites";
 import { IVueSpecialites } from "./ivueSpecialites";
 import { IVueVoeux } from "./ivueVoeux";
+import { IVueUtilisateurs } from "./ivueUtilisateurs";
+import { ErreurChampsNonRemplis } from "../erreur/erreurChampsNonRemplis";
 
 @Component({
     template: require("./templates/vueAdministration.html"),
@@ -45,7 +49,7 @@ import { IVueVoeux } from "./ivueVoeux";
         ModalInformation
     }
 })
-export default class VueAdminisitration extends Vue implements IVueContactsEtrangers, IVueDomainesDeCompetences, IVueEtatsPartenaires, IVueMobilites, IVueSpecialites, IVueVoeux {
+export default class VueAdminisitration extends Vue implements IVueContactsEtrangers, IVueDomainesDeCompetences, IVueEtatsPartenaires, IVueMobilites, IVueSpecialites, IVueVoeux, IVueUtilisateurs {
     @Prop() private plateforme!: Plateforme;
     @Prop() private controleurContactsEtrangers!: ControleurContactsEtrangers;
     @Prop() private controleurDomainesDeCompetences!: ControleurDomainesDeCompetences;
@@ -53,6 +57,7 @@ export default class VueAdminisitration extends Vue implements IVueContactsEtran
     @Prop() private controleurMobilites!: ControleurMobilites;
     @Prop() private controleurSpecialites!: ControleurSpecialites;
     @Prop() private controleurVoeux!: ControleurVoeux;
+    @Prop() private controleurUtilisateurs!: ControleurUtilisateurs;
 
     @Ref("datatablesContactsEtrangers") readonly datatablesContactsEtrangers!: Datatables<ContactEtranger>;
     @Ref("datatablesDomainesDeCompetences") readonly datatablesDomainesDeCompetences!: Datatables<DomaineDeCompetence>;
@@ -61,6 +66,7 @@ export default class VueAdminisitration extends Vue implements IVueContactsEtran
     @Ref("datatablesSpecialites") readonly datatablesSpecialites!: Datatables<Specialite>;
     @Ref("datatablesSousSpecialites") readonly datatablesSousSpecialites!: Datatables<SousSpecialite>;
     @Ref("datatablesVoeux") readonly datatablesVoeux!: Datatables<Voeu>;
+    @Ref("datatablesUtilisateurs") readonly datatablesUtilisateurs!: Datatables<Utilisateur>;
     @Ref("modalContactEtranger") readonly modalContactEtranger!: ModalSpecifique;
     @Ref("modalDomaineDeCompetence") readonly modalDomaineDeCompetence!: ModalSpecifique;
     @Ref("modalEtatPartenaire") readonly modalEtatPartenaire!: ModalSpecifique;
@@ -68,6 +74,7 @@ export default class VueAdminisitration extends Vue implements IVueContactsEtran
     @Ref("modalSpecialite") readonly modalSpecialite!: ModalSpecifique;
     @Ref("modalSousSpecialite") readonly modalSousSpecialite!: ModalSpecifique;
     //@Ref("modalVoeu") readonly modalVoeu!: ModalSpecifique;
+    @Ref("modalUtilisateur") readonly modalUtilisateur!: ModalSpecifique;
     @Ref("spinner") readonly spinner!: SpinnerSpecifique;
     @Ref("modalErreur") readonly modalErreur!: ModalErreur;
     @Ref("modalInformation") readonly modalInformation!: ModalInformation;
@@ -79,6 +86,7 @@ export default class VueAdminisitration extends Vue implements IVueContactsEtran
     private proprietesDatatablesSpecialites: ProprietesDatatables;
     private proprietesDatatablesSousSpecialites: ProprietesDatatables;
     private proprietesDatatablesVoeux: ProprietesDatatables;
+    private proprietesDatatablesUtilisateurs: ProprietesDatatables;
 
     public afficheErreur(erreur: ErreurSerializable): void {
         this.modalErreur.afficherErreur(erreur);
@@ -159,6 +167,16 @@ export default class VueAdminisitration extends Vue implements IVueContactsEtran
         this.datatablesVoeux.supprimerLigneSelectionneeDansDatatables();
     }
 
+    public ajoutUtilisateur(utilisateur: Utilisateur): void {
+        this.datatablesUtilisateurs.ajouterLigneDansDatatables(utilisateur);
+    }
+    public suppressionUtilisateur(utilisateur: Utilisateur): void {
+        this.datatablesUtilisateurs.supprimerLigneSelectionneeDansDatatables();
+    }
+    public modificationUtilisateur(utilisateur: Utilisateur): void {
+        this.datatablesUtilisateurs.modifierLigneSelectionneeDansDatatables(utilisateur);
+    }
+
     private initialiserDatatables() {
         this.proprietesDatatablesContactsEtrangers = new ProprietesDatatables();
         this.proprietesDatatablesContactsEtrangers.OrdreDesElementsDeControle = "Bfti";
@@ -217,6 +235,16 @@ export default class VueAdminisitration extends Vue implements IVueContactsEtran
         this.proprietesDatatablesVoeux.ajouterColonne(new ProprietesDatatablesColonne("Identifiant Voeu", "identifiantVoeu"));
         this.proprietesDatatablesVoeux.ajouterColonne(new ProprietesDatatablesColonne("Adresse Mail Voeu", "adresseMailVoeu"));
         this.proprietesDatatablesVoeux.ajouterBouton(new ProprietesDatatablesBouton("Supprimer Voeu", this.onClickSupprimerVoeu));
+
+        this.proprietesDatatablesUtilisateurs = new ProprietesDatatables();
+        this.proprietesDatatablesUtilisateurs.OrdreDesElementsDeControle = "Bfti";
+        this.proprietesDatatablesUtilisateurs.ajouterColonne(new ProprietesDatatablesColonne("Identifiant Utilisateur", "identifiantUtilisateur"));
+        this.proprietesDatatablesUtilisateurs.ajouterColonne(new ProprietesDatatablesColonne("Nom Utilisateur", "nomUtilisateur"));
+        this.proprietesDatatablesUtilisateurs.ajouterColonne(new ProprietesDatatablesColonne("Adresse Mail Utilisateur", "adresseMailUtilisateur"));
+        this.proprietesDatatablesUtilisateurs.ajouterColonne(new ProprietesDatatablesColonne("Est Administrateur Utilisateur", "EstAdministrateurString"));
+        this.proprietesDatatablesUtilisateurs.ajouterBouton(new ProprietesDatatablesBouton("Ajouter Utilisateur", this.onClickAjouterUtilisateur));
+        this.proprietesDatatablesUtilisateurs.ajouterBouton(new ProprietesDatatablesBouton("Supprimer Utilisateur", this.onClickSupprimerUtilisateur));
+        this.proprietesDatatablesUtilisateurs.ajouterBouton(new ProprietesDatatablesBouton("Modifier Utilisateur", this.onClickModifierUtilisateur));
     }
 
     private initialiserEvenementsModals(): void {
@@ -239,6 +267,12 @@ export default class VueAdminisitration extends Vue implements IVueContactsEtran
             $("form").trigger("reset");
             $("#selectSpecialiteSousSpecialite").empty();
         });
+        this.modalUtilisateur.onCacherModal(() => {
+            $("form").trigger("reset");
+            $("#inputNomUtilisateur").removeClass("is-invalid");
+            $("#inputAdresseMailUtilisateur").removeClass("is-invalid");
+            $("#inputMotDePasseUtilisateur").removeClass("is-invalid");
+        });
         $("#inputNomDomaineDeCompetence").keypress((event) => {
             if (event.keyCode == 13) {
                 event.preventDefault();
@@ -258,6 +292,15 @@ export default class VueAdminisitration extends Vue implements IVueContactsEtran
             if (event.keyCode == 13) {
                 event.preventDefault();
             }
+        });
+        $("#inputNomUtilisateur").click(function () {
+            $("#inputNomUtilisateur").removeClass("is-invalid");
+        });
+        $("#inputAdresseMailUtilisateur").click(function () {
+            $("#inputAdresseMailUtilisateur").removeClass("is-invalid");
+        });
+        $("#inputMotDePasseUtilisateur").click(function () {
+            $("#inputMotDePasseUtilisateur").removeClass("is-invalid");
         });
     }
 
@@ -301,6 +344,15 @@ export default class VueAdminisitration extends Vue implements IVueContactsEtran
         return sousSpecialite;
     }
 
+    private creerUtilisateur(): Utilisateur {
+        var utilisateur = new Utilisateur();
+        utilisateur.NomUtilisateur = $("#inputNomUtilisateur").val() as string;
+        utilisateur.MotDePasseUtilisateur = $("#inputMotDePasseUtilisateur").val() as string;
+        utilisateur.AdresseMailUtilisateur = $("#inputAdresseMailUtilisateur").val() as string;
+        utilisateur.EstAdministrateur = $("#inputEstAdministrateur").prop("checked") as boolean;
+        return utilisateur;
+    }
+
     public constructor() {
         super();
         this.initialiserDatatables();
@@ -314,12 +366,14 @@ export default class VueAdminisitration extends Vue implements IVueContactsEtran
         this.controleurMobilites.inscrire(this);
         this.controleurSpecialites.inscrire(this);
         this.controleurVoeux.inscrire(this);
+        this.controleurUtilisateurs.inscrire(this);
         this.controleurContactsEtrangers.chargerListeContactsEtrangers();
         this.controleurDomainesDeCompetences.chargerListeDomainesDeCompetences();
         this.controleurEtatsPartenaires.chargerListeEtatsPartenaires();
         this.controleurMobilites.chargerListeMobilites();
         this.controleurSpecialites.chargerListeSpecialites();
         this.controleurVoeux.chargerListeVoeux();
+        this.controleurUtilisateurs.chargerListeUtilisateur();
     }
 
     beforeDestroy() {
@@ -329,6 +383,7 @@ export default class VueAdminisitration extends Vue implements IVueContactsEtran
         this.controleurMobilites.resilier(this);
         this.controleurSpecialites.resilier(this);
         this.controleurVoeux.resilier(this);
+        this.controleurUtilisateurs.resilier(this);
     }
 
     private onClickAjouterContactEtranger(): void {
@@ -557,6 +612,78 @@ export default class VueAdminisitration extends Vue implements IVueContactsEtran
         listeVoeuxSelectionnes.forEach((voeu: Voeu) => {
             this.controleurVoeux.supprimerVoeu(voeu);
         });
+    }
+
+    private onClickAjouterUtilisateur(): void {
+        $("#inputTitreUtilisateur").text("Ajout Utilisateur :");
+        this.modalUtilisateur.montrerModal();
+        $("#boutonEditeUtilisateur").off();
+        $("#boutonEditeUtilisateur").on("click", () => {
+            try {
+                if ($("#inputNomUtilisateur").val() == "") {
+                    $("#inputNomUtilisateur").addClass("is-invalid");
+                    throw new ErreurChampsNonRemplis();
+                }
+                if (!/\S+@\S+\.\S+/.test($("#inputAdresseMailUtilisateur").val() as string)) {
+                    $("#inputAdresseMailUtilisateur").addClass("is-invalid");
+                    throw new ErreurChampsNonRemplis();
+                }
+                if ($("#inputMotDePasseUtilisateur").val() == "") {
+                    $("#inputMotDePasseUtilisateur").addClass("is-invalid");
+                    throw new ErreurChampsNonRemplis();
+                }
+                this.controleurUtilisateurs.ajouterUtilisateur(this.creerUtilisateur());
+                this.modalUtilisateur.cacherModal();
+            }
+            catch (erreur) {
+                console.log(erreur);
+                $("body").animate({
+                    scrollTop: $($(".is-invalid")[0]).focus().offset().top - 25
+                }, 1000);
+            }
+        });
+    }
+
+    private onClickSupprimerUtilisateur(): void {
+        var listeUtilisateursSelectionnes: Utilisateur[] = this.datatablesUtilisateurs.getListeLignesSelectionnees();
+        listeUtilisateursSelectionnes.forEach((utilisateur: Utilisateur) => {
+            this.controleurUtilisateurs.supprimerUtilisateur(utilisateur);
+        });
+    }
+
+    private onClickModifierUtilisateur(): void {
+        $("#formGroupMotDePasse").hide();
+        var listeUtilisateursSelectionnes: Utilisateur[] = this.datatablesUtilisateurs.getListeLignesSelectionnees();
+        if (listeUtilisateursSelectionnes.length > 0) {
+            var premierUtilisateurSelectionne: Utilisateur = listeUtilisateursSelectionnes[0];
+            $("#inputTitreUtilisateur").text("Modifiaction Utilisateur : " + premierUtilisateurSelectionne.NomUtilisateur);
+            $("#inputIdentifiantUtilisateur").val(premierUtilisateurSelectionne.IdentifiantUtilisateur);
+            $("#inputNomUtilisateur").val(premierUtilisateurSelectionne.NomUtilisateur);
+            $("#inputAdresseMailUtilisateur").val(premierUtilisateurSelectionne.AdresseMailUtilisateur);
+            $("#inputEstAdministrateur").prop("checked", premierUtilisateurSelectionne.EstAdministrateur);
+            this.modalUtilisateur.montrerModal();
+            $("#boutonEditeUtilisateur").off();
+            $("#boutonEditeUtilisateur").on("click", () => {
+                try {
+                    if ($("#inputNomUtilisateur").val() == "") {
+                        $("#inputNomUtilisateur").addClass("is-invalid");
+                        throw new ErreurChampsNonRemplis();
+                    }
+                    if (!/\S+@\S+\.\S+/.test($("#inputAdresseMailUtilisateur").val() as string)) {
+                        $("#inputAdresseMailUtilisateur").addClass("is-invalid");
+                        throw new ErreurChampsNonRemplis();
+                    }
+                    this.controleurUtilisateurs.modifierUtilisateur(premierUtilisateurSelectionne, this.creerUtilisateur());
+                    this.modalUtilisateur.cacherModal();
+                }
+                catch (erreur) {
+                    console.log(erreur);
+                    $("body").animate({
+                        scrollTop: $($(".is-invalid")[0]).focus().offset().top - 25
+                    }, 1000);
+                }
+            });
+        }
     }
 
 }

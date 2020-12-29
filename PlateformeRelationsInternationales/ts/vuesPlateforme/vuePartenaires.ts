@@ -187,9 +187,11 @@ export default class VuePartenaire extends Vue implements IVuePartenaires, IVueD
         this.proprietesDatatablesPartenaires.OrdreDesElementsDeControle = "Bfti";
         this.proprietesDatatablesPartenaires.ajouterColonne(new ProprietesDatatablesColonne("Identifiant Partenaire", "identifiantPartenaire"));
         this.proprietesDatatablesPartenaires.ajouterColonne(new ProprietesDatatablesColonne("Nom Partenaire", "nomPartenaire"));
-        this.proprietesDatatablesPartenaires.ajouterBouton(new ProprietesDatatablesBouton("Ajouter Partenaire", this.onAjouterPartenaireClick));
-        this.proprietesDatatablesPartenaires.ajouterBouton(new ProprietesDatatablesBouton("Supprimer Partenaire", this.onSupprimerPartenaireClick));
-        this.proprietesDatatablesPartenaires.ajouterBouton(new ProprietesDatatablesBouton("Modifier Partenaire", this.onModifierPartenaireClick));
+        if (this.plateforme.UtilisateurConnecte) {
+            this.proprietesDatatablesPartenaires.ajouterBouton(new ProprietesDatatablesBouton("Ajouter Partenaire", this.onAjouterPartenaireClick));
+            this.proprietesDatatablesPartenaires.ajouterBouton(new ProprietesDatatablesBouton("Supprimer Partenaire", this.onSupprimerPartenaireClick));
+            this.proprietesDatatablesPartenaires.ajouterBouton(new ProprietesDatatablesBouton("Modifier Partenaire", this.onModifierPartenaireClick));
+        }
         this.proprietesDatatablesPartenaires.ajouterBouton(new ProprietesDatatablesBouton("Valider les voeux", this.onValiderVoeuxPartenairesClick));
 
         this.proprietesDatatablesDomainesDeCompetencesPartenaires = new ProprietesDatatables();
@@ -1078,7 +1080,6 @@ export default class VuePartenaire extends Vue implements IVuePartenaires, IVueD
             this.modalValideVoeuxPartenaires.montrerModal();
             $("#boutonValideVoeuxPartenaires").off();
             $("#boutonValideVoeuxPartenaires").on("click", () => {
-                //pierre-nicolas_chassagne@etu.u-bourgogne.fr
                 try {
                     var adresseMailVoeux = $("#inputAdresseMailVoeuxPartenaires").val() as string;
                     if (!/\S+@\S+\.\S+/.test(adresseMailVoeux)) {

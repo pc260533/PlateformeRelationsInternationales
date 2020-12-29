@@ -61,6 +61,7 @@ export class ControleurPartenaires extends ControleurPlateforme {
             formData.append("imagePartenaire" + indexImagePartenaire, imagePartenaire.FileImagePartenaireLocal);
         });
         formData.append("partenaire", JSON.stringify(partenaire.getObjetSerializable()));
+        formData.append("utilisateur", JSON.stringify(this.modelePlateforme.UtilisateurConnecte.getObjetSerializableId()));
 
         $.ajax({
             url: "api/partenaires",
@@ -112,7 +113,7 @@ export class ControleurPartenaires extends ControleurPlateforme {
             url: "api/partenaires",
             method: "delete",
             //pour supprimer le partenaire il faut supprimer le partenaire et la localisation donc on passe l'id du partenaire et l'id de sa localisation
-            data: partenaire.getObjetSerializable(),
+            data: { utilisateur: this.modelePlateforme.UtilisateurConnecte.getObjetSerializableId(), partenaire: partenaire.getObjetSerializable() },
             success: function (resultat) {
                 partenaire.CoutPartenaire.supprimerPartenaireCout(partenaire);
                 that.modelePlateforme.supprimerPartenaire(partenaire);
@@ -141,6 +142,7 @@ export class ControleurPartenaires extends ControleurPlateforme {
             nouveauPartenaire.supprimerImagePartenaire(imagePartenaire);
         });
         formData.append("partenaire", JSON.stringify(nouveauPartenaire.getObjetSerializable()));
+        formData.append("utilisateur", JSON.stringify(this.modelePlateforme.UtilisateurConnecte.getObjetSerializableId()));
 
         var that = this;
         $.ajax({
@@ -301,7 +303,7 @@ export class ControleurPartenaires extends ControleurPlateforme {
         $.ajax({
             url: "api/couts",
             method: "put",
-            data: nouveauCout.getObjetSerializable(),
+            data: { utilisateur: this.modelePlateforme.UtilisateurConnecte.getObjetSerializableId(), cout: nouveauCout.getObjetSerializable() },
             success: function (resultat) {
                 ancienCout.CoutMoyenParMois = nouveauCout.CoutMoyenParMois;
                 ancienCout.CoutLogementParMois = nouveauCout.CoutLogementParMois;

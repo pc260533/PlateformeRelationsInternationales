@@ -4,6 +4,7 @@ import { Route } from "vue-router";
 import imageLogo from "../images/logo.png";
 import imageLogoNoir from "../images/logoNoir.png";
 import imageFavicon from "../images/favicon.png";
+import { Utilisateur } from "./modelePlateforme/utilisateur";
 
 @Component({
     template: require("./vuesPlateforme/templates/applicationVue.html")
@@ -22,6 +23,10 @@ export default class ApplicationVue extends Vue {
         $("link").attr("href", imageFavicon);
         $("#imageLogo").attr("src", imageLogoNoir);
         $("#imageLogo").attr("src", imageLogo);
+    }
+
+    public get UtilisateurConnecte(): Utilisateur {
+        return this.$store.state.storeModuleAuthentification.utilisateurConnecte;
     }
 
     @Watch("$route", { immediate: true })

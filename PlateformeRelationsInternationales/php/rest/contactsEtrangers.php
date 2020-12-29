@@ -13,9 +13,16 @@ $app->get("/api/contactsEtrangers", function (Request $request, Response $respon
 
 $app->post("/api/contactsEtrangers", function (Request $request, Response $response, $args) {
 	$controleurContactsEtrangers = new ControleurContactsEtrangers();
-	$contactEtrangerArray = $request->getParsedBody();
+	$controleurAuthentification = new ControleurAuthentification();
+	$utilisateurArray = $request->getParsedBody()["utilisateur"];
+	$contactEtrangerArray = $request->getParsedBody()["contactEtranger"];
 
-	$json = json_encode($controleurContactsEtrangers->ajouterContactEtrange($contactEtrangerArray)->getObjetSerializable());
+	if ($controleurAuthentification->getUtilisateurEnSessionAvecIdentifiantUtilisateur($utilisateurArray["identifiantUtilisateur"])) {
+		$json = json_encode($controleurContactsEtrangers->ajouterContactEtrange($contactEtrangerArray)->getObjetSerializable());
+	}
+	else {
+		throw new ExceptionUtilisateurDeconnecte();
+	}
 
 	$response->getBody()->write($json);
 	return $response->withHeader("Content-Type", "application/json");
@@ -23,9 +30,16 @@ $app->post("/api/contactsEtrangers", function (Request $request, Response $respo
 
 $app->delete("/api/contactsEtrangers", function (Request $request, Response $response, $args) {
 	$controleurContactsEtrangers = new ControleurContactsEtrangers();
-	$contactEtrangerArray = $request->getParsedBody();
+	$controleurAuthentification = new ControleurAuthentification();
+	$utilisateurArray = $request->getParsedBody()["utilisateur"];
+	$contactEtrangerArray = $request->getParsedBody()["contactEtranger"];
 
-	$json = json_encode($controleurContactsEtrangers->supprimerContactEtrange($contactEtrangerArray)->getObjetSerializable());
+	if ($controleurAuthentification->getUtilisateurEnSessionAvecIdentifiantUtilisateur($utilisateurArray["identifiantUtilisateur"])) {
+		$json = json_encode($controleurContactsEtrangers->supprimerContactEtrange($contactEtrangerArray)->getObjetSerializable());
+	}
+	else {
+		throw new ExceptionUtilisateurDeconnecte();
+	}
 
 	$response->getBody()->write($json);
 	return $response->withHeader("Content-Type", "application/json");
@@ -33,9 +47,16 @@ $app->delete("/api/contactsEtrangers", function (Request $request, Response $res
 
 $app->put("/api/contactsEtrangers", function (Request $request, Response $response, $args) {
 	$controleurContactsEtrangers = new ControleurContactsEtrangers();
-	$contactEtrangerArray = $request->getParsedBody();
+	$controleurAuthentification = new ControleurAuthentification();
+	$utilisateurArray = $request->getParsedBody()["utilisateur"];
+	$contactEtrangerArray = $request->getParsedBody()["contactEtranger"];
 
-	$json = json_encode($controleurContactsEtrangers->modifierContactEtrange($contactEtrangerArray)->getObjetSerializable());
+	if ($controleurAuthentification->getUtilisateurEnSessionAvecIdentifiantUtilisateur($utilisateurArray["identifiantUtilisateur"])) {
+		$json = json_encode($controleurContactsEtrangers->modifierContactEtrange($contactEtrangerArray)->getObjetSerializable());
+	}
+	else {
+		throw new ExceptionUtilisateurDeconnecte();
+	}
 
 	$response->getBody()->write($json);
 	return $response->withHeader("Content-Type", "application/json");

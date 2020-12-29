@@ -40,7 +40,7 @@ export class ControleurCoordinateurs extends ControleurPlateforme {
         $.ajax({
             url: "api/coordinateurs",
             method: "post",
-            data: coordinateur.getObjetSerializable(),
+            data: { utilisateur: that.modelePlateforme.UtilisateurConnecte.getObjetSerializableId(), coordinateur: coordinateur.getObjetSerializable() },
             success: function (resultat) {
                 coordinateur.IdentifiantContact = resultat.identifiantContact;
                 that.modelePlateforme.ajouterCoordinateur(coordinateur);
@@ -58,7 +58,7 @@ export class ControleurCoordinateurs extends ControleurPlateforme {
         $.ajax({
             url: "api/coordinateurs",
             method: "delete",
-            data: coordinateur.getObjetSerializableId(),
+            data: { utilisateur: that.modelePlateforme.UtilisateurConnecte.getObjetSerializableId(), coordinateur: coordinateur.getObjetSerializableId() },
             success: function (resultat) {
                 that.modelePlateforme.ListePartenairesPlateforme.forEach((partenaire: Partenaire) => {
                     partenaire.supprimerCoordinateur(coordinateur);
@@ -79,7 +79,7 @@ export class ControleurCoordinateurs extends ControleurPlateforme {
         $.ajax({
             url: "api/coordinateurs",
             method: "put",
-            data: nouveauCoordinateur.getObjetSerializable(),
+            data: { utilisateur: that.modelePlateforme.UtilisateurConnecte.getObjetSerializableId(), coordinateur: nouveauCoordinateur.getObjetSerializable() },
             success: function (resultat) {
                 ancienCoordinateur.NomContact = nouveauCoordinateur.NomContact;
                 ancienCoordinateur.PrenomContact = nouveauCoordinateur.PrenomContact;

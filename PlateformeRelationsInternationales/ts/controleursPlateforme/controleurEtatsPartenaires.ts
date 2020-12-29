@@ -41,7 +41,7 @@ export class ControleurEtatsPartenaires extends ControleurPlateforme {
         $.ajax({
             url: "api/etatsPartenaires",
             method: "post",
-            data: etatPartenaire.getObjetSerializable(),
+            data: { utilisateur: that.modelePlateforme.UtilisateurConnecte.getObjetSerializableId(), etatPartenaire: etatPartenaire.getObjetSerializable() },
             success: function (resultat) {
                 etatPartenaire.IdentifiantEtatPartenaire = resultat.identifiantEtatPartenaire;
                 that.modelePlateforme.ajouterEtatPartenaire(etatPartenaire);
@@ -59,7 +59,7 @@ export class ControleurEtatsPartenaires extends ControleurPlateforme {
         $.ajax({
             url: "api/etatsPartenaires",
             method: "delete",
-            data: etatPartenaire.getObjetSerializableId(),
+            data: { utilisateur: that.modelePlateforme.UtilisateurConnecte.getObjetSerializableId(), etatPartenaire: etatPartenaire.getObjetSerializableId() },
             success: function (resultat) {
                 that.modelePlateforme.ListePartenairesPlateforme.forEach((partenaire: Partenaire) => {
                     if (partenaire.EtatPartenaire == etatPartenaire) {
@@ -82,7 +82,7 @@ export class ControleurEtatsPartenaires extends ControleurPlateforme {
         $.ajax({
             url: "api/etatsPartenaires",
             method: "put",
-            data: nouveauEtatPartenaire.getObjetSerializable(),
+            data: { utilisateur: that.modelePlateforme.UtilisateurConnecte.getObjetSerializableId(), etatPartenaire: nouveauEtatPartenaire.getObjetSerializable() },
             success: function (resultat) {
                 ancienEtatPartenaire.NomEtatPartenaire = nouveauEtatPartenaire.NomEtatPartenaire;
                 that.notifieModificationEtatPartenaire(ancienEtatPartenaire);

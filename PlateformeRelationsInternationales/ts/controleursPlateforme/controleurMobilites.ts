@@ -40,7 +40,7 @@ export class ControleurMobilites extends ControleurPlateforme {
         $.ajax({
             url: "api/mobilites",
             method: "post",
-            data: mobilite.getObjetSerializable(),
+            data: { utilisateur: that.modelePlateforme.UtilisateurConnecte.getObjetSerializableId(), mobilite: mobilite.getObjetSerializable() },
             success: function (resultat) {
                 mobilite.IdentifiantMobilite = resultat.identifiantMobilite;
                 that.modelePlateforme.ajouterMobilite(mobilite);
@@ -58,7 +58,7 @@ export class ControleurMobilites extends ControleurPlateforme {
         $.ajax({
             url: "api/mobilites",
             method: "delete",
-            data: mobilite.getObjetSerializableId(),
+            data: { utilisateur: that.modelePlateforme.UtilisateurConnecte.getObjetSerializableId(), mobilite: mobilite.getObjetSerializableId() },
             success: function (resultat) {
                 that.modelePlateforme.ListePartenairesPlateforme.forEach((partenaire: Partenaire) => {
                     partenaire.supprimerMobilite(mobilite);
@@ -79,7 +79,7 @@ export class ControleurMobilites extends ControleurPlateforme {
         $.ajax({
             url: "api/mobilites",
             method: "put",
-            data: nouvelleMobilite.getObjetSerializable(),
+            data: { utilisateur: that.modelePlateforme.UtilisateurConnecte.getObjetSerializableId(), mobilite: nouvelleMobilite.getObjetSerializable() },
             success: function (resultat) {
                 ancienneMobilite.TypeMobilite = nouvelleMobilite.TypeMobilite;
                 that.notifieModificationMobilite(ancienneMobilite);

@@ -10,6 +10,9 @@ import { ControleurMobilites } from "./controleursPlateforme/controleurMobilites
 import { ControleurPartenaires } from "./controleursPlateforme/controleurPartenaires";
 import { ControleurSpecialites } from "./controleursPlateforme/controleurSpecialites";
 import { ControleurVoeux } from "./controleursPlateforme/controleurVoeux";
+import { ControleurUtilisateurs } from "./controleursPlateforme/controleurUtilisateurs";
+import { ControleurAuthentification } from "./controleursPlateforme/controleurAuthentification";
+
 import { ErreurPageInexistante } from "./erreur/erreurPageInexistante";
 import { ErreurSerializable } from "./erreur/erreurSerializable";
 
@@ -21,6 +24,9 @@ import VueCouts from "./vuesPlateforme/vueCouts";
 import VueAdministration from "./vuesPlateforme/vueAdministration";
 import VueAPropos from "./vuesPlateforme/vueAPropos";
 import VueErreur from "./vuesPlateforme/vueErreur";
+import VueAuthentification from "./vuesPlateforme/vueAuthentifiation";
+import VueDeconnexion from "./vuesPlateforme/vueDeconnexion";
+import VueDetailsUtilisateur from "./vuesPlateforme/vueDetailsUtilisateur";
 
 import Vue from "vue";
 import Router from "vue-router";
@@ -39,6 +45,8 @@ const controleurMobilites = new ControleurMobilites(plateforme);
 const controleurPartenaires = new ControleurPartenaires(plateforme);
 const controleurSpecialites = new ControleurSpecialites(plateforme);
 const controleurVoeux = new ControleurVoeux(plateforme);
+const controleurUtilisateurs = new ControleurUtilisateurs(plateforme);
+const controleurAuthentification = new ControleurAuthentification(plateforme);
 
 export default new Router({
     mode: "history",
@@ -134,7 +142,8 @@ export default new Router({
                 controleurEtatsPartenaires: controleurEtatsPartenaires,
                 controleurMobilites: controleurMobilites,
                 controleurSpecialites: controleurSpecialites,
-                controleurVoeux: controleurVoeux
+                controleurVoeux: controleurVoeux,
+                controleurUtilisateurs: controleurUtilisateurs
             },
             meta: {
                 title: "Plateforme Relations Internationales - Couts"
@@ -150,6 +159,42 @@ export default new Router({
             },
             meta: {
                 title: "Plateforme Relations Internationales - A Propos"
+            }
+        },
+        {
+            path: "/authentification",
+            name: "authentification",
+            component: VueAuthentification,
+            props: {
+                plateforme: plateforme,
+                controleurAuthentification: controleurAuthentification
+            },
+            meta: {
+                title: "Plateforme Relations Internationales - Se Connecter"
+            }
+        },
+        {
+            path: "/deconnexion",
+            name: "deconnexion",
+            component: VueDeconnexion,
+            props: {
+                plateforme: plateforme,
+                controleurAuthentification: controleurAuthentification
+            },
+            meta: {
+                title: "Plateforme Relations Internationales - Se Déconnecter"
+            }
+        },
+        {
+            path: "/detailsUtilisateur",
+            name: "detailsUtilisateur",
+            component: VueDetailsUtilisateur,
+            props: {
+                plateforme: plateforme,
+                controleurUtilisateurs: controleurUtilisateurs
+            },
+            meta: {
+                title: "Plateforme Relations Internationales - Détails Utilisateur"
             }
         },
         {

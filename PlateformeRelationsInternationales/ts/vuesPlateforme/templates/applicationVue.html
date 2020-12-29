@@ -20,6 +20,11 @@
                 </li>
             </ul>
         </div>
+        <form class="form-inline my-2 my-lg-0">
+            <router-link v-if="UtilisateurConnecte != null" class="nav-link text-light" :to="{ name: 'detailsUtilisateur' }">{{ UtilisateurConnecte.nomUtilisateur }}</router-link>
+            <router-link v-if="UtilisateurConnecte == null" class="btn btn-custom my-2 my-sm-0" :to="{ name: 'authentification' }">Se Connecter</router-link>
+            <router-link v-else class="btn btn-custom my-2 my-sm-0" :to="{ name: 'deconnexion' }">Se Déconnecter</router-link>
+        </form>
     </nav>
 
     <router-view></router-view>

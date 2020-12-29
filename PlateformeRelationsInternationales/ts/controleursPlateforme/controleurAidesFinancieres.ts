@@ -40,7 +40,7 @@ export class ControleurAidesFinancieres extends ControleurPlateforme {
         $.ajax({
             url: "api/aidesfinancieres",
             method: "post",
-            data: aideFinanciere.getObjetSerializable(),
+            data: { utilisateur: that.modelePlateforme.UtilisateurConnecte.getObjetSerializableId(), aideFinanciere: aideFinanciere.getObjetSerializable() },
             success: function (resultat) {
                 aideFinanciere.IdentifiantAideFinanciere = resultat.identifiantAideFinanciere;
                 that.modelePlateforme.ajouterAideFinanciere(aideFinanciere);
@@ -58,7 +58,7 @@ export class ControleurAidesFinancieres extends ControleurPlateforme {
         $.ajax({
             url: "api/aidesfinancieres",
             method: "delete",
-            data: aideFinanciere.getObjetSerializableId(),
+            data: { utilisateur: that.modelePlateforme.UtilisateurConnecte.getObjetSerializableId(), aideFinanciere: aideFinanciere.getObjetSerializableId() },
             success: function (resultat) {
                 that.modelePlateforme.ListePartenairesPlateforme.forEach((partenaire: Partenaire) => {
                     partenaire.supprimerAideFinanciere(aideFinanciere);
@@ -79,7 +79,7 @@ export class ControleurAidesFinancieres extends ControleurPlateforme {
         $.ajax({
             url: "api/aidesfinancieres",
             method: "put",
-            data: nouvelleAideFinanciere.getObjetSerializable(),
+            data: { utilisateur: that.modelePlateforme.UtilisateurConnecte.getObjetSerializableId(), aideFinanciere: nouvelleAideFinanciere.getObjetSerializable() },
             success: function (resultat) {
                 ancienneAideFinanciere.NomAideFinanciere = nouvelleAideFinanciere.NomAideFinanciere;
                 ancienneAideFinanciere.DescriptionAideFinanciere = nouvelleAideFinanciere.DescriptionAideFinanciere;

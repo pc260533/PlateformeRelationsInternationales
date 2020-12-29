@@ -35,6 +35,7 @@ require __DIR__ . "./php/modele/Cout.php";
 require __DIR__ . "./php/modele/EtatPartenaire.php";
 require __DIR__ . "./php/modele/Voeu.php";
 require __DIR__ . "./php/modele/DomaineDeCompetence.php";
+require __DIR__ . "./php/modele/Utilisateur.php";
 
 require __DIR__ . "./php/gestionMails/ContactMail.php";
 require __DIR__ . "./php/gestionMails/Mail.php";
@@ -53,6 +54,7 @@ require __DIR__ . "./php/stockage/StockageCouts.php";
 require __DIR__ . "./php/stockage/StockageEtatsPartenaires.php";
 require __DIR__ . "./php/stockage/StockageVoeux.php";
 require __DIR__ . "./php/stockage/StockageDomainesDeCompetences.php";
+require __DIR__ . "./php/stockage/StockageUtilisateurs.php";
 require __DIR__ . "./php/stockage/GestionFichiers.php";
 
 require __DIR__ . "./php/controleurs/IControleurPlateforme.php";
@@ -66,12 +68,16 @@ require __DIR__ . "./php/controleurs/ControleurCouts.php";
 require __DIR__ . "./php/controleurs/ControleurEtatsPartenaires.php";
 require __DIR__ . "./php/controleurs/ControleurVoeux.php";
 require __DIR__ . "./php/controleurs/ControleurDomainesDeCompetences.php";
+require __DIR__ . "./php/controleurs/ControleurUtilisateurs.php";
+require __DIR__ . "./php/controleurs/ControleurAuthentification.php";
 require __DIR__ . "./php/controleurs/ControleurMails.php";
 
 require __DIR__ . "./php/exception/ExceptionSerializable.php";
 require __DIR__ . "./php/exception/ExceptionBaseDeDonneesPlateforme.php";
 require __DIR__ . "./php/exception/ExceptionVoeuxDejaValides.php";
 require __DIR__ . "./php/exception/ExceptionGestionMails.php";
+require __DIR__ . "./php/exception/ExceptionAuthentification.php";
+require __DIR__ . "./php/exception/ExceptionUtilisateurDeconnecte.php";
 
 function getVariableEnvironnement(string $variableEnvironnement): string {
 	$res = "";
@@ -113,6 +119,14 @@ $customErrorHandler = function (ServerRequestInterface $request, Throwable $exce
 		$json = json_encode($exception->toArray());
 		$status = $exception->getStatus();
 	}
+	else if ($exception instanceof ExceptionAuthentification) {
+		$json = json_encode($exception->toArray());
+		$status = $exception->getStatus();
+	}
+	else if ($exception instanceof ExceptionUtilisateurDeconnecte) {
+		$json = json_encode($exception->toArray());
+		$status = $exception->getStatus();
+	}
 	else if ($exception instanceof ExceptionVoeuxDejaValides) {
 		session_start();
 		$_SESSION["exception"] = $exception->toArray();
@@ -142,6 +156,8 @@ require __DIR__ . "./php/rest/etatsPartenaires.php";
 require __DIR__ . "./php/rest/voeux.php";
 require __DIR__ . "./php/rest/domainesDeCompetences.php";
 require __DIR__ . "./php/rest/mails.php";
+require __DIR__ . "./php/rest/utilisateurs.php";
+require __DIR__ . "./php/rest/authentification.php";
 
 $app->get("/erreur", function (Request $request, Response $response, $args) {
 	session_start();

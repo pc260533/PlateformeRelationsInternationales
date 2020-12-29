@@ -71,9 +71,11 @@ export default class VueContacts extends Vue implements IVueCoordinateurs {
         this.proprietesDatatablesCoordinateurs.ajouterColonne(new ProprietesDatatablesColonne("Prénom Coordinateur", "prenomContact"));
         this.proprietesDatatablesCoordinateurs.ajouterColonne(new ProprietesDatatablesColonne("Adresse Mail Coordinateur", "adresseMailContact"));
         this.proprietesDatatablesCoordinateurs.ajouterColonne(new ProprietesDatatablesColonne("Fonction Coordinateur", "fonctionContact"));
-        this.proprietesDatatablesCoordinateurs.ajouterBouton(new ProprietesDatatablesBouton("Ajouter Coordinateur", this.onClickAjouterCoordinateur));
-        this.proprietesDatatablesCoordinateurs.ajouterBouton(new ProprietesDatatablesBouton("Supprimer Coordinateur", this.onClickSupprimerCoordinateur));
-        this.proprietesDatatablesCoordinateurs.ajouterBouton(new ProprietesDatatablesBouton("Modifier Coordinateur", this.onClickModifierCoordinateur));
+        if (this.plateforme.UtilisateurConnecte) {
+            this.proprietesDatatablesCoordinateurs.ajouterBouton(new ProprietesDatatablesBouton("Ajouter Coordinateur", this.onClickAjouterCoordinateur));
+            this.proprietesDatatablesCoordinateurs.ajouterBouton(new ProprietesDatatablesBouton("Supprimer Coordinateur", this.onClickSupprimerCoordinateur));
+            this.proprietesDatatablesCoordinateurs.ajouterBouton(new ProprietesDatatablesBouton("Modifier Coordinateur", this.onClickModifierCoordinateur));
+        }
     }
 
     private initialiserEvenementsModals(): void {

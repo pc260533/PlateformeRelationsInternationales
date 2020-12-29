@@ -1,0 +1,35 @@
+﻿<!-- Authentification -->
+
+<section class="sections authentification mt-5">
+    <div class="container">
+
+        <div class="sectionHeader text-center">
+            <h2 class="sectionTitre">Authentification</h2>
+            <div class="line"><span></span></div>
+            <p>
+                Veuillez rentrer vos informations de connexions.
+            </p>
+        </div>
+
+        <ModalErreur ref="modalErreur"></ModalErreur>
+
+        <div class="card card-container">
+            <img id="profile-img" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" class="profile-img-card" />
+            <form slot="modalBody" class="form">
+                <div class="form-group">
+                    <label for="inputNomUtilisateur">Nom Utilisateur :</label>
+                    <input type="text" id="inputNomUtilisateur" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label for="inputMotDePasseUtilisateur">Mot De Passe Utilisateur :</label>
+                    <input type="password" id="inputMotDePasseUtilisateur" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <button type="button" id="buttonConnecterUtilisateur" class="btn btn-custom btn-block">Se Connecter</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- /Authentification -->

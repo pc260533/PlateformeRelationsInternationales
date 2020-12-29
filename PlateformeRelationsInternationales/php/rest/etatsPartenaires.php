@@ -13,9 +13,16 @@ $app->get("/api/etatsPartenaires", function (Request $request, Response $respons
 
 $app->post("/api/etatsPartenaires", function (Request $request, Response $response, $args) {
 	$controleurEtatsPartenaires = new ControleurEtatsPartenaires();
-	$etatPartenaireArray = $request->getParsedBody();
+	$controleurAuthentification = new ControleurAuthentification();
+	$utilisateurArray = $request->getParsedBody()["utilisateur"];
+	$etatPartenaireArray = $request->getParsedBody()["etatPartenaire"];
 
-	$json = json_encode($controleurEtatsPartenaires->ajouterEtatPartenaire($etatPartenaireArray)->getObjetSerializable());
+	if ($controleurAuthentification->getUtilisateurEnSessionAvecIdentifiantUtilisateur($utilisateurArray["identifiantUtilisateur"])) {
+		$json = json_encode($controleurEtatsPartenaires->ajouterEtatPartenaire($etatPartenaireArray)->getObjetSerializable());
+	}
+	else {
+		throw new ExceptionUtilisateurDeconnecte();
+	}
 
 	$response->getBody()->write($json);
 	return $response->withHeader("Content-Type", "application/json");
@@ -23,9 +30,16 @@ $app->post("/api/etatsPartenaires", function (Request $request, Response $respon
 
 $app->delete("/api/etatsPartenaires", function (Request $request, Response $response, $args) {
 	$controleurEtatsPartenaires = new ControleurEtatsPartenaires();
-	$etatPartenaireArray = $request->getParsedBody();
+	$controleurAuthentification = new ControleurAuthentification();
+	$utilisateurArray = $request->getParsedBody()["utilisateur"];
+	$etatPartenaireArray = $request->getParsedBody()["etatPartenaire"];
 
-	$json = json_encode($controleurEtatsPartenaires->supprimerEtatPartenaire($etatPartenaireArray)->getObjetSerializable());
+	if ($controleurAuthentification->getUtilisateurEnSessionAvecIdentifiantUtilisateur($utilisateurArray["identifiantUtilisateur"])) {
+		$json = json_encode($controleurEtatsPartenaires->supprimerEtatPartenaire($etatPartenaireArray)->getObjetSerializable());
+	}
+	else {
+		throw new ExceptionUtilisateurDeconnecte();
+	}
 
 	$response->getBody()->write($json);
 	return $response->withHeader("Content-Type", "application/json");
@@ -33,9 +47,16 @@ $app->delete("/api/etatsPartenaires", function (Request $request, Response $resp
 
 $app->put("/api/etatsPartenaires", function (Request $request, Response $response, $args) {
 	$controleurEtatsPartenaires = new ControleurEtatsPartenaires();
-	$etatPartenaireArray = $request->getParsedBody();
+	$controleurAuthentification = new ControleurAuthentification();
+	$utilisateurArray = $request->getParsedBody()["utilisateur"];
+	$etatPartenaireArray = $request->getParsedBody()["etatPartenaire"];
 
-	$json = json_encode($controleurEtatsPartenaires->modifierEtatPartenaire($etatPartenaireArray)->getObjetSerializable());
+	if ($controleurAuthentification->getUtilisateurEnSessionAvecIdentifiantUtilisateur($utilisateurArray["identifiantUtilisateur"])) {
+		$json = json_encode($controleurEtatsPartenaires->modifierEtatPartenaire($etatPartenaireArray)->getObjetSerializable());
+	}
+	else {
+		throw new ExceptionUtilisateurDeconnecte();
+	}
 
 	$response->getBody()->write($json);
 	return $response->withHeader("Content-Type", "application/json");

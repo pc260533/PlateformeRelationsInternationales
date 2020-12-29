@@ -20,12 +20,14 @@
         <Datatables ref="datatablesEtatsPartenaires" v-bind:proprietesDatatables="proprietesDatatablesEtatsPartenaires" idDatatables="datatablesEtatsPartenaires"></Datatables>
 
         <Datatables ref="datatablesMobilites" v-bind:proprietesDatatables="proprietesDatatablesMobilites" idDatatables="datatablesMobilites"></Datatables>
-        
+
         <Datatables ref="datatablesSpecialites" v-bind:proprietesDatatables="proprietesDatatablesSpecialites" idDatatables="datatablesSpecialites"></Datatables>
-        
+
         <Datatables ref="datatablesSousSpecialites" v-bind:proprietesDatatables="proprietesDatatablesSousSpecialites" idDatatables="datatablesSousSpecialites"></Datatables>
-        
+
         <Datatables ref="datatablesVoeux" v-bind:proprietesDatatables="proprietesDatatablesVoeux" idDatatables="datatablesVoeux"></Datatables>
+
+        <Datatables ref="datatablesUtilisateurs" v-bind:proprietesDatatables="proprietesDatatablesUtilisateurs" idDatatables="datatablesUtilisateurs"></Datatables>
 
         <ModalSpecifique ref="modalContactEtranger" idModal="modalContactEtranger" tailleModal="modal-lg">
             <h5 slot="modalHeader" class="modal-tilte">
@@ -118,7 +120,7 @@
             <button slot="modalFooter" type="button" id="boutonEditeMobilite" class="btn btn-custom">Sauvegarder</button>
             <button slot="modalFooter" type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
         </ModalSpecifique>
-        
+
         <ModalSpecifique ref="modalSpecialite" idModal="modalSpecialite" tailleModal="modal-lg">
             <h5 slot="modalHeader" class="modal-tilte">
                 <span id="inputTitreSpecialite"></span>
@@ -142,7 +144,7 @@
             <button slot="modalFooter" type="button" id="boutonEditeSpecialite" class="btn btn-custom">Sauvegarder</button>
             <button slot="modalFooter" type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
         </ModalSpecifique>
-        
+
         <ModalSpecifique ref="modalSousSpecialite" idModal="modalSousSpecialite" tailleModal="modal-lg">
             <h5 slot="modalHeader" class="modal-tilte">
                 <span id="inputTitreSousSpecialite"></span>
@@ -166,7 +168,7 @@
             <button slot="modalFooter" type="button" id="boutonEditeSousSpecialite" class="btn btn-custom">Sauvegarder</button>
             <button slot="modalFooter" type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
         </ModalSpecifique>
-        
+
         <ModalSpecifique ref="modalVoeu" idModal="modalVoeu" tailleModal="modal-lg">
             <h5 slot="modalHeader" class="modal-tilte">
                 <span id="inputTitreVoeu"></span>
@@ -184,6 +186,47 @@
             </form>
 
             <button slot="modalFooter" type="button" id="boutonEditeVoeu" class="btn btn-custom">Sauvegarder</button>
+            <button slot="modalFooter" type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+        </ModalSpecifique>
+
+        <ModalSpecifique ref="modalUtilisateur" idModal="modalUtilisateur" tailleModal="modal-lg">
+            <h5 slot="modalHeader" class="modal-tilte">
+                <span id="inputTitreUtilisateur"></span>
+            </h5>
+            <button slot="modalHeader" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+
+            <form slot="modalBody" class="form">
+                <input type="hidden" id="inputIdentifiantUtilisateur" value="0" />
+                <div class="form-group">
+                    <label for="inputNomUtilisateur">Nom Utilisateur :</label>
+                    <input type="text" id="inputNomUtilisateur" class="form-control" />
+                    <div class="invalid-feedback">
+                        Veuillez donner un nom d'utilisateur.
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputAdresseMailUtilisateur">Adresse Mail Utilisateur :</label>
+                    <input type="email" id="inputAdresseMailUtilisateur" class="form-control" />
+                    <div class="invalid-feedback">
+                        Veuillez donner une adresse mail valide.
+                    </div>
+                </div>
+                <div class="form-group" id="formGroupMotDePasse">
+                    <label for="inputMotDePasseUtilisateur">Mot De Passe Utilisateur :</label>
+                    <input type="text" id="inputMotDePasseUtilisateur" class="form-control" />
+                    <div class="invalid-feedback">
+                        Veuillez donner un mot de passe.
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" id="inputEstAdministrateur">
+                    <label class="form-check-label" for="inputEstAdministrateur">Est Administrateur</label>
+                </div>
+            </form>
+
+            <button slot="modalFooter" type="button" id="boutonEditeUtilisateur" class="btn btn-custom">Sauvegarder</button>
             <button slot="modalFooter" type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
         </ModalSpecifique>
 

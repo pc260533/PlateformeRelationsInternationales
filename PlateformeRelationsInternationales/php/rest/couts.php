@@ -13,9 +13,16 @@ $app->get("/api/couts", function (Request $request, Response $response, $args) {
 
 $app->post("/api/couts", function (Request $request, Response $response, $args) {
 	$controleurCouts = new ControleurCouts();
-	$coutArray = $request->getParsedBody();
+	$controleurAuthentification = new ControleurAuthentification();
+	$utilisateurArray = $request->getParsedBody()["utilisateur"];
+	$coutArray = $request->getParsedBody()["cout"];
 
-	$json = json_encode($controleurCouts->ajouterCout($coutArray)->getObjetSerializable());
+	if ($controleurAuthentification->getUtilisateurEnSessionAvecIdentifiantUtilisateur($utilisateurArray["identifiantUtilisateur"])) {
+		$json = json_encode($controleurCouts->ajouterCout($coutArray)->getObjetSerializable());
+	}
+	else {
+		throw new ExceptionUtilisateurDeconnecte();
+	}
 
 	$response->getBody()->write($json);
 	return $response->withHeader("Content-Type", "application/json");
@@ -23,9 +30,16 @@ $app->post("/api/couts", function (Request $request, Response $response, $args) 
 
 $app->put("/api/couts", function (Request $request, Response $response, $args) {
 	$controleurCouts = new ControleurCouts();
-	$coutArray = $request->getParsedBody();
+	$controleurAuthentification = new ControleurAuthentification();
+	$utilisateurArray = $request->getParsedBody()["utilisateur"];
+	$coutArray = $request->getParsedBody()["cout"];
 
-	$json = json_encode($controleurCouts->modifierCout($coutArray)->getObjetSerializable());
+	if ($controleurAuthentification->getUtilisateurEnSessionAvecIdentifiantUtilisateur($utilisateurArray["identifiantUtilisateur"])) {
+		$json = json_encode($controleurCouts->modifierCout($coutArray)->getObjetSerializable());
+	}
+	else {
+		throw new ExceptionUtilisateurDeconnecte();
+	}
 
 	$response->getBody()->write($json);
 	return $response->withHeader("Content-Type", "application/json");

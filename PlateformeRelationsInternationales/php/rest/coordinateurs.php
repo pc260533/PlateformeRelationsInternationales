@@ -13,9 +13,16 @@ $app->get("/api/coordinateurs", function (Request $request, Response $response, 
 
 $app->post("/api/coordinateurs", function (Request $request, Response $response, $args) {
 	$controleurCoordinateurs = new ControleurCoordinateurs();
-	$coordinateurArray = $request->getParsedBody();
+	$controleurAuthentification = new ControleurAuthentification();
+	$utilisateurArray = $request->getParsedBody()["utilisateur"];
+	$coordinateurArray = $request->getParsedBody()["coordinateur"];
 
-	$json = json_encode($controleurCoordinateurs->ajouterCoordinateur($coordinateurArray)->getObjetSerializable());
+	if ($controleurAuthentification->getUtilisateurEnSessionAvecIdentifiantUtilisateur($utilisateurArray["identifiantUtilisateur"])) {
+		$json = json_encode($controleurCoordinateurs->ajouterCoordinateur($coordinateurArray)->getObjetSerializable());
+	}
+	else {
+		throw new ExceptionUtilisateurDeconnecte();
+	}
 
 	$response->getBody()->write($json);
 	return $response->withHeader("Content-Type", "application/json");
@@ -23,9 +30,16 @@ $app->post("/api/coordinateurs", function (Request $request, Response $response,
 
 $app->delete("/api/coordinateurs", function (Request $request, Response $response, $args) {
 	$controleurCoordinateurs = new ControleurCoordinateurs();
-	$coordinateurArray = $request->getParsedBody();
+	$controleurAuthentification = new ControleurAuthentification();
+	$utilisateurArray = $request->getParsedBody()["utilisateur"];
+	$coordinateurArray = $request->getParsedBody()["coordinateur"];
 
-	$json = json_encode($controleurCoordinateurs->supprimerCoordinateur($coordinateurArray)->getObjetSerializable());
+	if ($controleurAuthentification->getUtilisateurEnSessionAvecIdentifiantUtilisateur($utilisateurArray["identifiantUtilisateur"])) {
+		$json = json_encode($controleurCoordinateurs->supprimerCoordinateur($coordinateurArray)->getObjetSerializable());
+	}
+	else {
+		throw new ExceptionUtilisateurDeconnecte();
+	}
 
 	$response->getBody()->write($json);
 	return $response->withHeader("Content-Type", "application/json");
@@ -33,9 +47,16 @@ $app->delete("/api/coordinateurs", function (Request $request, Response $respons
 
 $app->put("/api/coordinateurs", function (Request $request, Response $response, $args) {
 	$controleurCoordinateurs = new ControleurCoordinateurs();
-	$coordinateurArray = $request->getParsedBody();
+	$controleurAuthentification = new ControleurAuthentification();
+	$utilisateurArray = $request->getParsedBody()["utilisateur"];
+	$coordinateurArray = $request->getParsedBody()["coordinateur"];
 
-	$json = json_encode($controleurCoordinateurs->modifierCoordinateur($coordinateurArray)->getObjetSerializable());
+	if ($controleurAuthentification->getUtilisateurEnSessionAvecIdentifiantUtilisateur($utilisateurArray["identifiantUtilisateur"])) {
+		$json = json_encode($controleurCoordinateurs->modifierCoordinateur($coordinateurArray)->getObjetSerializable());
+	}
+	else {
+		throw new ExceptionUtilisateurDeconnecte();
+	}
 
 	$response->getBody()->write($json);
 	return $response->withHeader("Content-Type", "application/json");

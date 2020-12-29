@@ -10,6 +10,7 @@ import { Voeu } from "./voeu";
 import { DomaineDeCompetence } from "./domaineDeCompetence";
 import { ContactEtranger } from "./contactEtranger";
 import { Coordinateur } from "./coordinateur";
+import { Utilisateur } from "./utilisateur";
 
 export class Plateforme {
     private listeSpecialitesPlateforme: Specialite[];
@@ -22,6 +23,8 @@ export class Plateforme {
     private listeCoutsPlateforme: Cout[];
     private listeEtatsPartenairesPlateforme: EtatPartenaire[];
     private listeDomainesDeCompetences: DomaineDeCompetence[];
+    private listeUtilisateursPlateforme: Utilisateur[];
+    private utilisateurConnecte: Utilisateur;
 
     public get ListeSpecialitesPlateforme(): Specialite[] {
         return this.listeSpecialitesPlateforme;
@@ -63,6 +66,18 @@ export class Plateforme {
         return this.listeDomainesDeCompetences;
     }
 
+    public get ListeUtilisateursPlateforme(): Utilisateur[] {
+        return this.listeUtilisateursPlateforme;
+    }
+
+    public get UtilisateurConnecte(): Utilisateur {
+        return this.utilisateurConnecte;
+    }
+
+    public set UtilisateurConnecte(utilisateurConnecte: Utilisateur) {
+        this.utilisateurConnecte = utilisateurConnecte;
+    }
+
     public constructor() {
         this.listeSpecialitesPlateforme = [];
         this.listeMobilitesPlateforme = [];
@@ -74,6 +89,8 @@ export class Plateforme {
         this.listeCoutsPlateforme = [];
         this.listeEtatsPartenairesPlateforme = [];
         this.listeDomainesDeCompetences = [];
+        this.listeUtilisateursPlateforme = [];
+        this.utilisateurConnecte = null;
     }
 
     public getSpecialiteAvecIdentifiant(identifiantSpecialite: number): Specialite {
@@ -198,6 +215,16 @@ export class Plateforme {
         return res;
     }
 
+    public getUtilisateurAvecIdentifiant(identifiantUtilisateur: number): Utilisateur {
+        var res: Utilisateur = null;
+        this.listeUtilisateursPlateforme.forEach((utilisateur: Utilisateur) => {
+            if (utilisateur.IdentifiantUtilisateur == identifiantUtilisateur) {
+                res = utilisateur;
+            }
+        });
+        return res;
+    }
+
     public ajouterSpecialite(specialite: Specialite): void {
         this.listeSpecialitesPlateforme.push(specialite);
     }
@@ -305,6 +332,17 @@ export class Plateforme {
         var indexDomaineDeCompetence = this.listeDomainesDeCompetences.indexOf(domaineDeCompetence);
         if (!(indexDomaineDeCompetence === undefined) && !(indexDomaineDeCompetence === null)) {
             this.listeDomainesDeCompetences.splice(indexDomaineDeCompetence, 1);
+        }
+    }
+
+    public ajouterUtilisateur(utilisateur: Utilisateur): void {
+        this.listeUtilisateursPlateforme.push(utilisateur);
+    }
+
+    public supprimerUtilisateur(utilisateur: Utilisateur): void {
+        var indexUtilisateur = this.listeUtilisateursPlateforme.indexOf(utilisateur);
+        if (!(indexUtilisateur === undefined) && !(indexUtilisateur === null)) {
+            this.listeUtilisateursPlateforme.splice(indexUtilisateur, 1);
         }
     }
 

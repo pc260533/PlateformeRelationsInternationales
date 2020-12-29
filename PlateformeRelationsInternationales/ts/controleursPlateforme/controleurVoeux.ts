@@ -32,7 +32,7 @@ export class ControleurVoeux extends ControleurPlateforme {
         $.ajax({
             url: "api/voeux",
             method: "delete",
-            data: voeu.getObjetSerializableId(),
+            data: { utilisateur: that.modelePlateforme.UtilisateurConnecte.getObjetSerializableId(), voeu: voeu.getObjetSerializableId() },
             success: function (resultat) {
                 that.modelePlateforme.ListePartenairesPlateforme.forEach((partenaire: Partenaire) => {
                     if (partenaire.ListeVoeuxPartenaire.includes(voeu)) {

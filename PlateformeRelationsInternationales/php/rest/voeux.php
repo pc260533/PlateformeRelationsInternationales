@@ -11,6 +11,23 @@ $app->get("/api/voeux", function (Request $request, Response $response, $args) {
 	return $response->withHeader("Content-Type", "application/json");
 });
 
+$app->delete("/api/voeux", function (Request $request, Response $response, $args) {
+	$controleurVoeux = new ControleurVoeux();
+	$controleurAuthentification = new ControleurAuthentification();
+	$utilisateurArray = $request->getParsedBody()["utilisateur"];
+	$voeuArray = $request->getParsedBody()["voeu"];
+
+	if ($controleurAuthentification->getUtilisateurEnSessionAvecIdentifiantUtilisateur($utilisateurArray["identifiantUtilisateur"])) {
+		$json = json_encode($controleurVoeux->supprimerVoeu($voeuArray)->getObjetSerializable());
+	}
+	else {
+		throw new ExceptionUtilisateurDeconnecte();
+	}
+
+	$response->getBody()->write($json);
+	return $response->withHeader("Content-Type", "application/json");
+});
+
 $app->get("/api/voeuxDansPartenaire/{identifiantPartenaire1}/{identifiantPartenaire2}/{identifiantPartenaire3}/{adresseMailVoeux}", function (Request $request, Response $response, $args) {
 	$controleurVoeux = new ControleurVoeux();
 	$adresseMailVoeux = base64_decode($args["adresseMailVoeux"]);

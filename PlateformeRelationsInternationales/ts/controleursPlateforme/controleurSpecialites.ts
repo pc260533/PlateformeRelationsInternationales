@@ -65,7 +65,7 @@ export class ControleurSpecialites extends ControleurPlateforme {
         $.ajax({
             url: "api/specialites",
             method: "post",
-            data: specialite.getObjetSerializable(),
+            data: { utilisateur: that.modelePlateforme.UtilisateurConnecte.getObjetSerializableId(), specialite: specialite.getObjetSerializable() },
             success: function (resultat) {
                 specialite.IdentifiantSpecialite = resultat.identifiantSpecialite;
                 that.modelePlateforme.ajouterSpecialite(specialite);
@@ -83,7 +83,7 @@ export class ControleurSpecialites extends ControleurPlateforme {
         $.ajax({
             url: "api/specialites",
             method: "delete",
-            data: specialite.getObjetSerializableId(),
+            data: { utilisateur: that.modelePlateforme.UtilisateurConnecte.getObjetSerializableId(), specialite: specialite.getObjetSerializableId() },
             success: function (resultat) {
                 specialite.ListeSousSpecialites.forEach((sousSpecialite: SousSpecialite) => {
                     that.modelePlateforme.ListePartenairesPlateforme.forEach((partenaire: Partenaire) => {
@@ -109,7 +109,7 @@ export class ControleurSpecialites extends ControleurPlateforme {
         $.ajax({
             url: "api/specialites",
             method: "put",
-            data: nouvelleSpecialite.getObjetSerializable(),
+            data: { utilisateur: that.modelePlateforme.UtilisateurConnecte.getObjetSerializableId(), specialite: nouvelleSpecialite.getObjetSerializable() },
             success: function (resultat) {
                 ancienneSpecialite.NomSpecialite = nouvelleSpecialite.NomSpecialite;
                 ancienneSpecialite.CouleurSpecialite = nouvelleSpecialite.CouleurSpecialite;
@@ -128,7 +128,7 @@ export class ControleurSpecialites extends ControleurPlateforme {
         $.ajax({
             url: "api/sousSpecialites",
             method: "post",
-            data: { specialite: specialite.getObjetSerializableId(), sousSpecialite: sousSpecialite.getObjetSerializable() },
+            data: { utilisateur: that.modelePlateforme.UtilisateurConnecte.getObjetSerializableId(), specialite: specialite.getObjetSerializableId(), sousSpecialite: sousSpecialite.getObjetSerializable() },
             success: function (resultat) {
                 sousSpecialite.IdentifiantSousSpecialite = resultat.identifiantSousSpecialite;
                 specialite.ajouterSousSpecialite(sousSpecialite);
@@ -146,7 +146,7 @@ export class ControleurSpecialites extends ControleurPlateforme {
         $.ajax({
             url: "api/sousSpecialites",
             method: "delete",
-            data: sousSpecialite.getObjetSerializableId(),
+            data: { utilisateur: that.modelePlateforme.UtilisateurConnecte.getObjetSerializableId(), sousSpecialite: sousSpecialite.getObjetSerializableId() },
             success: function (resultat) {
                 specialite.supprimerSousSpecialite(sousSpecialite);
                 that.modelePlateforme.ListePartenairesPlateforme.forEach((partenaire: Partenaire) => {
@@ -169,7 +169,7 @@ export class ControleurSpecialites extends ControleurPlateforme {
         $.ajax({
             url: "api/sousSpecialites",
             method: "put",
-            data: { specialite: specialite.getObjetSerializableId(), sousSpecialite: nouvelleSousSpecialite.getObjetSerializable() },
+            data: { utilisateur: that.modelePlateforme.UtilisateurConnecte.getObjetSerializableId(), specialite: specialite.getObjetSerializableId(), sousSpecialite: nouvelleSousSpecialite.getObjetSerializable() },
             success: function (resultat) {
                 ancienneSousSpecialite.NomSousSpecialite = nouvelleSousSpecialite.NomSousSpecialite;
                 if (that.modelePlateforme.getSpecialiteAvecSousSpecialite(ancienneSousSpecialite) != specialite) {

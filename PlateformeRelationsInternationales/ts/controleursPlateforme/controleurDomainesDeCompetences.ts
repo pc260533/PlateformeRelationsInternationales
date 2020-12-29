@@ -40,7 +40,7 @@ export class ControleurDomainesDeCompetences extends ControleurPlateforme {
         $.ajax({
             url: "api/domainesDeCompetences",
             method: "post",
-            data: domaineDeCompetence.getObjetSerializable(),
+            data: { utilisateur: that.modelePlateforme.UtilisateurConnecte.getObjetSerializableId(), domaineDeCompetence: domaineDeCompetence.getObjetSerializable() },
             success: function (resultat) {
                 domaineDeCompetence.IdentifiantDomaineDeCompetence = resultat.identifiantDomaineDeCompetence;
                 that.modelePlateforme.ajouterDomaineDeCompetence(domaineDeCompetence);
@@ -58,7 +58,7 @@ export class ControleurDomainesDeCompetences extends ControleurPlateforme {
         $.ajax({
             url: "api/domainesDeCompetences",
             method: "delete",
-            data: domaineDeCompetence.getObjetSerializableId(),
+            data: { utilisateur: that.modelePlateforme.UtilisateurConnecte.getObjetSerializableId(), domaineDeCompetence: domaineDeCompetence.getObjetSerializableId() },
             success: function (resultat) {
                 that.modelePlateforme.ListePartenairesPlateforme.forEach((partenaire: Partenaire) => {
                     partenaire.supprimerDomaineDeCompetence(domaineDeCompetence);
@@ -79,7 +79,7 @@ export class ControleurDomainesDeCompetences extends ControleurPlateforme {
         $.ajax({
             url: "api/domainesDeCompetences",
             method: "put",
-            data: nouveauDomaineDeCompetence.getObjetSerializable(),
+            data: { utilisateur: that.modelePlateforme.UtilisateurConnecte.getObjetSerializableId(), domaineDeCompetence: nouveauDomaineDeCompetence.getObjetSerializable() },
             success: function (resultat) {
                 ancienDomaineDeCompetence.NomDomaineDeCompetence = nouveauDomaineDeCompetence.NomDomaineDeCompetence;
                 that.notifieModificationDomaineDeCompetence(ancienDomaineDeCompetence);

@@ -146,6 +146,19 @@ class InstalleurBaseDeDonnees extends StockageBaseDeDonnees {
 	}
 
 	/**
+	 * Créer la table Utilisateur dans la base.
+	 */
+	private function creerTableUtilisateur(): void {
+		$requete = "CREATE TABLE IF NOT EXISTS PLATEFORME.UTILISATEUR (" .
+				   "identifiantUtilisateur INT PRIMARY KEY NOT NULL AUTO_INCREMENT," .
+				   "nomUtilisateur VARCHAR(255)," .
+				   "motDePasseUtilisateur VARCHAR(255)," .
+				   "adresseMailUtilisateur VARCHAR(255)," .
+				   "estAdministrateur BOOLEAN);";
+        $this->pdo->exec($requete);
+	}
+
+	/**
 	 * Créer la table Partenaire dans la base.
 	 */
 	private function creerTablePartenaire(): void {
@@ -298,6 +311,7 @@ class InstalleurBaseDeDonnees extends StockageBaseDeDonnees {
 			$this->creerTableEtatPartenaire();
 			$this->creerTableVoeu();
 			$this->creerTableDomaineDeCompetence();
+			$this->creerTableUtilisateur();
 			$this->creerTablePartenaire();
 			$this->creerTableCorrespondancePartenaireSousSpecialite();
 			$this->creerTableCorrespondancePartenaireMobilite();

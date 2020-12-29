@@ -40,7 +40,7 @@ export class ControleurContactsEtrangers extends ControleurPlateforme {
         $.ajax({
             url: "api/contactsEtrangers",
             method: "post",
-            data: contactEtranger.getObjetSerializable(),
+            data: { utilisateur: that.modelePlateforme.UtilisateurConnecte.getObjetSerializableId(), contactEtranger: contactEtranger.getObjetSerializable() },
             success: function (resultat) {
                 contactEtranger.IdentifiantContact = resultat.identifiantContact;
                 that.modelePlateforme.ajouterContactEtranger(contactEtranger);
@@ -58,7 +58,7 @@ export class ControleurContactsEtrangers extends ControleurPlateforme {
         $.ajax({
             url: "api/contactsEtrangers",
             method: "delete",
-            data: contactEtranger.getObjetSerializableId(),
+            data: { utilisateur: that.modelePlateforme.UtilisateurConnecte.getObjetSerializableId(), contactEtranger: contactEtranger.getObjetSerializableId() },
             success: function (resultat) {
                 that.modelePlateforme.ListePartenairesPlateforme.forEach((partenaire: Partenaire) => {
                     partenaire.supprimerContactEtranger(contactEtranger);
@@ -79,7 +79,7 @@ export class ControleurContactsEtrangers extends ControleurPlateforme {
         $.ajax({
             url: "api/contactsEtrangers",
             method: "put",
-            data: nouveauContactEtranger.getObjetSerializable(),
+            data: { utilisateur: that.modelePlateforme.UtilisateurConnecte.getObjetSerializableId(), contactEtranger: nouveauContactEtranger.getObjetSerializable() },
             success: function (resultat) {
                 ancienContactEtranger.NomContact = nouveauContactEtranger.NomContact;
                 ancienContactEtranger.PrenomContact = nouveauContactEtranger.PrenomContact;

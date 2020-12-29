@@ -67,9 +67,11 @@ export default class VueAidesFinancieres extends Vue implements IVueAidesFinanci
         this.proprietesDatatablesAidesFinancieres.OrdreDesElementsDeControle = "Bfti";
         this.proprietesDatatablesAidesFinancieres.ajouterColonne(new ProprietesDatatablesColonne("Identifiant Aide Financiere", "identifiantAideFinanciere"));
         this.proprietesDatatablesAidesFinancieres.ajouterColonne(new ProprietesDatatablesColonne("Nom Aide Financiere", "nomAideFinanciere"));
-        this.proprietesDatatablesAidesFinancieres.ajouterBouton(new ProprietesDatatablesBouton("Ajouter Aide Financiere", this.onClickAjouterAideFinanciere));
-        this.proprietesDatatablesAidesFinancieres.ajouterBouton(new ProprietesDatatablesBouton("Supprimer Aide Financiere", this.onClickSupprimerAideFinanciere));
-        this.proprietesDatatablesAidesFinancieres.ajouterBouton(new ProprietesDatatablesBouton("Modifier Aide Financiere", this.onClickModifierAideFinanciere));
+        if (this.plateforme.UtilisateurConnecte) {
+            this.proprietesDatatablesAidesFinancieres.ajouterBouton(new ProprietesDatatablesBouton("Ajouter Aide Financiere", this.onClickAjouterAideFinanciere));
+            this.proprietesDatatablesAidesFinancieres.ajouterBouton(new ProprietesDatatablesBouton("Supprimer Aide Financiere", this.onClickSupprimerAideFinanciere));
+            this.proprietesDatatablesAidesFinancieres.ajouterBouton(new ProprietesDatatablesBouton("Modifier Aide Financiere", this.onClickModifierAideFinanciere));
+        }
     }
 
     private initialiserEvenementsModals(): void {

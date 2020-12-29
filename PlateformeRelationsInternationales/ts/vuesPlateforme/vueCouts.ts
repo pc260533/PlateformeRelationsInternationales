@@ -82,7 +82,9 @@ export default class VueCouts extends Vue implements IVueCouts {
         this.proprietesDatatablesCouts.ajouterColonne(new ProprietesDatatablesColonne("Identifiant Cout", "identifiantCout"));
         this.proprietesDatatablesCouts.ajouterColonne(new ProprietesDatatablesColonne("Nom Pays Cout", "nomPaysCout"));
         this.proprietesDatatablesCouts.ajouterColonne(new ProprietesDatatablesColonne("Liste Partenaires Pays Cout", "ListePartenairesCoutString"));
-        this.proprietesDatatablesCouts.ajouterBouton(new ProprietesDatatablesBouton("Modifier Cout", this.onClickModifierCout));
+        if (this.plateforme.UtilisateurConnecte) {
+            this.proprietesDatatablesCouts.ajouterBouton(new ProprietesDatatablesBouton("Modifier Cout", this.onClickModifierCout));
+        }
     }
 
     private initialiserEvenementsModals(): void {

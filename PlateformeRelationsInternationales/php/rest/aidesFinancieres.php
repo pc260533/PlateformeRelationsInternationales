@@ -13,9 +13,16 @@ $app->get("/api/aidesfinancieres", function (Request $request, Response $respons
 
 $app->post("/api/aidesfinancieres", function (Request $request, Response $response, $args) {
 	$controleurAidesFinancieres = new ControleurAidesFinancieres();
-	$aideFinanciereArray = $request->getParsedBody();
+	$controleurAuthentification = new ControleurAuthentification();
+	$utilisateurArray = $request->getParsedBody()["utilisateur"];
+	$aideFinanciereArray = $request->getParsedBody()["aideFinanciere"];
 
-	$json = json_encode($controleurAidesFinancieres->ajouterAideFinanciere($aideFinanciereArray)->getObjetSerializable());
+	if ($controleurAuthentification->getUtilisateurEnSessionAvecIdentifiantUtilisateur($utilisateurArray["identifiantUtilisateur"])) {
+		$json = json_encode($controleurAidesFinancieres->ajouterAideFinanciere($aideFinanciereArray)->getObjetSerializable());
+	}
+	else {
+		throw new ExceptionUtilisateurDeconnecte();
+	}
 
 	$response->getBody()->write($json);
 	return $response->withHeader("Content-Type", "application/json");
@@ -23,9 +30,16 @@ $app->post("/api/aidesfinancieres", function (Request $request, Response $respon
 
 $app->delete("/api/aidesfinancieres", function (Request $request, Response $response, $args) {
 	$controleurAidesFinancieres = new ControleurAidesFinancieres();
-	$aideFinanciereArray = $request->getParsedBody();
+	$controleurAuthentification = new ControleurAuthentification();
+	$utilisateurArray = $request->getParsedBody()["utilisateur"];
+	$aideFinanciereArray = $request->getParsedBody()["aideFinanciere"];
 
-	$json = json_encode($controleurAidesFinancieres->supprimerAideFinanciere($aideFinanciereArray)->getObjetSerializable());
+	if ($controleurAuthentification->getUtilisateurEnSessionAvecIdentifiantUtilisateur($utilisateurArray["identifiantUtilisateur"])) {
+		$json = json_encode($controleurAidesFinancieres->supprimerAideFinanciere($aideFinanciereArray)->getObjetSerializable());
+	}
+	else {
+		throw new ExceptionUtilisateurDeconnecte();
+	}
 
 	$response->getBody()->write($json);
 	return $response->withHeader("Content-Type", "application/json");
@@ -33,9 +47,16 @@ $app->delete("/api/aidesfinancieres", function (Request $request, Response $resp
 
 $app->put("/api/aidesfinancieres", function (Request $request, Response $response, $args) {
 	$controleurAidesFinancieres = new ControleurAidesFinancieres();
-	$aideFinanciereArray = $request->getParsedBody();
+	$controleurAuthentification = new ControleurAuthentification();
+	$utilisateurArray = $request->getParsedBody()["utilisateur"];
+	$aideFinanciereArray = $request->getParsedBody()["aideFinanciere"];
 
-	$json = json_encode($controleurAidesFinancieres->modifierAideFinanciere($aideFinanciereArray)->getObjetSerializable());
+	if ($controleurAuthentification->getUtilisateurEnSessionAvecIdentifiantUtilisateur($utilisateurArray["identifiantUtilisateur"])) {
+		$json = json_encode($controleurAidesFinancieres->modifierAideFinanciere($aideFinanciereArray)->getObjetSerializable());
+	}
+	else {
+		throw new ExceptionUtilisateurDeconnecte();
+	}
 
 	$response->getBody()->write($json);
 	return $response->withHeader("Content-Type", "application/json");
