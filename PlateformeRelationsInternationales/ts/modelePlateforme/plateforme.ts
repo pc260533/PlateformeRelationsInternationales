@@ -8,13 +8,16 @@ import { Cout } from "./cout";
 import { EtatPartenaire } from "./etatpartenaire";
 import { Voeu } from "./voeu";
 import { DomaineDeCompetence } from "./domaineDeCompetence";
+import { ContactEtranger } from "./contactEtranger";
+import { Coordinateur } from "./coordinateur";
 
 export class Plateforme {
     private listeSpecialitesPlateforme: Specialite[];
     private listeMobilitesPlateforme: Mobilite[];
     private listePartenairesPlateforme: Partenaire[];
     private listeAidesFinancieresPlateforme: AideFinanciere[];
-    private listeContactsPlateforme: Contact[];
+    private listeContactsEtrangersPlateforme: ContactEtranger[];
+    private listeCoordinateursPlateforme: Coordinateur[];
     private listeVoeuxPlateforme: Voeu[];
     private listeCoutsPlateforme: Cout[];
     private listeEtatsPartenairesPlateforme: EtatPartenaire[];
@@ -36,8 +39,12 @@ export class Plateforme {
         return this.listeAidesFinancieresPlateforme;
     }
 
-    public get ListeContactsPlateforme(): Contact[] {
-        return this.listeContactsPlateforme;
+    public get ListeContactsEtrangersPlateforme(): ContactEtranger[] {
+        return this.listeContactsEtrangersPlateforme;
+    }
+
+    public get ListeCoordinateursPlateforme(): Coordinateur[] {
+        return this.listeCoordinateursPlateforme;
     }
 
     public get ListeVoeuxPlateforme(): Voeu[] {
@@ -61,7 +68,8 @@ export class Plateforme {
         this.listeMobilitesPlateforme = [];
         this.listePartenairesPlateforme = [];
         this.listeAidesFinancieresPlateforme = [];
-        this.listeContactsPlateforme = [];
+        this.listeContactsEtrangersPlateforme = [];
+        this.listeCoordinateursPlateforme = [];
         this.listeVoeuxPlateforme = [];
         this.listeCoutsPlateforme = [];
         this.listeEtatsPartenairesPlateforme = [];
@@ -110,11 +118,21 @@ export class Plateforme {
         return res;
     }
 
-    public getContactAvecIdentifiant(identifiantContact: number): Contact {
-        var res: Contact = null;
-        this.listeContactsPlateforme.forEach((contact: Contact) => {
-            if (contact.IdentifiantContact == identifiantContact) {
-                res = contact;
+    public getContactEtrangerAvecIdentifiant(identifiantContactEtranger: number): ContactEtranger {
+        var res: ContactEtranger = null;
+        this.listeContactsEtrangersPlateforme.forEach((contactEtranger: ContactEtranger) => {
+            if (contactEtranger.IdentifiantContact == identifiantContactEtranger) {
+                res = contactEtranger;
+            }
+        });
+        return res;
+    }
+
+    public getCoordinateurAvecIdentifiant(identifiantCoordinateur: number): Coordinateur {
+        var res: Coordinateur = null;
+        this.listeCoordinateursPlateforme.forEach((coordinateur: Coordinateur) => {
+            if (coordinateur.IdentifiantContact == identifiantCoordinateur) {
+                res = coordinateur;
             }
         });
         return res;
@@ -224,14 +242,25 @@ export class Plateforme {
         }
     }
 
-    public ajouterContact(contact: Contact): void {
-        this.listeContactsPlateforme.push(contact);
+    public ajouterContactEtranger(contactEtranger: ContactEtranger): void {
+        this.listeContactsEtrangersPlateforme.push(contactEtranger);
     }
 
-    public supprimerContact(contact: Contact): void {
-        var indexContact = this.listeContactsPlateforme.indexOf(contact);
-        if (!(indexContact === undefined) && !(indexContact === null)) {
-            this.listeContactsPlateforme.splice(indexContact, 1);
+    public supprimerContactEtranger(contactEtranger: ContactEtranger): void {
+        var indexContactEtranger = this.listeContactsEtrangersPlateforme.indexOf(contactEtranger);
+        if (!(indexContactEtranger === undefined) && !(indexContactEtranger === null)) {
+            this.listeContactsEtrangersPlateforme.splice(indexContactEtranger, 1);
+        }
+    }
+
+    public ajouterCoordinateur(coordinateur: Coordinateur): void {
+        this.listeCoordinateursPlateforme.push(coordinateur);
+    }
+
+    public supprimerCoordinateur(coordinateur: Coordinateur): void {
+        var indexCoordinateur = this.listeCoordinateursPlateforme.indexOf(coordinateur);
+        if (!(indexCoordinateur === undefined) && !(indexCoordinateur === null)) {
+            this.listeCoordinateursPlateforme.splice(indexCoordinateur, 1);
         }
     }
 

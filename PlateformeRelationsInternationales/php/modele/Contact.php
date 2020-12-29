@@ -8,7 +8,7 @@
  * @version 1.0
  * @author Jean-Claude
  */
-class Contact implements ISerializable {
+abstract class Contact implements ISerializable {
 	private $identifiantContact;
     private $nomContact;
     private $prenomContact;

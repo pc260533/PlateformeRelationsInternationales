@@ -1,0 +1,194 @@
+﻿<!-- Administration -->
+<section class="section administration mt-5">
+    <div class="container">
+
+        <div class="sectionHeader text-center">
+            <h2 class="sectionTitre">Administration</h2>
+            <div class="line"><span></span></div>
+            <p>
+                Administration de la Plateformes Relations Internationales
+            </p>
+        </div>
+
+        <ModalErreur ref="modalErreur"></ModalErreur>
+        <ModalInformation ref="modalInformation"></ModalInformation>
+
+        <Datatables ref="datatablesContactsEtrangers" v-bind:proprietesDatatables="proprietesDatatablesContactsEtrangers" idDatatables="datatablesContactsEtrangers"></Datatables>
+
+        <Datatables ref="datatablesDomainesDeCompetences" v-bind:proprietesDatatables="proprietesDatatablesDomainesDeCompetences" idDatatables="datatablesDomainesDeCompetences"></Datatables>
+
+        <Datatables ref="datatablesEtatsPartenaires" v-bind:proprietesDatatables="proprietesDatatablesEtatsPartenaires" idDatatables="datatablesEtatsPartenaires"></Datatables>
+
+        <Datatables ref="datatablesMobilites" v-bind:proprietesDatatables="proprietesDatatablesMobilites" idDatatables="datatablesMobilites"></Datatables>
+        
+        <Datatables ref="datatablesSpecialites" v-bind:proprietesDatatables="proprietesDatatablesSpecialites" idDatatables="datatablesSpecialites"></Datatables>
+        
+        <Datatables ref="datatablesSousSpecialites" v-bind:proprietesDatatables="proprietesDatatablesSousSpecialites" idDatatables="datatablesSousSpecialites"></Datatables>
+        
+        <Datatables ref="datatablesVoeux" v-bind:proprietesDatatables="proprietesDatatablesVoeux" idDatatables="datatablesVoeux"></Datatables>
+
+        <ModalSpecifique ref="modalContactEtranger" idModal="modalContactEtranger" tailleModal="modal-lg">
+            <h5 slot="modalHeader" class="modal-tilte">
+                <span id="inputTitreContactEtranger"></span>
+            </h5>
+            <button slot="modalHeader" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+
+            <form slot="modalBody" class="form">
+                <input type="hidden" id="inputIdentifiantContactEtranger" value="0" />
+                <div class="form-group">
+                    <label for="inputNomContactEtranger">Nom Contact Etranger:</label>
+                    <input type="text" id="inputNomContactEtranger" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label for="inputPrenomContactEtranger">Prénom Contact Etranger :</label>
+                    <input type="text" id="inputPrenomContactEtranger" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label for="inputAdresseMailContactEtranger">Adresse Contact Etranger :</label>
+                    <input type="text" id="inputAdresseMailContactEtranger" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label for="inputFonctionContactEtranger">Fonction Contact Etranger :</label>
+                    <input type="text" id="inputFonctionContactEtranger" class="form-control" />
+                </div>
+            </form>
+
+            <button slot="modalFooter" type="button" id="boutonEditeContactEtranger" class="btn btn-custom">Sauvegarder</button>
+            <button slot="modalFooter" type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+        </ModalSpecifique>
+
+        <ModalSpecifique ref="modalDomaineDeCompetence" idModal="modalDomaineDeCompetence" tailleModal="modal-lg">
+            <h5 slot="modalHeader" class="modal-tilte">
+                <span id="inputTitreDomaineDeCompetence"></span>
+            </h5>
+            <button slot="modalHeader" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+
+            <form slot="modalBody" class="form">
+                <input type="hidden" id="inputIdentifiantDomaineDeCompetence" value="0" />
+                <div class="form-group">
+                    <label for="inputNomDomaineDeCompetence">Nom Domaine De Compétence :</label>
+                    <input type="text" id="inputNomDomaineDeCompetence" class="form-control" />
+                </div>
+            </form>
+
+            <button slot="modalFooter" type="button" id="boutonEditeDomaineDeCompetence" class="btn btn-custom">Sauvegarder</button>
+            <button slot="modalFooter" type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+        </ModalSpecifique>
+
+        <ModalSpecifique ref="modalEtatPartenaire" idModal="modalEtatPartenaire" tailleModal="modal-lg">
+            <h5 slot="modalHeader" class="modal-tilte">
+                <span id="inputTitreEtatPartenaire"></span>
+            </h5>
+            <button slot="modalHeader" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+
+            <form slot="modalBody" class="form">
+                <input type="hidden" id="inputIdentifiantEtatPartenaire" value="0" />
+                <div class="form-group">
+                    <label for="inputNomEtatPartenaire">Nom Etat Partenaire :</label>
+                    <input type="text" id="inputNomEtatPartenaire" class="form-control" />
+                </div>
+            </form>
+
+            <button slot="modalFooter" type="button" id="boutonEditeEtatPartenaire" class="btn btn-custom">Sauvegarder</button>
+            <button slot="modalFooter" type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+        </ModalSpecifique>
+
+        <ModalSpecifique ref="modalMobilite" idModal="modalMobilite" tailleModal="modal-lg">
+            <h5 slot="modalHeader" class="modal-tilte">
+                <span id="inputTitreMobilite"></span>
+            </h5>
+            <button slot="modalHeader" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+
+            <form slot="modalBody" class="form">
+                <input type="hidden" id="inputIdentifiantMobilite" value="0" />
+                <div class="form-group">
+                    <label for="inputTypeMobilite">Type Mobilité :</label>
+                    <input type="text" id="inputTypeMobilite" class="form-control" />
+                </div>
+            </form>
+
+            <button slot="modalFooter" type="button" id="boutonEditeMobilite" class="btn btn-custom">Sauvegarder</button>
+            <button slot="modalFooter" type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+        </ModalSpecifique>
+        
+        <ModalSpecifique ref="modalSpecialite" idModal="modalSpecialite" tailleModal="modal-lg">
+            <h5 slot="modalHeader" class="modal-tilte">
+                <span id="inputTitreSpecialite"></span>
+            </h5>
+            <button slot="modalHeader" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+
+            <form slot="modalBody" class="form">
+                <input type="hidden" id="inputIdentifiantSpecialite" value="0" />
+                <div class="form-group">
+                    <label for="inputNomSpecialite">Nom Spécialité :</label>
+                    <input type="text" id="inputNomSpecialite" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label for="inputCouleurSpecialite">Couleur Spécialité :</label>
+                    <input type="color" id="inputCouleurSpecialite" class="form-control" />
+                </div>
+            </form>
+
+            <button slot="modalFooter" type="button" id="boutonEditeSpecialite" class="btn btn-custom">Sauvegarder</button>
+            <button slot="modalFooter" type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+        </ModalSpecifique>
+        
+        <ModalSpecifique ref="modalSousSpecialite" idModal="modalSousSpecialite" tailleModal="modal-lg">
+            <h5 slot="modalHeader" class="modal-tilte">
+                <span id="inputTitreSousSpecialite"></span>
+            </h5>
+            <button slot="modalHeader" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+
+            <form slot="modalBody" class="form">
+                <input type="hidden" id="inputIdentifiantSousSpecialite" value="0" />
+                <div class="form-group">
+                    <label for="inputNomSousSpecialite">Nom Sous Spécialité :</label>
+                    <input type="text" id="inputNomSousSpecialite" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label for="selectSpecialiteSousSpecialite">Spécialité :</label>
+                    <select class="custom-select form-control" id="selectSpecialiteSousSpecialite"></select>
+                </div>
+            </form>
+
+            <button slot="modalFooter" type="button" id="boutonEditeSousSpecialite" class="btn btn-custom">Sauvegarder</button>
+            <button slot="modalFooter" type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+        </ModalSpecifique>
+        
+        <ModalSpecifique ref="modalVoeu" idModal="modalVoeu" tailleModal="modal-lg">
+            <h5 slot="modalHeader" class="modal-tilte">
+                <span id="inputTitreVoeu"></span>
+            </h5>
+            <button slot="modalHeader" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+
+            <form slot="modalBody" class="form">
+                <input type="hidden" id="inputIdentifiantVoeu" value="0" />
+                <div class="form-group">
+                    <label for="inputAdresseMailVoeu">Adresse Mail Voeu :</label>
+                    <input type="text" id="inputAdresseMailVoeu" class="form-control" />
+                </div>
+            </form>
+
+            <button slot="modalFooter" type="button" id="boutonEditeVoeu" class="btn btn-custom">Sauvegarder</button>
+            <button slot="modalFooter" type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+        </ModalSpecifique>
+
+        <SpinnerSpecifique ref="spinner"></SpinnerSpecifique>
+
+    </div>
+</section>
+<!-- /Administration -->

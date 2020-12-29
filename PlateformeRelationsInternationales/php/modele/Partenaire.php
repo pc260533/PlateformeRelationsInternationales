@@ -21,7 +21,8 @@ class Partenaire implements ISerializable {
     private $listeSousSpecialitesPartenaire;
     private $listeMobilitesPartenaire;
 	private $listeAidesFinancieresPartenaire;
-    private $listeContactsPartenaire;
+    private $listeContactsEtrangersPartenaire;
+    private $listeCoordinateursPartenaire;
     private $listeVoeuxPartenaire;
 	private $listeImagesPartenaire;
 
@@ -113,12 +114,20 @@ class Partenaire implements ISerializable {
         $this->listeMobilitesPartenaire = $listeMobilitesPartenaire;
     }
 
-	public function getListeContactsPartenaire(): array {
-		return $this->listeContactsPartenaire;
+	public function getListeContactsEtrangersPartenaire(): array {
+		return $this->listeContactsEtrangersPartenaire;
 	}
 
-	public function setListeContactsPartenaire(array $listeContactsPartenaire): void {
-        $this->listeContactsPartenaire = $listeContactsPartenaire;
+	public function setListeContactsEtrangersPartenaire(array $listeContactsEtrangersPartenaire): void {
+        $this->listeContactsEtrangersPartenaire = $listeContactsEtrangersPartenaire;
+    }
+
+	public function getListeCoordinateursPartenaire(): array {
+		return $this->listeCoordinateursPartenaire;
+	}
+
+	public function setListeCoordinateursPartenaire(array $listeCoordinateursPartenaire): void {
+        $this->listeCoordinateursPartenaire = $listeCoordinateursPartenaire;
     }
 
 	public function getListeAidesFinancieresPartenaire(): array {
@@ -183,10 +192,18 @@ class Partenaire implements ISerializable {
 		return $res;
 	}
 
-	private function getListeContactsSerializable() : array {
+	private function getListeContactsEtrangersSerializable() : array {
 		$res = array();
-		foreach ($this->listeContactsPartenaire as $contact) {
-			$res[] = $contact->getObjetSerializable();
+		foreach ($this->listeContactsEtrangersPartenaire as $contactEtranger) {
+			$res[] = $contactEtranger->getObjetSerializable();
+		}
+		return $res;
+	}
+
+	private function getListeCoordinateursSerializable() : array {
+		$res = array();
+		foreach ($this->listeCoordinateursPartenaire as $coordinateur) {
+			$res[] = $coordinateur->getObjetSerializable();
 		}
 		return $res;
 	}
@@ -219,7 +236,8 @@ class Partenaire implements ISerializable {
 		$this->listeDomainesDeCompetencesPartenaire = array();
 		$this->listeSousSpecialitesPartenaire = array();
 		$this->listeMobilitesPartenaire = array();
-		$this->listeContactsPartenaire = array();
+		$this->listeContactsEtrangersPartenaire = array();
+		$this->listeCoordinateursPartenaire = array();
 		$this->listeAidesFinancieresPartenaire = array();
 		$this->listeVoeuxPartenaire = array();
 		$this->listeImagesPartenaire = array();
@@ -265,13 +283,23 @@ class Partenaire implements ISerializable {
 		}
 	}
 
-	public function ajouterContact(Contact $contact) {
-		$this->listeContactsPartenaire[] = $contact;
+	public function ajouterContactEtranger(ContactEtranger $contactEtranger) {
+		$this->listeContactsEtrangersPartenaire[] = $contactEtranger;
 	}
 
-	public function supprimerContact(Contact $contact) {
-		if (($key = array_search($contact, $this->listeContactsPartenaire)) !== false) {
-			unset($this->listeContactsPartenaire[$key]);
+	public function supprimerContactEtranger(ContactEtranger $contactEtranger) {
+		if (($key = array_search($contactEtranger, $this->listeContactsEtrangersPartenaire)) !== false) {
+			unset($this->listeContactsEtrangersPartenaire[$key]);
+		}
+	}
+
+	public function ajouterCoordinateur(Coordinateur $coordinateur) {
+		$this->listeCoordinateursPartenaire[] = $coordinateur;
+	}
+
+	public function supprimerCoordinateur(Coordinateur $coordinateur) {
+		if (($key = array_search($coordinateur, $this->listeCoordinateursPartenaire)) !== false) {
+			unset($this->listeCoordinateursPartenaire[$key]);
 		}
 	}
 
@@ -314,7 +342,8 @@ class Partenaire implements ISerializable {
             "listeDomainesDeCompetencesPartenaire" => $this->getListeDomainesDeCompetencesSerializable(),
             "listeSousSpecialitesPartenaire" => $this->getListeSousSpecialitesSerializable(),
             "listeMobilitesPartenaire" => $this->getListeMobilitesSerializable(),
-            "listeContactsPartenaire" => $this->getListeContactsSerializable(),
+            "listeContactsEtrangersPartenaire" => $this->getListeContactsEtrangersSerializable(),
+            "listeCoordinateursPartenaire" => $this->getListeCoordinateursSerializable(),
             "listeAidesFinancieresPartenaire" => $this->getListeAidesFinancieresSerializable(),
             "listeVoeuxPartenaire" => $this->getListeVoeuxSerializable(),
             "listeImagesPartenaire" => $this->getListeImagesPartenaireSerializable()

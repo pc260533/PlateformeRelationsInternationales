@@ -12,9 +12,10 @@ import { InformationSerializable } from "../information/informationSerializable"
 
 import imagePartenaires from "../../images/accueil/partenaires.png";
 import imagesAidesFinancieres from "../../images/accueil/aidesfinancieres.png";
-import imageContacts from "../../images/accueil/contacts.png";
+import imageCoordinateurs from "../../images/accueil/coordinateurs.png";
 import imageCouts from "../../images/accueil/couts.png";
 import imageAPropos from "../../images/accueil/apropos.png";
+import imageAdministration from "../../images/accueil/administration.png";
 
 import CarouselSpecifique from "./composants/carouselSpecifique";
 import ModalErreur from "./composants/modalErreur";
@@ -45,56 +46,13 @@ export default class VueAccueil extends Vue implements IVuePlateforme {
 
     }
 
-    public ajoutPartenaire(partenaire: Partenaire): void {
-
-    }
-
-    public modificationPartenaire(partenaire: Partenaire): void {
-
-    }
-
-    public suppressionPartenaire(partenaire: Partenaire): void {
-
-    }
-
-    public ajoutAideFinanciere(aideFinanciere: AideFinanciere): void {
-
-    }
-
-    public suppressionAideFinanciere(aideFinanciere: AideFinanciere): void {
-
-    }
-
-    public modificationAideFinanciere(aideFinanciere: AideFinanciere): void {
-
-    }
-
-    public ajoutContact(contact: Contact): void {
-
-    }
-
-    public suppressionContact(contact: Contact): void {
-
-    }
-
-    public modificationContact(contact: Contact): void {
-
-    }
-
-    public ajoutCout(cout: Cout): void {
-
-    }
-
-    public modificationCout(cout: Cout): void {
-
-    }
-
     private afficherImages(): void {
         $("#imagePartenaires").attr("src", imagePartenaires);
         $("#imageAidesFinancieres").attr("src", imagesAidesFinancieres);
-        $("#imageContacts").attr("src", imageContacts);
+        $("#imageCoordinateurs").attr("src", imageCoordinateurs);
         $("#imageCouts").attr("src", imageCouts);
         $("#imageAPropos").attr("src", imageAPropos);
+        $("#imageAdministration").attr("src", imageAdministration);
     }
 
     private afficherCarousel(): void {

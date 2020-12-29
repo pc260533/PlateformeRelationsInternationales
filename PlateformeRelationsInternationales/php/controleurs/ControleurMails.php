@@ -24,7 +24,7 @@ class ControleurMails implements IControleurPlateforme {
 			$res .= base64_encode($partenaire->getIdentifiantPartenaire()) . "/";
 		}
 		$res .= base64_encode($adresseMailVoeu);
-		$lienApiVoeuxDansPartenaire = 'http://localhost:7472/api/voeuxDansPartenaire/'. urlencode($res);
+		$lienApiVoeuxDansPartenaire = getVariableEnvironnement("URL_BASENAME").'api/voeuxDansPartenaire/'. urlencode($res);
 		$mail->setMessageHtml(str_replace("%lienApiVoeuxDansPartenaire%", $lienApiVoeuxDansPartenaire, file_get_contents("./php/templates/validationListeVoeuxPartenaires.php")));
 		$mail->ajouterDestinataire(new ContactMail($adresseMailVoeu, $adresseMailVoeu));
 		$this->gestionMails->envoyerMail($mail);

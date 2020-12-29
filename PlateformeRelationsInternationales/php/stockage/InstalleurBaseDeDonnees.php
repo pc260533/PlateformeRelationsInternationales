@@ -39,7 +39,8 @@ class InstalleurBaseDeDonnees extends StockageBaseDeDonnees {
 				   "nomContact VARCHAR(255)," .
 				   "prenomContact VARCHAR(255)," .
 				   "adresseMailContact VARCHAR(255)," .
-				   "fonctionContact VARCHAR(255));";
+				   "fonctionContact VARCHAR(255)," .
+				   "estCoordinateur BOOLEAN);";
         $this->pdo->exec($requete);
 	}
 
@@ -190,10 +191,23 @@ class InstalleurBaseDeDonnees extends StockageBaseDeDonnees {
 	}
 
 	/**
-	 * Créer la table Correspondance_Partenaire_Contact dans la base.
+	 * Créer la table Correspondance_Partenaire_ContactEtranger dans la base.
 	 */
-	private function creerTableCorrespondancePartenaireContact(): void {
-		$requete = "CREATE TABLE IF NOT EXISTS PLATEFORME.CORRESPONDANCE_PARTENAIRE_CONTACT (" .
+	private function creerTableCorrespondancePartenaireContactEtranger(): void {
+		$requete = "CREATE TABLE IF NOT EXISTS PLATEFORME.CORRESPONDANCE_PARTENAIRE_CONTACTETRANGER (" .
+				   "identifiantPartenaire INT," .
+				   "identifiantContact INT," .
+				   "PRIMARY KEY(identifiantPartenaire, identifiantContact)," .
+				   "FOREIGN KEY (identifiantPartenaire) REFERENCES PARTENAIRE(identifiantPartenaire) ON DELETE CASCADE," .
+				   "FOREIGN KEY (identifiantContact) REFERENCES CONTACT(identifiantContact) ON DELETE CASCADE);";
+        $this->pdo->exec($requete);
+	}
+
+	/**
+	 * Créer la table Correspondance_Partenaire_Coordinateur dans la base.
+	 */
+	private function creerTableCorrespondancePartenaireCoordinateur(): void {
+		$requete = "CREATE TABLE IF NOT EXISTS PLATEFORME.CORRESPONDANCE_PARTENAIRE_COORDINATEUR (" .
 				   "identifiantPartenaire INT," .
 				   "identifiantContact INT," .
 				   "PRIMARY KEY(identifiantPartenaire, identifiantContact)," .
@@ -287,7 +301,8 @@ class InstalleurBaseDeDonnees extends StockageBaseDeDonnees {
 			$this->creerTablePartenaire();
 			$this->creerTableCorrespondancePartenaireSousSpecialite();
 			$this->creerTableCorrespondancePartenaireMobilite();
-			$this->creerTableCorrespondancePartenaireContact();
+			$this->creerTableCorrespondancePartenaireContactEtranger();
+			$this->creerTableCorrespondancePartenaireCoordinateur();
 			$this->creerTableCorrespondancePartenaireAideFinanciere();
 			$this->creerTableCorrespondancePartenaireImagePartenaire();
 			$this->creerTableCorrespondancePartenaireVoeu();

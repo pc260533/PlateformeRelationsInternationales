@@ -1,22 +1,44 @@
-﻿import VueAccueil from "./vuesPlateforme/vueAccueil";
+﻿import { Plateforme } from "./modelePlateforme/plateforme";
+import { ControleurPlateforme } from "./controleurPlateforme";
+import { ControleurAidesFinancieres } from "./controleursPlateforme/controleurAidesFinancieres";
+import { ControleurContactsEtrangers } from "./controleursPlateforme/controleurContactsEtrangers";
+import { ControleurCoordinateurs } from "./controleursPlateforme/controleurCoordinateurs";
+import { ControleurDomainesDeCompetences } from "./controleursPlateforme/controleurDomainesDeCompetences";
+import { ControleurEtatsPartenaires } from "./controleursPlateforme/controleurEtatsPartenaires";
+import { ControleurMails } from "./controleursPlateforme/controleurMails";
+import { ControleurMobilites } from "./controleursPlateforme/controleurMobilites";
+import { ControleurPartenaires } from "./controleursPlateforme/controleurPartenaires";
+import { ControleurSpecialites } from "./controleursPlateforme/controleurSpecialites";
+import { ControleurVoeux } from "./controleursPlateforme/controleurVoeux";
+import { ErreurPageInexistante } from "./erreur/erreurPageInexistante";
+import { ErreurSerializable } from "./erreur/erreurSerializable";
+
+import VueAccueil from "./vuesPlateforme/vueAccueil";
 import VuePartenaire from "./vuesPlateforme/vuePartenaires";
 import VueAidesFinancieres from "./vuesPlateforme/vueAidesFinancieres";
-import VueContacts from "./vuesPlateforme/vueContacts";
+import VueCoordinateurs from "./vuesPlateforme/vueCoordinateurs";
 import VueCouts from "./vuesPlateforme/vueCouts";
+import VueAdministration from "./vuesPlateforme/vueAdministration";
 import VueAPropos from "./vuesPlateforme/vueAPropos";
+import VueErreur from "./vuesPlateforme/vueErreur";
 
 import Vue from "vue";
 import Router from "vue-router";
-import { Plateforme } from "./modelePlateforme/plateforme";
-import { ControleurPlateforme } from "./controleurPlateforme";
-import VueErreur from "./vuesPlateforme/vueErreur";
-import { ErreurPageInexistante } from "./erreur/erreurPageInexistante";
-import { ErreurSerializable } from "./erreur/erreurSerializable";
 
 Vue.use(Router);
 
 const plateforme = new Plateforme();
 const controleurPlateforme = new ControleurPlateforme(plateforme);
+const controleurAidesFinancieres = new ControleurAidesFinancieres(plateforme);
+const controleurContactsEtrangers = new ControleurContactsEtrangers(plateforme);
+const controleurCoordinateurs = new ControleurCoordinateurs(plateforme);
+const controleurDomainesDeCompetences = new ControleurDomainesDeCompetences(plateforme);
+const controleurEtatsPartenaires = new ControleurEtatsPartenaires(plateforme);
+const controleurMails = new ControleurMails(plateforme);
+const controleurMobilites = new ControleurMobilites(plateforme);
+const controleurPartenaires = new ControleurPartenaires(plateforme);
+const controleurSpecialites = new ControleurSpecialites(plateforme);
+const controleurVoeux = new ControleurVoeux(plateforme);
 
 export default new Router({
     mode: "history",
@@ -41,7 +63,16 @@ export default new Router({
             component: VuePartenaire,
             props: {
                 plateforme: plateforme,
-                controleurPlateforme: controleurPlateforme
+                controleurAidesFinancieres: controleurAidesFinancieres,
+                controleurContactsEtrangers: controleurContactsEtrangers,
+                controleurCoordinateurs: controleurCoordinateurs,
+                controleurDomainesDeCompetences: controleurDomainesDeCompetences,
+                controleurEtatsPartenaires: controleurEtatsPartenaires,
+                controleurMails: controleurMails,
+                controleurMobilites: controleurMobilites,
+                controleurPartenaires: controleurPartenaires,
+                controleurSpecialites: controleurSpecialites,
+                controleurVoeux: controleurVoeux
             },
             meta: {
                 title: "Plateforme Relations Internationales - Partenaires"
@@ -53,22 +84,22 @@ export default new Router({
             component: VueAidesFinancieres,
             props: {
                 plateforme: plateforme,
-                controleurPlateforme: controleurPlateforme
+                controleurAidesFinancieres: controleurAidesFinancieres
             },
             meta: {
                 title: "Plateforme Relations Internationales - Aides Financieres"
             }
         },
         {
-            path: "/contacts",
-            name: "contacts",
-            component: VueContacts,
+            path: "/coordinateurs",
+            name: "coordinateurs",
+            component: VueCoordinateurs,
             props: {
                 plateforme: plateforme,
-                controleurPlateforme: controleurPlateforme
+                controleurCoordinateurs: controleurCoordinateurs
             },
             meta: {
-                title: "Plateforme Relations Internationales - Contacts"
+                title: "Plateforme Relations Internationales - Coordinateurs"
             }
         },
         {
@@ -77,7 +108,33 @@ export default new Router({
             component: VueCouts,
             props: {
                 plateforme: plateforme,
-                controleurPlateforme: controleurPlateforme
+                controleurAidesFinancieres: controleurAidesFinancieres,
+                controleurContactsEtrangers: controleurContactsEtrangers,
+                controleurCoordinateurs: controleurCoordinateurs,
+                controleurDomainesDeCompetences: controleurDomainesDeCompetences,
+                controleurEtatsPartenaires: controleurEtatsPartenaires,
+                controleurMails: controleurMails,
+                controleurMobilites: controleurMobilites,
+                controleurPartenaires: controleurPartenaires,
+                controleurSpecialites: controleurSpecialites,
+                controleurVoeux: controleurVoeux
+            },
+            meta: {
+                title: "Plateforme Relations Internationales - Couts"
+            }
+        },
+        {
+            path: "/administration",
+            name: "administration",
+            component: VueAdministration,
+            props: {
+                plateforme: plateforme,
+                controleurContactsEtrangers: controleurContactsEtrangers,
+                controleurDomainesDeCompetences: controleurDomainesDeCompetences,
+                controleurEtatsPartenaires: controleurEtatsPartenaires,
+                controleurMobilites: controleurMobilites,
+                controleurSpecialites: controleurSpecialites,
+                controleurVoeux: controleurVoeux
             },
             meta: {
                 title: "Plateforme Relations Internationales - Couts"
@@ -120,13 +177,6 @@ export default new Router({
             meta: {
                 title: "Plateforme Relations Internationales - Accueil"
             }
-        },
-        /*{
-            path: "/about",
-            name: "about",
-            // this generates a separate chunk (about.[hash].js) for this route
-            // which is lazy-loaded when the route is visited.
-            component: () => import(/* webpackChunkName: "about" */ /*"./views/About.vue"),
-        },*/
+        }
     ],
 });

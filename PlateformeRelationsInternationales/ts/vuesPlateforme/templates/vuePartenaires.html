@@ -18,6 +18,24 @@
     </div>
 
     <div class="container">
+        <form slot="modalBody" class="form">
+            <div class="form-group">
+                <label for="multipleSelectAvecTagDomainesDeCompetences">Tri par Domaines de Compétences :</label>
+                <MultipleSelectAvecTag ref="multipleSelectAvecTagDomainesDeCompetences" idMultipleSelectAvecTag="multipleSelectAvecTagDomainesDeCompetences" placeholderSelect="Sélectionner des domaines de compétences"></MultipleSelectAvecTag>
+            </div>
+            <div class="form-group">
+                <label for="multipleSelectAvecTagPays">Tri par Pays :</label>
+                <MultipleSelectAvecTag ref="multipleSelectAvecTagPays" idMultipleSelectAvecTag="multipleSelectAvecTagPays" placeholderSelect="Sélectionner des pays"></MultipleSelectAvecTag>
+            </div>
+            <div class="form-group">
+                <label for="multipleSelectAvecTagSouspecialites">Tri par Sous Spécialités :</label>
+                <MultipleSelectAvecTag ref="multipleSelectAvecTagSouspecialites" idMultipleSelectAvecTag="multipleSelectAvecTagSouspecialites" placeholderSelect="Sélectionner des sous spécialites"></MultipleSelectAvecTag>
+            </div>
+            <div class="form-group">
+                <label for="multipleSelectAvecTagMobilites">Tri par Mobilités :</label>
+                <MultipleSelectAvecTag ref="multipleSelectAvecTagMobilites" idMultipleSelectAvecTag="multipleSelectAvecTagMobilites" placeholderSelect="Sélectionner des mobilités"></MultipleSelectAvecTag>
+            </div>
+        </form>
 
         <Datatables ref="datatablesPartenaires" v-bind:proprietesDatatables="proprietesDatatablesPartenaires" idDatatables="datatablesPartenaires"></Datatables>
 
@@ -150,15 +168,29 @@
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-9">
-                        <label for="selectListeContactsPartenaire">Liste Contacts Partenaire:</label>
-                        <select class="custom-select form-control" id="selectListeContactsPartenaire" multiple></select>
+                        <label for="selectListeContactsEtrangersPartenaire">Liste Contacts Etrangers Partenaire:</label>
+                        <select class="custom-select form-control" id="selectListeContactsEtrangersPartenaire" multiple></select>
                     </div>
                     <div class="form-group col-md-3 my-auto">
                         <div class="form-row pb-1">
-                            <button type="button" id="boutonAjouterContactPartenaire" class="btn btn-secondary mx-auto">Ajouter Contact</button>
+                            <button type="button" id="boutonAjouterContactEtrangerPartenaire" class="btn btn-secondary mx-auto">Ajouter Contact Etranger</button>
                         </div>
                         <div class="form-row">
-                            <button type="button" id="boutonSupprimerContactPartenaire" class="btn btn-secondary mx-auto">Supprimer Contact</button>
+                            <button type="button" id="boutonSupprimerContactEtrangerPartenaire" class="btn btn-secondary mx-auto">Supprimer Contact Etranger</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-9">
+                        <label for="selectListeCoordinateursPartenaire">Liste Coordinateurs Partenaire:</label>
+                        <select class="custom-select form-control" id="selectListeCoordinateursPartenaire" multiple></select>
+                    </div>
+                    <div class="form-group col-md-3 my-auto">
+                        <div class="form-row pb-1">
+                            <button type="button" id="boutonAjouterCoordinateurPartenaire" class="btn btn-secondary mx-auto">Ajouter Coordinateur</button>
+                        </div>
+                        <div class="form-row">
+                            <button type="button" id="boutonSupprimerCoordinateurPartenaire" class="btn btn-secondary mx-auto">Supprimer Coordinateur</button>
                         </div>
                     </div>
                 </div>
@@ -267,18 +299,65 @@
             <button slot="modalFooter" type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
         </ModalSpecifique>
 
-        <ModalSpecifique ref="modalEditeContactsPartenaire" idModal="modalEditeContactsPartenaire" tailleModal="modal-lg">
+        <ModalSpecifique ref="modalEditeContactEtranger" idModal="modalEditeContactEtranger" tailleModal="modal-lg">
             <h5 slot="modalHeader" class="modal-tilte">
-                <span id="inputTitreContactsPartenaire"></span>
+                <span id="inputTitreContactEtranger"></span>
+            </h5>
+            <button slot="modalHeader" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+
+            <form slot="modalBody" class="form">
+                <input type="hidden" id="inputIdentifiantContactEtranger" value="0" />
+                <div class="form-group">
+                    <label for="inputNomContactEtranger">Nom Contact Etranger :</label>
+                    <input type="text" id="inputNomContactEtranger" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label for="inputPrenomContactEtranger">Prénom Contact Etranger :</label>
+                    <input type="text" id="inputPrenomContactEtranger" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label for="inputAdresseMailContactEtranger">Adresse Contact Etranger :</label>
+                    <input type="text" id="inputAdresseMailContactEtranger" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label for="inputFonctionContactEtranger">Fonction Contact Etranger :</label>
+                    <input type="text" id="inputFonctionContactEtranger" class="form-control" />
+                </div>
+            </form>
+
+            <button slot="modalFooter" type="button" id="boutonEditeContactEtranger" class="btn btn-custom">Sauvegarder</button>
+            <button slot="modalFooter" type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+        </ModalSpecifique>
+
+        <ModalSpecifique ref="modalEditeContactsEtrangersPartenaire" idModal="modalEditeContactsEtrangersPartenaire" tailleModal="modal-lg">
+            <h5 slot="modalHeader" class="modal-tilte">
+                <span id="inputTitreContactsEtrangersPartenaire"></span>
             </h5>
             <button slot="modalHeader" type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
 
             <div slot="modalBody">
-                <Datatables ref="datatablesContactsPartenaires" v-bind:proprietesDatatables="proprietesDatatablesContactsPartenaires" idDatatables="datatablesContactsPartenaires"></Datatables>
+                <Datatables ref="datatablesContactsEtrangersPartenaires" v-bind:proprietesDatatables="proprietesDatatablesContactsEtrangersPartenaires" idDatatables="datatablesContactsEtrangersPartenaires"></Datatables>
             </div>
-            <button slot="modalFooter" type="button" id="boutonEditeContactsPartenaire" class="btn btn-custom">Sauvegarder</button>
+            <button slot="modalFooter" type="button" id="boutonEditeContactsEtrangersPartenaire" class="btn btn-custom">Sauvegarder</button>
+            <button slot="modalFooter" type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+        </ModalSpecifique>
+
+        <ModalSpecifique ref="modalEditeCoordinateursPartenaire" idModal="modalEditeCoordinateursPartenaire" tailleModal="modal-lg">
+            <h5 slot="modalHeader" class="modal-tilte">
+                <span id="inputTitreCoordinateursPartenaire"></span>
+            </h5>
+            <button slot="modalHeader" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+
+            <div slot="modalBody">
+                <Datatables ref="datatablesCoordinateursPartenaires" v-bind:proprietesDatatables="proprietesDatatablesCoordinateursPartenaires" idDatatables="datatablesCoordinateursPartenaires"></Datatables>
+            </div>
+            <button slot="modalFooter" type="button" id="boutonEditeCoordinateursPartenaire" class="btn btn-custom">Sauvegarder</button>
             <button slot="modalFooter" type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
         </ModalSpecifique>
 

@@ -121,18 +121,33 @@ class StockagePartenaires extends StockageBaseDeDonnees {
 		}
 	}
 
-	private function chargerContactsDansPartenaire(Partenaire $partenaire): void {
+	private function chargerContactsEtrangersDansPartenaire(Partenaire $partenaire): void {
 		$requete = "SELECT IDENTIFIANTCONTACT ".
-				   "FROM CORRESPONDANCE_PARTENAIRE_CONTACT ".
+				   "FROM CORRESPONDANCE_PARTENAIRE_CONTACTETRANGER ".
 				   "WHERE IDENTIFIANTPARTENAIRE = :identifiantpartenaire;";
 		$statement = $this->pdo->prepare($requete);
 		$statement->bindValue(":identifiantpartenaire", $partenaire->getIdentifiantPartenaire(), PDO::PARAM_INT);
 		$statement->execute();
 		$donnees = $statement->fetchAll();
 		foreach ($donnees as $ligne) {
-			$contact = new Contact();
-			$contact->setIdentifiantContact($ligne["IDENTIFIANTCONTACT"]);
-			$partenaire->ajouterContact($contact);
+			$contactEtranger = new ContactEtranger();
+			$contactEtranger->setIdentifiantContact($ligne["IDENTIFIANTCONTACT"]);
+			$partenaire->ajouterContactEtranger($contactEtranger);
+		}
+	}
+
+	private function chargerCoordinateursDansPartenaire(Partenaire $partenaire): void {
+		$requete = "SELECT IDENTIFIANTCONTACT ".
+				   "FROM CORRESPONDANCE_PARTENAIRE_COORDINATEUR ".
+				   "WHERE IDENTIFIANTPARTENAIRE = :identifiantpartenaire;";
+		$statement = $this->pdo->prepare($requete);
+		$statement->bindValue(":identifiantpartenaire", $partenaire->getIdentifiantPartenaire(), PDO::PARAM_INT);
+		$statement->execute();
+		$donnees = $statement->fetchAll();
+		foreach ($donnees as $ligne) {
+			$coordinateur = new Coordinateur();
+			$coordinateur->setIdentifiantContact($ligne["IDENTIFIANTCONTACT"]);
+			$partenaire->ajouterCoordinateur($coordinateur);
 		}
 	}
 
@@ -242,25 +257,50 @@ class StockagePartenaires extends StockageBaseDeDonnees {
 		$statement->execute();
 	}
 
-	private function ajouterContactDansPartenaire(Partenaire $partenaire, Contact $contact) {
-		$requete = "INSERT INTO CORRESPONDANCE_PARTENAIRE_CONTACT(IDENTIFIANTPARTENAIRE, IDENTIFIANTCONTACT) VALUES (:identifiantpartenaire, :identifiantcontact);";
+	private function ajouterContactEtrangerDansPartenaire(Partenaire $partenaire, ContactEtranger $contactEtranger) {
+		$requete = "INSERT INTO CORRESPONDANCE_PARTENAIRE_CONTACTETRANGER(IDENTIFIANTPARTENAIRE, IDENTIFIANTCONTACT) VALUES (:identifiantpartenaire, :identifiantcontact);";
 		$statement = $this->pdo->prepare($requete);
 		$statement->bindValue(":identifiantpartenaire", $partenaire->getIdentifiantPartenaire(), PDO::PARAM_INT);
-		$statement->bindValue(":identifiantcontact", $contact->getIdentifiantContact(), PDO::PARAM_INT);
+		$statement->bindValue(":identifiantcontact", $contactEtranger->getIdentifiantContact(), PDO::PARAM_INT);
 		$statement->execute();
 	}
 
-	private function supprimerContactDansPartenaire(Partenaire $partenaire, Contact $contact) {
-		$requete = "DELETE FROM CORRESPONDANCE_PARTENAIRE_CONTACT " .
+	private function supprimerContactEtrangerDansPartenaire(Partenaire $partenaire, ContactEtranger $contactEtranger) {
+		$requete = "DELETE FROM CORRESPONDANCE_PARTENAIRE_CONTACTETRANGER " .
 				   "WHERE IDENTIFIANTPARTENAIRE = :identifiantpartenaire AND IDENTIFIANTCONTACT = :identifiantcontact;";
 		$statement = $this->pdo->prepare($requete);
 		$statement->bindValue(":identifiantpartenaire", $partenaire->getIdentifiantPartenaire(), PDO::PARAM_INT);
-		$statement->bindValue(":identifiantcontact", $contact->getIdentifiantContact(), PDO::PARAM_INT);
+		$statement->bindValue(":identifiantcontact", $contactEtranger->getIdentifiantContact(), PDO::PARAM_INT);
 		$statement->execute();
 	}
 
-	private function supprimerTousContactsDansPartenaire(Partenaire $partenaire) {
-		$requete = "DELETE FROM CORRESPONDANCE_PARTENAIRE_CONTACT " .
+	private function supprimerTousContactsEtrangerDansPartenaire(Partenaire $partenaire) {
+		$requete = "DELETE FROM CORRESPONDANCE_PARTENAIRE_CONTACTETRANGER " .
+				   "WHERE IDENTIFIANTPARTENAIRE = :identifiantpartenaire;";
+		$statement = $this->pdo->prepare($requete);
+		$statement->bindValue(":identifiantpartenaire", $partenaire->getIdentifiantPartenaire(), PDO::PARAM_INT);
+		$statement->execute();
+	}
+
+	private function ajouterCoordinateurDansPartenaire(Partenaire $partenaire, Coordinateur $coordinateur) {
+		$requete = "INSERT INTO CORRESPONDANCE_PARTENAIRE_COORDINATEUR(IDENTIFIANTPARTENAIRE, IDENTIFIANTCONTACT) VALUES (:identifiantpartenaire, :identifiantcontact);";
+		$statement = $this->pdo->prepare($requete);
+		$statement->bindValue(":identifiantpartenaire", $partenaire->getIdentifiantPartenaire(), PDO::PARAM_INT);
+		$statement->bindValue(":identifiantcontact", $coordinateur->getIdentifiantContact(), PDO::PARAM_INT);
+		$statement->execute();
+	}
+
+	private function supprimerCoordinateurDansPartenaire(Partenaire $partenaire, Coordinateur $coordinateur) {
+		$requete = "DELETE FROM CORRESPONDANCE_PARTENAIRE_COORDINATEUR " .
+				   "WHERE IDENTIFIANTPARTENAIRE = :identifiantpartenaire AND IDENTIFIANTCONTACT = :identifiantcontact;";
+		$statement = $this->pdo->prepare($requete);
+		$statement->bindValue(":identifiantpartenaire", $partenaire->getIdentifiantPartenaire(), PDO::PARAM_INT);
+		$statement->bindValue(":identifiantcontact", $coordinateur->getIdentifiantContact(), PDO::PARAM_INT);
+		$statement->execute();
+	}
+
+	private function supprimerTousCoordinateurDansPartenaire(Partenaire $partenaire) {
+		$requete = "DELETE FROM CORRESPONDANCE_PARTENAIRE_COORDINATEUR " .
 				   "WHERE IDENTIFIANTPARTENAIRE = :identifiantpartenaire;";
 		$statement = $this->pdo->prepare($requete);
 		$statement->bindValue(":identifiantpartenaire", $partenaire->getIdentifiantPartenaire(), PDO::PARAM_INT);
@@ -383,8 +423,11 @@ class StockagePartenaires extends StockageBaseDeDonnees {
 			foreach ($partenaire->getListeAidesFinancieresPartenaire() as $aideFinanciere) {
 				$this->ajouterAideFinanciereDansPartenaire($partenaire, $aideFinanciere);
 			}
-			foreach ($partenaire->getListeContactsPartenaire() as $contact) {
-				$this->ajouterContactDansPartenaire($partenaire, $contact);
+			foreach ($partenaire->getListeContactsEtrangersPartenaire() as $contactEtranger) {
+				$this->ajouterContactEtrangerDansPartenaire($partenaire, $contactEtranger);
+			}
+			foreach ($partenaire->getListeCoordinateursPartenaire() as $coordinateur) {
+				$this->ajouterCoordinateurDansPartenaire($partenaire, $coordinateur);
 			}
 			foreach ($partenaire->getListeVoeuxPartenaire() as $voeu) {
 				$this->ajouterVoeuDansPartenaire($partenaire, $voeu);
@@ -477,7 +520,8 @@ class StockagePartenaires extends StockageBaseDeDonnees {
 			$this->supprimerToutesSousSpecialitesDansPartenaire($partenaire);
 			$this->supprimerToutesMobilitesDansPartenaire($partenaire);
 			$this->supprimerToutesAidesFinancieresDansPartenaire($partenaire);
-			$this->supprimerTousContactsDansPartenaire($partenaire);
+			$this->supprimerTousContactsEtrangerDansPartenaire($partenaire);
+			$this->supprimerTousCoordinateurDansPartenaire($partenaire);
 			$this->supprimerTousVoeuDansPartenaire($partenaire);
 			foreach ($partenaire->getListeDomainesDeComeptencesPartenaire() as $domaineDeCompetence) {
 				$this->ajouterDomaineDeCompetenceDansPartenaire($partenaire, $domaineDeCompetence);
@@ -491,8 +535,11 @@ class StockagePartenaires extends StockageBaseDeDonnees {
 			foreach ($partenaire->getListeAidesFinancieresPartenaire() as $aideFinanciere) {
 				$this->ajouterAideFinanciereDansPartenaire($partenaire, $aideFinanciere);
 			}
-			foreach ($partenaire->getListeContactsPartenaire() as $contact) {
-				$this->ajouterContactDansPartenaire($partenaire, $contact);
+			foreach ($partenaire->getListeContactsEtrangersPartenaire() as $contactEtranger) {
+				$this->ajouterContactEtrangerDansPartenaire($partenaire, $contactEtranger);
+			}
+			foreach ($partenaire->getListeCoordinateursPartenaire() as $coordinateur) {
+				$this->ajouterCoordinateurDansPartenaire($partenaire, $coordinateur);
 			}
 			foreach ($partenaire->getListeVoeuxPartenaire() as $voeu) {
 				$this->ajouterVoeuDansPartenaire($partenaire, $voeu);
@@ -551,7 +598,8 @@ class StockagePartenaires extends StockageBaseDeDonnees {
 				$this->chargerSousSpecialitesDansPartenaire($partenaire);
 				$this->chargerMobilitesDansPartenaire($partenaire);
 				$this->chargerAidesFinancieresDansPartenaire($partenaire);
-				$this->chargerContactsDansPartenaire($partenaire);
+				$this->chargerContactsEtrangersDansPartenaire($partenaire);
+				$this->chargerCoordinateursDansPartenaire($partenaire);
 				$this->chargerVoeuxDansPartenaire($partenaire);
 				$this->chargerImagesPartenaireDansPartenaire($partenaire);
 

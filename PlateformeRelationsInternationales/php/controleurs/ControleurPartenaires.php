@@ -87,11 +87,18 @@ class ControleurPartenaires implements IControleurPlateforme {
 				$partenaire->ajouterAideFinanciere($aideFinanciere);
 			}
 		}
-		if (isset($partenaireArray["listeContactsPartenaire"])) {
-			foreach ($partenaireArray["listeContactsPartenaire"] as $contactArray) {
-				$contact = new Contact();
-				$contact->setIdentifiantContact($contactArray["identifiantContact"]);
-				$partenaire->ajouterContact($contact);
+		if (isset($partenaireArray["listeContactsEtrangersPartenaire"])) {
+			foreach ($partenaireArray["listeContactsEtrangersPartenaire"] as $contactEtrangeArray) {
+				$contactEtrange = new ContactEtranger();
+				$contactEtrange->setIdentifiantContact($contactEtrangeArray["identifiantContact"]);
+				$partenaire->ajouterContactEtranger($contactEtrange);
+			}
+		}
+		if (isset($partenaireArray["listeCoordinateursPartenaire"])) {
+			foreach ($partenaireArray["listeCoordinateursPartenaire"] as $coordinateurArray) {
+				$coordinateur = new Coordinateur();
+				$coordinateur->setIdentifiantContact($coordinateurArray["identifiantContact"]);
+				$partenaire->ajouterCoordinateur($coordinateur);
 			}
 		}
 		if (isset($partenaireArray["listeVoeuxPartenaire"])) {

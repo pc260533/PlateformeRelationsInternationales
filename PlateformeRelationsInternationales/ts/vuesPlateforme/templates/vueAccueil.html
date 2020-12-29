@@ -65,15 +65,15 @@
 
             <div class="row">
 
-                <router-link class="col-md-6 col-12" :to="{ name: 'contacts' }">
+                <router-link class="col-md-6 col-12" :to="{ name: 'coordinateurs' }">
                     <div>
                         <div class="fonctionnalite">
                             <div class="iconeFonctionnalite">
-                                <img width="50" id="imageContacts" alt="" />
+                                <img width="50" id="imageCoordinateurs" alt="" />
                             </div>
-                            <h3 class="fonctionnaliteTitre">Contacts</h3>
+                            <h3 class="fonctionnaliteTitre">Coordinateurs</h3>
                             <p>
-                                Gérer les contacts.
+                                Gérer les coordinateurs.
                             </p>
                         </div>
                     </div>
@@ -95,6 +95,20 @@
             </div>
 
             <div class="row">
+
+                <router-link class="col-md-6 col-12" :to="{ name: 'administration' }">
+                    <div>
+                        <div class="fonctionnalite">
+                            <div class="iconeFonctionnalite">
+                                <img width="40" id="imageAdministration" alt="" />
+                            </div>
+                            <h3 class="fonctionnaliteTitre">Administration</h3>
+                            <p>
+                                Page d'administration de l'application.
+                            </p>
+                        </div>
+                    </div>
+                </router-link>
 
                 <router-link class="col-md-6 col-12" :to="{ name: 'apropos' }">
                     <div>

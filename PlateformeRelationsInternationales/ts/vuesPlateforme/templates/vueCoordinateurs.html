@@ -1,0 +1,53 @@
+﻿<!-- Coordinateurs -->
+<section class="section coordinateurs mt-5">
+    <div class="container">
+
+        <div class="sectionHeader text-center">
+            <h2 class="sectionTitre">Gérer les coordinateurs</h2>
+            <div class="line"><span></span></div>
+            <p>
+                Ajouter, modifier, supprimer les coordinateurs.
+            </p>
+        </div>
+
+        <ModalErreur ref="modalErreur"></ModalErreur>
+
+        <Datatables ref="datatablesCoordinateurs" v-bind:proprietesDatatables="proprietesDatatablesCoordinateurs" idDatatables="datatablesCoordinateurs"></Datatables>
+
+        <ModalSpecifique ref="modalEditeCoordinateur" idModal="modalEditeCoordinateur" tailleModal="modal-lg">
+            <h5 slot="modalHeader" class="modal-tilte">
+                <span id="inputTitreCoordinateur"></span>
+            </h5>
+            <button slot="modalHeader" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+
+            <form slot="modalBody" class="form">
+                <input type="hidden" id="inputIdentifiantCoordinateur" value="0" />
+                <div class="form-group">
+                    <label for="inputNomCoordinateur">Nom Coordinateur :</label>
+                    <input type="text" id="inputNomCoordinateur" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label for="inputPrenomCoordinateur">Prénom Coordinateur :</label>
+                    <input type="text" id="inputPrenomCoordinateur" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label for="inputAdresseMailCoordinateur">Adresse Coordinateur :</label>
+                    <input type="text" id="inputAdresseMailCoordinateur" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label for="inputFonctionCoordinateur">Fonction Coordinateur :</label>
+                    <input type="text" id="inputFonctionCoordinateur" class="form-control" />
+                </div>
+            </form>
+
+            <button slot="modalFooter" type="button" id="boutonEditeCoordinateur" class="btn btn-custom">Sauvegarder</button>
+            <button slot="modalFooter" type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+        </ModalSpecifique>
+
+        <SpinnerSpecifique ref="spinner"></SpinnerSpecifique>
+
+    </div>
+</section>
+<!-- /Coordinateurs -->

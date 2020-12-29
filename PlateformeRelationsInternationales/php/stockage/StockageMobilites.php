@@ -14,6 +14,56 @@ class StockageMobilites extends StockageBaseDeDonnees {
 		parent::__construct($dataSourceName, $username, $password);
 	}
 
+	public function ajouterMobilite(Mobilite $mobilite): void {
+		try {
+			$this->pdo->beginTransaction();
+			$requete = "INSERT INTO MOBILITE(TYPEMOBILITE) VALUES (:typemobilite);";
+			$statement = $this->pdo->prepare($requete);
+			$statement->bindValue(":typemobilite", $mobilite->getTypeMobilite(), PDO::PARAM_STR);
+			$statement->execute();
+			$mobilite->setIdentifiantMobilite(intval($this->pdo->lastInsertId()));
+			$this->pdo->commit();
+		}
+		catch (PDOException $exception) {
+			$this->pdo->rollBack();
+			throw new ExceptionBaseDeDonneesPlateforme($exception);
+		}
+	}
+
+	public function supprimerMobilite(Mobilite $mobilite): void {
+		try {
+			$this->pdo->beginTransaction();
+			$requete = "DELETE FROM MOBILITE " .
+					   "WHERE IDENTIFIANTMOBILITE = :identifiantmobilite;";
+			$statement = $this->pdo->prepare($requete);
+			$statement->bindValue(":identifiantmobilite", $mobilite->getIdentifiantMobilite(), PDO::PARAM_INT);
+			$statement->execute();
+			$this->pdo->commit();
+		}
+		catch (PDOException $exception) {
+			$this->pdo->rollBack();
+			throw new ExceptionBaseDeDonneesPlateforme($exception);
+		}
+	}
+
+	public function modifierMobilite(Mobilite $mobilite): void {
+		try {
+			$this->pdo->beginTransaction();
+			$requete = "UPDATE MOBILITE " .
+					   "SET TYPEMOBILITE = :typemobilite " .
+					   "WHERE IDENTIFIANTMOBILITE = :identifiantmobilite;";
+			$statement = $this->pdo->prepare($requete);
+			$statement->bindValue(":typemobilite", $mobilite->getTypeMobilite(), PDO::PARAM_STR);
+			$statement->bindValue(":identifiantmobilite", $mobilite->getIdentifiantMobilite(), PDO::PARAM_INT);
+			$statement->execute();
+			$this->pdo->commit();
+		}
+		catch (PDOException $exception) {
+			$this->pdo->rollBack();
+			throw new ExceptionBaseDeDonneesPlateforme($exception);
+		}
+	}
+
 	public function chargerListeMobilites(): array {
 		try {
 			$listeMobilites = array();

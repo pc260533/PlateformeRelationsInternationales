@@ -35,6 +35,10 @@ export class Specialite implements ISerializable {
         return this.listeSousSpecialites;
     }
 
+    public set ListeSousSpecialites(listeSousSpecialites: SousSpecialite[]) {
+        this.listeSousSpecialites;
+    }
+
     public constructor() {
         this.identifiantSpecialite = 0;
         this.nomSpecialite = "";

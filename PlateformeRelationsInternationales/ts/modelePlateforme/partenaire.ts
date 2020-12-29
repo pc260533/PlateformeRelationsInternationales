@@ -9,6 +9,8 @@ import { Cout } from "./cout";
 import { EtatPartenaire } from "./etatpartenaire";
 import { Voeu } from "./voeu";
 import { DomaineDeCompetence } from "./domaineDeCompetence";
+import { ContactEtranger } from "./contactEtranger";
+import { Coordinateur } from "./coordinateur";
 
 export class Partenaire implements ISerializable {
     private identifiantPartenaire: number;
@@ -22,7 +24,8 @@ export class Partenaire implements ISerializable {
     private listeDomainesDeCompetencesPartenaire: DomaineDeCompetence[];
     private listeSousSpecialitesPartenaire: SousSpecialite[];
     private listeMobilitesPartenaires: Mobilite[];
-    private listeContactsPartenaires: Contact[];
+    private listeContactsEtrangersPartenaires: ContactEtranger[];
+    private listeCoordinateursPartenaires: Coordinateur[];
     private listeAidesFinancieresPartenaires: AideFinanciere[];
     private listeVoeuxPartenaire: Voeu[];
     private listeImagesPartenaire: ImagePartenaire[];
@@ -123,12 +126,20 @@ export class Partenaire implements ISerializable {
         this.listeAidesFinancieresPartenaires = listeAidesFinancieresPartenaires;
     }
 
-    public get ListeContactsPartenaires(): Contact[] {
-        return this.listeContactsPartenaires;
+    public get ListeContactsEtrangersPartenaires(): ContactEtranger[] {
+        return this.listeContactsEtrangersPartenaires;
     }
 
-    public set ListeContactsPartenaires(listeContactsPartenaires: Contact[]) {
-        this.listeContactsPartenaires = listeContactsPartenaires;
+    public set ListeContactsEtrangersPartenaires(listeContactsEtrangersPartenaires: ContactEtranger[]) {
+        this.listeContactsEtrangersPartenaires = listeContactsEtrangersPartenaires;
+    }
+
+    public get ListeCoordinateursPartenaires(): Coordinateur[] {
+        return this.listeCoordinateursPartenaires;
+    }
+
+    public set ListeCoordinateursPartenaires(listeCoordinateursPartenaires: Coordinateur[]) {
+        this.listeCoordinateursPartenaires = listeCoordinateursPartenaires;
     }
 
     public get ListeVoeuxPartenaire(): Voeu[] {
@@ -179,12 +190,20 @@ export class Partenaire implements ISerializable {
         return listeAidesFinancieresPartenaireId;
     }
 
-    public getListeContactsPartenaireId(): any[] {
-        var listeContactsPartenaireId: any[] = [];
-        this.listeContactsPartenaires.forEach((contact: Contact) => {
-            listeContactsPartenaireId.push(contact.getObjetSerializableId());
+    public getListeContactsEtrangersPartenaireId(): any[] {
+        var listeContactsEtrangersPartenaireId: any[] = [];
+        this.listeContactsEtrangersPartenaires.forEach((contactEtranger: ContactEtranger) => {
+            listeContactsEtrangersPartenaireId.push(contactEtranger.getObjetSerializableId());
         });
-        return listeContactsPartenaireId;
+        return listeContactsEtrangersPartenaireId;
+    }
+
+    public getListeCoordinateursPartenaireId(): any[] {
+        var listeCoordinateursPartenaireId: any[] = [];
+        this.listeCoordinateursPartenaires.forEach((coordinateur: Coordinateur) => {
+            listeCoordinateursPartenaireId.push(coordinateur.getObjetSerializableId());
+        });
+        return listeCoordinateursPartenaireId;
     }
 
     public getListeVoeuxPartenaireId(): any[] {
@@ -225,7 +244,8 @@ export class Partenaire implements ISerializable {
         this.listeDomainesDeCompetencesPartenaire = [];
         this.listeSousSpecialitesPartenaire = [];
         this.listeMobilitesPartenaires = [];
-        this.listeContactsPartenaires = [];
+        this.listeContactsEtrangersPartenaires = [];
+        this.listeCoordinateursPartenaires = [];
         this.listeAidesFinancieresPartenaires = [];
         this.listeVoeuxPartenaire = [];
         this.listeImagesPartenaire = [];
@@ -275,14 +295,25 @@ export class Partenaire implements ISerializable {
         }
     }
 
-    public ajouterContact(contact: Contact): void {
-        this.listeContactsPartenaires.push(contact);
+    public ajouterContactEtranger(contactEtranger: ContactEtranger): void {
+        this.listeContactsEtrangersPartenaires.push(contactEtranger);
     }
 
-    public supprimerContact(contact: Contact): void {
-        var indexContact = this.listeContactsPartenaires.indexOf(contact);
-        if (!(indexContact === undefined) && !(indexContact === null)) {
-            this.listeContactsPartenaires.splice(indexContact, 1);
+    public supprimerContactEtranger(contactEtranger: ContactEtranger): void {
+        var indexContactEtranger = this.listeContactsEtrangersPartenaires.indexOf(contactEtranger);
+        if (!(indexContactEtranger === undefined) && !(indexContactEtranger === null)) {
+            this.listeContactsEtrangersPartenaires.splice(indexContactEtranger, 1);
+        }
+    }
+
+    public ajouterCoordinateur(coordinateur: Coordinateur): void {
+        this.listeCoordinateursPartenaires.push(coordinateur);
+    }
+
+    public supprimerCoordinateur(coordinateur: Coordinateur): void {
+        var indexCoordinateur = this.listeCoordinateursPartenaires.indexOf(coordinateur);
+        if (!(indexCoordinateur === undefined) && !(indexCoordinateur === null)) {
+            this.listeCoordinateursPartenaires.splice(indexCoordinateur, 1);
         }
     }
 
@@ -322,7 +353,8 @@ export class Partenaire implements ISerializable {
             listeSousSpecialitesPartenaire: this.getListeSousSpecialitesPartenaireId(),
             listeMobilitesPartenaire: this.getListeMobilitesPartenaireId(),
             listeAidesFinancieresPartenaire: this.getListeAidesFinancieresPartenaireId(),
-            listeContactsPartenaire: this.getListeContactsPartenaireId(),
+            listeContactsEtrangersPartenaire: this.getListeContactsEtrangersPartenaireId(),
+            listeCoordinateursPartenaire: this.getListeCoordinateursPartenaireId(),
             listeVoeuxPartenaire: this.getListeVoeuxPartenaireId(),
             listeImagesPartenaire: this.getListeImagesPartenaire()
         }

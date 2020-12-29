@@ -1,6 +1,15 @@
-﻿import { IVuePlateforme } from "../ivuePlateforme";
+﻿import { IVuePartenaires } from "./ivuePartenaires";
 import { Plateforme } from "../modelePlateforme/plateforme";
-import { ControleurPlateforme } from "../controleurPlateforme";
+import { ControleurAidesFinancieres } from "../controleursPlateforme/controleurAidesFinancieres";
+import { ControleurContactsEtrangers } from "../controleursPlateforme/controleurContactsEtrangers";
+import { ControleurCoordinateurs } from "../controleursPlateforme/controleurCoordinateurs";
+import { ControleurDomainesDeCompetences } from "../controleursPlateforme/controleurDomainesDeCompetences";
+import { ControleurEtatsPartenaires } from "../controleursPlateforme/controleurEtatsPartenaires";
+import { ControleurMails } from "../controleursPlateforme/controleurMails";
+import { ControleurMobilites } from "../controleursPlateforme/controleurMobilites";
+import { ControleurPartenaires } from "../controleursPlateforme/controleurPartenaires";
+import { ControleurSpecialites } from "../controleursPlateforme/controleurSpecialites";
+import { ControleurVoeux } from "../controleursPlateforme/controleurVoeux";
 import { Partenaire } from "../modelePlateforme/partenaire";
 import { AideFinanciere } from "../modelePlateforme/aideFinanciere";
 import { Specialite } from "../modelePlateforme/specialite";
@@ -12,6 +21,7 @@ import { Cout } from "../modelePlateforme/cout";
 import { ImagePartenaire } from "../modelePlateforme/imagePartenaire";
 import { EtatPartenaire } from "../modelePlateforme/etatpartenaire";
 import { Voeu } from "../modelePlateforme/voeu";
+import { DomaineDeCompetence } from "../modelePlateforme/domaineDeCompetence";
 import { ErreurSerializable } from "../erreur/erreurSerializable";
 import { ErreurChampsNonRemplis } from "../erreur/erreurChampsNonRemplis";
 import { InformationSerializable } from "../information/informationSerializable";
@@ -35,7 +45,12 @@ import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
 import "../../scss/vues/vuePartenaires.scss";
 
 import { Component, Prop, Vue, Ref } from "vue-property-decorator";
-import { DomaineDeCompetence } from "../modelePlateforme/domaineDeCompetence";
+import { IVueDomainesDeCompetences } from "./ivueDomainesDeCompetences";
+import { ContactEtranger } from "../modelePlateforme/contactEtranger";
+import { Coordinateur } from "../modelePlateforme/coordinateur";
+import { IVueContactsEtrangers } from "./ivueContactsEtrangers";
+import MultipleSelectAvecTag from "./composants/multipleSelectAvecTag";
+import { OptionMultipleSelectAvecTag } from "./composants/OptionMultipleSelectAvecTag";
 
 @Component({
     template: require("./templates/vuePartenaires.html"),
@@ -45,17 +60,29 @@ import { DomaineDeCompetence } from "../modelePlateforme/domaineDeCompetence";
         SpinnerSpecifique,
         TreeSpecifique,
         ModalErreur,
-        ModalInformation
+        ModalInformation,
+        MultipleSelectAvecTag
     }
 })
-export default class VuePartenaire extends Vue implements IVuePlateforme {
+export default class VuePartenaire extends Vue implements IVuePartenaires, IVueDomainesDeCompetences, IVueContactsEtrangers {
     @Prop() private plateforme!: Plateforme;
-    @Prop() private controleurPlateforme!: ControleurPlateforme;
+    @Prop() private controleurAidesFinancieres!: ControleurAidesFinancieres;
+    @Prop() private controleurContactsEtrangers!: ControleurContactsEtrangers;
+    @Prop() private controleurCoordinateurs!: ControleurCoordinateurs;
+    @Prop() private controleurDomainesDeCompetences!: ControleurDomainesDeCompetences;
+    @Prop() private controleurEtatsPartenaires!: ControleurEtatsPartenaires;
+    @Prop() private controleurMails!: ControleurMails;
+    @Prop() private controleurMobilites!: ControleurMobilites;
+    @Prop() private controleurPartenaires!: ControleurPartenaires;
+    @Prop() private controleurSpecialites!: ControleurSpecialites;
+    @Prop() private controleurVoeux!: ControleurVoeux;
+
     private proprietesDatatablesPartenaires: ProprietesDatatables;
     private proprietesDatatablesDomainesDeCompetencesPartenaires: ProprietesDatatables;
     private proprietesDatatablesMobilitesPartenaires: ProprietesDatatables;
     private proprietesDatatablesAidesFinancieresPartenaires: ProprietesDatatables;
-    private proprietesDatatablesContactsPartenaires: ProprietesDatatables;
+    private proprietesDatatablesContactsEtrangersPartenaires: ProprietesDatatables;
+    private proprietesDatatablesCoordinateursPartenaires: ProprietesDatatables;
     private proprietesDatatablesVoeuxPartenaires: ProprietesDatatables;
     private proprietesDatatablesListeVoeuxPartenaires: ProprietesDatatables;
     private mapListePartenaire: mapboxgl.Map;
@@ -66,7 +93,8 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
     @Ref("datatablesDomainesDeCompetencesPartenaires") readonly datatablesDomainesDeCompetencesPartenaires!: Datatables<DomaineDeCompetence>;
     @Ref("datatablesMobilitesPartenaires") readonly datatablesMobilitesPartenaires!: Datatables<Mobilite>;
     @Ref("datatablesAidesFinancieresPartenaires") readonly datatablesAidesFinancieresPartenaires!: Datatables<AideFinanciere>;
-    @Ref("datatablesContactsPartenaires") readonly datatablesContactsPartenaires!: Datatables<Contact>;
+    @Ref("datatablesContactsEtrangersPartenaires") readonly datatablesContactsEtrangersPartenaires!: Datatables<ContactEtranger>;
+    @Ref("datatablesCoordinateursPartenaires") readonly datatablesCoordinateursPartenaires!: Datatables<Coordinateur>;
     @Ref("datatablesVoeuxPartenaires") readonly datatablesVoeuxPartenaires!: Datatables<Voeu>;
     @Ref("datatablesListeVoeuxPartenaires") readonly datatablesListeVoeuxPartenaires!: Datatables<Partenaire>;
     @Ref("modalEditePartenaire") readonly modalEditePartenaire!: ModalSpecifique;
@@ -75,13 +103,19 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
     @Ref("modalEditeSousSpecialitesPartenaire") readonly modalEditeSousSpecialitesPartenaire!: ModalSpecifique;
     @Ref("modalEditeMobilitesPartenaire") readonly modalEditeMobilitesPartenaire!: ModalSpecifique;
     @Ref("modalEditeAidesFinancieresPartenaire") readonly modalEditeAidesFinancieresPartenaire!: ModalSpecifique;
-    @Ref("modalEditeContactsPartenaire") readonly modalEditeContactsPartenaire!: ModalSpecifique;
+    @Ref("modalEditeContactEtranger") readonly modalEditeContactEtranger!: ModalSpecifique;
+    @Ref("modalEditeContactsEtrangersPartenaire") readonly modalEditeContactsEtrangersPartenaire!: ModalSpecifique;
+    @Ref("modalEditeCoordinateursPartenaire") readonly modalEditeCoordinateursPartenaire!: ModalSpecifique;
     @Ref("modalEditeVoeuxPartenaire") readonly modalEditeVoeuxPartenaire!: ModalSpecifique;
     @Ref("modalValideVoeuxPartenaires") readonly modalValideVoeuxPartenaires!: ModalSpecifique;
     @Ref("spinner") readonly spinner!: SpinnerSpecifique;
     @Ref("treeSousSpecialitesPartenaire") readonly treeSousSpecialitesPartenaire!: TreeSpecifique;
     @Ref("modalErreur") readonly modalErreur!: ModalErreur;
     @Ref("modalInformation") readonly modalInformation!: ModalInformation;
+    @Ref("multipleSelectAvecTagDomainesDeCompetences") readonly multipleSelectAvecTagDomainesDeCompetences!: MultipleSelectAvecTag;
+    @Ref("multipleSelectAvecTagPays") readonly multipleSelectAvecTagPays!: MultipleSelectAvecTag;
+    @Ref("multipleSelectAvecTagSouspecialites") readonly multipleSelectAvecTagSouspecialites!: MultipleSelectAvecTag;
+    @Ref("multipleSelectAvecTagMobilites") readonly multipleSelectAvecTagMobilites!: MultipleSelectAvecTag;
 
     public afficheErreur(erreur: ErreurSerializable): void {
         this.modalErreur.afficherErreur(erreur);
@@ -124,35 +158,27 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
         }
     }
 
-    public ajoutAideFinanciere(aideFinanciere: AideFinanciere): void {
+    public ajoutDomaineDeCompetence(domaineDeCompetence: DomaineDeCompetence): void {
+        this.ajouterDomaineDeCompetenceDansSelect(domaineDeCompetence);
+    }
+
+    public suppressionDomaineDeCompetence(domaineDeCompetence: DomaineDeCompetence): void {
 
     }
 
-    public suppressionAideFinanciere(aideFinanciere: AideFinanciere): void {
+    public modificationDomaineDeCompetence(domaineDeCompetence: DomaineDeCompetence): void {
 
     }
 
-    public modificationAideFinanciere(aideFinanciere: AideFinanciere): void {
+    public ajoutContactEtranger(contactEtranger: ContactEtranger): void {
+        this.ajouterContactEtrangerDansSelect(contactEtranger);
+    }
+
+    public suppressionContactEtranger(contactEtranger: ContactEtranger): void {
 
     }
 
-    public ajoutContact(contact: Contact): void {
-
-    }
-
-    public suppressionContact(contact: Contact): void {
-
-    }
-
-    public modificationContact(contact: Contact): void {
-
-    }
-
-    public ajoutCout(cout: Cout): void {
-
-    }
-
-    public modificationCout(cout: Cout): void {
+    public modificationContactEtranger(contactEtranger: ContactEtranger): void {
 
     }
 
@@ -179,9 +205,14 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
         this.proprietesDatatablesAidesFinancieresPartenaires.OrdreDesElementsDeControle = "fti";
         this.proprietesDatatablesAidesFinancieresPartenaires.ajouterColonne(new ProprietesDatatablesColonne("Nom Aide Financiere", "nomAideFinanciere"));
 
-        this.proprietesDatatablesContactsPartenaires = new ProprietesDatatables();
-        this.proprietesDatatablesContactsPartenaires.OrdreDesElementsDeControle = "fti";
-        this.proprietesDatatablesContactsPartenaires.ajouterColonne(new ProprietesDatatablesColonne("Nom Contact", "nomContact"));
+        this.proprietesDatatablesContactsEtrangersPartenaires = new ProprietesDatatables();
+        this.proprietesDatatablesContactsEtrangersPartenaires.OrdreDesElementsDeControle = "Bfti";
+        this.proprietesDatatablesContactsEtrangersPartenaires.ajouterColonne(new ProprietesDatatablesColonne("Nom Contact Etranger", "nomContact"));
+        this.proprietesDatatablesContactsEtrangersPartenaires.ajouterBouton(new ProprietesDatatablesBouton("Ajouter Contact Etranger", this.onAjouterNouveauContactEtrangerClick));
+
+        this.proprietesDatatablesCoordinateursPartenaires = new ProprietesDatatables();
+        this.proprietesDatatablesCoordinateursPartenaires.OrdreDesElementsDeControle = "fti";
+        this.proprietesDatatablesCoordinateursPartenaires.ajouterColonne(new ProprietesDatatablesColonne("Nom Coordinateur", "nomContact"));
 
         this.proprietesDatatablesVoeuxPartenaires = new ProprietesDatatables();
         this.proprietesDatatablesVoeuxPartenaires.OrdreDesElementsDeControle = "fti";
@@ -199,7 +230,8 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
             $("#selectListeSousSpecialitesPartenaire").empty();
             $("#selectListeMobilitesPartenaire").empty();
             $("#selectListeAidesFinancieresPartenaire").empty();
-            $("#selectListeContactsPartenaire").empty();
+            $("#selectListeContactsEtrangersPartenaire").empty();
+            $("#selectListeCoordinateursPartenaire").empty();
             $("#selectListeVoeuxPartenaire").empty();
             $("#listeImagesPartenaireServeur").empty();
             $("#inputListeImagesPartenaires").removeClass("is-invalid");
@@ -235,11 +267,17 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
         $("#boutonSupprimerAideFinancierePartenaire").on("click", () => {
             this.onClickSupprimerAideFinancierePartenaire();
         });
-        $("#boutonAjouterContactPartenaire").on("click", () => {
-            this.onClickAjouterContactPartenaire();
+        $("#boutonAjouterContactEtrangerPartenaire").on("click", () => {
+            this.onClickAjouterContactEtrangerPartenaire();
         });
-        $("#boutonSupprimerContactPartenaire").on("click", () => {
-            this.onClickSupprimerContactPartenaire();
+        $("#boutonSupprimerContactEtrangerPartenaire").on("click", () => {
+            this.onClickSupprimerContactEtrangerPartenaire();
+        });
+        $("#boutonAjouterCoordinateurPartenaire").on("click", () => {
+            this.onClickAjouterCoordinateurPartenaire();
+        });
+        $("#boutonSupprimerCoordinateurPartenaire").on("click", () => {
+            this.onClickSupprimerCoordinateurPartenaire();
         });
         $("#boutonSupprimerVoeuPartenaire").on("click", () => {
             this.onClickSupprimerVoeuPartenaire();
@@ -273,8 +311,12 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
             this.datatablesAidesFinancieresPartenaires.ajusterLesColonnes();
         });
 
-        this.modalEditeContactsPartenaire.onMontrerModal(() => {
-            this.datatablesContactsPartenaires.ajusterLesColonnes();
+        this.modalEditeContactsEtrangersPartenaire.onMontrerModal(() => {
+            this.datatablesContactsEtrangersPartenaires.ajusterLesColonnes();
+        });
+
+        this.modalEditeCoordinateursPartenaire.onMontrerModal(() => {
+            this.datatablesCoordinateursPartenaires.ajusterLesColonnes();
         });
 
         this.modalValideVoeuxPartenaires.onMontrerModal(() => {
@@ -288,7 +330,6 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
     }
 
     private ajouterDomaineDeCompetenceDansSelect(domaineDeCompetence: DomaineDeCompetence): void {
-        console.log(domaineDeCompetence);
         $("#selectListeDomainesDeCompetencesPartenaire").append($("<option>", {
             value: domaineDeCompetence.IdentifiantDomaineDeCompetence,
             text: domaineDeCompetence.NomDomaineDeCompetence
@@ -332,15 +373,26 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
         $("#selectListeAidesFinancieresPartenaire option[value='" + aideFinanciere.IdentifiantAideFinanciere + "']").remove(); 
     }
 
-    private ajouterContactDansSelect(contact: Contact): void {
-        $("#selectListeContactsPartenaire").append($("<option>", {
-            value: contact.IdentifiantContact,
-            text: contact.NomContact
+    private ajouterContactEtrangerDansSelect(contactEtranger: ContactEtranger): void {
+        $("#selectListeContactsEtrangersPartenaire").append($("<option>", {
+            value: contactEtranger.IdentifiantContact,
+            text: contactEtranger.NomContact
         }));
     }
 
-    private supprimerContactDansSelect(contact: Contact): void {
-        $("#selectListeContactsPartenaire option[value='" + contact.IdentifiantContact + "']").remove(); 
+    private supprimerContactEtrangerDansSelect(contactEtranger: ContactEtranger): void {
+        $("#selectListeContactsEtrangersPartenaire option[value='" + contactEtranger.IdentifiantContact + "']").remove(); 
+    }
+
+    private ajouterCoordinateurDansSelect(coordinateur: Coordinateur): void {
+        $("#selectListeCoordinateursPartenaire").append($("<option>", {
+            value: coordinateur.IdentifiantContact,
+            text: coordinateur.NomContact
+        }));
+    }
+
+    private supprimerCoordinateurDansSelect(coordinateur: Coordinateur): void {
+        $("#selectListeCoordinateursPartenaire option[value='" + coordinateur.IdentifiantContact + "']").remove();
     }
 
     private ajouterVoeuDansSelect(voeu: Voeu): void {
@@ -427,13 +479,22 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
         return listeAidesFinancieresSelectionnees;
     }
 
-    private getListeContactsSelectionnees(): Contact[] {
-        var listeContactsSelectionnees: Contact[] = [];
-        $("#selectListeContactsPartenaire option").each((index: number, element: HTMLElement) => {
-            var identfiantContact: number = Number($(element).val());
-            listeContactsSelectionnees.push(this.plateforme.getContactAvecIdentifiant(identfiantContact));
+    private getListeContactsEtrangersSelectionnees(): ContactEtranger[] {
+        var listeContactsEtrangersSelectionnees: ContactEtranger[] = [];
+        $("#selectListeContactsEtrangersPartenaire option").each((index: number, element: HTMLElement) => {
+            var identfiantContactEtranger: number = Number($(element).val());
+            listeContactsEtrangersSelectionnees.push(this.plateforme.getContactEtrangerAvecIdentifiant(identfiantContactEtranger));
         });
-        return listeContactsSelectionnees;
+        return listeContactsEtrangersSelectionnees;
+    }
+
+    private getListeCoordinateursSelectionnees(): Coordinateur[] {
+        var listeCoordinateursSelectionnees: Coordinateur[] = [];
+        $("#selectListeCoordinateursPartenaire option").each((index: number, element: HTMLElement) => {
+            var identfiantCoordinateur: number = Number($(element).val());
+            listeCoordinateursSelectionnees.push(this.plateforme.getCoordinateurAvecIdentifiant(identfiantCoordinateur));
+        });
+        return listeCoordinateursSelectionnees;
     }
 
     private getListeVoeuxSelectionnees(): Voeu[] {
@@ -471,7 +532,8 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
         partenaire.ListeSousSpecialitesPartenaire = this.getListeSousSpecialitesSelectionnees();
         partenaire.ListeMobilitesPartenaires = this.getListeMobilitesSelectionnees();
         partenaire.ListeAidesFinancieresPartenaires = this.getListeAidesFinancieresSelectionnees();
-        partenaire.ListeContactsPartenaires = this.getListeContactsSelectionnees();
+        partenaire.ListeContactsEtrangersPartenaires = this.getListeContactsEtrangersSelectionnees();
+        partenaire.ListeCoordinateursPartenaires = this.getListeCoordinateursSelectionnees();
         partenaire.ListeVoeuxPartenaire = this.getListeVoeuxSelectionnees();
 
         $.each(($("#inputListeImagesPartenaires")[0] as HTMLInputElement).files, (indexFile: number, file: File) => {
@@ -542,6 +604,87 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
         //geocoder.setInput("Dijon, Côte-d'Or, France");
     }
 
+    private initialiserFiltres(): void {
+        this.plateforme.ListeDomainesDeCompetences.forEach((domaineDeCompetence: DomaineDeCompetence) => {
+            this.multipleSelectAvecTagDomainesDeCompetences.ajouterOptionDansSelect(new OptionMultipleSelectAvecTag(domaineDeCompetence.IdentifiantDomaineDeCompetence + "", domaineDeCompetence.NomDomaineDeCompetence));
+        });
+        this.plateforme.ListeCoutsPlateforme.forEach((cout: Cout) => {
+            this.multipleSelectAvecTagPays.ajouterOptionDansSelect(new OptionMultipleSelectAvecTag(cout.IdentifiantCout + "", cout.NomPaysCout));
+        });
+        this.plateforme.ListeSpecialitesPlateforme.forEach((specialite: Specialite) => {
+            if (specialite.ListeSousSpecialites.length > 0) {
+                this.multipleSelectAvecTagSouspecialites.ajouterOptionGroupDansSelect(specialite.NomSpecialite);
+            }
+            specialite.ListeSousSpecialites.forEach((sousSpecialite: SousSpecialite) => {
+                this.multipleSelectAvecTagSouspecialites.ajouterOptionDansSelect(new OptionMultipleSelectAvecTag(sousSpecialite.IdentifiantSousSpecialite + "", sousSpecialite.NomSousSpecialite));
+            });
+        });
+        this.plateforme.ListeMobilitesPlateforme.forEach((mobilite: Mobilite) => {
+            this.multipleSelectAvecTagMobilites.ajouterOptionDansSelect(new OptionMultipleSelectAvecTag(mobilite.IdentifiantMobilite + "", mobilite.TypeMobilite));
+        });
+
+        this.multipleSelectAvecTagDomainesDeCompetences.onChange(() => {
+            this.filtrerListePartenaires();
+        });
+        this.multipleSelectAvecTagPays.onChange(() => {
+            this.filtrerListePartenaires();
+        });
+        this.multipleSelectAvecTagSouspecialites.onChange(() => {
+            this.filtrerListePartenaires();
+        });
+        this.multipleSelectAvecTagMobilites.onChange(() => {
+            this.filtrerListePartenaires();
+        });
+    }
+
+    private filtrerListePartenaires(): void {
+        this.datatablesPartenaires.viderDatatables();
+        this.plateforme.ListePartenairesPlateforme.forEach((partenaire: Partenaire) => {
+            var resDomainesDeCompetences = false;
+            var resPays = false;
+            var resSousSpecialites = false;
+            var resMobilites = false;
+            if (this.multipleSelectAvecTagDomainesDeCompetences.getListeOptionsSelectionnee().length == 0) {
+                resDomainesDeCompetences = true;
+            }
+            if (this.multipleSelectAvecTagPays.getListeOptionsSelectionnee().length == 0) {
+                resPays = true;
+            }
+            if (this.multipleSelectAvecTagSouspecialites.getListeOptionsSelectionnee().length == 0) {
+                resSousSpecialites = true;
+            }
+            if (this.multipleSelectAvecTagMobilites.getListeOptionsSelectionnee().length == 0) {
+                resMobilites = true;
+            }
+            this.multipleSelectAvecTagDomainesDeCompetences.getListeOptionsSelectionnee().forEach((optionMultipleSelectAvecTag: OptionMultipleSelectAvecTag) => {
+                var domaineDeCompetence: DomaineDeCompetence = this.plateforme.getDomaineDeCompetenceAvecIdentifiant(Number(optionMultipleSelectAvecTag.IdentifiantOption));
+                if (partenaire.ListeDomainesDeCompetencesPartenaire.includes(domaineDeCompetence)) {
+                    resDomainesDeCompetences = true;
+                }
+            });
+            this.multipleSelectAvecTagPays.getListeOptionsSelectionnee().forEach((optionMultipleSelectAvecTag: OptionMultipleSelectAvecTag) => {
+                if (partenaire.CoutPartenaire.IdentifiantCout == Number(optionMultipleSelectAvecTag.IdentifiantOption)) {
+                    resPays = true;
+                }
+            });
+            this.multipleSelectAvecTagSouspecialites.getListeOptionsSelectionnee().forEach((optionMultipleSelectAvecTag: OptionMultipleSelectAvecTag) => {
+                var sousSpecialite: SousSpecialite = this.plateforme.getSousSpecialiteAvecIdentifiant(Number(optionMultipleSelectAvecTag.IdentifiantOption));
+                if (partenaire.ListeSousSpecialitesPartenaire.includes(sousSpecialite)) {
+                    resSousSpecialites = true;
+                }
+            });
+            this.multipleSelectAvecTagMobilites.getListeOptionsSelectionnee().forEach((optionMultipleSelectAvecTag: OptionMultipleSelectAvecTag) => {
+                var mobilite: Mobilite = this.plateforme.getMobiliteAvecIdentifiant(Number(optionMultipleSelectAvecTag.IdentifiantOption));
+                if (partenaire.ListeMobilitesPartenaires.includes(mobilite)) {
+                    resMobilites = true;
+                }
+            });
+            if (resDomainesDeCompetences && resPays && resSousSpecialites && resMobilites) {
+                this.ajoutPartenaire(partenaire);
+            }
+        });
+    }
+
     public constructor() {
         super();
         this.initialiserDatatables();
@@ -551,16 +694,31 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
     mounted() {
         this.initialiserEvenementsModals();
         this.creerMapEtGeocoder();
-        this.controleurPlateforme.inscrire(this);
-        $.when(this.controleurPlateforme.chargerListeDomainesDeCompetences(),
-            this.controleurPlateforme.chargerListeSpecialites(),
-            this.controleurPlateforme.chargerListeMobilites(),
-            this.controleurPlateforme.chargerListeAidesFinancieres(),
-            this.controleurPlateforme.chargerListeContacts(),
-            this.controleurPlateforme.chargerListeVoeux(),
-            this.controleurPlateforme.chargerListeCouts(),
-            this.controleurPlateforme.chargerListeEtatsPartenaires()).done(() => {
-                this.controleurPlateforme.chargerListePartenaires();
+        this.controleurAidesFinancieres.inscrire(this);
+        this.controleurContactsEtrangers.inscrire(this);
+        this.controleurCoordinateurs.inscrire(this);
+        this.controleurDomainesDeCompetences.inscrire(this);
+        this.controleurEtatsPartenaires.inscrire(this);
+        this.controleurMails.inscrire(this);
+        this.controleurMobilites.inscrire(this);
+        this.controleurPartenaires.inscrire(this);
+        this.controleurSpecialites.inscrire(this);
+        this.controleurVoeux.inscrire(this);
+        $.when(this.controleurDomainesDeCompetences.chargerListeDomainesDeCompetences(),
+            this.controleurSpecialites.chargerListeSpecialites(),
+            this.controleurMobilites.chargerListeMobilites(),
+            this.controleurAidesFinancieres.chargerListeAidesFinancieres(),
+            this.controleurContactsEtrangers.chargerListeContactsEtrangers(),
+            this.controleurCoordinateurs.chargerListeCoordinateurs(),
+            this.controleurVoeux.chargerListeVoeux(),
+            this.controleurPartenaires.chargerListeCouts(),
+            this.controleurEtatsPartenaires.chargerListeEtatsPartenaires()).done(() => {
+                this.controleurPartenaires.chargerListePartenaires();
+
+                this.initialiserFiltres();
+
+                $("#selectListeDomainesDeCompetencesPartenaire").empty();
+                $("#selectListeContactsEtrangersPartenaire").empty();
 
                 this.plateforme.ListeEtatsPartenairesPlateforme.forEach((etatPartenaire: EtatPartenaire) => {
                     this.ajouterEtatPartenaireDansSelect(etatPartenaire);
@@ -568,6 +726,9 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
 
                 this.plateforme.ListeSpecialitesPlateforme.forEach((specialite: Specialite) => {
                     var noeudSpecilitePartenaire = new NoeudTreeSpecifique(specialite.NomSpecialite + "", specialite.NomSpecialite);
+                    if (specialite.ListeSousSpecialites.length == 0) {
+                        noeudSpecilitePartenaire.EstInactive = true;
+                    }
                     this.treeSousSpecialitesPartenaire.ajouterNoeudRacine(noeudSpecilitePartenaire);
                     specialite.ListeSousSpecialites.forEach((sousSpecialite: SousSpecialite) => {
                         this.treeSousSpecialitesPartenaire.ajouterNoeud(new NoeudTreeSpecifique(sousSpecialite.IdentifiantSousSpecialite + "", sousSpecialite.NomSousSpecialite), noeudSpecilitePartenaire);
@@ -578,10 +739,23 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
     }
 
     beforeDestroy() {
-        this.controleurPlateforme.resilier(this);
+        this.controleurAidesFinancieres.resilier(this);
+        this.controleurContactsEtrangers.resilier(this);
+        this.controleurCoordinateurs.resilier(this);
+        this.controleurDomainesDeCompetences.resilier(this);
+        this.controleurEtatsPartenaires.resilier(this);
+        this.controleurMails.resilier(this);
+        this.controleurMobilites.resilier(this);
+        this.controleurPartenaires.resilier(this);
+        this.controleurSpecialites.resilier(this);
+        this.controleurVoeux.resilier(this);
     }
 
     private onAjouterPartenaireClick(): void {
+        if (this.plateforme.ListeEtatsPartenairesPlateforme.length == 0) {
+            this.modalInformation.afficherInformation(new InformationSerializable("Partenaire non ajoutable", "L'application ne contient aucun état partenaire.", "Pour ajouter un partenaire, au moins un Etat Partenaire doit exister dans l'application. Veuillez contacter un administrateur de l'application."));
+            return;
+        }
         $("#formGroupListeImagesPartenaireServeur").hide();
 
         $("#inputTitrePartenaire").text("Ajout Partenaire");
@@ -600,7 +774,7 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
                     $("#inputNomPaysLocalisationPartenaire").addClass("is-invalid");
                     throw new ErreurChampsNonRemplis();
                 }
-                this.controleurPlateforme.ajouterPartenaire(this.creerPartenaire());
+                this.controleurPartenaires.ajouterPartenaire(this.creerPartenaire());
                 this.modalEditePartenaire.cacherModal();
             }
             catch (erreur) {
@@ -615,7 +789,7 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
     private onSupprimerPartenaireClick(): void {
         var listePartenairesSelectionnes: Partenaire[] = this.datatablesPartenaires.getListeLignesSelectionnees();
         listePartenairesSelectionnes.forEach((partenaire: Partenaire) => {
-            this.controleurPlateforme.supprimerPartenaire(partenaire);
+            this.controleurPartenaires.supprimerPartenaire(partenaire);
         });
     }
 
@@ -653,8 +827,12 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
                 this.ajouterAideFinanciereDansSelect(aideFinanciere);
             });
 
-            premierPartenaireSelectionne.ListeContactsPartenaires.forEach((contact: Contact) => {
-                this.ajouterContactDansSelect(contact);
+            premierPartenaireSelectionne.ListeContactsEtrangersPartenaires.forEach((contactEtranger: ContactEtranger) => {
+                this.ajouterContactEtrangerDansSelect(contactEtranger);
+            });
+
+            premierPartenaireSelectionne.ListeCoordinateursPartenaires.forEach((coordinateur: Coordinateur) => {
+                this.ajouterCoordinateurDansSelect(coordinateur);
             });
 
             premierPartenaireSelectionne.ListeVoeuxPartenaire.forEach((voeu: Voeu) => {
@@ -686,7 +864,7 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
                             nouveauPartenaire.ajouterImagePartenaire(imagePartenaire);
                         }
                     });
-                    this.controleurPlateforme.modifierPartenaire(premierPartenaireSelectionne, nouveauPartenaire);
+                    this.controleurPartenaires.modifierPartenaire(premierPartenaireSelectionne, nouveauPartenaire);
                     this.modalEditePartenaire.cacherModal();
                 }
                 catch (erreur) {
@@ -708,10 +886,24 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
         $("#boutonEditeDomaineDeCompetence").on("click", () => {
             var domaineDeCompetence = new DomaineDeCompetence();
             domaineDeCompetence.NomDomaineDeCompetence = $("#inputNomDomaineDeCompetence").val() as string;
-            this.controleurPlateforme.ajouterDomaineDeCompetence(domaineDeCompetence);
-            //a faire après notification
-            this.ajouterDomaineDeCompetenceDansSelect(domaineDeCompetence);
+            this.controleurDomainesDeCompetences.ajouterDomaineDeCompetence(domaineDeCompetence);
             this.modalEditeDomaineDeCompetence.cacherModal();
+        });
+    }
+
+    private onAjouterNouveauContactEtrangerClick(): void {
+        $("#inputTitreContactEtranger").text("Ajout Contact Etranger :");
+        this.modalEditeContactsEtrangersPartenaire.cacherModal();
+        this.modalEditeContactEtranger.montrerModal();
+        $("#boutonEditeContactEtranger").off();
+        $("#boutonEditeContactEtranger").on("click", () => {
+            var contactEtranger = new ContactEtranger();
+            contactEtranger.NomContact = $("#inputNomContactEtranger").val() as string;
+            contactEtranger.PrenomContact = $("#inputPrenomContactEtranger").val() as string;
+            contactEtranger.AdresseMailContact = $("#inputAdresseMailContactEtranger").val() as string;
+            contactEtranger.FonctionContact = $("#inputFonctionContactEtranger").val() as string;
+            this.controleurContactsEtrangers.ajouterContactEtranger(contactEtranger);
+            this.modalEditeContactEtranger.cacherModal();
         });
     }
 
@@ -809,33 +1001,62 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
             this.modalEditeAidesFinancieresPartenaire.cacherModal();
         });
     }
+
     private onClickSupprimerAideFinancierePartenaire(): void {
         $.each($("#selectListeAidesFinancieresPartenaire").val(), (indexAideFinanciere, identifiantAideFinanciere) => {
             this.supprimerAideFinanciereDansSelect(this.plateforme.getAideFinanciereAvecIdentifiant(Number(identifiantAideFinanciere)));
         });
     }
-    private onClickAjouterContactPartenaire(): void {
-        $("#inputTitreContactsPartenaire").text("Ajout Contacts dans le partenaire :");
-        this.datatablesContactsPartenaires.viderDatatables();
-        var listeContactsSelectionnes: Contact[] = this.getListeContactsSelectionnees();
-        this.plateforme.ListeContactsPlateforme.forEach((contact: Contact) => {
-            if (!listeContactsSelectionnes.includes(contact)) {
-                this.datatablesContactsPartenaires.ajouterLigneDansDatatables(contact);
+
+    private onClickAjouterContactEtrangerPartenaire(): void {
+        $("#inputTitreContactsEtrangersPartenaire").text("Ajout Contacts Etrangers dans le partenaire :");
+        this.datatablesContactsEtrangersPartenaires.viderDatatables();
+        var listeContactsEtrangersSelectionnes: Contact[] = this.getListeContactsEtrangersSelectionnees();
+        this.plateforme.ListeContactsEtrangersPlateforme.forEach((contactEtranger: ContactEtranger) => {
+            if (!listeContactsEtrangersSelectionnes.includes(contactEtranger)) {
+                this.datatablesContactsEtrangersPartenaires.ajouterLigneDansDatatables(contactEtranger);
             }
         });
-        this.modalEditeContactsPartenaire.montrerModal();
-        $("#boutonEditeContactsPartenaire").off();
-        $("#boutonEditeContactsPartenaire").on("click", () => {
-            var listeContactsAAjouter: Contact[] = this.datatablesContactsPartenaires.getListeLignesSelectionnees();
-            listeContactsAAjouter.forEach((contact: Contact) => {
-                this.ajouterContactDansSelect(contact);
+        this.modalEditeContactsEtrangersPartenaire.montrerModal();
+        $("#boutonEditeContactsEtrangersPartenaire").off();
+        $("#boutonEditeContactsEtrangersPartenaire").on("click", () => {
+            var listeContactsEtrangersAAjouter: ContactEtranger[] = this.datatablesContactsEtrangersPartenaires.getListeLignesSelectionnees();
+            listeContactsEtrangersAAjouter.forEach((contactEtranger: ContactEtranger) => {
+                this.ajouterContactEtrangerDansSelect(contactEtranger);
             });
-            this.modalEditeContactsPartenaire.cacherModal();
+            this.modalEditeContactsEtrangersPartenaire.cacherModal();
         });
     }
-    private onClickSupprimerContactPartenaire(): void {
-        $.each($("#selectListeContactsPartenaire").val(), (indexContact, identifiantContact) => {
-            this.supprimerContactDansSelect(this.plateforme.getContactAvecIdentifiant(Number(identifiantContact)));
+
+    private onClickSupprimerContactEtrangerPartenaire(): void {
+        $.each($("#selectListeContactsEtrangersPartenaire").val(), (indexContactEtranger, identifiantContactEtranger) => {
+            this.supprimerContactEtrangerDansSelect(this.plateforme.getContactEtrangerAvecIdentifiant(Number(identifiantContactEtranger)));
+        });
+    }
+
+    private onClickAjouterCoordinateurPartenaire(): void {
+        $("#inputTitreCoordinateursPartenaire").text("Ajout Coordinateurs dans le partenaire :");
+        this.datatablesCoordinateursPartenaires.viderDatatables();
+        var listeCoordinateursSelectionnes: Coordinateur[] = this.getListeCoordinateursSelectionnees();
+        this.plateforme.ListeCoordinateursPlateforme.forEach((coordinateur: Coordinateur) => {
+            if (!listeCoordinateursSelectionnes.includes(coordinateur)) {
+                this.datatablesCoordinateursPartenaires.ajouterLigneDansDatatables(coordinateur);
+            }
+        });
+        this.modalEditeCoordinateursPartenaire.montrerModal();
+        $("#boutonEditeCoordinateursPartenaire").off();
+        $("#boutonEditeCoordinateursPartenaire").on("click", () => {
+            var listeCoordinateursAAjouter: Coordinateur[] = this.datatablesCoordinateursPartenaires.getListeLignesSelectionnees();
+            listeCoordinateursAAjouter.forEach((coordinateur: Coordinateur) => {
+                this.ajouterCoordinateurDansSelect(coordinateur);
+            });
+            this.modalEditeCoordinateursPartenaire.cacherModal();
+        });
+    }
+
+    private onClickSupprimerCoordinateurPartenaire(): void {
+        $.each($("#selectListeCoordinateursPartenaire").val(), (indexCoordinateur, identifiantCoordinateur) => {
+            this.supprimerCoordinateurDansSelect(this.plateforme.getCoordinateurAvecIdentifiant(Number(identifiantCoordinateur)));
         });
     }
 
@@ -869,7 +1090,7 @@ export default class VuePartenaire extends Vue implements IVuePlateforme {
                         this.modalInformation.afficherInformation(new InformationSerializable("Adresse mail incorrecte", "L'adresse mail spécifiée n'est pas une adresse mail étudiant de l'université de bourgogne.", "Veuillez utiliser votre adresse de l'université de bourgogne. Celle-ci se termine par @etu.u-bourgogne.fr."));
                     }
                     else {
-                        this.controleurPlateforme.validerListeVoeuxPartenaires(listePartenairesSelectionnes, adresseMailVoeux);
+                        this.controleurMails.validerListeVoeuxPartenaires(listePartenairesSelectionnes, adresseMailVoeux);
                         this.modalValideVoeuxPartenaires.cacherModal();
                     }
                 }

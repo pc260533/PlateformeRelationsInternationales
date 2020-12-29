@@ -75,6 +75,19 @@ export default class Datatables<TypeLigne extends object> extends Vue {
         this.datatables.row.add(ligne).draw();
     }
 
+    public supprimerLigne(ligne: TypeLigne) {
+        var indexLigneASupprimer = null;
+        this.datatables.rows().data().each((typeLigne: TypeLigne, index: number) => {
+            if (typeLigne == ligne) {
+                indexLigneASupprimer = index;
+            }
+        });
+        if (indexLigneASupprimer != null) {
+            this.datatables.row(indexLigneASupprimer).remove();
+            this.datatables.draw(false);
+        }
+    }
+
     public supprimerLigneSelectionneeDansDatatables(): void {
         this.datatables.row(".selected").remove();
         this.datatables.draw(false);

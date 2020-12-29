@@ -1,6 +1,6 @@
-﻿import { IVuePlateforme } from "../ivuePlateforme";
+﻿import { IVueAidesFinancieres } from "./ivueAidesFinancieres";
 import { Plateforme } from "../modelePlateforme/plateforme";
-import { ControleurPlateforme } from "../controleurPlateforme";
+import { ControleurAidesFinancieres } from "../controleursPlateforme/controleurAidesFinancieres";
 import { Partenaire } from "../modelePlateforme/partenaire";
 import { SousSpecialite } from "../modelePlateforme/sousspecialite";
 import { Mobilite } from "../modelePlateforme/mobilite";
@@ -31,9 +31,9 @@ import { Component, Prop, Vue, Ref } from "vue-property-decorator";
         ModalErreur
     }
 })
-export default class VueAidesFinancieres extends Vue implements IVuePlateforme {
+export default class VueAidesFinancieres extends Vue implements IVueAidesFinancieres {
     @Prop() private plateforme!: Plateforme;
-    @Prop() private controleurPlateforme!: ControleurPlateforme;
+    @Prop() private controleurAidesFinancieres!: ControleurAidesFinancieres;
 
     @Ref("datatablesAidesFinancieres") readonly datatablesAidesFinancieres!: Datatables<AideFinanciere>;
     @Ref("modalEditeAideFinanciere") readonly modalEditeAideFinanciere!: ModalSpecifique;
@@ -50,18 +50,6 @@ export default class VueAidesFinancieres extends Vue implements IVuePlateforme {
 
     }
 
-    public ajoutPartenaire(partenaire: Partenaire): void {
-
-    }
-
-    public modificationPartenaire(partenaire: Partenaire): void {
-
-    }
-
-    public suppressionPartenaire(partenaire: Partenaire): void {
-
-    }
-
     public ajoutAideFinanciere(aideFinanciere: AideFinanciere): void {
         this.datatablesAidesFinancieres.ajouterLigneDansDatatables(aideFinanciere);
     }
@@ -72,26 +60,6 @@ export default class VueAidesFinancieres extends Vue implements IVuePlateforme {
 
     public modificationAideFinanciere(aideFinanciere: AideFinanciere): void {
         this.datatablesAidesFinancieres.modifierLigneSelectionneeDansDatatables(aideFinanciere);
-    }
-
-    public ajoutContact(contact: Contact): void {
-
-    }
-
-    public suppressionContact(contact: Contact): void {
-
-    }
-
-    public modificationContact(contact: Contact): void {
-
-    }
-
-    public ajoutCout(cout: Cout): void {
-
-    }
-
-    public modificationCout(cout: Cout): void {
-
     }
 
     private initialiserDatatables() {
@@ -131,12 +99,12 @@ export default class VueAidesFinancieres extends Vue implements IVuePlateforme {
 
     mounted() {
         this.initialiserEvenementsModals();
-        this.controleurPlateforme.inscrire(this);
-        this.controleurPlateforme.chargerListeAidesFinancieres();
+        this.controleurAidesFinancieres.inscrire(this);
+        this.controleurAidesFinancieres.chargerListeAidesFinancieres();
     }
 
     beforeDestroy() {
-        this.controleurPlateforme.resilier(this);
+        this.controleurAidesFinancieres.resilier(this);
     }
 
     private onClickAjouterAideFinanciere(): void {
@@ -144,7 +112,7 @@ export default class VueAidesFinancieres extends Vue implements IVuePlateforme {
         this.modalEditeAideFinanciere.montrerModal();
         $("#boutonEditeAideFinanciere").off();
         $("#boutonEditeAideFinanciere").on("click", () => {
-            this.controleurPlateforme.ajouterAideFinanciere(this.creerAideFinanciere());
+            this.controleurAidesFinancieres.ajouterAideFinanciere(this.creerAideFinanciere());
             this.modalEditeAideFinanciere.cacherModal();
         });
     }
@@ -152,7 +120,7 @@ export default class VueAidesFinancieres extends Vue implements IVuePlateforme {
     private onClickSupprimerAideFinanciere(): void {
         var listeAidesFinancieresSelectionnes: AideFinanciere[] = this.datatablesAidesFinancieres.getListeLignesSelectionnees();
         listeAidesFinancieresSelectionnes.forEach((aideFinanciere: AideFinanciere) => {
-            this.controleurPlateforme.supprimerAideFinanciere(aideFinanciere);
+            this.controleurAidesFinancieres.supprimerAideFinanciere(aideFinanciere);
         });
     }
 
@@ -168,7 +136,7 @@ export default class VueAidesFinancieres extends Vue implements IVuePlateforme {
             this.modalEditeAideFinanciere.montrerModal();
             $("#boutonEditeAideFinanciere").off();
             $("#boutonEditeAideFinanciere").on("click", () => {
-                this.controleurPlateforme.modifierAideFinanciere(premiereAideFinanciereSelectionnee, this.creerAideFinanciere());
+                this.controleurAidesFinancieres.modifierAideFinanciere(premiereAideFinanciereSelectionnee, this.creerAideFinanciere());
                 this.modalEditeAideFinanciere.cacherModal();
             });
         }

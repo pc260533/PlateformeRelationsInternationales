@@ -14,6 +14,56 @@ class StockageEtatsPartenaires extends StockageBaseDeDonnees {
 		parent::__construct($dataSourceName, $username, $password);
 	}
 
+	public function ajouterEtatPartenaire(EtatPartenaire $etatPartenaire): void {
+		try {
+			$this->pdo->beginTransaction();
+			$requete = "INSERT INTO ETATPARTENAIRE(NOMETATPARTENAIRE) VALUES (:nometatpartenaire);";
+			$statement = $this->pdo->prepare($requete);
+			$statement->bindValue(":nometatpartenaire", $etatPartenaire->getNomEtatPartenaire(), PDO::PARAM_STR);
+			$statement->execute();
+			$etatPartenaire->setIdentifiantEtatPartenaire(intval($this->pdo->lastInsertId()));
+			$this->pdo->commit();
+		}
+		catch (PDOException $exception) {
+			$this->pdo->rollBack();
+			throw new ExceptionBaseDeDonneesPlateforme($exception);
+		}
+	}
+
+	public function supprimerEtatPartenaire(EtatPartenaire $etatPartenaire): void {
+		try {
+			$this->pdo->beginTransaction();
+			$requete = "DELETE FROM ETATPARTENAIRE " .
+					   "WHERE IDENTIFIANTETATPARTENAIRE = :identifiantetatpartenaire;";
+			$statement = $this->pdo->prepare($requete);
+			$statement->bindValue(":identifiantetatpartenaire", $etatPartenaire->getIdentifiantEtatPartenaire(), PDO::PARAM_INT);
+			$statement->execute();
+			$this->pdo->commit();
+		}
+		catch (PDOException $exception) {
+			$this->pdo->rollBack();
+			throw new ExceptionBaseDeDonneesPlateforme($exception);
+		}
+	}
+
+	public function modifierEtatPartenaire(EtatPartenaire $etatPartenaire): void {
+		try {
+			$this->pdo->beginTransaction();
+			$requete = "UPDATE ETATPARTENAIRE " .
+					   "SET NOMETATPARTENAIRE = :nometatpartenaire " .
+					   "WHERE IDENTIFIANTETATPARTENAIRE = :identifiantetatpartenaire;";
+			$statement = $this->pdo->prepare($requete);
+			$statement->bindValue(":nometatpartenaire", $etatPartenaire->getNomEtatPartenaire(), PDO::PARAM_STR);
+			$statement->bindValue(":identifiantetatpartenaire", $etatPartenaire->getIdentifiantEtatPartenaire(), PDO::PARAM_INT);
+			$statement->execute();
+			$this->pdo->commit();
+		}
+		catch (PDOException $exception) {
+			$this->pdo->rollBack();
+			throw new ExceptionBaseDeDonneesPlateforme($exception);
+		}
+	}
+
 	public function chargerListeEtatsPartenaires(): array {
 		try {
 			$listeEtatsPartenaires = array();

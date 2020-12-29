@@ -1,6 +1,15 @@
-﻿import { IVuePlateforme } from "../ivuePlateforme";
+﻿import { IVueCouts } from "./ivueCouts";
 import { Plateforme } from "../modelePlateforme/plateforme";
-import { ControleurPlateforme } from "../controleurPlateforme";
+import { ControleurAidesFinancieres } from "../controleursPlateforme/controleurAidesFinancieres";
+import { ControleurContactsEtrangers } from "../controleursPlateforme/controleurContactsEtrangers";
+import { ControleurCoordinateurs } from "../controleursPlateforme/controleurCoordinateurs";
+import { ControleurDomainesDeCompetences } from "../controleursPlateforme/controleurDomainesDeCompetences";
+import { ControleurEtatsPartenaires } from "../controleursPlateforme/controleurEtatsPartenaires";
+import { ControleurMails } from "../controleursPlateforme/controleurMails";
+import { ControleurMobilites } from "../controleursPlateforme/controleurMobilites";
+import { ControleurPartenaires } from "../controleursPlateforme/controleurPartenaires";
+import { ControleurSpecialites } from "../controleursPlateforme/controleurSpecialites";
+import { ControleurVoeux } from "../controleursPlateforme/controleurVoeux";
 import { Partenaire } from "../modelePlateforme/partenaire";
 import { SousSpecialite } from "../modelePlateforme/sousspecialite";
 import { Mobilite } from "../modelePlateforme/mobilite";
@@ -31,9 +40,18 @@ import { Component, Prop, Vue, Ref } from "vue-property-decorator";
         ModalErreur
     }
 })
-export default class VueCouts extends Vue implements IVuePlateforme {
+export default class VueCouts extends Vue implements IVueCouts {
     @Prop() private plateforme!: Plateforme;
-    @Prop() private controleurPlateforme!: ControleurPlateforme;
+    @Prop() private controleurAidesFinancieres!: ControleurAidesFinancieres;
+    @Prop() private controleurContactsEtrangers!: ControleurContactsEtrangers;
+    @Prop() private controleurCoordinateurs!: ControleurCoordinateurs;
+    @Prop() private controleurDomainesDeCompetences!: ControleurDomainesDeCompetences;
+    @Prop() private controleurEtatsPartenaires!: ControleurEtatsPartenaires;
+    @Prop() private controleurMails!: ControleurMails;
+    @Prop() private controleurMobilites!: ControleurMobilites;
+    @Prop() private controleurPartenaires!: ControleurPartenaires;
+    @Prop() private controleurSpecialites!: ControleurSpecialites;
+    @Prop() private controleurVoeux!: ControleurVoeux;
 
     @Ref("datatablesCouts") readonly datatablesCouts!: Datatables<Cout>;
     @Ref("modalEditeCout") readonly modalEditeCout!: ModalSpecifique;
@@ -47,42 +65,6 @@ export default class VueCouts extends Vue implements IVuePlateforme {
     }
 
     public afficheInformation(information: InformationSerializable): void {
-
-    }
-
-    public ajoutPartenaire(partenaire: Partenaire): void {
-        //this.datatablesCouts.modifierLigneSelectionneeDansDatatables(partenaire.CoutPartenaire);
-    }
-
-    public modificationPartenaire(partenaire: Partenaire): void {
-
-    }
-
-    public suppressionPartenaire(partenaire: Partenaire): void {
-
-    }
-
-    public ajoutAideFinanciere(aideFinanciere: AideFinanciere): void {
-
-    }
-
-    public suppressionAideFinanciere(aideFinanciere: AideFinanciere): void {
-
-    }
-
-    public modificationAideFinanciere(aideFinanciere: AideFinanciere): void {
-
-    }
-
-    public ajoutContact(contact: Contact): void {
-
-    }
-
-    public suppressionContact(contact: Contact): void {
-
-    }
-
-    public modificationContact(contact: Contact): void {
 
     }
 
@@ -124,22 +106,43 @@ export default class VueCouts extends Vue implements IVuePlateforme {
     }
 
     mounted() {
-        this.controleurPlateforme.inscrire(this);
+        this.controleurAidesFinancieres.inscrire(this);
+        this.controleurContactsEtrangers.inscrire(this);
+        this.controleurCoordinateurs.inscrire(this);
+        this.controleurDomainesDeCompetences.inscrire(this);
+        this.controleurEtatsPartenaires.inscrire(this);
+        this.controleurMails.inscrire(this);
+        this.controleurMobilites.inscrire(this);
+        this.controleurPartenaires.inscrire(this);
+        this.controleurSpecialites.inscrire(this);
+        this.controleurVoeux.inscrire(this);
         this.initialiserEvenementsModals();
-        $.when(this.controleurPlateforme.chargerListeSpecialites(),
-            this.controleurPlateforme.chargerListeMobilites(),
-            this.controleurPlateforme.chargerListeAidesFinancieres(),
-            this.controleurPlateforme.chargerListeContacts(),
-            this.controleurPlateforme.chargerListeCouts()).done(() => {
-                $.when(this.controleurPlateforme.chargerListePartenaires()).done(() => {
+        $.when(this.controleurDomainesDeCompetences.chargerListeDomainesDeCompetences(),
+            this.controleurSpecialites.chargerListeSpecialites(),
+            this.controleurMobilites.chargerListeMobilites(),
+            this.controleurAidesFinancieres.chargerListeAidesFinancieres(),
+            this.controleurContactsEtrangers.chargerListeContactsEtrangers(),
+            this.controleurCoordinateurs.chargerListeCoordinateurs(),
+            this.controleurVoeux.chargerListeVoeux(),
+            this.controleurPartenaires.chargerListeCouts(),
+            this.controleurEtatsPartenaires.chargerListeEtatsPartenaires()).done(() => {
+                $.when(this.controleurPartenaires.chargerListePartenaires()).done(() => {
                     this.datatablesCouts.redessinerDatatables();
                 });
             });
     }
 
     beforeDestroy() {
-        this.controleurPlateforme.resilier(this);
-    }
+        this.controleurAidesFinancieres.resilier(this);
+        this.controleurContactsEtrangers.resilier(this);
+        this.controleurCoordinateurs.resilier(this);
+        this.controleurDomainesDeCompetences.resilier(this);
+        this.controleurEtatsPartenaires.resilier(this);
+        this.controleurMails.resilier(this);
+        this.controleurMobilites.resilier(this);
+        this.controleurPartenaires.resilier(this);
+        this.controleurSpecialites.resilier(this);
+        this.controleurVoeux.resilier(this);    }
 
     private onClickModifierCout(): void {
         var listeCoutsSelectionne: Cout[] = this.datatablesCouts.getListeLignesSelectionnees();
@@ -154,7 +157,7 @@ export default class VueCouts extends Vue implements IVuePlateforme {
             this.modalEditeCout.montrerModal();
             $("#boutonEditeCout").off();
             $("#boutonEditeCout").on("click", () => {
-                this.controleurPlateforme.modifierCout(premierCoutSelectionne, this.creerCout());
+                this.controleurPartenaires.modifierCout(premierCoutSelectionne, this.creerCout());
                 this.modalEditeCout.cacherModal();
             });
         }

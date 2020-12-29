@@ -14,15 +14,16 @@ class StockageContacts extends StockageBaseDeDonnees {
 		parent::__construct($dataSourceName, $username, $password);
 	}
 
-	public function ajouterContact(Contact $contact): void {
+	public function ajouterContact(Contact $contact, bool $estCoordinateur): void {
 		try {
 			$this->pdo->beginTransaction();
-			$requete = "INSERT INTO CONTACT(NOMCONTACT, PRENOMCONTACT, ADRESSEMAILCONTACT, FONCTIONCONTACT) VALUES (:nomcontact, :prenomcontact, :adressemailcontact, :fonctioncontact);";
+			$requete = "INSERT INTO CONTACT(NOMCONTACT, PRENOMCONTACT, ADRESSEMAILCONTACT, FONCTIONCONTACT, ESTCOORDINATEUR) VALUES (:nomcontact, :prenomcontact, :adressemailcontact, :fonctioncontact, :estcoordinateur);";
 			$statement = $this->pdo->prepare($requete);
 			$statement->bindValue(":nomcontact", $contact->getNomContact(), PDO::PARAM_STR);
 			$statement->bindValue(":prenomcontact", $contact->getPrenomContact(), PDO::PARAM_STR);
 			$statement->bindValue(":adressemailcontact", $contact->getAdresseMailContact(), PDO::PARAM_STR);
 			$statement->bindValue(":fonctioncontact", $contact->getFonctionContact(), PDO::PARAM_STR);
+			$statement->bindValue(":estcoordinateur", $estCoordinateur, PDO::PARAM_BOOL);
 			$statement->execute();
 			$contact->setIdentifiantContact(intval($this->pdo->lastInsertId()));
 			$this->pdo->commit();
@@ -70,22 +71,61 @@ class StockageContacts extends StockageBaseDeDonnees {
 		}
 	}
 
-	public function chargerListeContacts(): array {
+	public function chargerListeContactsContactsEtrangers(): array {
 		try {
 			$listeContacts = array();
-			$requete = "SELECT IDENTIFIANTCONTACT, NOMCONTACT, PRENOMCONTACT, ADRESSEMAILCONTACT, FONCTIONCONTACT ".
+			$requete = "SELECT IDENTIFIANTCONTACT, NOMCONTACT, PRENOMCONTACT, ADRESSEMAILCONTACT, FONCTIONCONTACT, ESTCOORDINATEUR ".
 					   "FROM CONTACT;";
 			$statement = $this->pdo->prepare($requete);
 			$statement->execute();
 			$donnees = $statement->fetchAll();
 			foreach ($donnees as $ligne) {
-				$contact = new Contact();
-				$contact->setIdentifiantContact($ligne["IDENTIFIANTCONTACT"]);
-				$contact->setNomContact($ligne["NOMCONTACT"]);
-				$contact->setPrenomContact($ligne["PRENOMCONTACT"]);
-				$contact->setAdresseMailContact($ligne["ADRESSEMAILCONTACT"]);
-				$contact->setFonctionContact($ligne["FONCTIONCONTACT"]);
-				$listeContacts[] = $contact->getObjetSerializable();
+				$estCoordinateur = $ligne["ESTCOORDINATEUR"];
+				if (!$estCoordinateur) {
+					$contact = new Coordinateur();
+					$contact->setIdentifiantContact($ligne["IDENTIFIANTCONTACT"]);
+					$contact->setNomContact($ligne["NOMCONTACT"]);
+					$contact->setPrenomContact($ligne["PRENOMCONTACT"]);
+					$contact->setAdresseMailContact($ligne["ADRESSEMAILCONTACT"]);
+					$contact->setFonctionContact($ligne["FONCTIONCONTACT"]);
+					$listeContacts[] = $contact->getObjetSerializable();
+				}
+			}
+			return $listeContacts;
+		}
+		catch (PDOException $exception) {
+			throw new ExceptionBaseDeDonneesPlateforme($exception);
+		}
+		catch (TypeError $exception) {
+			throw new ExceptionBaseDeDonneesPlateforme($exception);
+		}
+		catch (Exception $exception) {
+			throw new ExceptionBaseDeDonneesPlateforme($exception);
+		}
+		catch (Throwable $exception) {
+			throw new ExceptionBaseDeDonneesPlateforme($exception);
+		}
+	}
+
+	public function chargerListeContactsCoordinateurs(): array {
+		try {
+			$listeContacts = array();
+			$requete = "SELECT IDENTIFIANTCONTACT, NOMCONTACT, PRENOMCONTACT, ADRESSEMAILCONTACT, FONCTIONCONTACT, ESTCOORDINATEUR ".
+					   "FROM CONTACT;";
+			$statement = $this->pdo->prepare($requete);
+			$statement->execute();
+			$donnees = $statement->fetchAll();
+			foreach ($donnees as $ligne) {
+				$estCoordinateur = $ligne["ESTCOORDINATEUR"];
+				if ($estCoordinateur) {
+					$contact = new Coordinateur();
+					$contact->setIdentifiantContact($ligne["IDENTIFIANTCONTACT"]);
+					$contact->setNomContact($ligne["NOMCONTACT"]);
+					$contact->setPrenomContact($ligne["PRENOMCONTACT"]);
+					$contact->setAdresseMailContact($ligne["ADRESSEMAILCONTACT"]);
+					$contact->setFonctionContact($ligne["FONCTIONCONTACT"]);
+					$listeContacts[] = $contact->getObjetSerializable();
+				}
 			}
 			return $listeContacts;
 		}
