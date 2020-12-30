@@ -189,7 +189,7 @@ $app->get("/erreur", function (Request $request, Response $response, $args) {
 
 $app->get("/[{path:.*}]", function (Request $request, Response $response, $args) {
 	try {
-		$installeurBaseDeDonnee = new InstalleurBaseDeDonnees(getVariableEnvironnement("DATASOURCENAME_BASEDEDONNEE"), getVariableEnvironnement("USERNAME_BASEDEDONNEE"), getVariableEnvironnement("PASSWORD_BASEDEDONNEE"));
+		$installeurBaseDeDonnee = new InstalleurBaseDeDonnees(getVariableEnvironnement("DATASOURCENAME_BASEDEDONNEE"), getVariableEnvironnement("USERNAME_BASEDEDONNEE"), getVariableEnvironnement("PASSWORD_BASEDEDONNEE"), getVariableEnvironnement("DATABASENAME_BASEDEDONNEEPLATEFORME"));
 		$installeurBaseDeDonnee->initialiserBaseDeDonnees();
 		$templatePageApplication = "./php/templates/templatePageApplication.php";
 		if (file_exists($templatePageApplication)) {

@@ -33,17 +33,12 @@ export default class VueDeconnexion extends Vue implements IVuePlateforme {
 
     public constructor() {
         super();
-        this.controleurAuthentification.inscrire(this);
     }
 
     mounted() {
+        this.controleurAuthentification.inscrire(this);
         if (this.plateforme.UtilisateurConnecte != null) {
             this.controleurAuthentification.deconnecterUtilisateur(this.plateforme.UtilisateurConnecte);
-            /*$.when(this.controleurAuthentification.deconnecterUtilisateur(this.plateforme.UtilisateurConnecte)).done(() => {
-                this.$router.push("accueil");
-            }).fail(() => {
-                this.$router.push("accueil");
-            });*/
         }
     }
 

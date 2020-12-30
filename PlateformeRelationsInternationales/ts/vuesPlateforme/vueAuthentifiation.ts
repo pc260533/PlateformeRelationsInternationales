@@ -46,10 +46,10 @@ export default class VueAuthentification extends Vue implements IVuePlateforme {
 
     public constructor() {
         super();
-        this.controleurAuthentification.inscrire(this);
     }
 
     mounted() {
+        this.controleurAuthentification.inscrire(this);
         this.initialiserEvenements();
     }
 

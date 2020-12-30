@@ -285,7 +285,7 @@ export class ControleurPartenaires extends ControleurPlateforme {
         return $.ajax({
             url: "api/couts",
             method: "post",
-            data: cout.getObjetSerializable(),
+            data: { utilisateur: this.modelePlateforme.UtilisateurConnecte.getObjetSerializableId(), cout: cout.getObjetSerializable() },
             success: function (resultat) {
                 cout.IdentifiantCout = resultat.identifiantCout;
                 that.modelePlateforme.ajouterCout(cout);
