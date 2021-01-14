@@ -14,8 +14,6 @@ module.exports = {
         publicPath: "/dist/",
     },
 
-    mode: "development",
-
     resolve: {
         extensions: [".ts", ".tsx", ".js", ".json", ".html"],
         alias: {

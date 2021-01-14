@@ -277,6 +277,8 @@
     <Content Include="ts\vuesPlateforme\vueMails.ts" />
     <Content Include="ts\vuesPlateforme\vuePartenaires.ts" />
     <Content Include="Web.config" />
-    <Content Include="webpack.config.js" />
+    <Content Include="webpack.config.prod.js" />
+    <Content Include="webpack.config.dev.js" />
+    <Content Include="webpack.config.common.js" />
   </ItemGroup>
 </Project>
