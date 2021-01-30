@@ -6,6 +6,7 @@
  * @author Pierre-Nicolas
  */
 class PageApplication extends Page {
+
 	/**
 	 * Constructeur sans paramètres.
 	 */

@@ -138,7 +138,7 @@ export default class VueMails extends Vue implements IVuePartenaires, IVueMails,
         this.proprietesDatatablesTemplatesMails.ajouterColonne(new ProprietesDatatablesColonne("Nom Template Mail", "nomTemplateMail"));
         if (this.plateforme.UtilisateurConnecte) {
             this.proprietesDatatablesPartenaires.ajouterBouton(new ProprietesDatatablesBouton("Envoyer mail partenaire", this.onClickEnvoyerMailPartenaire));
-            this.proprietesDatatablesPartenaires.ajouterBouton(new ProprietesDatatablesBouton("Voir l'historique des envoies partenaire", this.onClickVoirHistoriqueMailsPartenaire));
+            this.proprietesDatatablesPartenaires.ajouterBouton(new ProprietesDatatablesBouton("Voir l'historique des envois partenaire", this.onClickVoirHistoriqueMailsPartenaire));
             this.proprietesHistoriqueMailsPartenaire.ajouterBouton(new ProprietesDatatablesBouton("Voir le détail du mail", this.onClickVoirDetailMailPartenaire));
             this.proprietesHistoriqueMailsPartenaire.ajouterBouton(new ProprietesDatatablesBouton("Supprimer Mail", this.onClickSupprimerMail));
             this.proprietesDatatablesTemplatesMails.ajouterBouton(new ProprietesDatatablesBouton("Ajouter Template Mail", this.onClickAjouterTemplateMail));
@@ -333,7 +333,7 @@ export default class VueMails extends Vue implements IVuePartenaires, IVueMails,
         var listePartenairesSelectionnes: Partenaire[] = this.datatablesPartenaires.getListeLignesSelectionnees();
         if (listePartenairesSelectionnes.length > 0) {
             var premierPartenaireSelectionne: Partenaire = listePartenairesSelectionnes[0];
-            $("#inputTitreMailPartenaire").text("Envoyer mail au partenaire: " + premierPartenaireSelectionne.NomPartenaire);
+            $("#inputTitreMailPartenaire").text("Envoyer mail au partenaire : " + premierPartenaireSelectionne.NomPartenaire);
             $("#inputEstEnvoye").prop("checked", false);
             $("#inputDateEnvoie").prop("disabled", true);
             $("#selectTemplateMail").append($("<option>", {
@@ -502,7 +502,7 @@ export default class VueMails extends Vue implements IVuePartenaires, IVueMails,
         var listeTemplatesMailsSelectionnes: TemplateMail[] = this.datatablesTemplatesMails.getListeLignesSelectionnees();
         if (listeTemplatesMailsSelectionnes.length > 0) {
             var premiereTemplateMailSelectionne: TemplateMail = listeTemplatesMailsSelectionnes[0];
-            $("#inputTitreTemplateMail").text("Modifiaction Template Mail : " + premiereTemplateMailSelectionne.NomTemplateMail);
+            $("#inputTitreTemplateMail").text("Modification Template Mail : " + premiereTemplateMailSelectionne.NomTemplateMail);
             $("#inputIdentifiantTemplateMail").val(premiereTemplateMailSelectionne.IdentifiantTemplateMail);
             $("#inputNomTemplateMail").val(premiereTemplateMailSelectionne.NomTemplateMail);
             $("#inputSujetTemplateMail").val(premiereTemplateMailSelectionne.SujetTemplateMail);

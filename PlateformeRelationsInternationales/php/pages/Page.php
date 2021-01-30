@@ -6,6 +6,7 @@
  * @author Pierre-Nicolas
  */
 abstract class Page {
+
 	/**
 	 * Le chemin du fichier de template.
 	 * @var mixed

@@ -1,15 +1,19 @@
 <?php
 
 /**
- * StockageSpecialites short summary.
  *
- * StockageSpecialites description.
+ * StockageSpecialites est la classe fournissant l'accès aux spécialités de la base de données Plateforme.
+ * Elle hérite de StockageBaseDeDonnees.
  *
  * @version 1.0
- * @author Jean-Claude
+ * @author Pierre-Nicolas
  */
 class StockageSpecialites extends StockageBaseDeDonnees {
 
+	/**
+	 * Charger la liste des sous spécialités d'une spécialité.
+	 * @param Specialite $specialite La spécialité à charger.
+	 */
 	private function chargerListeSousSpecialites(Specialite $specialite): void {
 		$requete = "SELECT IDENTIFIANTSOUSSPECIALITE, NOMSOUSSPECIALITE ".
 				   "FROM SOUSSPECIALITE ".
@@ -26,10 +30,22 @@ class StockageSpecialites extends StockageBaseDeDonnees {
 		}
 	}
 
+	/**
+	 * Constructeur StockageSpecialites prenant en paramètre le dataSourceName, le nom d'utilisateur et le mot de passe de la base de données.
+	 * @param string $dataSourceName Le dataSourceName de la base de données.
+	 * @param string $username Le nom d'utilisateur de la base de données.
+	 * @param string $password Le mot de passe de la base de données.
+	 * @throws ExceptionBaseDeDonneesPlateforme L'exception du service de base de données.
+	 */
 	public function __construct(string $dataSourceName, string $username, string $password) {
 		parent::__construct($dataSourceName, $username, $password);
 	}
 
+	/**
+	 * Ajouter une spécialité.
+	 * @param Specialite $specialite La spécialité à ajouter.
+	 * @throws ExceptionBaseDeDonneesPlateforme L'exception du service de base de données.
+	 */
 	public function ajouterSpecialite(Specialite $specialite): void {
 		try {
 			$this->pdo->beginTransaction();
@@ -47,6 +63,11 @@ class StockageSpecialites extends StockageBaseDeDonnees {
 		}
 	}
 
+	/**
+	 * Supprimer une spécialité.
+	 * @param Specialite $specialite La spécialité à supprimer.
+	 * @throws ExceptionBaseDeDonneesPlateforme L'exception du service de base de données.
+	 */
 	public function supprimerSpecialite(Specialite $specialite): void {
 		try {
 			$this->pdo->beginTransaction();
@@ -63,6 +84,11 @@ class StockageSpecialites extends StockageBaseDeDonnees {
 		}
 	}
 
+	/**
+	 * Modifier une spécialité.
+	 * @param Specialite $specialite La spécialité à modifier.
+	 * @throws ExceptionBaseDeDonneesPlateforme L'exception du service de base de données.
+	 */
 	public function modifierSpecialite(Specialite $specialite): void {
 		try {
 			$this->pdo->beginTransaction();
@@ -82,6 +108,12 @@ class StockageSpecialites extends StockageBaseDeDonnees {
 		}
 	}
 
+	/**
+	 * Ajouter une sous spécialité dans une spécialité.
+	 * @param Specialite $specialite La spécialité.
+	 * @param SousSpecialite $sousSpecialite La sous spécialité à ajouter.
+	 * @throws ExceptionBaseDeDonneesPlateforme L'exception du service de base de données.
+	 */
 	public function ajouterSousSpecialite(Specialite $specialite, SousSpecialite $sousSpecialite): void {
 		try {
 			$this->pdo->beginTransaction();
@@ -99,6 +131,11 @@ class StockageSpecialites extends StockageBaseDeDonnees {
 		}
 	}
 
+	/**
+	 * Ajouter une sous spécialité.
+	 * @param SousSpecialite $sousSpecialite La sous spécialité à ajouter.
+	 * @throws ExceptionBaseDeDonneesPlateforme L'exception du service de base de données.
+	 */
 	public function supprimerSousSpecialite(SousSpecialite $sousSpecialite): void {
 		try {
 			$this->pdo->beginTransaction();
@@ -115,6 +152,12 @@ class StockageSpecialites extends StockageBaseDeDonnees {
 		}
 	}
 
+	/**
+	 * Modifier une sous spécialité dans une spécialité.
+	 * @param Specialite $specialite La spécialité.
+	 * @param SousSpecialite $sousSpecialite La sous spécialité à modifier.
+	 * @throws ExceptionBaseDeDonneesPlateforme L'exception du service de base de données.
+	 */
 	public function modifierSousSpecialite(Specialite $specialite, SousSpecialite $sousSpecialite): void {
 		try {
 			$this->pdo->beginTransaction();
@@ -134,6 +177,11 @@ class StockageSpecialites extends StockageBaseDeDonnees {
 		}
 	}
 
+	/**
+	 * Charger la liste des spécialités et des sous spécialités.
+	 * @throws ExceptionBaseDeDonneesPlateforme L'exception du service de base de données.
+	 * @return array[] La liste des pécialités et des sous spécialités.
+	 */
 	public function chargerListeSpecialites(): array {
 		try {
 			$listeSpecialites = array();

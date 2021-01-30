@@ -1,15 +1,19 @@
 <?php
 
 /**
- * StockageMails short summary.
  *
- * StockageMails description.
+ * StockageMails est la classe fournissant l'accès aux mails de la base de données Plateforme.
+ * Elle hérite de StockageBaseDeDonnees.
  *
  * @version 1.0
- * @author Jean-Claude
+ * @author Pierre-Nicolas
  */
 class StockageMails extends StockageBaseDeDonnees {
 
+	/**
+	 * Charger les destinataires contacts étrangers dasn un mail.
+	 * @param Mail $mail Le mail.
+	 */
 	private function chargerDestinatairesContactsEtrangersDansMail(Mail $mail): void {
 		$requete = "SELECT IDENTIFIANTCONTACT ".
 				   "FROM CORRESPONDANCE_MAIL_ACONTACTETRANGER ".
@@ -25,6 +29,10 @@ class StockageMails extends StockageBaseDeDonnees {
 		}
 	}
 
+	/**
+	 * Charger les destinataires coordianteurs dans un mail.
+	 * @param Mail $mail Le mail.
+	 */
 	private function chargerDestinatairesCoordinateursDansMail(Mail $mail): void {
 		$requete = "SELECT IDENTIFIANTCONTACT ".
 				   "FROM CORRESPONDANCE_MAIL_ACOORDINATEUR ".
@@ -40,6 +48,10 @@ class StockageMails extends StockageBaseDeDonnees {
 		}
 	}
 
+	/**
+	 * Charger les destinataires contacts mails dans un mail.
+	 * @param Mail $mail Le mail.
+	 */
 	private function chargerDestinatairesContactsMailsDansMail(Mail $mail): void {
 		$requete = "SELECT ADRESSEMAILCONTACTMAIL ".
 				   "FROM CORRESPONDANCE_MAIL_ACONTACTMAIL ".
@@ -55,6 +67,10 @@ class StockageMails extends StockageBaseDeDonnees {
 		}
 	}
 
+	/**
+	 * Charger les copies carbones contacts étrangers dans un mail.
+	 * @param Mail $mail Le mail.
+	 */
 	private function chargerCopiesCarbonesContactsEtrangersDansMail(Mail $mail): void {
 		$requete = "SELECT IDENTIFIANTCONTACT ".
 				   "FROM CORRESPONDANCE_MAIL_CCCONTACTETRANGER ".
@@ -70,6 +86,10 @@ class StockageMails extends StockageBaseDeDonnees {
 		}
 	}
 
+	/**
+	 * Charger les copies carbones coordinateus dans un mail.
+	 * @param Mail $mail Le mail.
+	 */
 	private function chargerCopiesCarbonesCoordinateursDansMail(Mail $mail): void {
 		$requete = "SELECT IDENTIFIANTCONTACT ".
 				   "FROM CORRESPONDANCE_MAIL_CCCOORDINATEUR ".
@@ -85,6 +105,10 @@ class StockageMails extends StockageBaseDeDonnees {
 		}
 	}
 
+	/**
+	 * Charger les copies carbones contacts mail dans un mail.
+	 * @param Mail $mail Le mail.
+	 */
 	private function chargerCopiesCarbonesContactsMailsDansMail(Mail $mail): void {
 		$requete = "SELECT ADRESSEMAILCONTACTMAIL ".
 				   "FROM CORRESPONDANCE_MAIL_CCCONTACTMAIL ".
@@ -100,6 +124,10 @@ class StockageMails extends StockageBaseDeDonnees {
 		}
 	}
 
+	/**
+	 * Charger les copies carbones invisibles contacts étrangers dans un mail.
+	 * @param Mail $mail Le mail.
+	 */
 	private function chargerCopiesCarbonesInvisiblesContactsEtrangersDansMail(Mail $mail): void {
 		$requete = "SELECT IDENTIFIANTCONTACT ".
 				   "FROM CORRESPONDANCE_MAIL_CCICONTACTETRANGER ".
@@ -115,6 +143,10 @@ class StockageMails extends StockageBaseDeDonnees {
 		}
 	}
 
+	/**
+	 * Charger les copies carbones invisibles cooridnateurs dans un mail.
+	 * @param Mail $mail Le mail.
+	 */
 	private function chargerCopiesCarbonesInvisiblesCoordinateursDansMail(Mail $mail): void {
 		$requete = "SELECT IDENTIFIANTCONTACT ".
 				   "FROM CORRESPONDANCE_MAIL_CCICOORDINATEUR ".
@@ -130,6 +162,10 @@ class StockageMails extends StockageBaseDeDonnees {
 		}
 	}
 
+	/**
+	 * Charger les copies carbones invisibles contacts mails dans un mail.
+	 * @param Mail $mail Le mail.
+	 */
 	private function chargerCopiesCarbonesInvisiblesContactsMailsDansMail(Mail $mail): void {
 		$requete = "SELECT ADRESSEMAILCONTACTMAIL ".
 				   "FROM CORRESPONDANCE_MAIL_CCICONTACTMAIL ".
@@ -145,6 +181,11 @@ class StockageMails extends StockageBaseDeDonnees {
 		}
 	}
 
+	/**
+	 * Ajouter un destinataire contatc étranger dans un mail.
+	 * @param Mail $mail Le mail.
+	 * @param ContactEtranger $contactEtranger Le contact étranger à ajouter.
+	 */
 	private function ajouterDestinataireContactEtrangerDansMail(Mail $mail, ContactEtranger $contactEtranger) {
 		$requete = "INSERT INTO CORRESPONDANCE_MAIL_ACONTACTETRANGER(IDENTIFIANTMAIL, IDENTIFIANTCONTACT) VALUES (:identifiantmail, :identifiantcontact);";
 		$statement = $this->pdo->prepare($requete);
@@ -153,6 +194,11 @@ class StockageMails extends StockageBaseDeDonnees {
 		$statement->execute();
 	}
 
+	/**
+	 * Ajouter un destinataire coordinateur dans un mail.
+	 * @param Mail $mail Le mail.
+	 * @param Coordinateur $coordinateur Le coordinateur à ajouter.
+	 */
 	private function ajouterDestinataireCoordinateurDansMail(Mail $mail, Coordinateur $coordinateur) {
 		$requete = "INSERT INTO CORRESPONDANCE_MAIL_ACOORDINATEUR(IDENTIFIANTMAIL, IDENTIFIANTCONTACT) VALUES (:identifiantmail, :identifiantcontact);";
 		$statement = $this->pdo->prepare($requete);
@@ -161,6 +207,11 @@ class StockageMails extends StockageBaseDeDonnees {
 		$statement->execute();
 	}
 
+	/**
+	 * Ajouter un destinataire contact mail dans un mail.
+	 * @param Mail $mail Le mail.
+	 * @param ContactMail $contactMail Le contact mail à ajouter.
+	 */
 	private function ajouterDestinataireContactMailDansMail(Mail $mail, ContactMail $contactMail) {
 		$requete = "INSERT INTO CORRESPONDANCE_MAIL_ACONTACTMAIL(IDENTIFIANTMAIL, ADRESSEMAILCONTACTMAIL) VALUES (:identifiantmail, :adressemailcontactmail);";
 		$statement = $this->pdo->prepare($requete);
@@ -169,6 +220,11 @@ class StockageMails extends StockageBaseDeDonnees {
 		$statement->execute();
 	}
 
+	/**
+	 * Ajouter une copie carbone contact étranger dans un mail.
+	 * @param Mail $mail Le mail.
+	 * @param ContactEtranger $contactEtranger Le contact étranger à ajouter.
+	 */
 	private function ajouterCopieCarboneContactEtrangerDansMail(Mail $mail, ContactEtranger $contactEtranger) {
 		$requete = "INSERT INTO CORRESPONDANCE_MAIL_CCCONTACTETRANGER(IDENTIFIANTMAIL, IDENTIFIANTCONTACT) VALUES (:identifiantmail, :identifiantcontact);";
 		$statement = $this->pdo->prepare($requete);
@@ -177,6 +233,11 @@ class StockageMails extends StockageBaseDeDonnees {
 		$statement->execute();
 	}
 
+	/**
+	 * Ajouter une copie carbone coordinateur dans un mail.
+	 * @param Mail $mail Le mail.
+	 * @param Coordinateur $coordinateur Le coordinateur mail à ajouter.
+	 */
 	private function ajouterCopieCarboneCoordinateurDansMail(Mail $mail, Coordinateur $coordinateur) {
 		$requete = "INSERT INTO CORRESPONDANCE_MAIL_CCOORDINATEUR(IDENTIFIANTMAIL, IDENTIFIANTCONTACT) VALUES (:identifiantmail, :identifiantcontact);";
 		$statement = $this->pdo->prepare($requete);
@@ -185,6 +246,11 @@ class StockageMails extends StockageBaseDeDonnees {
 		$statement->execute();
 	}
 
+	/**
+	 * Ajouter une copie carbone contact mail dans un mail.
+	 * @param Mail $mail Le mail.
+	 * @param ContactMail $contactMail Le contact mail à ajouter.
+	 */
 	private function ajouterCopieCarboneContactMailDansMail(Mail $mail, ContactMail $contactMail) {
 		$requete = "INSERT INTO CORRESPONDANCE_MAIL_CCCONTACTMAIL(IDENTIFIANTMAIL, ADRESSEMAILCONTACTMAIL) VALUES (:identifiantmail, :adressemailcontactmail);";
 		$statement = $this->pdo->prepare($requete);
@@ -193,6 +259,11 @@ class StockageMails extends StockageBaseDeDonnees {
 		$statement->execute();
 	}
 
+	/**
+	 * Ajouter une copie carbone invisible contact étranger dans un mail.
+	 * @param Mail $mail Le mail.
+	 * @param ContactEtranger $contactEtranger Le contact étranger à ajouter.
+	 */
 	private function ajouterCopieCarboneInvisibleContactEtrangerDansMail(Mail $mail, ContactEtranger $contactEtranger) {
 		$requete = "INSERT INTO CORRESPONDANCE_MAIL_CCICONTACTETRANGER(IDENTIFIANTMAIL, IDENTIFIANTCONTACT) VALUES (:identifiantmail, :identifiantcontact);";
 		$statement = $this->pdo->prepare($requete);
@@ -201,6 +272,11 @@ class StockageMails extends StockageBaseDeDonnees {
 		$statement->execute();
 	}
 
+	/**
+	 * Ajouter une copie carbone invisible coordinateur dans un mail.
+	 * @param Mail $mail Le mail.
+	 * @param Coordinateur $coordinateur Le coordinateur mail à ajouter.
+	 */
 	private function ajouterCopieCarboneInvisibleCoordinateurDansMail(Mail $mail, Coordinateur $coordinateur) {
 		$requete = "INSERT INTO CORRESPONDANCE_MAIL_CCIOORDINATEUR(IDENTIFIANTMAIL, IDENTIFIANTCONTACT) VALUES (:identifiantmail, :identifiantcontact);";
 		$statement = $this->pdo->prepare($requete);
@@ -209,6 +285,11 @@ class StockageMails extends StockageBaseDeDonnees {
 		$statement->execute();
 	}
 
+	/**
+	 * Ajouter une copie carbone invisible contact mail dans un mail.
+	 * @param Mail $mail Le mail.
+	 * @param ContactMail $contactMail Le contact mail à ajouter.
+	 */
 	private function ajouterCopieCarboneInvisibleContactMailDansMail(Mail $mail, ContactMail $contactMail) {
 		$requete = "INSERT INTO CORRESPONDANCE_MAIL_CCICONTACTMAIL(IDENTIFIANTMAIL, ADRESSEMAILCONTACTMAIL) VALUES (:identifiantmail, :adressemailcontactmail);";
 		$statement = $this->pdo->prepare($requete);
@@ -217,10 +298,22 @@ class StockageMails extends StockageBaseDeDonnees {
 		$statement->execute();
 	}
 
+	/**
+	 * Constructeur StockageMails prenant en paramètre le dataSourceName, le nom d'utilisateur et le mot de passe de la base de données.
+	 * @param string $dataSourceName Le dataSourceName de la base de données.
+	 * @param string $username Le nom d'utilisateur de la base de données.
+	 * @param string $password Le mot de passe de la base de données.
+	 * @throws ExceptionBaseDeDonneesPlateforme L'exception du service de base de données.
+	 */
 	public function __construct(string $dataSourceName, string $username, string $password) {
 		parent::__construct($dataSourceName, $username, $password);
 	}
 
+	/**
+	 * Ajouter un mail.
+	 * @param Mail $mail Le mail à ajouter.
+	 * @throws ExceptionBaseDeDonneesPlateforme L'exception du service de base de données.
+	 */
 	public function ajouterMail(Mail $mail): void {
 		try {
 			$this->pdo->beginTransaction();
@@ -276,6 +369,11 @@ class StockageMails extends StockageBaseDeDonnees {
 		}
 	}
 
+	/**
+	 * Supprimer un mail.
+	 * @param Mail $mail Le mail à supprimer.
+	 * @throws ExceptionBaseDeDonneesPlateforme L'exception du service de base de données.
+	 */
 	public function supprimerMail(Mail $mail): void {
 		try {
 			$this->pdo->beginTransaction();
@@ -292,6 +390,11 @@ class StockageMails extends StockageBaseDeDonnees {
 		}
 	}
 
+	/**
+	 * Modifier l'attribut est envoyé d'un mail.
+	 * @param Mail $mail Le mail à ajouter.
+	 * @throws ExceptionBaseDeDonneesPlateforme L'exception du service de base de données.
+	 */
 	public function modifierEstEnvoyeMail(Mail $mail): void {
 		try {
 			$this->pdo->beginTransaction();
@@ -310,6 +413,11 @@ class StockageMails extends StockageBaseDeDonnees {
 		}
 	}
 
+	/**
+	 * Retourner la liste des mails.
+	 * @throws ExceptionBaseDeDonneesPlateforme L'exception du service de base de données.
+	 * @return array[] La liste des mails.
+	 */
 	public function chargerListeMails(): array {
 		try {
 			$listeMails = array();
@@ -361,6 +469,11 @@ class StockageMails extends StockageBaseDeDonnees {
 		}
 	}
 
+	/**
+	 * Retourner la liste des mails non envoyés.
+	 * @throws ExceptionBaseDeDonneesPlateforme L'exception du service de base de données.
+	 * @return Mail[] La liste des mails non envoyés.
+	 */
 	public function getMailsNonEnvoyes(): array {
 		try {
 			$listeMails = array();

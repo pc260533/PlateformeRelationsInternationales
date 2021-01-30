@@ -50,69 +50,57 @@
             <form slot="modalBody" class="form">
                 <input type="hidden" id="inputIdentifiantPartenaire" value="0" />
                 <div class="form-group">
-                    <label for="inputNomPartenaire">Nom Partenaire:</label>
+                    <label for="inputNomPartenaire">Nom Partenaire :</label>
                     <input type="text" id="inputNomPartenaire" class="form-control" />
                     <div class="invalid-feedback">
                         Veuillez donner un nom de partenaire.
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputLienPartenaire">Lien Partenaire:</label>
+                    <label for="inputLienPartenaire">Lien Partenaire :</label>
                     <input type="url" id="inputLienPartenaire" class="form-control" />
                 </div>
                 <div class="form-group">
-                    <label for="selectEtatPartenaire">Etat Partenaire:</label>
+                    <label for="selectEtatPartenaire">Etat Partenaire :</label>
                     <select class="custom-select form-control" id="selectEtatPartenaire"></select>
                 </div>
                 <div class="form-group">
-                    <label for="geocoderLocalisation">Localisation Partenaire:</label>
+                    <label for="geocoderLocalisation">Localisation Partenaire :</label>
                     <div id="geocoderLocalisation"></div>
                 </div>
                 <div class="form-row">
-                    <div class="form-group col-md-3">
-                        <label for="inputLatitudePartenaire">Latitude Partenaire:</label>
-                        <input type="text" id="inputLatitudePartenaire" class="form-control" />
-                        <div class="invalid-feedback">
-                            Veuillez choisir une localisation.
-                        </div>
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label for="inputLongitudePartenaire">Longitude Partenaire:</label>
-                        <input type="text" id="inputLongitudePartenaire" class="form-control" />
-                        <div class="invalid-feedback">
-                            Veuillez choisir une localisation.
-                        </div>
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label for="inputNomLocalisationPartenaire">Nom Localisation Partenaire:</label>
+                    <div class="form-group col-md-6">
+                        <label for="inputNomLocalisationPartenaire">Nom Localisation Partenaire :</label>
                         <input type="text" id="inputNomLocalisationPartenaire" class="form-control" />
                         <div class="invalid-feedback">
                             Veuillez choisir une localisation.
                         </div>
                     </div>
-                    <div class="form-group col-md-3">
-                        <label for="inputNomPaysLocalisationPartenaire">Nom Pays Partenaire:</label>
+                    <div class="form-group col-md-6">
+                        <label for="inputNomPaysLocalisationPartenaire">Nom Pays Partenaire :</label>
                         <input type="text" id="inputNomPaysLocalisationPartenaire" class="form-control" />
                         <div class="invalid-feedback">
                             Veuillez choisir une localisation.
                         </div>
                     </div>
+                    <input type="hidden" id="inputLatitudePartenaire" class="form-control" />
+                    <input type="hidden" id="inputLongitudePartenaire" class="form-control" />
                     <input type="hidden" id="inputCodePaysLocalisationPartenaire" class="form-control" />
                 </div>
                 <div class="form-group">
-                    <label for="inputListeImagesPartenaires">Ajouter des fichiers aux partenaires:</label>
+                    <label for="inputListeImagesPartenaires">Ajouter des fichiers aux partenaires :</label>
                     <input type="file" class="form-control-file" id="inputListeImagesPartenaires" accept="image/*" multiple>
                     <div class="invalid-feedback">
                         Un des fichiers sélectionnés existe déjà.
                     </div>
                 </div>
                 <div class="form-group" id="formGroupListeImagesPartenaireServeur">
-                    <label for="listeImagesPartenaireServeur">Liste Images Partenaire sur le serveur:</label>
+                    <label for="listeImagesPartenaireServeur">Liste Images Partenaire sur le serveur :</label>
                     <ul class="list-group" id="listeImagesPartenaireServeur"></ul>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-9">
-                        <label for="selectListeDomainesDeCompetencesPartenaire">Liste Domaines De Compétences Partenaire:</label>
+                        <label for="selectListeDomainesDeCompetencesPartenaire">Liste Domaines De Compétences Partenaire :</label>
                         <select class="custom-select form-control" id="selectListeDomainesDeCompetencesPartenaire" multiple></select>
                     </div>
                     <div class="form-group col-md-3 my-auto">
@@ -126,7 +114,7 @@
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-9">
-                        <label for="selectListeSousSpecialitesPartenaire">Liste Sous Specialités Partenaire:</label>
+                        <label for="selectListeSousSpecialitesPartenaire">Liste Sous Specialités Partenaire :</label>
                         <select class="custom-select form-control" id="selectListeSousSpecialitesPartenaire" multiple></select>
                     </div>
                     <div class="form-group col-md-3 my-auto">
@@ -140,7 +128,7 @@
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-9">
-                        <label for="selectListeMobilitesPartenaire">Liste Mobilites Partenaire:</label>
+                        <label for="selectListeMobilitesPartenaire">Liste Mobilités Partenaire :</label>
                         <select class="custom-select form-control" id="selectListeMobilitesPartenaire" multiple></select>
                     </div>
                     <div class="form-group col-md-3 my-auto">
@@ -154,7 +142,7 @@
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-9">
-                        <label for="selectListeAidesFinancieresPartenaire">Liste Aides Financières Partenaire:</label>
+                        <label for="selectListeAidesFinancieresPartenaire">Liste Aides Financières Partenaire :</label>
                         <select class="custom-select form-control" id="selectListeAidesFinancieresPartenaire" multiple></select>
                     </div>
                     <div class="form-group col-md-3 my-auto">
@@ -168,7 +156,7 @@
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-9">
-                        <label for="selectListeContactsEtrangersPartenaire">Liste Contacts Etrangers Partenaire:</label>
+                        <label for="selectListeContactsEtrangersPartenaire">Liste Contacts Etrangers Partenaire :</label>
                         <select class="custom-select form-control" id="selectListeContactsEtrangersPartenaire" multiple></select>
                     </div>
                     <div class="form-group col-md-3 my-auto">
@@ -182,7 +170,7 @@
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-9">
-                        <label for="selectListeCoordinateursPartenaire">Liste Coordinateurs Partenaire:</label>
+                        <label for="selectListeCoordinateursPartenaire">Liste Coordinateurs Partenaire :</label>
                         <select class="custom-select form-control" id="selectListeCoordinateursPartenaire" multiple></select>
                     </div>
                     <div class="form-group col-md-3 my-auto">
@@ -194,9 +182,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-row">
+                <div class="form-row" id="formRowListeVoeuxPartenaire">
                     <div class="form-group col-md-9">
-                        <label for="selectListeVoeuxPartenaire">Liste Voeux Partenaire:</label>
+                        <label for="selectListeVoeuxPartenaire">Liste Voeux Partenaire :</label>
                         <select class="custom-select form-control" id="selectListeVoeuxPartenaire" multiple></select>
                     </div>
                     <div class="form-group col-md-3 my-auto">
@@ -206,11 +194,11 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="textareaInformationLogementPartenaire">Information Logement Partenaire:</label>
+                    <label for="textareaInformationLogementPartenaire">Information Logement Partenaire :</label>
                     <textarea class="form-control" id="textareaInformationLogementPartenaire" rows="3"></textarea>
                 </div>
                 <div class="form-group">
-                    <label for="textareaInformationCoutPartenaire">Information Cout Partenaire:</label>
+                    <label for="textareaInformationCoutPartenaire">Information Cout Partenaire :</label>
                     <textarea class="form-control" id="textareaInformationCoutPartenaire" rows="3"></textarea>
                 </div>
             </form>
@@ -398,6 +386,53 @@
             </div>
 
             <button slot="modalFooter" type="button" id="boutonValideVoeuxPartenaires" class="btn btn-custom">Valider</button>
+            <button slot="modalFooter" type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+        </ModalSpecifique>
+
+        <ModalSpecifique ref="modalDetailsPartenaire" idModal="modalDetailsPartenaire" tailleModal="modal-lg">
+            <h5 slot="modalHeader" class="modal-tilte">
+                <span id="inputDetailsPartenaire"></span>
+            </h5>
+            <button slot="modalHeader" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+
+            <div slot="modalBody" class="informationsDetailPartenaire">
+                <p class="informationsDetailPartenaireDescription">
+                    Identifiant Partenaire : <span class="detailPartenaire" id="identifiantPartenaireDetail"></span>
+                </p>
+                <p class="informationsDetailPartenaireDescription">
+                    Nom Partenaire : <span class="detailPartenaire" id="nomPartenaireDetail"></span>
+                </p>
+                <p class="informationsDetailPartenaireDescription">
+                    Lien Partenaire : <span class="detailPartenaire" id="lienPartenaireDetail"></span>
+                </p>
+                <p class="informationsDetailPartenaireDescription">
+                    Etat Partenaire : <span class="detailPartenaire" id="etatPartenaireDetail"></span>
+                </p>
+                <p class="informationsDetailPartenaireDescription">
+                    Localisation Partenaire : <span class="detailPartenaire" id="localisationPartenaireDetail"></span>
+                </p>
+                <p class="informationsDetailPartenaireDescription" id="labelListeImagesPartenairesDetail">Liste Images Partenaire :</p>
+                <ul class="informationsAProposUl" id="listeImagesPartenairesDetail"></ul>
+                <p class="informationsDetailPartenaireDescription" id="labelListeDomainesDeCompetencesPartenairesDetail">Liste Domaines De Compétences Partenaire :</p>
+                <ul class="informationsAProposUl" id="listeDomainesDeCompetencesPartenairesDetail"></ul>
+                <p class="informationsDetailPartenaireDescription" id="labelListeSousSpecialitesPartenairesDetail">Liste Sous Spécialités Partenaire :</p>
+                <ul class="informationsAProposUl" id="listeSousSpecialitesPartenairesDetail"></ul>
+                <p class="informationsDetailPartenaireDescription" id="labelListeMobilitesPartenairesDetail">Liste Mobilités Partenaire :</p>
+                <ul class="informationsAProposUl" id="listeMobilitesPartenairesDetail"></ul>
+                <p class="informationsDetailPartenaireDescription" id="labelListeAidesFinancieresPartenairesDetail">Liste Aides Financières Partenaire :</p>
+                <ul class="informationsAProposUl" id="listeAidesFinancieresPartenairesDetail"></ul>
+                <p class="informationsDetailPartenaireDescription" id="labelListeCoordinateursPartenairesDetail">Liste Coordinateurs Partenaire :</p>
+                <ul class="informationsAProposUl" id="listeCoordinateursPartenairesDetail"></ul>
+                <p class="informationsDetailPartenaireDescription">
+                    Information Logement Partenaire : <span class="detailPartenaire" id="informationLogementPartenaireDetail"></span>
+                </p>
+                <p class="informationsDetailPartenaireDescription">
+                    Information Cout Partenaire : <span class="detailPartenaire" id="informationCoutPartenaireDetail"></span>
+                </p>
+            </div>
+
             <button slot="modalFooter" type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
         </ModalSpecifique>
 

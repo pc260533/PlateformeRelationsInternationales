@@ -1,12 +1,12 @@
 <?php
 
 /**
- * ControleurVoeux short summary.
  *
- * ControleurVoeux description.
+ * ControleurVoeux est la classe représentant un controleur de voeux.
+ * Elle implémente l'interface IControleurPlateforme.
  *
  * @version 1.0
- * @author Jean-Claude
+ * @author Pierre-Nicolas
  */
 class ControleurVoeux implements IControleurPlateforme {
 	private $stockageVoeux;

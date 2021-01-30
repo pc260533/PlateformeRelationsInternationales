@@ -1,12 +1,9 @@
 <?php
 
 /**
- * ExceptionVoeuxDejaValides short summary.
+ * ExceptionVoeuxDejaValides est la classe qui représente une exception correspondant à des voeux déjà validés.
  *
- * ExceptionVoeuxDejaValides description.
- *
- * @version 1.0
- * @author Jean-Claude
+ * @author Pierre-Nicolas
  */
 class ExceptionVoeuxDejaValides extends ExceptionSerializable {
 

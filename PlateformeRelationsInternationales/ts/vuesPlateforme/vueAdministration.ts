@@ -207,11 +207,11 @@ export default class VueAdminisitration extends Vue implements IVueContactsEtran
 
         this.proprietesDatatablesMobilites = new ProprietesDatatables();
         this.proprietesDatatablesMobilites.OrdreDesElementsDeControle = "Bfti";
-        this.proprietesDatatablesMobilites.ajouterColonne(new ProprietesDatatablesColonne("Identifiant Mobilite", "identifiantMobilite"));
-        this.proprietesDatatablesMobilites.ajouterColonne(new ProprietesDatatablesColonne("Type Mobilite", "typeMobilite"));
-        this.proprietesDatatablesMobilites.ajouterBouton(new ProprietesDatatablesBouton("Ajouter Mobilite", this.onClickAjouterMobilite));
-        this.proprietesDatatablesMobilites.ajouterBouton(new ProprietesDatatablesBouton("Supprimer Mobilite", this.onClickSupprimerMobilite));
-        this.proprietesDatatablesMobilites.ajouterBouton(new ProprietesDatatablesBouton("Modifier Mobilite", this.onClickModifierMobilite));
+        this.proprietesDatatablesMobilites.ajouterColonne(new ProprietesDatatablesColonne("Identifiant Mobilité", "identifiantMobilite"));
+        this.proprietesDatatablesMobilites.ajouterColonne(new ProprietesDatatablesColonne("Type Mobilité", "typeMobilite"));
+        this.proprietesDatatablesMobilites.ajouterBouton(new ProprietesDatatablesBouton("Ajouter Mobilité", this.onClickAjouterMobilite));
+        this.proprietesDatatablesMobilites.ajouterBouton(new ProprietesDatatablesBouton("Supprimer Mobilité", this.onClickSupprimerMobilite));
+        this.proprietesDatatablesMobilites.ajouterBouton(new ProprietesDatatablesBouton("Modifier Mobilité", this.onClickModifierMobilite));
 
         this.proprietesDatatablesSpecialites = new ProprietesDatatables();
         this.proprietesDatatablesSpecialites.OrdreDesElementsDeControle = "Bfti";
@@ -241,7 +241,7 @@ export default class VueAdminisitration extends Vue implements IVueContactsEtran
         this.proprietesDatatablesUtilisateurs.ajouterColonne(new ProprietesDatatablesColonne("Identifiant Utilisateur", "identifiantUtilisateur"));
         this.proprietesDatatablesUtilisateurs.ajouterColonne(new ProprietesDatatablesColonne("Nom Utilisateur", "nomUtilisateur"));
         this.proprietesDatatablesUtilisateurs.ajouterColonne(new ProprietesDatatablesColonne("Adresse Mail Utilisateur", "adresseMailUtilisateur"));
-        this.proprietesDatatablesUtilisateurs.ajouterColonne(new ProprietesDatatablesColonne("Est Administrateur Utilisateur", "EstAdministrateurString"));
+        this.proprietesDatatablesUtilisateurs.ajouterColonne(new ProprietesDatatablesColonne("Est Administrateur", "EstAdministrateurString"));
         this.proprietesDatatablesUtilisateurs.ajouterBouton(new ProprietesDatatablesBouton("Ajouter Utilisateur", this.onClickAjouterUtilisateur));
         this.proprietesDatatablesUtilisateurs.ajouterBouton(new ProprietesDatatablesBouton("Supprimer Utilisateur", this.onClickSupprimerUtilisateur));
         this.proprietesDatatablesUtilisateurs.ajouterBouton(new ProprietesDatatablesBouton("Modifier Utilisateur", this.onClickModifierUtilisateur));
@@ -407,7 +407,7 @@ export default class VueAdminisitration extends Vue implements IVueContactsEtran
         var listeContactsEtrangersSelectionnes: ContactEtranger[] = this.datatablesContactsEtrangers.getListeLignesSelectionnees();
         if (listeContactsEtrangersSelectionnes.length > 0) {
             var premiereContactEtrangerSelectionne: ContactEtranger = listeContactsEtrangersSelectionnes[0];
-            $("#inputTitreContactEtranger").text("Modifiaction Contact Etranger : " + premiereContactEtrangerSelectionne.NomContact);
+            $("#inputTitreContactEtranger").text("Modification Contact Etranger : " + premiereContactEtrangerSelectionne.NomContact);
             $("#inputIdentifiantContactEtranger").val(premiereContactEtrangerSelectionne.IdentifiantContact);
             $("#inputNomContactEtranger").val(premiereContactEtrangerSelectionne.NomContact);
             $("#inputPrenomContactEtranger").val(premiereContactEtrangerSelectionne.PrenomContact);
@@ -443,7 +443,7 @@ export default class VueAdminisitration extends Vue implements IVueContactsEtran
         var listeDomainesDeCompetencesSelectionnes: DomaineDeCompetence[] = this.datatablesDomainesDeCompetences.getListeLignesSelectionnees();
         if (listeDomainesDeCompetencesSelectionnes.length > 0) {
             var premiereDomaineDeCompetenceSelectionne: DomaineDeCompetence = listeDomainesDeCompetencesSelectionnes[0];
-            $("#inputTitreDomaineDeCompetence").text("Modifiaction Domaine De Compétence : " + premiereDomaineDeCompetenceSelectionne.NomDomaineDeCompetence);
+            $("#inputTitreDomaineDeCompetence").text("Modification Domaine De Compétence : " + premiereDomaineDeCompetenceSelectionne.NomDomaineDeCompetence);
             $("#inputIdentifiantDomaineDeCompetence").val(premiereDomaineDeCompetenceSelectionne.IdentifiantDomaineDeCompetence);
             $("#inputNomDomaineDeCompetence").val(premiereDomaineDeCompetenceSelectionne.NomDomaineDeCompetence);
             this.modalDomaineDeCompetence.montrerModal();
@@ -482,7 +482,7 @@ export default class VueAdminisitration extends Vue implements IVueContactsEtran
         var listeEtatsPartenairesSelectionnes: EtatPartenaire[] = this.datatablesEtatsPartenaires.getListeLignesSelectionnees();
         if (listeEtatsPartenairesSelectionnes.length > 0) {
             var premierEtatPartenaireSelectionne: EtatPartenaire = listeEtatsPartenairesSelectionnes[0];
-            $("#inputTitreEtatPartenaire").text("Modifiaction Etat Partenaire : " + premierEtatPartenaireSelectionne.NomEtatPartenaire);
+            $("#inputTitreEtatPartenaire").text("Modification Etat Partenaire : " + premierEtatPartenaireSelectionne.NomEtatPartenaire);
             $("#inputIdentifiantDomaineDeCompetence").val(premierEtatPartenaireSelectionne.IdentifiantEtatPartenaire);
             $("#inputNomDomaineDeCompetence").val(premierEtatPartenaireSelectionne.NomEtatPartenaire);
             this.modalEtatPartenaire.montrerModal();
@@ -495,7 +495,7 @@ export default class VueAdminisitration extends Vue implements IVueContactsEtran
     }
 
     private onClickAjouterMobilite(): void {
-        $("#inputTitreMobilite").text("Ajout Mobilite :");
+        $("#inputTitreMobilite").text("Ajout Mobilité :");
         this.modalMobilite.montrerModal();
         $("#boutonEditeMobilite").off();
         $("#boutonEditeMobilite").on("click", () => {
@@ -515,7 +515,7 @@ export default class VueAdminisitration extends Vue implements IVueContactsEtran
         var listeMobilitesSelectionnees: Mobilite[] = this.datatablesMobilites.getListeLignesSelectionnees();
         if (listeMobilitesSelectionnees.length > 0) {
             var premiereMobiliteSelectionnee: Mobilite = listeMobilitesSelectionnees[0];
-            $("#inputTitreMobilite").text("Modifiaction Mobilite : " + premiereMobiliteSelectionnee.TypeMobilite);
+            $("#inputTitreMobilite").text("Modification Mobilité : " + premiereMobiliteSelectionnee.TypeMobilite);
             $("#inputIdentifiantMobilite").val(premiereMobiliteSelectionnee.IdentifiantMobilite);
             $("#inputTypeMobilite").val(premiereMobiliteSelectionnee.TypeMobilite);
             this.modalMobilite.montrerModal();
@@ -528,7 +528,7 @@ export default class VueAdminisitration extends Vue implements IVueContactsEtran
     }
 
     private onClickAjouterSpecialite(): void {
-        $("#inputTitreSpecialite").text("Ajout Specialite :");
+        $("#inputTitreSpecialite").text("Ajout Spécialité :");
         this.modalSpecialite.montrerModal();
         $("#boutonEditeSpecialite").off();
         $("#boutonEditeSpecialite").on("click", () => {
@@ -548,7 +548,7 @@ export default class VueAdminisitration extends Vue implements IVueContactsEtran
         var listeSpecialitesSelectionnees: Specialite[] = this.datatablesSpecialites.getListeLignesSelectionnees();
         if (listeSpecialitesSelectionnees.length > 0) {
             var premiereSpecialiteSelectionnee: Specialite = listeSpecialitesSelectionnees[0];
-            $("#inputTitreSpecialite").text("Modifiaction Spécialité : " + premiereSpecialiteSelectionnee.NomSpecialite);
+            $("#inputTitreSpecialite").text("Modification Spécialité : " + premiereSpecialiteSelectionnee.NomSpecialite);
             $("#inputIdentifiantSpecialite").val(premiereSpecialiteSelectionnee.IdentifiantSpecialite);
             $("#inputNomSpecialite").val(premiereSpecialiteSelectionnee.NomSpecialite);
             $("#inputCouleurSpecialite").val(premiereSpecialiteSelectionnee.CouleurSpecialite);
@@ -594,7 +594,7 @@ export default class VueAdminisitration extends Vue implements IVueContactsEtran
                     text: specialite.NomSpecialite
                 }));
             });
-            $("#inputTitreSousSpecialite").text("Modifiaction Sous Spécialité : " + premiereSousSpecialiteSelectionnee.NomSousSpecialite);
+            $("#inputTitreSousSpecialite").text("Modification Sous Spécialité : " + premiereSousSpecialiteSelectionnee.NomSousSpecialite);
             $("#inputIdentifiantSousSpecialite").val(premiereSousSpecialiteSelectionnee.IdentifiantSousSpecialite);
             $("#inputNomSousSpecialite").val(premiereSousSpecialiteSelectionnee.NomSousSpecialite);
             $("#selectSpecialiteSousSpecialite").val(this.plateforme.getSpecialiteAvecSousSpecialite(premiereSousSpecialiteSelectionnee).IdentifiantSpecialite);
@@ -660,7 +660,7 @@ export default class VueAdminisitration extends Vue implements IVueContactsEtran
         var listeUtilisateursSelectionnes: Utilisateur[] = this.datatablesUtilisateurs.getListeLignesSelectionnees();
         if (listeUtilisateursSelectionnes.length > 0) {
             var premierUtilisateurSelectionne: Utilisateur = listeUtilisateursSelectionnes[0];
-            $("#inputTitreUtilisateur").text("Modifiaction Utilisateur : " + premierUtilisateurSelectionne.NomUtilisateur);
+            $("#inputTitreUtilisateur").text("Modification Utilisateur : " + premierUtilisateurSelectionne.NomUtilisateur);
             $("#inputIdentifiantUtilisateur").val(premierUtilisateurSelectionne.IdentifiantUtilisateur);
             $("#inputNomUtilisateur").val(premierUtilisateurSelectionne.NomUtilisateur);
             $("#inputAdresseMailUtilisateur").val(premierUtilisateurSelectionne.AdresseMailUtilisateur);

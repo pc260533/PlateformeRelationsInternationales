@@ -1,19 +1,31 @@
 <?php
 
 /**
- * StockageCouts short summary.
  *
- * StockageCouts description.
+ * StockageCouts est la classe fournissant l'accès aux couts de la base de données Plateforme.
+ * Elle hérite de StockageBaseDeDonnees.
  *
  * @version 1.0
- * @author Jean-Claude
+ * @author Pierre-Nicolas
  */
 class StockageCouts extends StockageBaseDeDonnees {
 
+	/**
+	 * Constructeur StockageCouts prenant en paramètre le dataSourceName, le nom d'utilisateur et le mot de passe de la base de données.
+	 * @param string $dataSourceName Le dataSourceName de la base de données.
+	 * @param string $username Le nom d'utilisateur de la base de données.
+	 * @param string $password Le mot de passe de la base de données.
+	 * @throws ExceptionBaseDeDonneesPlateforme L'exception du service de base de données.
+	 */
 	public function __construct(string $dataSourceName, string $username, string $password) {
 		parent::__construct($dataSourceName, $username, $password);
 	}
 
+	/**
+	 * Ajouter un cout.
+	 * @param Cout $cout Le cout à ajouter.
+	 * @throws ExceptionBaseDeDonneesPlateforme L'exception du service de base de données.
+	 */
 	public function ajouterCout(Cout $cout): void {
 		try {
 			$this->pdo->beginTransaction();
@@ -34,6 +46,11 @@ class StockageCouts extends StockageBaseDeDonnees {
 		}
 	}
 
+	/**
+	 * Modifier un cout.
+	 * @param Cout $cout Le cout à modifier.
+	 * @throws ExceptionBaseDeDonneesPlateforme L'exception du service de base de données.
+	 */
 	public function modifierCout(Cout $cout): void {
 		try {
 			$this->pdo->beginTransaction();
@@ -55,6 +72,11 @@ class StockageCouts extends StockageBaseDeDonnees {
 		}
 	}
 
+	/**
+	 * Retourner la liste des couts.
+	 * @throws ExceptionBaseDeDonneesPlateforme L'exception du service de base de données.
+	 * @return array[] La liste des couts.
+	 */
 	public function chargerListeCouts(): array {
 		try {
 			$listeCouts = array();

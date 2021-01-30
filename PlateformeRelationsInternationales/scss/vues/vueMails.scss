@@ -9,3 +9,24 @@ body {
 #modalErreur {
     z-index: 2000;
 }
+
+.informationsDetailMailPartenaire h3 {
+    font-size: 25px;
+    font-weight: normal;
+    margin-bottom: 20px;
+}
+
+.informationsDetailMailPartenaire h3 span {
+    color: #2184BE;
+}
+
+.informationsDetailMailPartenaire .informationsDetailMailPartenaireDescription {
+    line-height: 1.8;
+    color: #888;
+    margin-bottom: 20px;
+    text-align: justify;
+}
+
+.informationsDetailMailPartenaire p .detailMailPartenaire {
+    color: #2184BE;
+}

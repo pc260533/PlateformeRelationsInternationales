@@ -1,3 +1,24 @@
 ﻿/* Page Détails Utilisateur */
 body {
 }
+
+.informationsDetailUtilisateur h3 {
+    font-size: 25px;
+    font-weight: normal;
+    margin-bottom: 20px;
+}
+
+.informationsDetailUtilisateur h3 span {
+    color: #2184BE;
+}
+
+.informationsDetailUtilisateur .informationsDetailUtilisateurDescription {
+    line-height: 1.8;
+    color: #888;
+    margin-bottom: 20px;
+    text-align: justify;
+}
+
+.informationsDetailUtilisateur p .detailUtilisateur {
+    color: #2184BE;
+}

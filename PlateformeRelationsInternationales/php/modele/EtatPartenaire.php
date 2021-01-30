@@ -6,7 +6,7 @@
  * EtatPartenaire description.
  *
  * @version 1.0
- * @author Jean-Claude
+ * @author Pierre-Nicolas
  */
 class EtatPartenaire implements ISerializable {
 	private $identifiantEtatPartenaire;

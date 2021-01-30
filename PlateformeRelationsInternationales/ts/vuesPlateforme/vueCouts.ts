@@ -74,11 +74,15 @@ export default class VueCouts extends Vue implements IVueCouts {
     private initialiserDatatables() {
         this.proprietesDatatablesCouts = new ProprietesDatatables();
         this.proprietesDatatablesCouts.OrdreDesElementsDeControle = "Bfti";
-        this.proprietesDatatablesCouts.ajouterColonne(new ProprietesDatatablesColonne("Identifiant Cout", "identifiantCout"));
-        this.proprietesDatatablesCouts.ajouterColonne(new ProprietesDatatablesColonne("Nom Pays Cout", "nomPaysCout"));
-        this.proprietesDatatablesCouts.ajouterColonne(new ProprietesDatatablesColonne("Liste Partenaires Pays Cout", "ListePartenairesCoutString"));
+        this.proprietesDatatablesCouts.ajouterColonne(new ProprietesDatatablesColonne("Identifiant Coût", "identifiantCout"));
+        this.proprietesDatatablesCouts.ajouterColonne(new ProprietesDatatablesColonne("Nom Pays", "nomPaysCout"));
+        this.proprietesDatatablesCouts.ajouterColonne(new ProprietesDatatablesColonne("Liste Partenaires", "ListePartenairesCoutString"));
+        this.proprietesDatatablesCouts.ajouterColonne(new ProprietesDatatablesColonne("Coût Moyen Par Mois", "coutMoyenParMois"));
+        this.proprietesDatatablesCouts.ajouterColonne(new ProprietesDatatablesColonne("Coût Logement Par Mois", "coutLogementParMois"));
+        this.proprietesDatatablesCouts.ajouterColonne(new ProprietesDatatablesColonne("Coût Vie Par Mois", "coutVieParMois"));
+        this.proprietesDatatablesCouts.ajouterColonne(new ProprietesDatatablesColonne("Coût Inscription Par Mois", "coutInscriptionParMois"));
         if (this.plateforme.UtilisateurConnecte) {
-            this.proprietesDatatablesCouts.ajouterBouton(new ProprietesDatatablesBouton("Modifier Cout", this.onClickModifierCout));
+            this.proprietesDatatablesCouts.ajouterBouton(new ProprietesDatatablesBouton("Modifier Coût", this.onClickModifierCout));
         }
     }
 
@@ -146,7 +150,7 @@ export default class VueCouts extends Vue implements IVueCouts {
         var listeCoutsSelectionne: Cout[] = this.datatablesCouts.getListeLignesSelectionnees();
         if (listeCoutsSelectionne.length > 0) {
             var premierCoutSelectionne: Cout = listeCoutsSelectionne[0];
-            $("#inputTitreCout").text("Modifiaction Cout : " + premierCoutSelectionne.NomPaysCout);
+            $("#inputTitreCout").text("Modification Coût : " + premierCoutSelectionne.NomPaysCout);
             $("#inputIdentifiantCout").val(premierCoutSelectionne.IdentifiantCout);
             $("#inputCoutMoyenParMois").val(premierCoutSelectionne.CoutMoyenParMois);
             $("#inputCoutLogementParMois").val(premierCoutSelectionne.CoutLogementParMois);

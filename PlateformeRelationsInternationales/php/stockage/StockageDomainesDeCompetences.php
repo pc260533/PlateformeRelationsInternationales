@@ -1,19 +1,31 @@
 <?php
 
 /**
- * StockageDomainesDeCompetences short summary.
  *
- * StockageDomainesDeCompetences description.
+ * StockageDomainesDeCompetences est la classe fournissant l'accès aux domaines de compétences de la base de données Plateforme.
+ * Elle hérite de StockageBaseDeDonnees.
  *
  * @version 1.0
- * @author Jean-Claude
+ * @author Pierre-Nicolas
  */
 class StockageDomainesDeCompetences extends StockageBaseDeDonnees {
 
+	/**
+	 * Constructeur StockageDomainesDeCompetences prenant en paramètre le dataSourceName, le nom d'utilisateur et le mot de passe de la base de données.
+	 * @param string $dataSourceName Le dataSourceName de la base de données.
+	 * @param string $username Le nom d'utilisateur de la base de données.
+	 * @param string $password Le mot de passe de la base de données.
+	 * @throws ExceptionBaseDeDonneesPlateforme L'exception du service de base de données.
+	 */
 	public function __construct(string $dataSourceName, string $username, string $password) {
 		parent::__construct($dataSourceName, $username, $password);
 	}
 
+	/**
+	 * Ajouter un domaine de compétence.
+	 * @param DomaineDeCompetence $domaineDeCompetence Le domaine de compétence à ajouter.
+	 * @throws ExceptionBaseDeDonneesPlateforme L'exception du service de base de données.
+	 */
 	public function ajouterDomaineDeCompetence(DomaineDeCompetence $domaineDeCompetence): void {
 		try {
 			$this->pdo->beginTransaction();
@@ -30,6 +42,11 @@ class StockageDomainesDeCompetences extends StockageBaseDeDonnees {
 		}
 	}
 
+	/**
+	 * Supprimer un domaine de compétence.
+	 * @param DomaineDeCompetence $domaineDeCompetence Le domaine de compétence à supprimer.
+	 * @throws ExceptionBaseDeDonneesPlateforme L'exception du service de base de données.
+	 */
 	public function supprimerDomaineDeCompetence(DomaineDeCompetence $domaineDeCompetence): void {
 		try {
 			$this->pdo->beginTransaction();
@@ -46,6 +63,11 @@ class StockageDomainesDeCompetences extends StockageBaseDeDonnees {
 		}
 	}
 
+	/**
+	 * Modifier un domaine de compétence.
+	 * @param DomaineDeCompetence $domaineDeCompetence Le domaine de compétence à modifier.
+	 * @throws ExceptionBaseDeDonneesPlateforme L'exception du service de base de données.
+	 */
 	public function modifierDomaineDeCompetence(DomaineDeCompetence $domaineDeCompetence): void {
 		try {
 			$this->pdo->beginTransaction();
@@ -64,6 +86,11 @@ class StockageDomainesDeCompetences extends StockageBaseDeDonnees {
 		}
 	}
 
+	/**
+	 * Retourner la liste des domaines de compétences.
+	 * @throws ExceptionBaseDeDonneesPlateforme L'exception du service de base de données.
+	 * @return array[] La liste des domaines de compétences.
+	 */
 	public function chargerListeDomainesDeCompetences(): array {
 		try {
 			$listeDomainesDeCompetences = array();

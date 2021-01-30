@@ -1,19 +1,32 @@
 <?php
 
 /**
- * StockageContacts short summary.
  *
- * StockageContacts description.
+ * StockageContacts est la classe fournissant l'accès aux contacts de la base de données Plateforme.
+ * Elle hérite de StockageBaseDeDonnees.
  *
  * @version 1.0
- * @author Jean-Claude
+ * @author Pierre-Nicolas
  */
 class StockageContacts extends StockageBaseDeDonnees {
 
+	/**
+	 * Constructeur StockageContacts prenant en paramètre le dataSourceName, le nom d'utilisateur et le mot de passe de la base de données.
+	 * @param string $dataSourceName Le dataSourceName de la base de données.
+	 * @param string $username Le nom d'utilisateur de la base de données.
+	 * @param string $password Le mot de passe de la base de données.
+	 * @throws ExceptionBaseDeDonneesPlateforme L'exception du service de base de données.
+	 */
 	public function __construct(string $dataSourceName, string $username, string $password) {
 		parent::__construct($dataSourceName, $username, $password);
 	}
 
+	/**
+	 * Ajouter un contact.
+	 * @param Contact $contact Le contact à ajouter.
+	 * @param bool $estCoordinateur Le booléen indiquant si le contact est un coordinateur.
+	 * @throws ExceptionBaseDeDonneesPlateforme L'exception du service de base de données.
+	 */
 	public function ajouterContact(Contact $contact, bool $estCoordinateur): void {
 		try {
 			$this->pdo->beginTransaction();
@@ -34,6 +47,11 @@ class StockageContacts extends StockageBaseDeDonnees {
 		}
 	}
 
+	/**
+	 * Supprimer un contact.
+	 * @param Contact $contact Le contact à supprimer.
+	 * @throws ExceptionBaseDeDonneesPlateforme L'exception du service de base de données.
+	 */
 	public function supprimerContact(Contact $contact): void {
 		try {
 			$this->pdo->beginTransaction();
@@ -50,6 +68,11 @@ class StockageContacts extends StockageBaseDeDonnees {
 		}
 	}
 
+	/**
+	 * Modifier un contact.
+	 * @param Contact $contact Le contact à modifier.
+	 * @throws ExceptionBaseDeDonneesPlateforme L'exception du service de base de données.
+	 */
 	public function modifierContact(Contact $contact): void {
 		try {
 			$this->pdo->beginTransaction();
@@ -71,6 +94,11 @@ class StockageContacts extends StockageBaseDeDonnees {
 		}
 	}
 
+	/**
+	 * Retourner la liste de contacts étrangers.
+	 * @throws ExceptionBaseDeDonneesPlateforme L'exception du service de base de données.
+	 * @return array[] La liste de contacts étrangers.
+	 */
 	public function chargerListeContactsContactsEtrangers(): array {
 		try {
 			$listeContacts = array();
@@ -107,6 +135,11 @@ class StockageContacts extends StockageBaseDeDonnees {
 		}
 	}
 
+	/**
+	 * Retourner la liste de coordinateurs.
+	 * @throws ExceptionBaseDeDonneesPlateforme L'exception du service de base de données.
+	 * @return array[] La liste de coordinateurs.
+	 */
 	public function chargerListeContactsCoordinateurs(): array {
 		try {
 			$listeContacts = array();

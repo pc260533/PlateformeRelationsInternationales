@@ -6,7 +6,7 @@
  * Voeu description.
  *
  * @version 1.0
- * @author Jean-Claude
+ * @author Pierre-Nicolas
  */
 class Voeu implements ISerializable {
 	private $identifiantVoeu;

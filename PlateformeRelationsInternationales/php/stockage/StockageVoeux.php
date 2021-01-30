@@ -1,19 +1,31 @@
 <?php
 
 /**
- * StockageVoeux short summary.
  *
- * StockageVoeux description.
+ * StockageVoeux est la classe fournissant l'accès aux voeux de la base de données Plateforme.
+ * Elle hérite de StockageBaseDeDonnees.
  *
  * @version 1.0
- * @author Jean-Claude
+ * @author Pierre-Nicolas
  */
 class StockageVoeux extends StockageBaseDeDonnees {
 
+	/**
+	 * Constructeur StockageVoeux prenant en paramètre le dataSourceName, le nom d'utilisateur et le mot de passe de la base de données.
+	 * @param string $dataSourceName Le dataSourceName de la base de données.
+	 * @param string $username Le nom d'utilisateur de la base de données.
+	 * @param string $password Le mot de passe de la base de données.
+	 * @throws ExceptionBaseDeDonneesPlateforme L'exception du service de base de données.
+	 */
 	public function __construct(string $dataSourceName, string $username, string $password) {
 		parent::__construct($dataSourceName, $username, $password);
 	}
 
+	/**
+	 * Ajouter un voeu.
+	 * @param Voeu $voeu Le voeu à ajouter.
+	 * @throws ExceptionBaseDeDonneesPlateforme L'exception du service de base de données.
+	 */
 	public function ajouterVoeu(Voeu $voeu): void {
 		try {
 			$this->pdo->beginTransaction();
@@ -30,6 +42,11 @@ class StockageVoeux extends StockageBaseDeDonnees {
 		}
 	}
 
+	/**
+	 * Supprimer un voeu.
+	 * @param Voeu $voeu Le voeu à supprimer.
+	 * @throws ExceptionBaseDeDonneesPlateforme L'exception du service de base de données.
+	 */
 	public function supprimerVoeu(Voeu $voeu): void {
 		try {
 			$this->pdo->beginTransaction();
@@ -46,6 +63,12 @@ class StockageVoeux extends StockageBaseDeDonnees {
 		}
 	}
 
+	/**
+	 * Retourner le voeu avec l'adresse mail du voeu.
+	 * @param string $adresseMailVoeu L'adresse mail du voeu.
+	 * @throws ExceptionBaseDeDonneesPlateforme L'exception du service de base de données.
+	 * @return null|Voeu
+	 */
 	public function getVoeuAvecAdresseMailVoeu(string $adresseMailVoeu): ?Voeu {
 		try {
 			$voeu = null;
@@ -77,6 +100,11 @@ class StockageVoeux extends StockageBaseDeDonnees {
 		}
 	}
 
+	/**
+	 * Rztourner la liste de voeu
+	 * @throws ExceptionBaseDeDonneesPlateforme L'exception du service de base de données.
+	 * @return array[] La liste de voeu.
+	 */
 	public function chargerListeVoeux(): array {
 		try {
 			$listeVoeux = array();

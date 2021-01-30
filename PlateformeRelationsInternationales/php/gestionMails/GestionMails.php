@@ -4,19 +4,26 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 /**
- * GestionMails short summary.
  *
- * GestionMails description.
+ * GestionMails est la classe représentant un gesitonnaire de mails.
  *
  * @version 1.0
- * @author Jean-Claude
+ * @author Pierre-Nicolas
  */
 class GestionMails {
 
+	/**
+	 * Constructeur sans paramètres.
+	 */
 	public function __construct() {
 
 	}
 
+	/**
+	 * Envoyer un mail gestion mails.
+	 * @param MailGestionMails $mailAEnvoyer Le mail gestion mails à envoyer.
+	 * @throws ExceptionGestionMails L'exception gestion mails.
+	 */
 	public function envoyerMail(MailGestionMails $mailAEnvoyer) {
 		$mail = new PHPMailer(true);
 		$erreurDebug = array();
@@ -30,12 +37,6 @@ class GestionMails {
 			$mail->SMTPSecure = getVariableEnvironnement("SMTP_SECURE");
 			$mail->Username = getVariableEnvironnement("SMTP_USERNAME");
 			$mail->Password = getVariableEnvironnement("SMTP_PASSWORD");
-			/*$mail->Host = "smtp.gmail.com";
-			$mail->Port = 465;
-			$mail->SMTPAuth = true;
-			$mail->SMTPSecure = "ssl";
-			$mail->Username = "PlatefRelationsInternationales";
-			$mail->Password = "PlateformeRelationsInternationales@";*/
 
 			$mail->setFrom($mailAEnvoyer->getExpediteur()->getAdresseMailContactMail(), $mailAEnvoyer->getExpediteur()->getNomContactMail());
 			foreach ($mailAEnvoyer->getListeDestinataire() as $contactMailDestinatire) {

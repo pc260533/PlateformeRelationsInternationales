@@ -104,7 +104,7 @@ export default class VueContacts extends Vue implements IVueCoordinateurs {
     }
 
     private onClickAjouterCoordinateur(): void {
-        $("#inputTitreCoordinateur").text("Ajout Contact");
+        $("#inputTitreCoordinateur").text("Ajout Coordinateur");
         this.modalEditeCoordinateur.montrerModal();
         $("#boutonEditeCoordinateur").off();
         $("#boutonEditeCoordinateur").on("click", () => {
@@ -124,7 +124,7 @@ export default class VueContacts extends Vue implements IVueCoordinateurs {
         var listeCoordinateursSelectionnes: Coordinateur[] = this.datatablesCoordinateurs.getListeLignesSelectionnees();
         if (listeCoordinateursSelectionnes.length > 0) {
             var premierCoordinateurSelectionne: Contact = listeCoordinateursSelectionnes[0];
-            $("#inputTitreCoordinateur").text("Modifiaction Contact : " + premierCoordinateurSelectionne.NomContact + " " + premierCoordinateurSelectionne.PrenomContact);
+            $("#inputTitreCoordinateur").text("Modification Coordinateur : " + premierCoordinateurSelectionne.NomContact + " " + premierCoordinateurSelectionne.PrenomContact);
             $("#inputIdentifiantCoordinateur").val(premierCoordinateurSelectionne.IdentifiantContact);
             $("#inputNomCoordinateur").val(premierCoordinateurSelectionne.NomContact);
             $("#inputPrenomCoordinateur").val(premierCoordinateurSelectionne.PrenomContact);

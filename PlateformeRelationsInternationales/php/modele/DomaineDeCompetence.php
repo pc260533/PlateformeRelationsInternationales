@@ -6,7 +6,7 @@
  * DomaineDeCompetence description.
  *
  * @version 1.0
- * @author Jean-Claude
+ * @author Pierre-Nicolas
  */
 class DomaineDeCompetence implements ISerializable {
 	private $identifiantDomaineDeCompetence;

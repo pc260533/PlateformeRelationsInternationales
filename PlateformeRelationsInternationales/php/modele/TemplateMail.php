@@ -6,7 +6,7 @@
  * TemplateMail description.
  *
  * @version 1.0
- * @author Jean-Claude
+ * @author Pierre-Nicolas
  */
 class TemplateMail implements ISerializable {
 	private $identifiantTemplateMail;

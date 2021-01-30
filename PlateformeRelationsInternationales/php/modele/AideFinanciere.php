@@ -6,7 +6,7 @@
  * AideFinanciere description.
  *
  * @version 1.0
- * @author Jean-Claude
+ * @author Pierre-Nicolas
  */
 class AideFinanciere implements ISerializable {
 	private $identifiantAideFinanciere;

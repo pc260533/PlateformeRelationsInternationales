@@ -1,19 +1,31 @@
 <?php
 
 /**
- * StockageMobilites short summary.
  *
- * StockageMobilites description.
+ * StockageMobilites est la classe fournissant l'accès aux mobilités de la base de données Plateforme.
+ * Elle hérite de StockageBaseDeDonnees.
  *
  * @version 1.0
- * @author Jean-Claude
+ * @author Pierre-Nicolas
  */
 class StockageMobilites extends StockageBaseDeDonnees {
 
+	/**
+	 * Constructeur StockageMobilites prenant en paramètre le dataSourceName, le nom d'utilisateur et le mot de passe de la base de données.
+	 * @param string $dataSourceName Le dataSourceName de la base de données.
+	 * @param string $username Le nom d'utilisateur de la base de données.
+	 * @param string $password Le mot de passe de la base de données.
+	 * @throws ExceptionBaseDeDonneesPlateforme L'exception du service de base de données.
+	 */
 	public function __construct(string $dataSourceName, string $username, string $password) {
 		parent::__construct($dataSourceName, $username, $password);
 	}
 
+	/**
+	 * Ajouter une mobilité.
+	 * @param Mobilite $mobilite La mobilité à ajouter.
+	 * @throws ExceptionBaseDeDonneesPlateforme L'exception du service de base de données.
+	 */
 	public function ajouterMobilite(Mobilite $mobilite): void {
 		try {
 			$this->pdo->beginTransaction();
@@ -30,6 +42,11 @@ class StockageMobilites extends StockageBaseDeDonnees {
 		}
 	}
 
+	/**
+	 * Supprimer une mobilité.
+	 * @param Mobilite $mobilite La mobilité à supprimer.
+	 * @throws ExceptionBaseDeDonneesPlateforme L'exception du service de base de données.
+	 */
 	public function supprimerMobilite(Mobilite $mobilite): void {
 		try {
 			$this->pdo->beginTransaction();
@@ -46,6 +63,11 @@ class StockageMobilites extends StockageBaseDeDonnees {
 		}
 	}
 
+	/**
+	 * Modifier une mobilité.
+	 * @param Mobilite $mobilite La mobilité à modifier.
+	 * @throws ExceptionBaseDeDonneesPlateforme L'exception du service de base de données.
+	 */
 	public function modifierMobilite(Mobilite $mobilite): void {
 		try {
 			$this->pdo->beginTransaction();
@@ -64,6 +86,11 @@ class StockageMobilites extends StockageBaseDeDonnees {
 		}
 	}
 
+	/**
+	 * Retourner la liste des mobilités.
+	 * @throws ExceptionBaseDeDonneesPlateforme L'exception du service de base de données.
+	 * @return array[] La liste des mobilités.
+	 */
 	public function chargerListeMobilites(): array {
 		try {
 			$listeMobilites = array();

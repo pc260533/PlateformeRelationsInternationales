@@ -6,7 +6,7 @@
  * SousSpecialite description.
  *
  * @version 1.0
- * @author Jean-Claude
+ * @author Pierre-Nicolas
  */
 class SousSpecialite implements ISerializable {
 	private $identifiantSousSpecialite;

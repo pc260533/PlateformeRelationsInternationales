@@ -1,14 +1,17 @@
 <?php
 
 /**
- * InstalleurBaseDeDonnees short summary.
  *
- * InstalleurBaseDeDonnees description.
+ * InstalleurBaseDeDonnees est la classe représentant l'installateur de la base de données Plateforme.
  *
  * @version 1.0
- * @author Jean-Claude
+ * @author Pierre-Nicolas
  */
 class InstalleurBaseDeDonnees extends StockageBaseDeDonnees {
+	/**
+	 * Le nom de la base de données.
+	 * @var string
+	 */
 	private $nomBaseDeDonnees;
 
 	/**
@@ -430,7 +433,7 @@ class InstalleurBaseDeDonnees extends StockageBaseDeDonnees {
 	 * @param string $dataSourceName Le data source name de la base de données.
 	 * @param string $username Le nom d'utilisateur de la base de données.
 	 * @param string $password Le mot de passe de la base de données.
-	 * @throws ExceptionBaseDeDonneesPlateforme Exception du service de base de données.
+	 * @throws ExceptionBaseDeDonneesPlateforme L'exception du service de base de données.
 	 */
 	public function __construct(string $dataSourceName, string $username, string $password, string $nomBaseDeDonnees) {
 		parent::__construct($dataSourceName, $username, $password);
@@ -439,7 +442,7 @@ class InstalleurBaseDeDonnees extends StockageBaseDeDonnees {
 
 	/**
 	 * Initialiser la base de données.
-	 * @throws ExceptionBaseDeDonneesPlateforme Exception du service de base de données.
+	 * @throws ExceptionBaseDeDonneesPlateforme L'exception du service de base de données.
 	 */
 	public function initialiserBaseDeDonnees(): void {
 		try {

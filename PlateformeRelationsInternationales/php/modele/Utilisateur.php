@@ -6,7 +6,7 @@
  * Utilisateur description.
  *
  * @version 1.0
- * @author Jean-Claude
+ * @author Pierre-Nicolas
  */
 class Utilisateur implements ISerializable {
 	private $identifiantUtilisateur;

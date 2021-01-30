@@ -1,19 +1,31 @@
 <?php
 
 /**
- * StockageTemplateMail short summary.
  *
- * StockageTemplateMail description.
+ * StockageTemplatesMails est la classe fournissant l'accès aux templates mails de la base de données Plateforme.
+ * Elle hérite de StockageBaseDeDonnees.
  *
  * @version 1.0
- * @author Jean-Claude
+ * @author Pierre-Nicolas
  */
 class StockageTemplatesMails extends StockageBaseDeDonnees {
 
+	/**
+	 * Constructeur StockageTemplatesMails prenant en paramètre le dataSourceName, le nom d'utilisateur et le mot de passe de la base de données.
+	 * @param string $dataSourceName Le dataSourceName de la base de données.
+	 * @param string $username Le nom d'utilisateur de la base de données.
+	 * @param string $password Le mot de passe de la base de données.
+	 * @throws ExceptionBaseDeDonneesPlateforme L'exception du service de base de données.
+	 */
 	public function __construct(string $dataSourceName, string $username, string $password) {
 		parent::__construct($dataSourceName, $username, $password);
 	}
 
+	/**
+	 * Ajouter un template mail
+	 * @param TemplateMail $templateMail Le template mail à ajouter.
+	 * @throws ExceptionBaseDeDonneesPlateforme L'exception du service de base de données.
+	 */
 	public function ajouterTemplateMail(TemplateMail $templateMail): void {
 		try {
 			$this->pdo->beginTransaction();
@@ -32,6 +44,11 @@ class StockageTemplatesMails extends StockageBaseDeDonnees {
 		}
 	}
 
+	/**
+	 * Supprimer un template mail
+	 * @param TemplateMail $templateMail Le template mail à supprimer.
+	 * @throws ExceptionBaseDeDonneesPlateforme L'exception du service de base de données.
+	 */
 	public function supprimerTemplateMail(TemplateMail $templateMail): void {
 		try {
 			$this->pdo->beginTransaction();
@@ -48,6 +65,11 @@ class StockageTemplatesMails extends StockageBaseDeDonnees {
 		}
 	}
 
+	/**
+	 * Modifier un template mail
+	 * @param TemplateMail $templateMail Le template mail à modifier.
+	 * @throws ExceptionBaseDeDonneesPlateforme L'exception du service de base de données.
+	 */
 	public function modifierTemplateMail(TemplateMail $templateMail): void {
 		try {
 			$this->pdo->beginTransaction();
@@ -68,6 +90,11 @@ class StockageTemplatesMails extends StockageBaseDeDonnees {
 		}
 	}
 
+	/**
+	 * Charger le tempalte mail avec l'identifiant du template mail.
+	 * @param TemplateMail $templateMail  Le tempalte mail à charger.
+	 * @throws ExceptionBaseDeDonneesPlateforme L'exception du service de base de données.
+	 */
 	public function chargerTemplateMailAvecIdentifiant(TemplateMail $templateMail): void {
 		try {
 			$requete = "SELECT IDENTIFIANTTEMPLATEMAIL, NOMTEMPLATEMAIL, SUJETTEMPLATEMAIL, MESSAGEHTMLTEMPLATEMAIL ".
@@ -98,6 +125,11 @@ class StockageTemplatesMails extends StockageBaseDeDonnees {
 		}
 	}
 
+	/**
+	 * Retourner la liste des templates mails.
+	 * @throws ExceptionBaseDeDonneesPlateforme L'exception du service de base de données.
+	 * @return array[] La liste des templates mails.
+	 */
 	public function chargerListeTemplatesMails(): array {
 		try {
 			$listeTemplatesMails = array();

@@ -1,17 +1,30 @@
 <?php
 
 /**
- * ControleurMails short summary.
  *
- * ControleurMails description.
+ * ControleurMails est la classe représentant un controleur de mails.
+ * Elle implémente l'interface IControleurPlateforme.
  *
  * @version 1.0
- * @author Jean-Claude
+ * @author Pierre-Nicolas
  */
 class ControleurMails implements IControleurPlateforme {
+	/**
+	 * La gestion des mails.
+	 * @var GestionMails
+	 */
 	private $gestionMails;
+	/**
+	 * Le stockage de mails.
+	 * @var StockageMails
+	 */
 	private $stockageMails;
 
+	/**
+	 * Créer un mail à partir d'un tableau.
+	 * @param array $mailArray Le tableau représentant un mail.
+	 * @return Mail Le mail à créer.
+	 */
 	private function creerMail(array $mailArray): Mail {
 		$mail = new Mail();
 		if (isset($mailArray["identifiantMail"])) {
@@ -108,6 +121,11 @@ class ControleurMails implements IControleurPlateforme {
 		return $mail;
 	}
 
+	/**
+	 * Créer un mail gestion mails qui peut être envoyé à partir d'un mail.
+	 * @param Mail $mail Le mail.
+	 * @return MailGestionMails Le mail gestion mails.
+	 */
 	private function creerMailGestionMails(Mail $mail): MailGestionMails {
 		$mailGestionMail = new MailGestionMails();
 		$mailGestionMail->setExpediteur(new ContactMailGestionMails(getVariableEnvironnement("SMTP_NAME"), getVariableEnvironnement("SMTP_MAIL")));
@@ -152,11 +170,19 @@ class ControleurMails implements IControleurPlateforme {
 		return $mailGestionMail;
 	}
 
+	/**
+	 * Constructeur ControleurMails sans paramètres.
+	 */
 	public function __construct() {
 		$this->gestionMails = new GestionMails();
 		$this->stockageMails = new StockageMails(getVariableEnvironnement("DATASOURCENAME_BASEDEDONNEEPLATEFORME"), getVariableEnvironnement("USERNAME_BASEDEDONNEE"), getVariableEnvironnement("PASSWORD_BASEDEDONNEE"));
 	}
 
+	/**
+	 * Envoyer un mail de validation des voeux de partenaires.
+	 * @param array $listePartenaires La liste des partenaires séléctionnés.
+	 * @param string $adresseMailVoeu L'adresse mail de validation.
+	 */
 	public function envoyerMailsValidationListeVoeuxPartenaire(array $listePartenaires, string $adresseMailVoeu): void {
 		$mail = new MailGestionMails();
 		$mail->setExpediteur(new ContactMailGestionMails(getVariableEnvironnement("SMTP_NAME"), getVariableEnvironnement("SMTP_MAIL")));
@@ -172,11 +198,18 @@ class ControleurMails implements IControleurPlateforme {
 		$this->gestionMails->envoyerMail($mail);
 	}
 
+	/**
+	 * Envoyer un mail au partenaire.
+	 * @param array $mailArray Le tableau représentant le mail à envoyer.
+	 */
 	public function envoyerMailPartenaire(array $mailArray): void {
 		$mailGestionMail = $this->creerMailGestionMails($this->creerMail($mailArray));
 		$this->gestionMails->envoyerMail($mailGestionMail);
 	}
 
+	/**
+	 * Envoyer le smails aux partenaires en attente d'envoi.
+	 */
 	public function envoyerMailsPartenairesEnAttente(): void {
 		$listeMails = $this->stockageMails->getMailsNonEnvoyes();
 		$stockageTemplatesMails = new StockageTemplatesMails(getVariableEnvironnement("DATASOURCENAME_BASEDEDONNEEPLATEFORME"), getVariableEnvironnement("USERNAME_BASEDEDONNEE"), getVariableEnvironnement("PASSWORD_BASEDEDONNEE"));
@@ -197,18 +230,32 @@ class ControleurMails implements IControleurPlateforme {
 		}
 	}
 
+	/**
+	 * Ajouter un mail dans l'historique.
+	 * @param array $mailArray Le tableau représentant le mail.
+	 * @return Mail Le mail ajouté.
+	 */
 	public function ajouterMail(array $mailArray): Mail {
 		$mail = $this->creerMail($mailArray);
 		$this->stockageMails->ajouterMail($mail);
 		return $mail;
 	}
 
+	/**
+	 * Supprimer un mail dans l'historique.
+	 * @param array $mailArray Le tableau représentant le mail.
+	 * @return Mail Le mail supprimé.
+	 */
 	public function supprimerMail(array $mailArray): Mail {
 		$mail = $this->creerMail($mailArray);
 		$this->stockageMails->supprimerMail($mail);
 		return $mail;
 	}
 
+	/**
+	 * Retourner la liste des mails de l'historique.
+	 * @return array La liste des mails de l'historique.
+	 */
 	public function chargerListeMails(): array {
 		return $this->stockageMails->chargerListeMails();
 	}

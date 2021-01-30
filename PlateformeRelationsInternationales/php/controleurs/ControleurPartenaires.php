@@ -1,17 +1,30 @@
 <?php
 
 /**
- * ControleurPartenaires short summary.
  *
- * ControleurPartenaires description.
+ * ControleurPartenaires est la classe représentant un controleur de partenaires.
+ * Elle implémente l'interface IControleurPlateforme.
  *
  * @version 1.0
- * @author Jean-Claude
+ * @author Pierre-Nicolas
  */
 class ControleurPartenaires implements IControleurPlateforme {
+	/**
+	 * Le stockage de partenaires.
+	 * @var StockagePartenaires
+	 */
 	private $stockagePartenaires;
+	/**
+	 * La gestion de fichiers.
+	 * @var GestionFichiers
+	 */
 	private $gestionFichiers;
 
+	/**
+	 * Créer un partenaire à partir d'un tableau
+	 * @param array $partenaireArray Le tableau représentant un partenaire.
+	 * @return Partenaire Le partenaire créé.
+	 */
 	public function creerPartenaire(array $partenaireArray): Partenaire {
 		$partenaire = new Partenaire();
 		if (isset($partenaireArray["identifiantPartenaire"])) {
@@ -123,6 +136,11 @@ class ControleurPartenaires implements IControleurPlateforme {
 		return $partenaire;
 	}
 
+	/**
+	 * Initialiser un partenaire en copiant les fichiers uploads dans le dossier du partenaire.
+	 * @param Partenaire $partenaire Le partenaire à initialiser.
+	 * @param array $uploadedFiles La liste de fichiers à déplacer.
+	 */
 	private function intialiserPartenaireAvecFichiersUploads(Partenaire $partenaire, array $uploadedFiles) {
 		$nomDossierPartenaire = "partenaire" . $partenaire->getIdentifiantPartenaire();
 		$cheminDossierPartenaire = getVariableEnvironnement("CHEMIN_DOSSIER_UPLOADS") . DIRECTORY_SEPARATOR . $nomDossierPartenaire;
@@ -136,15 +154,29 @@ class ControleurPartenaires implements IControleurPlateforme {
 		}
 	}
 
+	/**
+	 * Constructeur ControleurPartenaires sans paramètres.
+	 */
 	public function __construct() {
 		$this->stockagePartenaires = new StockagePartenaires(getVariableEnvironnement("DATASOURCENAME_BASEDEDONNEEPLATEFORME"), getVariableEnvironnement("USERNAME_BASEDEDONNEE"), getVariableEnvironnement("PASSWORD_BASEDEDONNEE"));
 		$this->gestionFichiers = new GestionFichiers();
 	}
 
+	/**
+	 * Ajouter une liste des voeux dans la liste des partenaires.
+	 * @param array $listeVoeux La liste des voeux à ajouter.
+	 * @param array $listePartenaires La liste des partenaires.
+	 */
 	public function ajouterListeVoeuxDansListePartenaires(array $listeVoeux, array $listePartenaires): void {
 		$this->stockagePartenaires->ajouterListeVoeuxDansListePartenaires($listeVoeux, $listePartenaires);
 	}
 
+	/**
+	 * Ajouter un partenaire.
+	 * @param array $partenaireArray Le tableau représentant un partenaire.
+	 * @param array $uploadedFiles Les fichiers à déplacer dans le dossier du partenaire.
+	 * @return Partenaire Le partenaire ajouté.
+	 */
 	public function ajouterPartenaire(array $partenaireArray, array $uploadedFiles): Partenaire {
 		$partenaire = $this->creerPartenaire($partenaireArray);
 		$this->stockagePartenaires->ajouterPartenaire($partenaire);
@@ -158,10 +190,15 @@ class ControleurPartenaires implements IControleurPlateforme {
 		return $partenaire;
 	}
 
+	/**
+	 * Supprimer un partenaire.
+	 * @param array $partenaireArray Le tableau représentant un partenaire.
+	 * @return Partenaire Le partenaire supprimé.
+	 */
 	public function supprimerPartenaire(array $partenaireArray): Partenaire {
 		$partenaire = $this->creerPartenaire($partenaireArray);
 
-		//Il faut peut être supprimer les fichiers et le dossiers après en lme sortant de initialiser car ils seront supprimé même s'il y a une erreur.
+		//Il faut peut être supprimer les fichiers et le dossiers après en le sortant de initialiser car ils seront supprimé même s'il y a une erreur.
 		$nomDossierPartenaire = "partenaire" . $partenaire->getIdentifiantPartenaire();
 		$cheminDossierPartenaire = getVariableEnvironnement("CHEMIN_DOSSIER_UPLOADS") . DIRECTORY_SEPARATOR . $nomDossierPartenaire;
 		$this->gestionFichiers->supprimerDossier($cheminDossierPartenaire);
@@ -170,6 +207,12 @@ class ControleurPartenaires implements IControleurPlateforme {
 		return $partenaire;
 	}
 
+	/**
+	 * Modifier un partenaire.
+	 * @param array $partenaireArray Le tableau représentant un partenaire.
+	 * @param array $uploadedFiles Les nouveaux fichiers à déplacer dans le dossier du partenaire.
+	 * @return Partenaire Le partenaire modifié.
+	 */
 	public function modifierPartenaire(array $partenaireArray, array $uploadedFiles): Partenaire {
 		$partenaire = $this->creerPartenaire($partenaireArray);
 		$this->intialiserPartenaireAvecFichiersUploads($partenaire, $uploadedFiles);
@@ -177,6 +220,10 @@ class ControleurPartenaires implements IControleurPlateforme {
 		return $partenaire;
 	}
 
+	/**
+	 * Retourner la liste des partenaires.
+	 * @return array La liste des partenaires.
+	 */
 	public function chargerListePartenaires(): array {
 		return $this->stockagePartenaires->chargerListePartenaires();
 	}

@@ -6,7 +6,7 @@
  * Partenaire description.
  *
  * @version 1.0
- * @author Jean-Claude
+ * @author Pierre-Nicolas
  */
 class Partenaire implements ISerializable {
 	private $identifiantPartenaire;

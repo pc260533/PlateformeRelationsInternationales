@@ -1,12 +1,9 @@
 <?php
 
 /**
- * ExceptionUtilisateurDeconnecte short summary.
+ * ExceptionUtilisateurDeconnecte est la classe qui représente une exception de déconnexion du serveur.
  *
- * ExceptionUtilisateurDeconnecte description.
- *
- * @version 1.0
- * @author Jean-Claude
+ * @author Pierre-Nicolas
  */
 class ExceptionUtilisateurDeconnecte extends ExceptionSerializable {
 
@@ -15,7 +12,7 @@ class ExceptionUtilisateurDeconnecte extends ExceptionSerializable {
 	 * @param mixed $previous : exption englobée.
 	 */
 	public function __construct() {
-		parent::__construct("Vous avez déconnecté du serveur. Veuiilez vous reconnecter.", "Déconnexion du serveur", 302, 302, null, null);
+		parent::__construct("Vous avez déconnecté du serveur. Veuillez vous reconnecter.", "Déconnexion du serveur", 302, 302, null, null);
 	}
 
 }

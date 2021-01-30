@@ -1,19 +1,27 @@
 <?php
 
 /**
- * ControleurAuthentification short summary.
  *
- * ControleurAuthentification description.
+ * ControleurAuthentification est la classe représentant un controleur d'authentification.
+ * Elle implémente l'interface IControleurPlateforme.
  *
  * @version 1.0
- * @author Jean-Claude
+ * @author Pierre-Nicolas
  */
 class ControleurAuthentification {
 
+	/**
+	 * Constructeur ControleurAuthentification sans paramètres.
+	 */
 	public function __construct() {
 
 	}
 
+	/**
+	 * Retourner l'utilisateur en session avec son identifiant.
+	 * @param int $identifiantUtilisateur L'identifiant de l'utilisateur à récupérer.
+	 * @return null|Utilisateur L'utilisateur récupéré.
+	 */
 	public function getUtilisateurEnSessionAvecIdentifiantUtilisateur(int $identifiantUtilisateur): Utilisateur {
 		$res = null;
 		session_start();
@@ -31,6 +39,12 @@ class ControleurAuthentification {
 		return $res;
 	}
 
+	/**
+	 * Essayer de connecter un utilisateur en comparant un utilisateur à tester avec son mot de passe et l'utilisateur stocké correspondant.
+	 * @param Utilisateur $utilisateurATester L'utilisateur à tester.
+	 * @param Utilisateur $utilisateurRecuperer L'utilisateur stocké récupérer.
+	 * @throws ExceptionAuthentification L'exception d'authentification.
+	 */
 	public function connecterUtilisateur(Utilisateur $utilisateurATester, Utilisateur $utilisateurRecuperer): void {
 		if (password_verify($utilisateurATester->getMotDePasseUtilisateur(), $utilisateurRecuperer->getMotDePasseUtilisateur())) {
 			$utilisateurRecuperer->setMotDePasseUtilisateur("");
@@ -45,6 +59,11 @@ class ControleurAuthentification {
 		}
 	}
 
+	/**
+	 * Essayer de déconnecter un utilisateur.
+	 * @param Utilisateur $utilisateurADeconnecter L'utilisateur à déconnecter.
+	 * @throws ExceptionAuthentification L'exception d'authentification.
+	 */
 	public function deconnecterUtilisateur(Utilisateur $utilisateurADeconnecter): void {
 		session_start();
 		if (isset($_SESSION["listeUtilisateurs"])) {

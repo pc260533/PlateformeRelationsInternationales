@@ -60,12 +60,14 @@ export default class VueAidesFinancieres extends Vue implements IVueAidesFinanci
     private initialiserDatatables() {
         this.proprietesDatatablesAidesFinancieres = new ProprietesDatatables();
         this.proprietesDatatablesAidesFinancieres.OrdreDesElementsDeControle = "Bfti";
-        this.proprietesDatatablesAidesFinancieres.ajouterColonne(new ProprietesDatatablesColonne("Identifiant Aide Financiere", "identifiantAideFinanciere"));
-        this.proprietesDatatablesAidesFinancieres.ajouterColonne(new ProprietesDatatablesColonne("Nom Aide Financiere", "nomAideFinanciere"));
+        this.proprietesDatatablesAidesFinancieres.ajouterColonne(new ProprietesDatatablesColonne("Identifiant Aide Financière", "identifiantAideFinanciere"));
+        this.proprietesDatatablesAidesFinancieres.ajouterColonne(new ProprietesDatatablesColonne("Nom Aide Financière", "nomAideFinanciere"));
+        this.proprietesDatatablesAidesFinancieres.ajouterColonne(new ProprietesDatatablesColonne("Description Aide Financière", "descriptionAideFinanciere"));
+        this.proprietesDatatablesAidesFinancieres.ajouterColonne(new ProprietesDatatablesColonne("Lien Aide Financière", "lienAideFinanciere"));
         if (this.plateforme.UtilisateurConnecte) {
-            this.proprietesDatatablesAidesFinancieres.ajouterBouton(new ProprietesDatatablesBouton("Ajouter Aide Financiere", this.onClickAjouterAideFinanciere));
-            this.proprietesDatatablesAidesFinancieres.ajouterBouton(new ProprietesDatatablesBouton("Supprimer Aide Financiere", this.onClickSupprimerAideFinanciere));
-            this.proprietesDatatablesAidesFinancieres.ajouterBouton(new ProprietesDatatablesBouton("Modifier Aide Financiere", this.onClickModifierAideFinanciere));
+            this.proprietesDatatablesAidesFinancieres.ajouterBouton(new ProprietesDatatablesBouton("Ajouter Aide Financière", this.onClickAjouterAideFinanciere));
+            this.proprietesDatatablesAidesFinancieres.ajouterBouton(new ProprietesDatatablesBouton("Supprimer Aide Financière", this.onClickSupprimerAideFinanciere));
+            this.proprietesDatatablesAidesFinancieres.ajouterBouton(new ProprietesDatatablesBouton("Modifier Aide Financière", this.onClickModifierAideFinanciere));
         }
     }
 
@@ -105,7 +107,7 @@ export default class VueAidesFinancieres extends Vue implements IVueAidesFinanci
     }
 
     private onClickAjouterAideFinanciere(): void {
-        $("#inputTitreAideFinanciere").text("Ajout Aide Financiere");
+        $("#inputTitreAideFinanciere").text("Ajout Aide Financière");
         this.modalEditeAideFinanciere.montrerModal();
         $("#boutonEditeAideFinanciere").off();
         $("#boutonEditeAideFinanciere").on("click", () => {
@@ -125,7 +127,7 @@ export default class VueAidesFinancieres extends Vue implements IVueAidesFinanci
         var listeAidesFinancieresSelectionnes: AideFinanciere[] = this.datatablesAidesFinancieres.getListeLignesSelectionnees();
         if (listeAidesFinancieresSelectionnes.length > 0) {
             var premiereAideFinanciereSelectionnee: AideFinanciere = listeAidesFinancieresSelectionnes[0];
-            $("#inputTitreAideFinanciere").text("Modifiaction Aide Financiere : " + premiereAideFinanciereSelectionnee.NomAideFinanciere);
+            $("#inputTitreAideFinanciere").text("Modification Aide Financière : " + premiereAideFinanciereSelectionnee.NomAideFinanciere);
             $("#inputIdentifiantAideFinanciere").val(premiereAideFinanciereSelectionnee.IdentifiantAideFinanciere);
             $("#inputNomAideFinanciere").val(premiereAideFinanciereSelectionnee.NomAideFinanciere);
             $("#textareaDescriptionAideFinanciere").val(premiereAideFinanciereSelectionnee.DescriptionAideFinanciere);

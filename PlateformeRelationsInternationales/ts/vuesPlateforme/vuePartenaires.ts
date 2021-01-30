@@ -108,6 +108,7 @@ export default class VuePartenaire extends Vue implements IVuePartenaires, IVueD
     @Ref("modalEditeCoordinateursPartenaire") readonly modalEditeCoordinateursPartenaire!: ModalSpecifique;
     @Ref("modalEditeVoeuxPartenaire") readonly modalEditeVoeuxPartenaire!: ModalSpecifique;
     @Ref("modalValideVoeuxPartenaires") readonly modalValideVoeuxPartenaires!: ModalSpecifique;
+    @Ref("modalDetailsPartenaire") readonly modalDetailsPartenaire!: ModalSpecifique;
     @Ref("spinner") readonly spinner!: SpinnerSpecifique;
     @Ref("treeSousSpecialitesPartenaire") readonly treeSousSpecialitesPartenaire!: TreeSpecifique;
     @Ref("modalErreur") readonly modalErreur!: ModalErreur;
@@ -193,6 +194,7 @@ export default class VuePartenaire extends Vue implements IVuePartenaires, IVueD
             this.proprietesDatatablesPartenaires.ajouterBouton(new ProprietesDatatablesBouton("Modifier Partenaire", this.onModifierPartenaireClick));
         }
         this.proprietesDatatablesPartenaires.ajouterBouton(new ProprietesDatatablesBouton("Valider les voeux", this.onValiderVoeuxPartenairesClick));
+        this.proprietesDatatablesPartenaires.ajouterBouton(new ProprietesDatatablesBouton("Voir le détail du partenaire", this.onClickVoirDetailPartenaire));
 
         this.proprietesDatatablesDomainesDeCompetencesPartenaires = new ProprietesDatatables();
         this.proprietesDatatablesDomainesDeCompetencesPartenaires.OrdreDesElementsDeControle = "Bfti";
@@ -201,11 +203,11 @@ export default class VuePartenaire extends Vue implements IVuePartenaires, IVueD
 
         this.proprietesDatatablesMobilitesPartenaires = new ProprietesDatatables();
         this.proprietesDatatablesMobilitesPartenaires.OrdreDesElementsDeControle = "fti";
-        this.proprietesDatatablesMobilitesPartenaires.ajouterColonne(new ProprietesDatatablesColonne("Type Mobilite", "typeMobilite"));
+        this.proprietesDatatablesMobilitesPartenaires.ajouterColonne(new ProprietesDatatablesColonne("Type Mobilité", "typeMobilite"));
 
         this.proprietesDatatablesAidesFinancieresPartenaires = new ProprietesDatatables();
         this.proprietesDatatablesAidesFinancieresPartenaires.OrdreDesElementsDeControle = "fti";
-        this.proprietesDatatablesAidesFinancieresPartenaires.ajouterColonne(new ProprietesDatatablesColonne("Nom Aide Financiere", "nomAideFinanciere"));
+        this.proprietesDatatablesAidesFinancieresPartenaires.ajouterColonne(new ProprietesDatatablesColonne("Nom Aide Financière", "nomAideFinanciere"));
 
         this.proprietesDatatablesContactsEtrangersPartenaires = new ProprietesDatatables();
         this.proprietesDatatablesContactsEtrangersPartenaires.OrdreDesElementsDeControle = "Bfti";
@@ -329,6 +331,20 @@ export default class VuePartenaire extends Vue implements IVuePartenaires, IVueD
             $("#inputAdresseMailVoeuxPartenaires").removeClass("is-invalid");
         });
 
+        this.modalDetailsPartenaire.onCacherModal(() => {
+            $("#labelListeImagesPartenairesDetail").show();
+            $("#labelListeDomainesDeCompetencesPartenairesDetail").show();
+            $("#labelListeSousSpecialitesPartenairesDetail").show();
+            $("#labelListeMobilitesPartenairesDetail").show();
+            $("#labelListeAidesFinancieresPartenairesDetail").show();
+            $("#labelListeCoordinateursPartenairesDetail").show();
+            $("#listeImagesPartenairesDetail").empty();
+            $("#listeDomainesDeCompetencesPartenairesDetail").empty();
+            $("#listeSousSpecialitesPartenairesDetail").empty();
+            $("#listeMobilitesPartenairesDetail").empty();
+            $("#listeAidesFinancieresPartenairesDetail").empty();
+            $("#listeCoordinateursPartenairesDetail").empty();
+        });
     }
 
     private ajouterDomaineDeCompetenceDansSelect(domaineDeCompetence: DomaineDeCompetence): void {
@@ -759,6 +775,7 @@ export default class VuePartenaire extends Vue implements IVuePartenaires, IVueD
             return;
         }
         $("#formGroupListeImagesPartenaireServeur").hide();
+        $("#formRowListeVoeuxPartenaire").hide();
 
         $("#inputTitrePartenaire").text("Ajout Partenaire");
         this.modalEditePartenaire.montrerModal();
@@ -797,6 +814,7 @@ export default class VuePartenaire extends Vue implements IVuePartenaires, IVueD
 
     private onModifierPartenaireClick(): void {
         $("#formGroupListeImagesPartenaireServeur").show();
+        $("#formRowListeVoeuxPartenaire").show();
 
         var listePartenairesSelectionnes: Partenaire[] = this.datatablesPartenaires.getListeLignesSelectionnees();
         if (listePartenairesSelectionnes.length > 0) {
@@ -1105,6 +1123,58 @@ export default class VuePartenaire extends Vue implements IVuePartenaires, IVueD
         }
         else {
             this.modalInformation.afficherInformation(new InformationSerializable("Nombre de voeux sélectionnés incorrect", "Le nombre de voeux spécifié pour un partenaire à l'internationale doit être exactement de trois.", "Veuillez sélectionner trois voeux pour valider vos voeux."));
+        }
+    }
+
+    private onClickVoirDetailPartenaire(): void {
+        var listePartenairesSelectionnes: Partenaire[] = this.datatablesPartenaires.getListeLignesSelectionnees();
+        if (listePartenairesSelectionnes.length > 0) {
+            var premierPartenaireSelectionne: Partenaire = listePartenairesSelectionnes[0];
+            $("#inputDetailsPartenaire").text("Detail du partenaire : " + premierPartenaireSelectionne.NomPartenaire);
+            $("#identifiantPartenaireDetail").text(premierPartenaireSelectionne.IdentifiantPartenaire);
+            $("#nomPartenaireDetail").text(premierPartenaireSelectionne.NomPartenaire);
+            $("#lienPartenaireDetail").text(premierPartenaireSelectionne.LienPartenaire);
+            $("#etatPartenaireDetail").text(premierPartenaireSelectionne.EtatPartenaire.NomEtatPartenaire);
+            $("#localisationPartenaireDetail").text(premierPartenaireSelectionne.LocalisationPartenaire.NomLocalisation);
+            $("#informationLogementPartenaireDetail").text(premierPartenaireSelectionne.InformationLogementPartenaire);
+            $("#informationCoutPartenaireDetail").text(premierPartenaireSelectionne.InformationCoutPartenaire);
+            if (premierPartenaireSelectionne.ListeImagesPartenaire.length == 0) {
+                $("#labelListeImagesPartenairesDetail").hide();
+            }
+            if (premierPartenaireSelectionne.ListeDomainesDeCompetencesPartenaire.length == 0) {
+                $("#labelListeDomainesDeCompetencesPartenairesDetail").hide();
+            }
+            if (premierPartenaireSelectionne.ListeSousSpecialitesPartenaire.length == 0) {
+                $("#labelListeSousSpecialitesPartenairesDetail").hide();
+            }
+            if (premierPartenaireSelectionne.ListeMobilitesPartenaires.length == 0) {
+                $("#labelListeMobilitesPartenairesDetail").hide();
+            }
+            if (premierPartenaireSelectionne.ListeAidesFinancieresPartenaires.length == 0) {
+                $("#labelListeAidesFinancieresPartenairesDetail").hide();
+            }
+            if (premierPartenaireSelectionne.ListeCoordinateursPartenaires.length == 0) {
+                $("#labelListeCoordinateursPartenairesDetail").hide();
+            }
+            premierPartenaireSelectionne.ListeImagesPartenaire.forEach((imagePartenaire: ImagePartenaire) => {
+                $("#listeImagesPartenairesDetail").append($("<li>").addClass("informationsAProposLi").text(imagePartenaire.CheminImagePartenaireServeur));
+            });
+            premierPartenaireSelectionne.ListeDomainesDeCompetencesPartenaire.forEach((domaineDeCompetence: DomaineDeCompetence) => {
+                $("#listeDomainesDeCompetencesPartenairesDetail").append($("<li>").addClass("informationsAProposLi").text(domaineDeCompetence.NomDomaineDeCompetence));
+            });
+            premierPartenaireSelectionne.ListeSousSpecialitesPartenaire.forEach((sousSpecialites: SousSpecialite) => {
+                $("#listeSousSpecialitesPartenairesDetail").append($("<li>").addClass("informationsAProposLi").text(sousSpecialites.NomSousSpecialite));
+            });
+            premierPartenaireSelectionne.ListeMobilitesPartenaires.forEach((mobilite: Mobilite) => {
+                $("#listeMobilitesPartenairesDetail").append($("<li>").addClass("informationsAProposLi").text(mobilite.TypeMobilite));
+            });
+            premierPartenaireSelectionne.ListeAidesFinancieresPartenaires.forEach((aideFinanciere: AideFinanciere) => {
+                $("#listeAidesFinancieresPartenairesDetail").append($("<li>").addClass("informationsAProposLi").text(aideFinanciere.NomAideFinanciere));
+            });
+            premierPartenaireSelectionne.ListeCoordinateursPartenaires.forEach((coordinateur: Coordinateur) => {
+                $("#listeCoordinateursPartenairesDetail").append($("<li>").addClass("informationsAProposLi").text(coordinateur.NomContact + " " + coordinateur.AdresseMailContact));
+            });
+            this.modalDetailsPartenaire.montrerModal();
         }
     }
 

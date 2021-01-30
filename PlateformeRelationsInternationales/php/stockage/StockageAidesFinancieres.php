@@ -1,19 +1,31 @@
 <?php
 
 /**
- * StockageAidesFinancieres short summary.
  *
- * StockageAidesFinancieres description.
+ * StockageAidesFinancieres est la classe fournissant l'accès aux aides financières de la base de données Plateforme.
+ * Elle hérite de StockageBaseDeDonnees.
  *
  * @version 1.0
- * @author Jean-Claude
+ * @author Pierre-Nicolas
  */
 class StockageAidesFinancieres extends StockageBaseDeDonnees {
 
+	/**
+	 * Constructeur StockageAidesFinancieres prenant en paramètre le dataSourceName, le nom d'utilisateur et le mot de passe de la base de données.
+	 * @param string $dataSourceName Le dataSourceName de la base de données.
+	 * @param string $username Le nom d'utilisateur de la base de données.
+	 * @param string $password Le mot de passe de la base de données.
+	 * @throws ExceptionBaseDeDonneesPlateforme L'exception du service de base de données.
+	 */
 	public function __construct(string $dataSourceName, string $username, string $password) {
 		parent::__construct($dataSourceName, $username, $password);
 	}
 
+	/**
+	 * Ajouter une aide financière.
+	 * @param AideFinanciere $aideFinanciere L'aide financière à ajouter.
+	 * @throws ExceptionBaseDeDonneesPlateforme L'exception du service de base de données.
+	 */
 	public function ajouterAideFinanciere(AideFinanciere $aideFinanciere): void {
 		try {
 			$this->pdo->beginTransaction();
@@ -32,6 +44,11 @@ class StockageAidesFinancieres extends StockageBaseDeDonnees {
 		}
 	}
 
+	/**
+	 * Supprimer une aide financière.
+	 * @param AideFinanciere $aideFinanciere L'aide financière à supprimer.
+	 * @throws ExceptionBaseDeDonneesPlateforme L'exception du service de base de données.
+	 */
 	public function supprimerAideFinanciere(AideFinanciere $aideFinanciere): void {
 		try {
 			$this->pdo->beginTransaction();
@@ -48,6 +65,11 @@ class StockageAidesFinancieres extends StockageBaseDeDonnees {
 		}
 	}
 
+	/**
+	 * Modifier une aide financière.
+	 * @param AideFinanciere $aideFinanciere L'aide financière à modifier.
+	 * @throws ExceptionBaseDeDonneesPlateforme L'exception du service de base de données.
+	 */
 	public function modifierAideFinanciere(AideFinanciere $aideFinanciere): void {
 		try {
 			$this->pdo->beginTransaction();
@@ -68,6 +90,11 @@ class StockageAidesFinancieres extends StockageBaseDeDonnees {
 		}
 	}
 
+	/**
+	 * Retourner la liste des aides financières.
+	 * @throws ExceptionBaseDeDonneesPlateforme L'exception du service de base de données.
+	 * @return array[] La liste des aides financières.
+	 */
 	public function chargerListeAidesFinancieres(): array {
 		try {
 			$listeAidesFinancieres = array();

@@ -6,7 +6,7 @@
  * Contact description.
  *
  * @version 1.0
- * @author Jean-Claude
+ * @author Pierre-Nicolas
  */
 abstract class Contact implements ISerializable {
 	private $identifiantContact;

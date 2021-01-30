@@ -1,19 +1,31 @@
 <?php
 
 /**
- * StockageEtatsPartenaires short summary.
  *
- * StockageEtatsPartenaires description.
+ * StockageEtatsPartenaires est la classe fournissant l'accès aux états partenaires de la base de données Plateforme.
+ * Elle hérite de StockageBaseDeDonnees.
  *
  * @version 1.0
- * @author Jean-Claude
+ * @author Pierre-Nicolas
  */
 class StockageEtatsPartenaires extends StockageBaseDeDonnees {
 
+	/**
+	 * Constructeur StockageEtatsPartenaires prenant en paramètre le dataSourceName, le nom d'utilisateur et le mot de passe de la base de données.
+	 * @param string $dataSourceName Le dataSourceName de la base de données.
+	 * @param string $username Le nom d'utilisateur de la base de données.
+	 * @param string $password Le mot de passe de la base de données.
+	 * @throws ExceptionBaseDeDonneesPlateforme L'exception du service de base de données.
+	 */
 	public function __construct(string $dataSourceName, string $username, string $password) {
 		parent::__construct($dataSourceName, $username, $password);
 	}
 
+	/**
+	 * Ajouter un état partenaire.
+	 * @param EtatPartenaire $etatPartenaire L'état partenaire à ajouter.
+	 * @throws ExceptionBaseDeDonneesPlateforme L'exception du service de base de données.
+	 */
 	public function ajouterEtatPartenaire(EtatPartenaire $etatPartenaire): void {
 		try {
 			$this->pdo->beginTransaction();
@@ -30,6 +42,11 @@ class StockageEtatsPartenaires extends StockageBaseDeDonnees {
 		}
 	}
 
+	/**
+	 * Supprimer un état partenaire.
+	 * @param EtatPartenaire $etatPartenaire L'état partenaire à supprimer.
+	 * @throws ExceptionBaseDeDonneesPlateforme L'exception du service de base de données.
+	 */
 	public function supprimerEtatPartenaire(EtatPartenaire $etatPartenaire): void {
 		try {
 			$this->pdo->beginTransaction();
@@ -46,6 +63,11 @@ class StockageEtatsPartenaires extends StockageBaseDeDonnees {
 		}
 	}
 
+	/**
+	 * Modifier un état partenaire.
+	 * @param EtatPartenaire $etatPartenaire L'état partenaire à modifier.
+	 * @throws ExceptionBaseDeDonneesPlateforme L'exception du service de base de données.
+	 */
 	public function modifierEtatPartenaire(EtatPartenaire $etatPartenaire): void {
 		try {
 			$this->pdo->beginTransaction();
@@ -64,6 +86,11 @@ class StockageEtatsPartenaires extends StockageBaseDeDonnees {
 		}
 	}
 
+	/**
+	 * Retourner la liste des états partenaires.
+	 * @throws ExceptionBaseDeDonneesPlateforme L'exception du service de base de données.
+	 * @return array[] La liste des états partenaires.
+	 */
 	public function chargerListeEtatsPartenaires(): array {
 		try {
 			$listeEtatsPartenaires = array();
