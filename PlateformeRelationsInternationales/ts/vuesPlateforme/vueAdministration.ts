@@ -237,8 +237,8 @@ export default class VueAdminisitration extends Vue implements IVueContactsEtran
         this.proprietesDatatablesVoeux.ajouterBouton(new ProprietesDatatablesBouton("Supprimer Voeu", this.onClickSupprimerVoeu));
 
         this.proprietesDatatablesUtilisateurs = new ProprietesDatatables();
-        //this.proprietesDatatablesUtilisateurs.OrdreDesElementsDeControle = "Bfti";
-        this.proprietesDatatablesUtilisateurs.ajouterColonne(new ProprietesDatatablesColonne("Identifiant Utilisateur", "identifiantUtilisateur"));
+        this.proprietesDatatablesUtilisateurs.OrdreDesElementsDeControle = "Bfti";
+        //this.proprietesDatatablesUtilisateurs.ajouterColonne(new ProprietesDatatablesColonne("Identifiant Utilisateur", "identifiantUtilisateur"));
         this.proprietesDatatablesUtilisateurs.ajouterColonne(new ProprietesDatatablesColonne("Nom Utilisateur", "nomUtilisateur"));
         this.proprietesDatatablesUtilisateurs.ajouterColonne(new ProprietesDatatablesColonne("Adresse Mail Utilisateur", "adresseMailUtilisateur"));
         this.proprietesDatatablesUtilisateurs.ajouterColonne(new ProprietesDatatablesColonne("Est Administrateur", "EstAdministrateurString"));
