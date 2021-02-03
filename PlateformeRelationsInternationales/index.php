@@ -22,7 +22,7 @@ require __DIR__ . "/php/modele/Partenaire.php";
 require __DIR__ . "/php/modele/Plateforme.php";
 require __DIR__ . "/php/modele/SousSpecialite.php";
 require __DIR__ . "/php/modele/Specialite.php";
-require __DIR__ . "/php/modele/ImagePartenaire.php";
+require __DIR__ . "/php/modele/FichierPartenaire.php";
 require __DIR__ . "/php/modele/Cout.php";
 require __DIR__ . "/php/modele/EtatPartenaire.php";
 require __DIR__ . "/php/modele/Voeu.php";

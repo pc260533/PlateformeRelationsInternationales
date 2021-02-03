@@ -60,7 +60,7 @@ export default class VueAidesFinancieres extends Vue implements IVueAidesFinanci
     private initialiserDatatables() {
         this.proprietesDatatablesAidesFinancieres = new ProprietesDatatables();
         this.proprietesDatatablesAidesFinancieres.OrdreDesElementsDeControle = "Bfti";
-        this.proprietesDatatablesAidesFinancieres.ajouterColonne(new ProprietesDatatablesColonne("Identifiant Aide Financière", "identifiantAideFinanciere"));
+        //this.proprietesDatatablesAidesFinancieres.ajouterColonne(new ProprietesDatatablesColonne("Identifiant Aide Financière", "identifiantAideFinanciere"));
         this.proprietesDatatablesAidesFinancieres.ajouterColonne(new ProprietesDatatablesColonne("Nom Aide Financière", "nomAideFinanciere"));
         this.proprietesDatatablesAidesFinancieres.ajouterColonne(new ProprietesDatatablesColonne("Description Aide Financière", "descriptionAideFinanciere"));
         this.proprietesDatatablesAidesFinancieres.ajouterColonne(new ProprietesDatatablesColonne("Lien Aide Financière", "lienAideFinanciere"));

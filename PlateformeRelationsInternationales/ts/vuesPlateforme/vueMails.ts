@@ -125,16 +125,16 @@ export default class VueMails extends Vue implements IVuePartenaires, IVueMails,
     private initialiserDatatables() {
         this.proprietesDatatablesPartenaires = new ProprietesDatatables();
         this.proprietesDatatablesPartenaires.OrdreDesElementsDeControle = "Bfti";
-        this.proprietesDatatablesPartenaires.ajouterColonne(new ProprietesDatatablesColonne("Identifiant Partenaire", "identifiantPartenaire"));
+        //this.proprietesDatatablesPartenaires.ajouterColonne(new ProprietesDatatablesColonne("Identifiant Partenaire", "identifiantPartenaire"));
         this.proprietesDatatablesPartenaires.ajouterColonne(new ProprietesDatatablesColonne("Nom Partenaire", "nomPartenaire"));
         this.proprietesHistoriqueMailsPartenaire = new ProprietesDatatables();
         this.proprietesHistoriqueMailsPartenaire.OrdreDesElementsDeControle = "Bfti";
-        this.proprietesHistoriqueMailsPartenaire.ajouterColonne(new ProprietesDatatablesColonne("Identifiant Mail", "identifiantMail"));
+        //this.proprietesHistoriqueMailsPartenaire.ajouterColonne(new ProprietesDatatablesColonne("Identifiant Mail", "identifiantMail"));
         this.proprietesHistoriqueMailsPartenaire.ajouterColonne(new ProprietesDatatablesColonne("Nom Partenaire", "partenaireMail.nomPartenaire"));
         this.proprietesHistoriqueMailsPartenaire.ajouterColonne(new ProprietesDatatablesColonne("Sujet Mail", "SujetMail"));
         this.proprietesDatatablesTemplatesMails = new ProprietesDatatables();
         this.proprietesDatatablesTemplatesMails.OrdreDesElementsDeControle = "Bfti";
-        this.proprietesDatatablesTemplatesMails.ajouterColonne(new ProprietesDatatablesColonne("Identifiant Template Mail", "identifiantTemplateMail"));
+        //this.proprietesDatatablesTemplatesMails.ajouterColonne(new ProprietesDatatablesColonne("Identifiant Template Mail", "identifiantTemplateMail"));
         this.proprietesDatatablesTemplatesMails.ajouterColonne(new ProprietesDatatablesColonne("Nom Template Mail", "nomTemplateMail"));
         if (this.plateforme.UtilisateurConnecte) {
             this.proprietesDatatablesPartenaires.ajouterBouton(new ProprietesDatatablesBouton("Envoyer mail partenaire", this.onClickEnvoyerMailPartenaire));

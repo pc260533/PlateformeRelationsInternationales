@@ -52,13 +52,17 @@ export default class VueAccueil extends Vue implements IVuePlateforme {
     }
 
     private afficherCarousel(): void {
-        this.carouselAccueil.ajouterSlide("https://esirem.u-bourgogne.fr/wp-content/uploads/2020/01/%C3%A9tudiants-%C3%A0-nex-york-1024x887.jpg", "New York", "New York", true);
-        this.carouselAccueil.ajouterSlide("https://esirem.u-bourgogne.fr/wp-content/uploads/2020/01/nouvelle-z%C3%A9lande-1-1024x683.jpg", "Nouvelle-Zélande", "Nouvelle-Zélande", false);
-        this.carouselAccueil.ajouterSlide("https://esirem.u-bourgogne.fr/wp-content/uploads/2020/01/japon.jpg", "Japon", "Japon", false);
-        this.carouselAccueil.ajouterSlide("https://esirem.u-bourgogne.fr/wp-content/uploads/2020/01/19665656_1558722814201763_1632916992237948771_n-1.jpg", "Miami", "Miami", false);
-        this.carouselAccueil.ajouterSlide("https://esirem.u-bourgogne.fr/wp-content/uploads/2020/01/kentucky.jpg", "Kentucky", "Kentucky", false);
-        this.carouselAccueil.ajouterSlide("https://esirem.u-bourgogne.fr/wp-content/uploads/2020/01/remi.jpg", "Corée", "Corée", false);
-        this.carouselAccueil.ajouterSlide("https://esirem.u-bourgogne.fr/wp-content/uploads/2020/01/japon-1.jpg", "Japon", "Japon", false);
+        var listeImagesEtudiants = JSON.parse(process.env.IMAGES_ETUDIANTS);
+        var estActive: boolean = true;
+        listeImagesEtudiants.forEach((imageEtudiant: any) => {
+            if (estActive) {
+                this.carouselAccueil.ajouterSlide(imageEtudiant.cheminImage, imageEtudiant.titreImage, imageEtudiant.sousTitreImage, true);
+                estActive = false;
+            }
+            else {
+                this.carouselAccueil.ajouterSlide(imageEtudiant.cheminImage, imageEtudiant.titreImage, imageEtudiant.sousTitreImage, false);
+            }
+        });
     }
 
     public constructor() {

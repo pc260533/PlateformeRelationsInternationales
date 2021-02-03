@@ -3,10 +3,14 @@
     <div class="container">
 
         <div class="sectionHeader text-center">
-            <h2 class="sectionTitre">Gérer les aides financières</h2>
+            <h2 class="sectionTitre" v-if="plateforme.UtilisateurConnecte != null">Gérer les aides financières</h2>
+            <h2 class="sectionTitre" v-else>Les aides financières</h2>
             <div class="line"><span></span></div>
-            <p>
+            <p v-if="plateforme.UtilisateurConnecte != null">
                 Ajouter, modifier, supprimer les aides financières.
+            </p>
+            <p v-else>
+                Visualiser les aides financières.
             </p>
         </div>
 

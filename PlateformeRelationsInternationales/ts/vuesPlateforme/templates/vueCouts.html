@@ -3,10 +3,14 @@
     <div class="container">
 
         <div class="sectionHeader text-center">
-            <h2 class="sectionTitre">Gérer les coûts</h2>
+            <h2 class="sectionTitre" v-if="plateforme.UtilisateurConnecte != null">Gérer les coûts</h2>
+            <h2 class="sectionTitre" v-else>Les coûts</h2>
             <div class="line"><span></span></div>
-            <p>
+            <p v-if="plateforme.UtilisateurConnecte != null">
                 Modifier les coûts par pays des partenaires.
+            </p>
+            <p v-else>
+                Visualiser les coûts par pays des partenaires.
             </p>
         </div>
 

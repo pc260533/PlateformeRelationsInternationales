@@ -3,10 +3,14 @@
     <div class="container">
 
         <div class="sectionHeader text-center">
-            <h2 class="sectionTitre">Gérer les coordinateurs</h2>
+            <h2 class="sectionTitre" v-if="plateforme.UtilisateurConnecte != null">Gérer les coordinateurs</h2>
+            <h2 class="sectionTitre" v-else>Les coordinateurs</h2>
             <div class="line"><span></span></div>
-            <p>
+            <p v-if="plateforme.UtilisateurConnecte != null">
                 Ajouter, modifier, supprimer les coordinateurs.
+            </p>
+            <p v-else>
+                Visualiser les coordinateurs.
             </p>
         </div>
 

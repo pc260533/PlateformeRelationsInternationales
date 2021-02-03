@@ -3,10 +3,14 @@
 <section class="section partenaires mt-5">
 
     <div class="sectionHeader text-center">
-        <h2 class="sectionTitre">Gérer les partenaires</h2>
+        <h2 class="sectionTitre" v-if="plateforme.UtilisateurConnecte != null">Gérer les partenaires</h2>
+        <h2 class="sectionTitre" v-else>Les partenaires</h2>
         <div class="line"><span></span></div>
-        <p>
+        <p v-if="plateforme.UtilisateurConnecte != null">
             Ajouter, modifier, supprimer les partenaires.
+        </p>
+        <p v-else>
+            Visualiser les partenaires et valider vos voeux.
         </p>
     </div>
 
@@ -88,15 +92,15 @@
                     <input type="hidden" id="inputCodePaysLocalisationPartenaire" class="form-control" />
                 </div>
                 <div class="form-group">
-                    <label for="inputListeImagesPartenaires">Ajouter des fichiers aux partenaires :</label>
-                    <input type="file" class="form-control-file" id="inputListeImagesPartenaires" accept="image/*" multiple>
+                    <label for="inputListeFichiersPartenaires">Ajouter des fichiers aux partenaires :</label>
+                    <input type="file" class="form-control-file" id="inputListeFichiersPartenaires" multiple>
                     <div class="invalid-feedback">
                         Un des fichiers sélectionnés existe déjà.
                     </div>
                 </div>
-                <div class="form-group" id="formGroupListeImagesPartenaireServeur">
-                    <label for="listeImagesPartenaireServeur">Liste Images Partenaire sur le serveur :</label>
-                    <ul class="list-group" id="listeImagesPartenaireServeur"></ul>
+                <div class="form-group" id="formGroupListeFichiersPartenaireServeur">
+                    <label for="listeFichiersPartenaireServeur">Liste Fichiers Partenaire sur le serveur :</label>
+                    <ul class="list-group" id="listeFichiersPartenaireServeur"></ul>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-9">
@@ -413,8 +417,8 @@
                 <p class="informationsDetailPartenaireDescription">
                     Localisation Partenaire : <span class="detailPartenaire" id="localisationPartenaireDetail"></span>
                 </p>
-                <p class="informationsDetailPartenaireDescription" id="labelListeImagesPartenairesDetail">Liste Images Partenaire :</p>
-                <ul class="informationsAProposUl" id="listeImagesPartenairesDetail"></ul>
+                <p class="informationsDetailPartenaireDescription" id="labelListeFichiersPartenairesDetail">Liste Fichiers Partenaire :</p>
+                <ul class="informationsAProposUl" id="listeFichiersPartenairesDetail"></ul>
                 <p class="informationsDetailPartenaireDescription" id="labelListeDomainesDeCompetencesPartenairesDetail">Liste Domaines De Compétences Partenaire :</p>
                 <ul class="informationsAProposUl" id="listeDomainesDeCompetencesPartenairesDetail"></ul>
                 <p class="informationsDetailPartenaireDescription" id="labelListeSousSpecialitesPartenairesDetail">Liste Sous Spécialités Partenaire :</p>

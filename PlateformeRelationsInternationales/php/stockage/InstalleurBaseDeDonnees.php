@@ -96,12 +96,12 @@ class InstalleurBaseDeDonnees extends StockageBaseDeDonnees {
 	}
 
 	/**
-	 * Créer la table ImagePartenaire dans la base.
+	 * Créer la table FichierPartenaire dans la base.
 	 */
-	private function creerTableImagePartenaire(): void {
-		$requete = "CREATE TABLE IF NOT EXISTS " . $this->nomBaseDeDonnees . ".IMAGEPARTENAIRE (" .
-				   "identifiantImagePartenaire INT PRIMARY KEY NOT NULL AUTO_INCREMENT," .
-				   "cheminImagePartenaireServeur VARCHAR(255));";
+	private function creerTableFichierPartenaire(): void {
+		$requete = "CREATE TABLE IF NOT EXISTS " . $this->nomBaseDeDonnees . ".FICHIERPARTENAIRE (" .
+				   "identifiantFichierPartenaire INT PRIMARY KEY NOT NULL AUTO_INCREMENT," .
+				   "cheminFichierPartenaireServeur VARCHAR(255));";
         $this->pdo->exec($requete);
 	}
 
@@ -276,15 +276,15 @@ class InstalleurBaseDeDonnees extends StockageBaseDeDonnees {
 	}
 
 	/**
-	 * Créer la table Correspondance_Partenaire_ImagePartenaire dans la base.
+	 * Créer la table Correspondance_Partenaire_FichierPartenaire dans la base.
 	 */
-	private function creerTableCorrespondancePartenaireImagePartenaire(): void {
-		$requete = "CREATE TABLE IF NOT EXISTS " . $this->nomBaseDeDonnees . ".CORRESPONDANCE_PARTENAIRE_IMAGEPARTENAIRE (" .
+	private function creerTableCorrespondancePartenaireFichierPartenaire(): void {
+		$requete = "CREATE TABLE IF NOT EXISTS " . $this->nomBaseDeDonnees . ".CORRESPONDANCE_PARTENAIRE_FICHIERPARTENAIRE (" .
 				   "identifiantPartenaire INT," .
-				   "identifiantImagePartenaire INT," .
-				   "PRIMARY KEY(identifiantPartenaire, identifiantImagePartenaire)," .
+				   "identifiantFichierPartenaire INT," .
+				   "PRIMARY KEY(identifiantPartenaire, identifiantFichierPartenaire)," .
 				   "FOREIGN KEY (identifiantPartenaire) REFERENCES PARTENAIRE(identifiantPartenaire) ON DELETE CASCADE," .
-				   "FOREIGN KEY (identifiantImagePartenaire) REFERENCES IMAGEPARTENAIRE(identifiantImagePartenaire) ON DELETE CASCADE);";
+				   "FOREIGN KEY (identifiantFichierPartenaire) REFERENCES FICHIERPARTENAIRE(identifiantFichierPartenaire) ON DELETE CASCADE);";
         $this->pdo->exec($requete);
 	}
 
@@ -454,7 +454,7 @@ class InstalleurBaseDeDonnees extends StockageBaseDeDonnees {
 			$this->creerTableMobilite();
 			$this->creerTableSpecialite();
 			$this->creerTableSousSpecialite();
-			$this->creerTableImagePartenaire();
+			$this->creerTableFichierPartenaire();
 			$this->creerTableCout();
 			$this->creerTableEtatPartenaire();
 			$this->creerTableVoeu();
@@ -468,7 +468,7 @@ class InstalleurBaseDeDonnees extends StockageBaseDeDonnees {
 			$this->creerTableCorrespondancePartenaireContactEtranger();
 			$this->creerTableCorrespondancePartenaireCoordinateur();
 			$this->creerTableCorrespondancePartenaireAideFinanciere();
-			$this->creerTableCorrespondancePartenaireImagePartenaire();
+			$this->creerTableCorrespondancePartenaireFichierPartenaire();
 			$this->creerTableCorrespondancePartenaireVoeu();
 			$this->creerTableCorrespondancePartenaireDomaineDeCompetence();
 			$this->creerTableCorrespondanceMailAContactEtranger();

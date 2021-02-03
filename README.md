@@ -1,2 +1,4 @@
 # PlateformeRelationsInternationales
 PlateformeRelationsInternationales
+
+La documentation est disponible dans le fichier : Documentation_PlateformeRelatiosnInternationales.pdf.

@@ -5,7 +5,7 @@ import { IVuePartenaires } from "../vuesPlateforme/ivuePartenaires";
 import { IVueCouts } from "../vuesPlateforme/ivueCouts";
 import { Partenaire } from "../modelePlateforme/partenaire";
 import { Localisation } from "../modelePlateforme/localisation";
-import { ImagePartenaire } from "../modelePlateforme/imagePartenaire";
+import { FichierPartenaire } from "../modelePlateforme/fichierPartenaire";
 import { Cout } from "../modelePlateforme/cout";
 
 export class ControleurPartenaires extends ControleurPlateforme {
@@ -57,8 +57,8 @@ export class ControleurPartenaires extends ControleurPlateforme {
     private ajouterPartenaireAjax(partenaire: Partenaire) {
         var that = this;
         var formData = new FormData();
-        partenaire.ListeImagesPartenaire.forEach((imagePartenaire: ImagePartenaire, indexImagePartenaire: number) => {
-            formData.append("imagePartenaire" + indexImagePartenaire, imagePartenaire.FileImagePartenaireLocal);
+        partenaire.ListeFichiersPartenaire.forEach((fichierPartenaire: FichierPartenaire, indexFichierPartenaire: number) => {
+            formData.append("fichierPartenaire" + indexFichierPartenaire, fichierPartenaire.FileFichierPartenaireLocal);
         });
         formData.append("partenaire", JSON.stringify(partenaire.getObjetSerializable()));
         formData.append("utilisateur", JSON.stringify(this.modelePlateforme.UtilisateurConnecte.getObjetSerializableId()));
@@ -73,12 +73,12 @@ export class ControleurPartenaires extends ControleurPlateforme {
                 partenaire.IdentifiantPartenaire = resultat.identifiantPartenaire;
                 partenaire.LocalisationPartenaire.IdentifiantLocalisation = resultat.localisationPartenaire.identifiantLocalisation;
                 // On remplace les objets partenaires qui peuvent contenir des liens vers des fichiers locaux par des références au serveur.
-                partenaire.ListeImagesPartenaire = [];
-                resultat.listeImagesPartenaire.forEach((imagePartenaire: any) => {
-                    var imagePartenaireObjet = new ImagePartenaire();
-                    imagePartenaireObjet.IdentifiantImagePartenaire = imagePartenaire.identifiantImagePartenaire;
-                    imagePartenaireObjet.CheminImagePartenaireServeur = imagePartenaire.cheminImagePartenaireServeur;
-                    partenaire.ajouterImagePartenaire(imagePartenaireObjet);
+                partenaire.ListeFichiersPartenaire = [];
+                resultat.listeFichiersPartenaire.forEach((fichierPartenaire: any) => {
+                    var fichierPartenaireObjet = new FichierPartenaire();
+                    fichierPartenaireObjet.IdentifiantFichierPartenaire = fichierPartenaire.identifiantFichierPartenaire;
+                    fichierPartenaireObjet.CheminFichierPartenaireServeur = fichierPartenaire.cheminFichierPartenaireServeur;
+                    partenaire.ajouterFichierPartenaire(fichierPartenaireObjet);
                 });
                 partenaire.CoutPartenaire.ajouterPartenaireCout(partenaire);
                 that.modelePlateforme.ajouterPartenaire(partenaire);
@@ -131,15 +131,15 @@ export class ControleurPartenaires extends ControleurPlateforme {
         nouveauPartenaire.LocalisationPartenaire.IdentifiantLocalisation = ancienPartenaire.LocalisationPartenaire.IdentifiantLocalisation;
 
         var formData = new FormData();
-        var listeImagesPartenaireAAjouter: ImagePartenaire[] = [];
-        nouveauPartenaire.ListeImagesPartenaire.forEach((imagePartenaire: ImagePartenaire, indexImagePartenaire: number) => {
-            if (imagePartenaire.FileImagePartenaireLocal != null) {
-                formData.append("imagePartenaire" + indexImagePartenaire, imagePartenaire.FileImagePartenaireLocal);
-                listeImagesPartenaireAAjouter.push(imagePartenaire);
+        var listeFichiersPartenaireAAjouter: FichierPartenaire[] = [];
+        nouveauPartenaire.ListeFichiersPartenaire.forEach((fichierPartenaire: FichierPartenaire, indexFichierPartenaire: number) => {
+            if (fichierPartenaire.FileFichierPartenaireLocal != null) {
+                formData.append("fichierPartenaire" + indexFichierPartenaire, fichierPartenaire.FileFichierPartenaireLocal);
+                listeFichiersPartenaireAAjouter.push(fichierPartenaire);
             }
         });
-        listeImagesPartenaireAAjouter.forEach((imagePartenaire: ImagePartenaire) => {
-            nouveauPartenaire.supprimerImagePartenaire(imagePartenaire);
+        listeFichiersPartenaireAAjouter.forEach((fichierPartenaire: FichierPartenaire) => {
+            nouveauPartenaire.supprimerFichierPartenaire(fichierPartenaire);
         });
         formData.append("partenaire", JSON.stringify(nouveauPartenaire.getObjetSerializable()));
         formData.append("utilisateur", JSON.stringify(this.modelePlateforme.UtilisateurConnecte.getObjetSerializableId()));
@@ -172,16 +172,16 @@ export class ControleurPartenaires extends ControleurPlateforme {
                 ancienPartenaire.ListeContactsEtrangersPartenaires = nouveauPartenaire.ListeContactsEtrangersPartenaires;
                 ancienPartenaire.ListeCoordinateursPartenaires = nouveauPartenaire.ListeCoordinateursPartenaires;
 
-                //On supprime les images qui ont été supprimés.
-                nouveauPartenaire.ListeImagesPartenaire.forEach((imagePartenaire: ImagePartenaire) => {
-                    ancienPartenaire.supprimerImagePartenaire(imagePartenaire);
+                //On supprime les fichiers qui ont été supprimés.
+                nouveauPartenaire.ListeFichiersPartenaire.forEach((fichierPartenaire: FichierPartenaire) => {
+                    ancienPartenaire.supprimerFichierPartenaire(fichierPartenaire);
                 });
-                // On ajoute les images qui ont été ajoutés sans le lien vers le fichier local qui est maintenant inutile.
-                resultat.listeImagesPartenaire.forEach((imagePartenaire: any) => {
-                    var imagePartenaireObjet = new ImagePartenaire();
-                    imagePartenaireObjet.IdentifiantImagePartenaire = imagePartenaire.identifiantImagePartenaire;
-                    imagePartenaireObjet.CheminImagePartenaireServeur = imagePartenaire.cheminImagePartenaireServeur;
-                    ancienPartenaire.ajouterImagePartenaire(imagePartenaireObjet);
+                // On ajoute les fichiers qui ont été ajoutés sans le lien vers le fichier local qui est maintenant inutile.
+                resultat.listeFichiersPartenaire.forEach((fichierPartenaire: any) => {
+                    var fichierPartenaireObjet = new FichierPartenaire();
+                    fichierPartenaireObjet.IdentifiantFichierPartenaire = fichierPartenaire.identifiantFichierPartenaire;
+                    fichierPartenaireObjet.CheminFichierPartenaireServeur = fichierPartenaire.cheminFichierPartenaireServeur;
+                    ancienPartenaire.ajouterFichierPartenaire(fichierPartenaireObjet);
                 });
 
                 that.notifieModificationPartenaire(ancienPartenaire);
@@ -261,11 +261,11 @@ export class ControleurPartenaires extends ControleurPlateforme {
                     partenaire.listeVoeuxPartenaire.forEach((voeu: any) => {
                         partenaireObjet.ajouterVoeu(that.modelePlateforme.getVoeuAvecIdentifiant(voeu.identifiantVoeu));
                     });
-                    partenaire.listeImagesPartenaire.forEach((imagePartenaire: any) => {
-                        var imagePartenaireObjet = new ImagePartenaire();
-                        imagePartenaireObjet.IdentifiantImagePartenaire = imagePartenaire.identifiantImagePartenaire;
-                        imagePartenaireObjet.CheminImagePartenaireServeur = imagePartenaire.cheminImagePartenaireServeur;
-                        partenaireObjet.ajouterImagePartenaire(imagePartenaireObjet);
+                    partenaire.listeFichiersPartenaire.forEach((fichierPartenaire: any) => {
+                        var fichierPartenaireObjet = new FichierPartenaire();
+                        fichierPartenaireObjet.IdentifiantFichierPartenaire = fichierPartenaire.identifiantFichierPartenaire;
+                        fichierPartenaireObjet.CheminFichierPartenaireServeur = fichierPartenaire.cheminFichierPartenaireServeur;
+                        partenaireObjet.ajouterFichierPartenaire(fichierPartenaireObjet);
                     });
 
                     that.modelePlateforme.ajouterPartenaire(partenaireObjet);

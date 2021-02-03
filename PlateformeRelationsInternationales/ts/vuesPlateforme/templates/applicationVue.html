@@ -15,8 +15,8 @@
                     <router-link class="nav-link" :to="{ name: 'aidesfinancieres' }">Aides Financières</router-link>
                     <router-link class="nav-link" :to="{ name: 'coordinateurs' }">Coordinateurs</router-link>
                     <router-link class="nav-link" :to="{ name: 'couts' }">Coûts</router-link>
-                    <router-link class="nav-link" :to="{ name: 'mails' }">Mails</router-link>
-                    <router-link class="nav-link" :to="{ name: 'administration' }">Administration</router-link>
+                    <router-link v-if="UtilisateurConnecte != null" class="nav-link" :to="{ name: 'mails' }">Mails</router-link>
+                    <router-link v-if="UtilisateurConnecte != null" class="nav-link" :to="{ name: 'administration' }">Administration</router-link>
                     <router-link class="nav-link" :to="{ name: 'apropos' }">A Propos</router-link>
                 </li>
             </ul>

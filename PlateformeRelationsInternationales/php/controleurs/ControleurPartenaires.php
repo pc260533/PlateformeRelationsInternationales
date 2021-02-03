@@ -121,15 +121,15 @@ class ControleurPartenaires implements IControleurPlateforme {
 				$partenaire->ajouterVoeu($voeu);
 			}
 		}
-		if (isset($partenaireArray["listeImagesPartenaire"])) {
-			foreach ($partenaireArray["listeImagesPartenaire"] as $imagePartenaireArray) {
-				$imagePartenaire = new ImagePartenaire();
-				$imagePartenaire->setIdentifiantImagePartenaire($imagePartenaireArray["identifiantImagePartenaire"]);
-				$imagePartenaire->setCheminImagePartenaireServeur($imagePartenaireArray["cheminImagePartenaireServeur"]);
-				if ($imagePartenaire->getCheminImagePartenaireServeur() != "") {
-					$partenaire->ajouterImagePartenaire($imagePartenaire);
-					// On supprime l'image partenaire contenue dans le dossiers uploads.
-					$this->gestionFichiers->supprimerFichier($imagePartenaire->getCheminImagePartenaireServeur());
+		if (isset($partenaireArray["listeFichiersPartenaire"])) {
+			foreach ($partenaireArray["listeFichiersPartenaire"] as $fichierPartenaireArray) {
+				$fichierPartenaire = new FichierPartenaire();
+				$fichierPartenaire->setIdentifiantFichierPartenaire($fichierPartenaireArray["identifiantFichierPartenaire"]);
+				$fichierPartenaire->setCheminFichierPartenaireServeur($fichierPartenaireArray["cheminFichierPartenaireServeur"]);
+				if ($fichierPartenaire->getCheminFichierPartenaireServeur() != "") {
+					$partenaire->ajouterFichierPartenaire($fichierPartenaire);
+					// On supprime le fichier partenaire contenue dans le dossiers uploads.
+					$this->gestionFichiers->supprimerFichier($fichierPartenaire->getCheminFichierPartenaireServeur());
 				}
 			}
 		}
@@ -148,9 +148,9 @@ class ControleurPartenaires implements IControleurPlateforme {
 			$nomFichier = $uploadedFile->getClientFilename();
 
 			$uploadedFile->moveTo($cheminDossierPartenaire . DIRECTORY_SEPARATOR . $nomFichier);
-			$imagePartenaire = new ImagePartenaire();
-			$imagePartenaire->setCheminImagePartenaireServeur("uploads/" . $nomDossierPartenaire . "/". $nomFichier);
-			$partenaire->ajouterImagePartenaire($imagePartenaire);
+			$fichierPartenaire = new FichierPartenaire();
+			$fichierPartenaire->setCheminFichierPartenaireServeur("uploads/" . $nomDossierPartenaire . "/". $nomFichier);
+			$partenaire->ajouterFichierPartenaire($fichierPartenaire);
 		}
 	}
 
@@ -185,7 +185,7 @@ class ControleurPartenaires implements IControleurPlateforme {
 		$cheminDossierPartenaire = getVariableEnvironnement("CHEMIN_DOSSIER_UPLOADS") . DIRECTORY_SEPARATOR . $nomDossierPartenaire;
 		$this->gestionFichiers->creerDossier($cheminDossierPartenaire);
 		$this->intialiserPartenaireAvecFichiersUploads($partenaire, $uploadedFiles);
-		$this->stockagePartenaires->ajouterListeImagesPartenaire($partenaire);
+		$this->stockagePartenaires->ajouterListeFichiersPartenaire($partenaire);
 
 		return $partenaire;
 	}

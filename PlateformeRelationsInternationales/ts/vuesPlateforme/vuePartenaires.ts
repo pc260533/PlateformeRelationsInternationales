@@ -18,7 +18,7 @@ import { Contact } from "../modelePlateforme/contact";
 import { Localisation } from "../modelePlateforme/localisation";
 import { SousSpecialite } from "../modelePlateforme/sousspecialite";
 import { Cout } from "../modelePlateforme/cout";
-import { ImagePartenaire } from "../modelePlateforme/imagePartenaire";
+import { FichierPartenaire } from "../modelePlateforme/fichierPartenaire";
 import { EtatPartenaire } from "../modelePlateforme/etatpartenaire";
 import { Voeu } from "../modelePlateforme/voeu";
 import { DomaineDeCompetence } from "../modelePlateforme/domaineDeCompetence";
@@ -186,7 +186,7 @@ export default class VuePartenaire extends Vue implements IVuePartenaires, IVueD
     private initialiserDatatables() {
         this.proprietesDatatablesPartenaires = new ProprietesDatatables();
         this.proprietesDatatablesPartenaires.OrdreDesElementsDeControle = "Bfti";
-        this.proprietesDatatablesPartenaires.ajouterColonne(new ProprietesDatatablesColonne("Identifiant Partenaire", "identifiantPartenaire"));
+        //this.proprietesDatatablesPartenaires.ajouterColonne(new ProprietesDatatablesColonne("Identifiant Partenaire", "identifiantPartenaire"));
         this.proprietesDatatablesPartenaires.ajouterColonne(new ProprietesDatatablesColonne("Nom Partenaire", "nomPartenaire"));
         if (this.plateforme.UtilisateurConnecte) {
             this.proprietesDatatablesPartenaires.ajouterBouton(new ProprietesDatatablesBouton("Ajouter Partenaire", this.onAjouterPartenaireClick));
@@ -237,8 +237,8 @@ export default class VuePartenaire extends Vue implements IVuePartenaires, IVueD
             $("#selectListeContactsEtrangersPartenaire").empty();
             $("#selectListeCoordinateursPartenaire").empty();
             $("#selectListeVoeuxPartenaire").empty();
-            $("#listeImagesPartenaireServeur").empty();
-            $("#inputListeImagesPartenaires").removeClass("is-invalid");
+            $("#listeFichiersPartenaireServeur").empty();
+            $("#inputListeFichiersPartenaires").removeClass("is-invalid");
             $("#inputNomPartenaire").removeClass("is-invalid");
             $("#inputLatitudePartenaire").removeClass("is-invalid");
             $("#inputLongitudePartenaire").removeClass("is-invalid");
@@ -291,8 +291,8 @@ export default class VuePartenaire extends Vue implements IVuePartenaires, IVueD
             $("#inputNomPartenaire").removeClass("is-invalid");
         });
 
-        $("#inputListeImagesPartenaires").click(function () {
-            $("#inputListeImagesPartenaires").removeClass("is-invalid");
+        $("#inputListeFichiersPartenaires").click(function () {
+            $("#inputListeFichiersPartenaires").removeClass("is-invalid");
         });
 
         $("#inputAdresseMailVoeuxPartenaires").click(function () {
@@ -332,13 +332,13 @@ export default class VuePartenaire extends Vue implements IVuePartenaires, IVueD
         });
 
         this.modalDetailsPartenaire.onCacherModal(() => {
-            $("#labelListeImagesPartenairesDetail").show();
+            $("#labelListeFichiersPartenairesDetail").show();
             $("#labelListeDomainesDeCompetencesPartenairesDetail").show();
             $("#labelListeSousSpecialitesPartenairesDetail").show();
             $("#labelListeMobilitesPartenairesDetail").show();
             $("#labelListeAidesFinancieresPartenairesDetail").show();
             $("#labelListeCoordinateursPartenairesDetail").show();
-            $("#listeImagesPartenairesDetail").empty();
+            $("#listeFichiersPartenairesDetail").empty();
             $("#listeDomainesDeCompetencesPartenairesDetail").empty();
             $("#listeSousSpecialitesPartenairesDetail").empty();
             $("#listeMobilitesPartenairesDetail").empty();
@@ -424,30 +424,27 @@ export default class VuePartenaire extends Vue implements IVuePartenaires, IVueD
         $("#selectListeVoeuxPartenaire option[value='" + voeu.IdentifiantVoeu + "']").remove();
     }
 
-    private ajouterImagePartenaireDansListe(imagePartenaire: ImagePartenaire): void {
+    private ajouterFichierPartenaireDansListe(fichierPartenaire: FichierPartenaire): void {
         var li = $("<li>", {
-            value: imagePartenaire.IdentifiantImagePartenaire,
+            value: fichierPartenaire.IdentifiantFichierPartenaire,
             "class": "list-group-item"
         });
-        var span = $("<span>", {
-            "class": "name",
-            text: imagePartenaire.CheminImagePartenaireServeur
+        var a = $("<a>", {
+            href: fichierPartenaire.CheminFichierPartenaireServeur,
+            target: "_blank",
+            text: fichierPartenaire.CheminFichierPartenaireServeur
         });
         var buttonSupprimer = $("<button>", {
             type: "button",
             "class": "btn btn-secondary float-right",
             text: "Supprimer"
         });
-        var imgPartenaire = $("<img>", {
-            src: imagePartenaire.CheminImagePartenaireServeur,
-        });
         buttonSupprimer.on("click", () => {
             li.remove();
         });
-        li.append(span);
+        li.append(a);
         li.append(buttonSupprimer);
-        li.append(imgPartenaire.height(50));
-        $("#listeImagesPartenaireServeur").append(li);
+        $("#listeFichiersPartenaireServeur").append(li);
     }
 
     private ajouterEtatPartenaireDansSelect(etatPartenaire: EtatPartenaire): void {
@@ -554,10 +551,10 @@ export default class VuePartenaire extends Vue implements IVuePartenaires, IVueD
         partenaire.ListeCoordinateursPartenaires = this.getListeCoordinateursSelectionnees();
         partenaire.ListeVoeuxPartenaire = this.getListeVoeuxSelectionnees();
 
-        $.each(($("#inputListeImagesPartenaires")[0] as HTMLInputElement).files, (indexFile: number, file: File) => {
-            var imagePartenaire = new ImagePartenaire();
-            imagePartenaire.FileImagePartenaireLocal = file;
-            partenaire.ajouterImagePartenaire(imagePartenaire);
+        $.each(($("#inputListeFichiersPartenaires")[0] as HTMLInputElement).files, (indexFile: number, file: File) => {
+            var fichierPartenaire = new FichierPartenaire();
+            fichierPartenaire.FileFichierPartenaireLocal = file;
+            partenaire.ajouterFichierPartenaire(fichierPartenaire);
         });
         return partenaire;
     }
@@ -774,7 +771,7 @@ export default class VuePartenaire extends Vue implements IVuePartenaires, IVueD
             this.modalInformation.afficherInformation(new InformationSerializable("Partenaire non ajoutable", "L'application ne contient aucun état partenaire.", "Pour ajouter un partenaire, au moins un Etat Partenaire doit exister dans l'application. Veuillez contacter un administrateur de l'application."));
             return;
         }
-        $("#formGroupListeImagesPartenaireServeur").hide();
+        $("#formGroupListeFichiersPartenaireServeur").hide();
         $("#formRowListeVoeuxPartenaire").hide();
 
         $("#inputTitrePartenaire").text("Ajout Partenaire");
@@ -813,7 +810,7 @@ export default class VuePartenaire extends Vue implements IVuePartenaires, IVueD
     }
 
     private onModifierPartenaireClick(): void {
-        $("#formGroupListeImagesPartenaireServeur").show();
+        $("#formGroupListeFichiersPartenaireServeur").show();
         $("#formRowListeVoeuxPartenaire").show();
 
         var listePartenairesSelectionnes: Partenaire[] = this.datatablesPartenaires.getListeLignesSelectionnees();
@@ -859,29 +856,29 @@ export default class VuePartenaire extends Vue implements IVuePartenaires, IVueD
                 this.ajouterVoeuDansSelect(voeu);
             });
 
-            premierPartenaireSelectionne.ListeImagesPartenaire.forEach((imagePartenaire: ImagePartenaire) => {
-                this.ajouterImagePartenaireDansListe(imagePartenaire);
+            premierPartenaireSelectionne.ListeFichiersPartenaire.forEach((fichierPartenaire: FichierPartenaire) => {
+                this.ajouterFichierPartenaireDansListe(fichierPartenaire);
             });
 
             this.modalEditePartenaire.montrerModal();
             $("#boutonEditePartenaire").off();
             $("#boutonEditePartenaire").on("click", () => {
-                // On vérifie que les nouvelles immages sélectionnées à ajouter ne sont pas déjà présent sur le serveur et si celles-ci ne vont pas être supprimées.
+                // On vérifie que les nouveaux fichier sélectionnées à ajouter ne sont pas déjà présent sur le serveur et si ceux-ci ne vont pas être supprimées.
                 try {
-                    $.each(($("#inputListeImagesPartenaires")[0] as HTMLInputElement).files, (indexFile: number, file: File) => {
-                        var nomImagePartenaireSelectionnee = file.name;
-                        $("#listeImagesPartenaireServeur li").each((index: number, element: HTMLElement) => {
-                            var nomImagePartenaire = $(element).find("span").text().split("/").pop();
-                            if (nomImagePartenaire == nomImagePartenaireSelectionnee) {
+                    $.each(($("#inputListeFichiersPartenaires")[0] as HTMLInputElement).files, (indexFile: number, file: File) => {
+                        var nomFichierPartenaireSelectionnee = file.name;
+                        $("#listeFichiersPartenaireServeur li").each((index: number, element: HTMLElement) => {
+                            var nomFichierPartenaire = $(element).find("span").text().split("/").pop();
+                            if (nomFichierPartenaire == nomFichierPartenaireSelectionnee) {
                                 throw new ErreurChampsNonRemplis();
                             }
                         });
                     });
                     var nouveauPartenaire = this.creerPartenaire();
-                    // tout ce qui est dans la liste des images du nouveau partenaire et qui a un fichier à null est supprimé sinon ajouté.
-                    premierPartenaireSelectionne.ListeImagesPartenaire.forEach((imagePartenaire: ImagePartenaire) => {
-                        if ($("#listeImagesPartenaireServeur li[value=" + imagePartenaire.IdentifiantImagePartenaire + "]").length == 0) {
-                            nouveauPartenaire.ajouterImagePartenaire(imagePartenaire);
+                    // tout ce qui est dans la liste des fichiers du nouveau partenaire et qui a un fichier à null est supprimé sinon ajouté.
+                    premierPartenaireSelectionne.ListeFichiersPartenaire.forEach((fichierPartenaire: FichierPartenaire) => {
+                        if ($("#listeFichiersPartenaireServeur li[value=" + fichierPartenaire.IdentifiantFichierPartenaire + "]").length == 0) {
+                            nouveauPartenaire.ajouterFichierPartenaire(fichierPartenaire);
                         }
                     });
                     this.controleurPartenaires.modifierPartenaire(premierPartenaireSelectionne, nouveauPartenaire);
@@ -889,7 +886,7 @@ export default class VuePartenaire extends Vue implements IVuePartenaires, IVueD
                 }
                 catch (erreur) {
                     console.log(erreur);
-                    $("#inputListeImagesPartenaires").addClass("is-invalid");
+                    $("#inputListeFichiersPartenaires").addClass("is-invalid");
                     $("body").animate({
                         scrollTop: $($(".is-invalid")[0]).focus().offset().top - 25
                     }, 1000);
@@ -1138,8 +1135,8 @@ export default class VuePartenaire extends Vue implements IVuePartenaires, IVueD
             $("#localisationPartenaireDetail").text(premierPartenaireSelectionne.LocalisationPartenaire.NomLocalisation);
             $("#informationLogementPartenaireDetail").text(premierPartenaireSelectionne.InformationLogementPartenaire);
             $("#informationCoutPartenaireDetail").text(premierPartenaireSelectionne.InformationCoutPartenaire);
-            if (premierPartenaireSelectionne.ListeImagesPartenaire.length == 0) {
-                $("#labelListeImagesPartenairesDetail").hide();
+            if (premierPartenaireSelectionne.ListeFichiersPartenaire.length == 0) {
+                $("#labelListeFichiersPartenairesDetail").hide();
             }
             if (premierPartenaireSelectionne.ListeDomainesDeCompetencesPartenaire.length == 0) {
                 $("#labelListeDomainesDeCompetencesPartenairesDetail").hide();
@@ -1156,8 +1153,8 @@ export default class VuePartenaire extends Vue implements IVuePartenaires, IVueD
             if (premierPartenaireSelectionne.ListeCoordinateursPartenaires.length == 0) {
                 $("#labelListeCoordinateursPartenairesDetail").hide();
             }
-            premierPartenaireSelectionne.ListeImagesPartenaire.forEach((imagePartenaire: ImagePartenaire) => {
-                $("#listeImagesPartenairesDetail").append($("<li>").addClass("informationsAProposLi").text(imagePartenaire.CheminImagePartenaireServeur));
+            premierPartenaireSelectionne.ListeFichiersPartenaire.forEach((fichierPartenaire: FichierPartenaire) => {
+                $("#listeFichiersPartenairesDetail").append($("<li>").addClass("informationsAProposLi").text(fichierPartenaire.CheminFichierPartenaireServeur));
             });
             premierPartenaireSelectionne.ListeDomainesDeCompetencesPartenaire.forEach((domaineDeCompetence: DomaineDeCompetence) => {
                 $("#listeDomainesDeCompetencesPartenairesDetail").append($("<li>").addClass("informationsAProposLi").text(domaineDeCompetence.NomDomaineDeCompetence));

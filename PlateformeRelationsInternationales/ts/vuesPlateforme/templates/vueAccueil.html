@@ -36,8 +36,11 @@
                                 <img width="50" id="imagePartenaires" alt="" />
                             </div>
                             <h3 class="fonctionnaliteTitre">Partenaires</h3>
-                            <p>
+                            <p v-if="plateforme.UtilisateurConnecte != null">
                                 Gérer les partenaires
+                            </p>
+                            <p v-else>
+                                Visualiser les partenaires
                             </p>
                         </div>
                     </div>
@@ -50,8 +53,11 @@
                                 <img width="50" id="imageAidesFinancieres" alt="" />
                             </div>
                             <h3 class="fonctionnaliteTitre">Aides Financières</h3>
-                            <p>
+                            <p v-if="plateforme.UtilisateurConnecte != null">
                                 Gérer les aides financières
+                            </p>
+                            <p v-else>
+                                Visualiser les aides financières
                             </p>
                         </div>
                     </div>
@@ -68,8 +74,11 @@
                                 <img width="50" id="imageCoordinateurs" alt="" />
                             </div>
                             <h3 class="fonctionnaliteTitre">Coordinateurs</h3>
-                            <p>
+                            <p v-if="plateforme.UtilisateurConnecte != null">
                                 Gérer les coordinateurs
+                            </p>
+                            <p v-else>
+                                Visualiser les coordinateurs
                             </p>
                         </div>
                     </div>
@@ -82,8 +91,11 @@
                                 <img width="40" id="imageCouts" alt="" />
                             </div>
                             <h3 class="fonctionnaliteTitre">Coûts</h3>
-                            <p>
+                            <p v-if="plateforme.UtilisateurConnecte != null">
                                 Gérer les coûts
+                            </p>
+                            <p v-else>
+                                Visualiser les coûts
                             </p>
                         </div>
                     </div>
@@ -91,7 +103,7 @@
 
             </div>
 
-            <div class="row">
+            <div class="row" v-if="plateforme.UtilisateurConnecte != null">
 
                 <router-link class="col-md-6 col-12" :to="{ name: 'mails' }">
                     <div>

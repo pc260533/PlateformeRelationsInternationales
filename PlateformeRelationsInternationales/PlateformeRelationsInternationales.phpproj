@@ -61,7 +61,7 @@
     <Compile Include="php\modele\DomaineDeCompetence.php" />
     <Compile Include="php\modele\EtatPartenaire.php" />
     <Compile Include="php\modele\Mail.php" />
-    <Compile Include="php\modele\ImagePartenaire.php" />
+    <Compile Include="php\modele\FichierPartenaire.php" />
     <Compile Include="php\modele\ISerializable.php" />
     <Compile Include="php\modele\Localisation.php" />
     <Compile Include="php\gestionMails\MailGestionMails.php" />
@@ -216,7 +216,7 @@
     <Content Include="ts\modelePlateforme\cout.ts" />
     <Content Include="ts\modelePlateforme\domaineDeCompetence.ts" />
     <Content Include="ts\modelePlateforme\etatpartenaire.ts" />
-    <Content Include="ts\modelePlateforme\imagePartenaire.ts" />
+    <Content Include="ts\modelePlateforme\fichierPartenaire.ts" />
     <Content Include="ts\modelePlateforme\iserializable.ts" />
     <Content Include="ts\modelePlateforme\localisation.ts" />
     <Content Include="ts\modelePlateforme\mobilite.ts" />

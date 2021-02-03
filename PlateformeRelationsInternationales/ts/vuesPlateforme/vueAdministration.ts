@@ -180,7 +180,7 @@ export default class VueAdminisitration extends Vue implements IVueContactsEtran
     private initialiserDatatables() {
         this.proprietesDatatablesContactsEtrangers = new ProprietesDatatables();
         this.proprietesDatatablesContactsEtrangers.OrdreDesElementsDeControle = "Bfti";
-        this.proprietesDatatablesContactsEtrangers.ajouterColonne(new ProprietesDatatablesColonne("Identifiant Contact Etranger", "identifiantContact"));
+        //this.proprietesDatatablesContactsEtrangers.ajouterColonne(new ProprietesDatatablesColonne("Identifiant Contact Etranger", "identifiantContact"));
         this.proprietesDatatablesContactsEtrangers.ajouterColonne(new ProprietesDatatablesColonne("Nom Contact Etranger", "nomContact"));
         this.proprietesDatatablesContactsEtrangers.ajouterColonne(new ProprietesDatatablesColonne("Prénom Contact Etranger", "prenomContact"));
         this.proprietesDatatablesContactsEtrangers.ajouterColonne(new ProprietesDatatablesColonne("Adresse Mail Contact Etranger", "adresseMailContact"));
@@ -191,7 +191,7 @@ export default class VueAdminisitration extends Vue implements IVueContactsEtran
 
         this.proprietesDatatablesDomainesDeCompetences = new ProprietesDatatables();
         this.proprietesDatatablesDomainesDeCompetences.OrdreDesElementsDeControle = "Bfti";
-        this.proprietesDatatablesDomainesDeCompetences.ajouterColonne(new ProprietesDatatablesColonne("Identifiant Domaine De Compétence", "identifiantDomaineDeCompetence"));
+        //this.proprietesDatatablesDomainesDeCompetences.ajouterColonne(new ProprietesDatatablesColonne("Identifiant Domaine De Compétence", "identifiantDomaineDeCompetence"));
         this.proprietesDatatablesDomainesDeCompetences.ajouterColonne(new ProprietesDatatablesColonne("Nom Domaine De Compétence", "nomDomaineDeCompetence"));
         this.proprietesDatatablesDomainesDeCompetences.ajouterBouton(new ProprietesDatatablesBouton("Ajouter Domaine De Compétence", this.onClickAjouterDomaineDeCompetence));
         this.proprietesDatatablesDomainesDeCompetences.ajouterBouton(new ProprietesDatatablesBouton("Supprimer Domaine De Compétence", this.onClickSupprimerDomaineDeCompetence));
@@ -199,7 +199,7 @@ export default class VueAdminisitration extends Vue implements IVueContactsEtran
 
         this.proprietesDatatablesEtatsPartenaires = new ProprietesDatatables();
         this.proprietesDatatablesEtatsPartenaires.OrdreDesElementsDeControle = "Bfti";
-        this.proprietesDatatablesEtatsPartenaires.ajouterColonne(new ProprietesDatatablesColonne("Identifiant Etat Partenaire", "identifiantEtatPartenaire"));
+        //this.proprietesDatatablesEtatsPartenaires.ajouterColonne(new ProprietesDatatablesColonne("Identifiant Etat Partenaire", "identifiantEtatPartenaire"));
         this.proprietesDatatablesEtatsPartenaires.ajouterColonne(new ProprietesDatatablesColonne("Nom Etat Partenaire", "nomEtatPartenaire"));
         this.proprietesDatatablesEtatsPartenaires.ajouterBouton(new ProprietesDatatablesBouton("Ajouter Etat Partenaire", this.onClickAjouterEtatPartenaire));
         this.proprietesDatatablesEtatsPartenaires.ajouterBouton(new ProprietesDatatablesBouton("Supprimer Etat Partenaire", this.onClickSupprimerEtatPartenaire));
@@ -207,7 +207,7 @@ export default class VueAdminisitration extends Vue implements IVueContactsEtran
 
         this.proprietesDatatablesMobilites = new ProprietesDatatables();
         this.proprietesDatatablesMobilites.OrdreDesElementsDeControle = "Bfti";
-        this.proprietesDatatablesMobilites.ajouterColonne(new ProprietesDatatablesColonne("Identifiant Mobilité", "identifiantMobilite"));
+        //this.proprietesDatatablesMobilites.ajouterColonne(new ProprietesDatatablesColonne("Identifiant Mobilité", "identifiantMobilite"));
         this.proprietesDatatablesMobilites.ajouterColonne(new ProprietesDatatablesColonne("Type Mobilité", "typeMobilite"));
         this.proprietesDatatablesMobilites.ajouterBouton(new ProprietesDatatablesBouton("Ajouter Mobilité", this.onClickAjouterMobilite));
         this.proprietesDatatablesMobilites.ajouterBouton(new ProprietesDatatablesBouton("Supprimer Mobilité", this.onClickSupprimerMobilite));
@@ -215,7 +215,7 @@ export default class VueAdminisitration extends Vue implements IVueContactsEtran
 
         this.proprietesDatatablesSpecialites = new ProprietesDatatables();
         this.proprietesDatatablesSpecialites.OrdreDesElementsDeControle = "Bfti";
-        this.proprietesDatatablesSpecialites.ajouterColonne(new ProprietesDatatablesColonne("Identifiant Spécialité", "identifiantSpecialite"));
+        //this.proprietesDatatablesSpecialites.ajouterColonne(new ProprietesDatatablesColonne("Identifiant Spécialité", "identifiantSpecialite"));
         this.proprietesDatatablesSpecialites.ajouterColonne(new ProprietesDatatablesColonne("Nom Spécialité", "nomSpecialite"));
         this.proprietesDatatablesSpecialites.ajouterColonne(new ProprietesDatatablesColonne("Couleur Spécialité", "couleurSpecialite"));
         this.proprietesDatatablesSpecialites.ajouterBouton(new ProprietesDatatablesBouton("Ajouter Spécialité", this.onClickAjouterSpecialite));
@@ -224,7 +224,7 @@ export default class VueAdminisitration extends Vue implements IVueContactsEtran
 
         this.proprietesDatatablesSousSpecialites = new ProprietesDatatables();
         this.proprietesDatatablesSousSpecialites.OrdreDesElementsDeControle = "Bfti";
-        this.proprietesDatatablesSousSpecialites.ajouterColonne(new ProprietesDatatablesColonne("Identifiant Sous Spécialité", "identifiantSousSpecialite"));
+        //this.proprietesDatatablesSousSpecialites.ajouterColonne(new ProprietesDatatablesColonne("Identifiant Sous Spécialité", "identifiantSousSpecialite"));
         this.proprietesDatatablesSousSpecialites.ajouterColonne(new ProprietesDatatablesColonne("Nom Sous Spécialité", "nomSousSpecialite"));
         this.proprietesDatatablesSousSpecialites.ajouterBouton(new ProprietesDatatablesBouton("Ajouter Sous Spécialité", this.onClickAjouterSousSpecialite));
         this.proprietesDatatablesSousSpecialites.ajouterBouton(new ProprietesDatatablesBouton("Supprimer Sous Spécialité", this.onClickSupprimerSousSpecialite));
@@ -232,12 +232,12 @@ export default class VueAdminisitration extends Vue implements IVueContactsEtran
 
         this.proprietesDatatablesVoeux = new ProprietesDatatables();
         this.proprietesDatatablesVoeux.OrdreDesElementsDeControle = "Bfti";
-        this.proprietesDatatablesVoeux.ajouterColonne(new ProprietesDatatablesColonne("Identifiant Voeu", "identifiantVoeu"));
+        //this.proprietesDatatablesVoeux.ajouterColonne(new ProprietesDatatablesColonne("Identifiant Voeu", "identifiantVoeu"));
         this.proprietesDatatablesVoeux.ajouterColonne(new ProprietesDatatablesColonne("Adresse Mail Voeu", "adresseMailVoeu"));
         this.proprietesDatatablesVoeux.ajouterBouton(new ProprietesDatatablesBouton("Supprimer Voeu", this.onClickSupprimerVoeu));
 
         this.proprietesDatatablesUtilisateurs = new ProprietesDatatables();
-        this.proprietesDatatablesUtilisateurs.OrdreDesElementsDeControle = "Bfti";
+        //this.proprietesDatatablesUtilisateurs.OrdreDesElementsDeControle = "Bfti";
         this.proprietesDatatablesUtilisateurs.ajouterColonne(new ProprietesDatatablesColonne("Identifiant Utilisateur", "identifiantUtilisateur"));
         this.proprietesDatatablesUtilisateurs.ajouterColonne(new ProprietesDatatablesColonne("Nom Utilisateur", "nomUtilisateur"));
         this.proprietesDatatablesUtilisateurs.ajouterColonne(new ProprietesDatatablesColonne("Adresse Mail Utilisateur", "adresseMailUtilisateur"));

@@ -24,7 +24,7 @@ class Partenaire implements ISerializable {
     private $listeContactsEtrangersPartenaire;
     private $listeCoordinateursPartenaire;
     private $listeVoeuxPartenaire;
-	private $listeImagesPartenaire;
+	private $listeFichiersPartenaire;
 
 	public function getIdentifiantPartenaire(): int {
 		return $this->identifiantPartenaire;
@@ -146,12 +146,12 @@ class Partenaire implements ISerializable {
         $this->listeVoeuxPartenaire = $listeVoeuxPartenaire;
     }
 
-	public function getListeImagesPartenaire(): array {
-		return $this->listeImagesPartenaire;
+	public function getListeFichiersPartenaire(): array {
+		return $this->listeFichiersPartenaire;
 	}
 
-	public function setListeImagesPartenaire(array $listeImagesPartenaire): void {
-        $this->listeImagesPartenaire = $listeImagesPartenaire;
+	public function setListeFichiersPartenaire(array $listeFichiersPartenaire): void {
+        $this->listeFichiersPartenaire = $listeFichiersPartenaire;
     }
 
 	private function getCoutPartenaireSerializable() : array {
@@ -216,10 +216,10 @@ class Partenaire implements ISerializable {
 		return $res;
 	}
 
-	private function getListeImagesPartenaireSerializable() : array {
+	private function getListeFichiersPartenaireSerializable() : array {
 		$res = array();
-		foreach ($this->listeImagesPartenaire as $imagePartenaire) {
-			$res[] = $imagePartenaire->getObjetSerializable();
+		foreach ($this->listeFichiersPartenaire as $fichierPartenaire) {
+			$res[] = $fichierPartenaire->getObjetSerializable();
 		}
 		return $res;
 	}
@@ -240,7 +240,7 @@ class Partenaire implements ISerializable {
 		$this->listeCoordinateursPartenaire = array();
 		$this->listeAidesFinancieresPartenaire = array();
 		$this->listeVoeuxPartenaire = array();
-		$this->listeImagesPartenaire = array();
+		$this->listeFichiersPartenaire = array();
 	}
 
 	public function ajouterDomaineDeCompetence(DomaineDeCompetence $domaineDeCompetence) {
@@ -313,13 +313,13 @@ class Partenaire implements ISerializable {
 		}
 	}
 
-	public function ajouterImagePartenaire(ImagePartenaire $imagePartenaire) {
-		$this->listeImagesPartenaire[] = $imagePartenaire;
+	public function ajouterFichierPartenaire(FichierPartenaire $fichierPartenaire) {
+		$this->listeFichiersPartenaire[] = $fichierPartenaire;
 	}
 
-	public function supprimerImagePartenaire(ImagePartenaire $imagePartenaire) {
-		if (($key = array_search($imagePartenaire, $this->listeImagesPartenaire)) !== false) {
-			unset($this->listeImagesPartenaire[$key]);
+	public function supprimerFichierPartenaire(FichierPartenaire $fichierPartenaire) {
+		if (($key = array_search($fichierPartenaire, $this->listeFichiersPartenaire)) !== false) {
+			unset($this->listeFichiersPartenaire[$key]);
 		}
 	}
 
@@ -346,7 +346,7 @@ class Partenaire implements ISerializable {
             "listeCoordinateursPartenaire" => $this->getListeCoordinateursSerializable(),
             "listeAidesFinancieresPartenaire" => $this->getListeAidesFinancieresSerializable(),
             "listeVoeuxPartenaire" => $this->getListeVoeuxSerializable(),
-            "listeImagesPartenaire" => $this->getListeImagesPartenaireSerializable()
+            "listeFichiersPartenaire" => $this->getListeFichiersPartenaireSerializable()
         );
 	}
 
